@@ -1,0 +1,32 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/theme/colors.dart';
+
+import '../../../core/routing/routes.dart';
+import '../../../core/theme/text_styles.dart';
+
+class SkipButton extends StatelessWidget {
+  const SkipButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return  Padding(
+      padding:
+      EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+      child: GestureDetector(
+        onTap: () {
+          context.pushReplacementNamed(Routes.loginScreen);
+        },
+        child: Align(
+            alignment: Alignment.topRight,
+            child: Text('skip'.tr(context),
+                style: interRegular.copyWith(
+                  color: AppColors.secondaryColor,
+                  fontSize: 12.sp,
+                ))),
+      ),
+    );
+  }
+}

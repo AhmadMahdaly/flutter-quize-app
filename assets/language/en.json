@@ -1,0 +1,142 @@
+{
+  "loading": "Loading...",
+  "smle_gate": "SMLE GATE",
+  "skip": "Skip",
+  "next": "Next",
+  "back": "Back",
+  "onBoarding1": "Your medical future starts here.",
+  "onBoarding2": "Get a seamless and simplified experience for your tests.",
+  "onBoarding3": " To experience the actual exam.",
+  "sign_up": "Sign Up",
+  "log_in": "Login",
+  "by_the": "By the ,",
+  "confirm_agreement": " you confirm your agreement to the ",
+  "privacy_policy": "Privacy Policy",
+  "log_out": "Log out",
+  "register": "'Register'",
+  "trusted_partner": "Your trusted partner for all your medical test",
+  "welcome_to": "Welcome to",
+  "continue_apple": "Continue with apple",
+  "continue_google": "Continue with google",
+  "profile": "Profile",
+  "SCFHS_score_calculator": "SCFHS score calculator ",
+  "subscription": "Subscription",
+  "analysis": "Analysis",
+  "q_bank": "Q Bank",
+  "support": "Support",
+  "notification": "Notification",
+  "no_notification_yet": "No Notification Yet",
+  "maximum_score": "Maximum score",
+  "points": "Points",
+  "calculate": "Calculate",
+  "your_score": "Your score",
+  "more_info_calculate":"For more information, please visit the Saudi Commission for Health Specialties official website ",
+  "here":"here.",
+  "unlock_features":"Unlock all features",
+  "payment":"Payment",
+  "add_your_payment_method":"Add your preferred payment method.",
+  "add_new_card":"Add a New Card",
+  "pay_via_apple_pay":"Pay via Apple pay",
+  "enter_credit_card_info":"Enter credit card information.",
+  "new_card":"New card",
+  "apple_pay":"Apple Pay",
+  "payment_summary":"Payment Summary:",
+  "subscribe_now":"Subscribe Now",
+  "sar":"SAR",
+  "pay":"Pay",
+  "scan_card":"Scan your card",
+  "done":"Done",
+  "add_card":"Add card",
+  "name_card":"Name on the card",
+  "card_number":"Card number",
+  "expiration_date":"Expiration date",
+  "or":"Or",
+  "number_doctors":"Number of Doctors",
+  "number_exams":"Number of Exams",
+  "delete_account":"Delete Account",
+  "gifts":"Gifts",
+  "exam_grades":"Exam Grades",
+  "exams_history":"Exams History",
+  "exams_analysis":"Exams Analysis",
+  "reset_bookmarks":"Reset all bookmarks",
+  "reset_question":"Reset all question statues",
+  "reset_answers":"Reset all change answers",
+  "reset_notes":"Reset all notes",
+  "top_category":"Top category",
+  "real_exam":"Real Exam",
+  "revision":"Revision",
+  "question_bank":"Question Bank",
+  "flashback_discount":"Get a Flashback discount code after subscribing when your referred friends use it.",
+  "discover_now":"Discover now!",
+  "now":"Now",
+  "specialty":"Specialty",
+  "promotions":"Promotions",
+  "payment_details":"Payment Details",
+  "redeem_promo_code":"Redeem promo code",
+  "optional":"Optional",
+  "apply":"Apply",
+  "choose_your_plan":  "Choose your plan",
+  "choose_your_extra_plan":  "Choose your extra plan",
+  "choose_extra_plan":  "Choose your extra plan",
+  "question":  "Question",
+  "quit":  "Quit",
+  "create_quiz":  "Create Quiz",
+  "question_count":  "Question Count",
+  "sub_specialty":  "Sub Specialty",
+  "Not_found_sub_specialty":  "Not Found Sub Specialty",
+  "start_quiz":  "Start Quiz",
+  "discount":  "Discount",
+  "points_discount":  "Points Discount",
+  "total":  "Total",
+  "promo_code":  "Promo Code",
+  "sub_total":  "Sub Total",
+  "select_sub_specialty":  "Select Sub Specialty",
+  "pass":  "Pass",
+  "mid_level":  "Mid level",
+  "fail":  "Fail",
+  "exam":  "Exam",
+  "marks":  "marks",
+  "cvv":  "Cvv",
+  "explanation":  "Explanation",
+  "note":  "Note",
+  "hint":  "Hint",
+  "playlists":  "Playlists",
+  "recently_added":  "Recently added",
+  "create_new_playlist":  "Create New Playlist",
+  "new_playlist":  "New playlist",
+  "title":  "Title",
+  "create":  "Create",
+  "cansel":  "Cancel",
+  "edit":  "Edit",
+  "delete_playlist":  "Delete PlayList",
+  "edit_playlist":  "Edit PlayList",
+  "no_data_found":  "No Data Found"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

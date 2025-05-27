@@ -1,0 +1,172 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:smle/core/routing/routes.dart';
+import 'package:smle/features/SCFHS_score_calculator/SCFHS_score_calculator_screen.dart';
+import 'package:smle/features/SCFHS_score_calculator/cubit/SCFHS_score_calculator_cubit.dart';
+import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
+import 'package:smle/features/exams_history/exams_history_screen.dart';
+import 'package:smle/features/login/cubit/login_cubit.dart';
+import 'package:smle/features/login/login_screen.dart';
+import 'package:smle/features/onboarding/onboarding_screen.dart';
+import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
+import 'package:smle/features/profile/profile_screen.dart';
+import 'package:smle/features/q_bank/create_quiz_screen.dart';
+import 'package:smle/features/q_bank/q_bank_screen.dart';
+import 'package:smle/features/revision/cubit/revision_cubit.dart';
+import 'package:smle/features/revision/categories_screen.dart';
+import 'package:smle/features/revision/revision_screen.dart';
+import 'package:smle/features/splash/cubit/global_cubit/global_cubit.dart';
+import 'package:smle/features/splash/screens/splash_screen.dart';
+import 'package:smle/features/subscription/add_card_Screen.dart';
+import 'package:smle/features/subscription/apple_pay_screen.dart';
+import 'package:smle/features/subscription/payment_screen.dart';
+import 'package:smle/features/subscription/subscription_screen.dart';
+import 'package:smle/features/support_privacy_policy/cubit/privacy_policy_cubit.dart';
+import 'package:smle/features/support_privacy_policy/privacy_policy_screen.dart';
+import 'package:smle/features/support_privacy_policy/support_screen.dart';
+
+import '../../features/analysis/analysis_screen.dart';
+import '../../features/exams_history/cubit/exams_history_cubit.dart';
+import '../../features/home/home_screen.dart';
+import '../../features/main layout/cubit/main_layout_cubit.dart';
+import '../../features/main layout/main_layout.dart';
+import '../../features/notification/cubit/notification_cubit.dart';
+import '../../features/notification/notification_screen.dart';
+import '../../features/play_list/play_list_details_screen.dart';
+import '../../features/play_list/play_list_screen.dart';
+import '../../features/q_bank/cubit/q_bank_cubit.dart';
+import '../../features/q_bank/data/model/startQuizModel.dart';
+import '../../features/revision/subCategories_screen.dart';
+import '../../features/subscription/cubit/Subscription_cubit.dart';
+import '../di.dart';
+
+class AppRouter {
+  Route? generateRoute(RouteSettings settings) {
+    PageTransition transition<T extends Cubit<Object>>({
+      required Widget screen,
+      T? cubit,
+      Object? arguments,
+    }) {
+      final child = cubit != null
+          ? BlocProvider<T>(
+              create: (context) => cubit,
+              child: screen,
+            )
+          : screen;
+
+      return PageTransition(
+        child: child,
+        type: PageTransitionType.fade,
+        duration: const Duration(milliseconds: 200),
+        alignment: Alignment.center,
+        settings: settings,
+      );
+    }
+
+    switch (settings.name) {
+      case Routes.splashScreen:
+        return transition(screen: const SplashScreen());
+      case Routes.onBoardingScreen:
+        return transition(screen: OnBoardingScreen(), cubit: GlobalCubit());
+      case Routes.loginScreen:
+        return transition(
+            screen: const LoginScreen(), cubit: LoginCubit(getIt()));
+      case Routes.profileScreen:
+        return transition(
+            screen: const ProfileScreen(),
+            cubit: MainLayoutCubit(getIt())..getProfile());
+      case Routes.notificationScreen:
+        return transition(
+            screen: const NotificationScreen(), cubit: NotificationCubit());
+      case Routes.privacyPolicyScreen:
+        return transition(
+            screen: const PrivacyPolicyScreen(),
+            cubit: PrivacyPolicySupportCubit(getIt())..getPrivacyPolicy());
+      case Routes.supportScreen:
+        return transition(
+            screen: const SupportScreen(),
+            cubit: PrivacyPolicySupportCubit(getIt())..getSupport());
+      case Routes.sCFHSScoreCalculatorScreen:
+        return transition(
+            screen: ScfhsScoreCalculatorScreen(),
+            cubit: ScfhsScoreCalculatorCubit(getIt())..getCalculatorInfo());
+      case Routes.subscriptionScreen:
+        return transition(
+            screen: const SubscriptionScreen(),
+            cubit: SubscriptionCubit(getIt())..getPackages());
+      case Routes.paymentScreen:
+        final packageId = settings.arguments as String;
+        return transition(
+            screen: const PaymentScreen(),
+            cubit: SubscriptionCubit(getIt())..getYourCheckout(packageId));
+      case Routes.addCardScreen:
+        return transition(
+            screen: const AddCardScreen(), cubit: SubscriptionCubit(getIt()));
+      case Routes.applePayScreen:
+        final totalPayment = settings.arguments as String;
+        return transition(
+            screen: ApplePayScreen(total: totalPayment),
+            cubit: SubscriptionCubit(getIt()));
+      case Routes.analysisScreen:
+        return transition(
+            screen: const AnalysisScreen(), cubit: AnalysisCubit());
+      case Routes.createQuizScreen:
+        return transition(
+            screen: const CreateQuizScreen(),
+            cubit: QBankcubit(getIt())..getCategories());
+      case Routes.qBankScreen:
+        final StartQuizModel startQuizModel= settings.arguments as StartQuizModel;
+        return transition(
+            screen:  QBankScreen(startQuizModel: startQuizModel,), cubit: QBankcubit(getIt())..startQuiz(startQuizModel.context!,
+
+        startQuizModel.pickedDate!.month, startQuizModel.pickedDate!.year,startQuizModel.selectedSubCategoryId!
+        ));
+      case Routes.examsHistoryScreen:
+        return transition(
+            screen: const ExamsHistoryScreen(), cubit: ExamsHistoryCubit());
+      case Routes.revisionScreen:
+        final categoryId = settings.arguments as String;
+        return transition(
+            screen: const RevisionScreen(),
+            cubit: RevisionCubit(getIt())..getSubCategories(categoryId));
+      case Routes.categoriesScreen:
+        return transition(
+            screen: const CategoriesScreen(),
+            cubit: RevisionCubit(getIt())..getCategories());
+      case Routes.subcategoriesScreen:
+        final categoryId = settings.arguments as String;
+        return transition(
+            screen: const SubcategoriesScreen(),
+            cubit: RevisionCubit(getIt())..getSubCategories(categoryId));
+        case Routes.playListScreen:
+          final questionId = settings.arguments as int;
+        return transition(
+            screen:  PlayListScreen(questionId: questionId,),
+            cubit: PlayListCubit(getIt())..getPlayList());
+        case Routes.playListDetailsScreen:
+        return transition(
+            screen:  const PlayListDetailsScreen(),
+            cubit: PlayListCubit(getIt())..getPlayList());
+      case Routes.mainLayoutScreen:
+        return PageTransition(
+          child: BlocProvider(
+            create: (context) => getIt<MainLayoutCubit>()..getProfile(),
+            child: const MainLayoutScreen(),
+          ),
+          type: PageTransitionType.fade,
+          duration: const Duration(milliseconds: 200),
+          alignment: Alignment.center,
+          settings: settings,
+        );
+      default:
+        return null;
+    }
+  }
+
+  List<Widget> screen = [
+    const HomeScreen(),
+    const HomeScreen(),
+    const ProfileScreen(),
+  ];
+}

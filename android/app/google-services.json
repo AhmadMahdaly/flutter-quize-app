@@ -1,0 +1,34 @@
+{
+  "project_info": {
+    "project_number": "821454147633",
+    "project_id": "smle-1bedf",
+    "storage_bucket": "smle-1bedf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821454147633:android:f3b8ea050a33e442578510",
+        "android_client_info": {
+          "package_name": "com.sit.smle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389808664508-1c42hhj3512t0unhti8adggb1htoujpi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqNN5F9bYktv8wc5BAgcJf72Kx153Dl-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
