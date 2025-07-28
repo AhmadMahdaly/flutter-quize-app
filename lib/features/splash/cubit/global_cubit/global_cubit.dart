@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smle/core/helpers/app_localization.dart';
-import 'package:smle/core/shared_widgets/app_spacer.dart';
-import 'package:smle/core/theme/text_styles.dart';
-import '../../../../core/cache_helper/cache_helper.dart';
-import '../../../../core/shared_widgets/debug_print_widget.dart';
-import '../../../../core/theme/colors.dart';
 part 'global_state.dart';
 
 class GlobalCubit extends Cubit<GlobalStates> {
@@ -15,7 +8,7 @@ class GlobalCubit extends Cubit<GlobalStates> {
 // static LocalizationCubit get(context)=>BlocProvider.of(context);
   /// Set onBoarding Index
   int onBoardingIndex = 0;
-  setOnBoardingIndex(i) {
+  void setOnBoardingIndex(i) {
     onBoardingIndex = i;
     emit(SetOnBoardingIndexState(onBoardingIndex));
   }

@@ -1,8 +1,4 @@
 class PackagesModel {
-  int? status;
-  String? message;
-  List<Data>? data;
-
   PackagesModel({this.status, this.message, this.data});
 
   PackagesModel.fromJson(Map<String, dynamic> json) {
@@ -15,6 +11,9 @@ class PackagesModel {
       });
     }
   }
+  int? status;
+  String? message;
+  List<Data>? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -28,12 +27,6 @@ class PackagesModel {
 }
 
 class Data {
-  int? id;
-  bool? isExtra;
-  String? name;
-  int? price;
-  List<Features>? features;
-
   Data({this.id, this.isExtra, this.name, this.price, this.features});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -48,6 +41,11 @@ class Data {
       });
     }
   }
+  int? id;
+  bool? isExtra;
+  String? name;
+  int? price;
+  List<Features>? features;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -63,15 +61,14 @@ class Data {
 }
 
 class Features {
-  int? id;
-  String? name;
-
   Features({this.id, this.name});
 
   Features.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }
+  int? id;
+  String? name;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

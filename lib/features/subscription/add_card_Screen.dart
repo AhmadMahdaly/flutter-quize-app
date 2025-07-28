@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
-import '../../core/theme/colors.dart';
 
 class AddCardScreen extends StatelessWidget {
   const AddCardScreen({super.key});
@@ -80,7 +80,8 @@ class AddCardScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                         horizontal: 8.w), // Add spacing around "or"
                     child: Text('or'.tr(context),
-                        style: interRegular.copyWith(color: AppColors.darkGreyColor)),
+                        style: interRegular.copyWith(
+                            color: AppColors.darkGreyColor)),
                   ),
                   Expanded(
                     child:
@@ -160,15 +161,15 @@ class AddCardScreen extends StatelessWidget {
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(40.r)),
                         borderSide:
-                        const BorderSide(color: AppColors.greyColor)),
+                            const BorderSide(color: AppColors.greyColor)),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(40.r)),
                         borderSide:
-                        const BorderSide(color: AppColors.greyColor)),
+                            const BorderSide(color: AppColors.greyColor)),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(40.r)),
                         borderSide:
-                        const BorderSide(color: AppColors.greyColor))),
+                            const BorderSide(color: AppColors.greyColor))),
               ),
               20.verticalSpace,
               Text(

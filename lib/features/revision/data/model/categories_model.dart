@@ -1,7 +1,4 @@
 class CategoriesModel {
-  int? status;
-  String? message;
-  List<Data>? data;
 
   CategoriesModel({this.status, this.message, this.data});
 
@@ -15,6 +12,9 @@ class CategoriesModel {
       });
     }
   }
+  int? status;
+  String? message;
+  List<Data>? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -28,9 +28,6 @@ class CategoriesModel {
 }
 
 class Data {
-  int? id;
-  String? name;
-  String? photo;
 
   Data({this.id, this.name, this.photo});
 
@@ -39,6 +36,9 @@ class Data {
     name = json['name'];
     photo = json['photo'];
   }
+  int? id;
+  String? name;
+  String? photo;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

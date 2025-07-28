@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
-import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import '../../../core/routing/routes.dart';
 
 class NextButton extends StatelessWidget {
-  final  VoidCallback? onTap;
   const NextButton({super.key,required this.onTap});
+  final  VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {

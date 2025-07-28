@@ -1,19 +1,19 @@
-import '../../../../core/network/api_result.dart';
-import '../../../../core/network/dio_factory.dart';
-import '../../../../core/network/end_points.dart';
-import '../../../../core/network/failures.dart';
-import '../../../../core/shared_widgets/debug_print_widget.dart';
-import '../model/profile_model.dart';
+import 'package:smle/core/network/api_result.dart';
+import 'package:smle/core/network/dio_factory.dart';
+import 'package:smle/core/network/end_points.dart';
+import 'package:smle/core/network/failures.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/features/main%20layout/data/model/profile_model.dart';
 
 class MainLayoutRepository {
-  final DioFactory _dioFactory;
 
   MainLayoutRepository(this._dioFactory);
+  final DioFactory _dioFactory;
 
   Future<ApiResult<ProfileModel>> getProfile() async {
     final response = await _dioFactory.get(endPoint: EndPoints.profile);
     if (response!.statusCode == 200 ) {
-      ProfileModel model = ProfileModel.fromJson(response.data);
+      final ProfileModel model = ProfileModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['message']);

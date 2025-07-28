@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../core/helpers/loading.dart';
-import '../data/model/categories_model.dart';
-import '../data/model/subcategories_model.dart';
-import '../data/repo/revision_repo.dart';
+import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/features/revision/data/model/categories_model.dart';
+import 'package:smle/features/revision/data/model/subcategories_model.dart';
+import 'package:smle/features/revision/data/repo/revision_repo.dart';
 part 'revision_state.dart';
 
 class RevisionCubit extends Cubit<RevisionStates> {

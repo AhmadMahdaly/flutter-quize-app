@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/theme/assets.dart';
-import '../../../core/theme/colors.dart';
-import '../../../core/theme/text_styles.dart';
+import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
 class AlreadySubscriptionDialog extends StatelessWidget {
   const AlreadySubscriptionDialog({super.key, required this.message});
-final String message;
+  final String message;
   @override
   Widget build(BuildContext context) {
-    return    Dialog(
+    return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40.r), // Rounded corners
       ),
@@ -35,8 +35,11 @@ final String message;
                   },
                   child: Align(
                       alignment: Alignment.topRight,
-                      child: Icon(CupertinoIcons.xmark_circle,
-                        color: AppColors.secondaryColor, size: 30.sp,)),
+                      child: Icon(
+                        CupertinoIcons.xmark_circle,
+                        color: AppColors.secondaryColor,
+                        size: 30.sp,
+                      )),
                 ),
                 60.verticalSpace,
                 Text(
@@ -47,13 +50,11 @@ final String message;
                   ),
                 ),
                 100.verticalSpace,
-
               ],
             ),
           ),
         ),
       ),
     );
-
   }
 }

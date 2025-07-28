@@ -1,7 +1,4 @@
 class ProfileModel {
-  int? status;
-  String? message;
-  Data? data;
 
   ProfileModel({this.status, this.message, this.data});
 
@@ -10,6 +7,9 @@ class ProfileModel {
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+  int? status;
+  String? message;
+  Data? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -23,13 +23,6 @@ class ProfileModel {
 }
 
 class Data {
-  int? id;
-  String? name;
-  String? code;
-  String? email;
-  int? points;
-  String? fcmToken;
-  String? photo;
 
   Data(
       {this.id,
@@ -49,6 +42,13 @@ class Data {
     fcmToken = json['fcm_token'];
     photo = json['photo'];
   }
+  int? id;
+  String? name;
+  String? code;
+  String? email;
+  int? points;
+  String? fcmToken;
+  String? photo;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

@@ -10,10 +10,10 @@ import 'package:smle/features/onboarding/widgets/next_button.dart';
 import 'package:smle/features/onboarding/widgets/onboarding_text.dart';
 import 'package:smle/features/onboarding/widgets/skip_button.dart';
 import 'package:smle/features/splash/cubit/global_cubit/global_cubit.dart';
-import '../../core/cache_helper/cache_helper.dart';
-import '../../core/constants.dart';
-import '../../core/routing/routes.dart';
-import '../../core/theme/assets.dart';
+import 'package:smle/core/cache_helper/cache_helper.dart';
+import 'package:smle/core/constants.dart';
+import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/theme/assets.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   OnBoardingScreen({super.key});
@@ -76,7 +76,7 @@ class OnBoardingScreen extends StatelessWidget {
                                    .onBoardingIndex ==
                                    2) {
                                  context.pushReplacementNamed(Routes.loginScreen);
-                                 CacheHelper.sharedPreferences!
+                                 CacheHelper.sharedPreferences
                                      .setBool(
                                     firstTimeRun,
                                      true);

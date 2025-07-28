@@ -40,7 +40,7 @@ class QBankProgressWidget extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: Padding(
                           padding:  EdgeInsets.only(right: 8.w),
-                          child: Text("$currentValue/$endValue",style: interBold.copyWith(fontSize: 14.sp,color: AppColors.secondaryColor),),
+                          child: Text('$currentValue/$endValue',style: interBold.copyWith(fontSize: 14.sp,color: AppColors.secondaryColor),),
                         )),
 
                   ],
@@ -54,7 +54,7 @@ class QBankProgressWidget extends StatelessWidget {
           Transform.scale(
             scale: 1.2,
             child: CupertinoSwitch(value: switchValue,
-                activeColor: AppColors.primaryColor,
+                activeTrackColor: AppColors.primaryColor,
                 onChanged: switchFun),
           ),
         ],

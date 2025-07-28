@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
-
-import '../../../core/theme/colors.dart';
+import 'package:smle/core/theme/colors.dart';
 
 class HomeAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBarWidget({super.key});
@@ -14,7 +13,7 @@ class HomeAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       actions: [
         GestureDetector(
-          onTap: (){
+          onTap: () {
             context.pushNamed(Routes.notificationScreen);
           },
           child: Padding(
@@ -32,6 +31,7 @@ class HomeAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
+
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

@@ -6,24 +6,22 @@ import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
 import 'package:smle/features/subscription/widgets/already_subsciption_dialog.dart';
-import '../../core/routing/routes.dart';
-import '../../core/shared_widgets/custom_app_bar.dart';
-import '../../core/theme/assets.dart';
-import '../../core/theme/colors.dart';
+import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/theme/colors.dart';
+
 class ExtraPackageScreen extends StatelessWidget {
   const ExtraPackageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-
-
-    return  BlocConsumer<SubscriptionCubit, SubscriptionStates>(
+    return BlocConsumer<SubscriptionCubit, SubscriptionStates>(
       builder: (context, state) {
         final cubit = context.read<SubscriptionCubit>();
         final packages = cubit.packagesModel?.data ?? [];
         packages.removeWhere(
-              (element) => element.isExtra == true,
+          (element) => element.isExtra == true,
         );
         return Scaffold(
           appBar: CustomAppBar(
@@ -54,7 +52,8 @@ class ExtraPackageScreen extends StatelessWidget {
                       onTap: () {
                         cubit.getYourCheckout('${package.id}').then((_) {
                           if (cubit.yourCheckoutModel?.data != null) {
-                            context.pushNamed(Routes.paymentScreen,arguments: '${package.id}');
+                            context.pushNamed(Routes.paymentScreen,
+                                arguments: '${package.id}');
                           } else {
                             showDialog(
                               context: context,
@@ -82,39 +81,39 @@ class ExtraPackageScreen extends StatelessWidget {
                                   // Package header
                                   package.name != 'VIP '
                                       ? Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 15.w, vertical: 5.h),
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(30.r),
-                                      color: AppColors.primaryColor,
-                                    ),
-                                    child: Text('Package ${index + 1}',
-                                        style: interBold.copyWith(
-                                            color: Colors.white)),
-                                  )
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.w, vertical: 5.h),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30.r),
+                                            color: AppColors.primaryColor,
+                                          ),
+                                          child: Text('Package ${index + 1}',
+                                              style: interBold.copyWith(
+                                                  color: Colors.white)),
+                                        )
                                       : Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Image.asset(
-                                        Assets.crownIcon,
-                                        height: 20.h,
-                                      ),
-                                      Text('${package.name}Package',
-                                          style: interBold.copyWith(
-                                              color: Colors.white)),
-                                    ],
-                                  ),
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Image.asset(
+                                              Assets.crownIcon,
+                                              height: 20.h,
+                                            ),
+                                            Text('${package.name}Package',
+                                                style: interBold.copyWith(
+                                                    color: Colors.white)),
+                                          ],
+                                        ),
                                   20.verticalSpace,
 
                                   // Features
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: List.generate(
                                       package.features?.length ?? 0,
-                                          (i) => Padding(
+                                      (i) => Padding(
                                         padding: EdgeInsets.only(bottom: 10.h),
                                         child: Text(
                                           '* ${package.features![i].name}',
@@ -150,7 +149,8 @@ class ExtraPackageScreen extends StatelessWidget {
             ),
           ),
         );
-      }, listener: (BuildContext context, SubscriptionStates state) {  },
+      },
+      listener: (BuildContext context, SubscriptionStates state) {},
     );
   }
 }

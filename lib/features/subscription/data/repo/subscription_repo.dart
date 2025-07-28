@@ -1,20 +1,19 @@
+import 'package:smle/core/network/api_result.dart';
+import 'package:smle/core/network/dio_factory.dart';
+import 'package:smle/core/network/end_points.dart';
+import 'package:smle/core/network/failures.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/features/subscription/data/model/checkout_model.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
-import '../../../../core/network/api_result.dart';
-import '../../../../core/network/dio_factory.dart';
-import '../../../../core/network/end_points.dart';
-import '../../../../core/network/failures.dart';
-import '../../../../core/shared_widgets/debug_print_widget.dart';
 
 class SubscriptionRepository {
-  final DioFactory _dioFactory;
-
   SubscriptionRepository(this._dioFactory);
+  final DioFactory _dioFactory;
 
   Future<ApiResult<PackagesModel>> getPackages() async {
     final response = await _dioFactory.get(endPoint: EndPoints.getPackages);
     if (response!.statusCode == 200) {
-      PackagesModel model = PackagesModel.fromJson(response.data);
+      final PackagesModel model = PackagesModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['error']);
@@ -33,7 +32,7 @@ class SubscriptionRepository {
               }
             : {'offer_id': offerId, 'code': promoCode});
     if (response!.statusCode == 200 || response.statusCode == 400) {
-      CheckoutModel model = CheckoutModel.fromJson(response.data);
+      final CheckoutModel model = CheckoutModel.fromJson(response.data);
       return ApiResult.success(model);
     }
     // else if (response.statusCode == 400 ) {

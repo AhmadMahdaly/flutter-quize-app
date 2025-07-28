@@ -5,9 +5,9 @@ import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/features/revision/cubit/revision_cubit.dart';
 
-import '../../core/shared_widgets/custom_app_bar.dart';
-import '../../core/theme/colors.dart';
-import '../../core/theme/text_styles.dart';
+import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
 class RevisionScreen extends StatelessWidget {
   const RevisionScreen({super.key});

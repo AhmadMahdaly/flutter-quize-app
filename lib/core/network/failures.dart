@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 
-import '../functions/flutter_toast.dart';
-import '../theme/colors.dart';
+import 'package:smle/core/functions/flutter_toast.dart';
+import 'package:smle/core/theme/colors.dart';
 
 
 abstract class Failure {
-  final String errMessage;
 
   const Failure(this.errMessage);
+  final String errMessage;
 }
 
 class ServerFailure extends Failure {

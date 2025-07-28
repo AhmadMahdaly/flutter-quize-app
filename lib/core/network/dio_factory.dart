@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import '../cache_helper/cache_helper.dart';
-import '../cache_helper/cache_values.dart';
-import 'end_points.dart';
+import 'package:smle/core/cache_helper/cache_helper.dart';
+import 'package:smle/core/cache_helper/cache_values.dart';
+import 'package:smle/core/network/end_points.dart';
 
 class DioFactory {
   static Dio dio = Dio();
 
   static Future<void> init() {
-    BaseOptions baseOptions = BaseOptions(
+    final BaseOptions baseOptions = BaseOptions(
       baseUrl: EndPoints.baseUrl,
       receiveDataWhenStatusError: true,
       validateStatus: (status) => true,
@@ -21,10 +21,10 @@ class DioFactory {
 
   Future<Response?> get({required String endPoint, data}) async {
     dio.options.headers = {
-      "Accept": "application/json",
+      'Accept': 'application/json',
       // "lang": CacheHelper.getCurrentLanguage().toString(),
-      "Authorization":
-          "Bearer ${await CacheHelper.getSecuredString(key: CacheKeys.userToken) }",
+      'Authorization':
+          'Bearer ${await CacheHelper.getSecuredString(key: CacheKeys.userToken) }',
 
     };
     return await dio.get(endPoint, queryParameters: data);
@@ -32,10 +32,10 @@ class DioFactory {
 
   Future<Response?> post({required String endPoint, data}) async {
     dio.options.headers = {
-      "Accept": "application/json",
+      'Accept': 'application/json',
       // "lang": CacheHelper.getCurrentLanguage().toString(),
-      "Authorization":
-          "Bearer ${await CacheHelper.getSecuredString(key: CacheKeys.userToken)}",
+      'Authorization':
+          'Bearer ${await CacheHelper.getSecuredString(key: CacheKeys.userToken)}',
     };
     return await dio.post(endPoint, data: data);
   }

@@ -32,4 +32,13 @@ class EndPoints {
   static const String deletePlayList = 'remove/playlist';
   static const String editPlayList = 'update/playlist';
 
+  /// ? Real Exam
+  static const String startRealExam = 'start/real/exam';
+  static const String getQuestion = 'get-question/';
+  static const String getRealExamQuestions = 'get/real/exam';
+  static const String answerQuestion = 'answer/question';
+  static const String makeQuestionFlag = 'question/flag';
+  static const String addQuestionNote = 'question/note';
+  static const String finishAnalysisExam = 'exam/analysis';
+  static const String examHistory = 'exam/history';
 }

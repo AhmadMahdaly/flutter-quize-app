@@ -2,17 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/theme/assets.dart';
-import '../../../core/theme/colors.dart';
+import 'package:smle/core/theme/colors.dart';
 
 class ProfileAppBarWidgets extends StatelessWidget implements PreferredSizeWidget {
-  final bool canBack;
-  final String imagePath ;
 
   const ProfileAppBarWidgets({
     super.key,
     this.canBack = true,
     required this.imagePath,
   });
+  final bool canBack;
+  final String imagePath ;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class ProfileAppBarWidgets extends StatelessWidget implements PreferredSizeWidge
                     padding:  EdgeInsets.only(top: 5.sp),
                     child: Image(
                       image: imagePath.isEmpty
-                        ?  AssetImage(Assets.user) // Use a valid asset path
+                        ?  const AssetImage(Assets.user) // Use a valid asset path
                         : NetworkImage(imagePath) as ImageProvider,),
                   ),
                   Positioned(
@@ -60,11 +60,11 @@ class ProfileAppBarWidgets extends StatelessWidget implements PreferredSizeWidge
                     right: 0,
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 5.h,horizontal: 5.w),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.secondaryColor
                         ),
-                        child: Icon(CupertinoIcons.camera)),
+                        child: const Icon(CupertinoIcons.camera)),
                   )
                 ],
               ),

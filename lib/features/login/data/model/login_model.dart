@@ -1,7 +1,4 @@
 class LoginModel {
-  int? status;
-  String? message;
-  Data? data;
 
   LoginModel({this.status, this.message, this.data});
 
@@ -10,6 +7,9 @@ class LoginModel {
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+  int? status;
+  String? message;
+  Data? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -23,19 +23,6 @@ class LoginModel {
 }
 
 class Data {
-  int? id;
-  String? name;
-  String? code;
-  String? email;
-  String? googleId;
-  String? appleId;
-  String? role;
-  int? points;
-  String? fcmToken;
-  String? token;
-  String? emailVerifiedAt;
-  String? createdAt;
-  String? updatedAt;
 
   Data(
       {this.id,
@@ -67,6 +54,19 @@ class Data {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
+  int? id;
+  String? name;
+  String? code;
+  String? email;
+  String? googleId;
+  String? appleId;
+  String? role;
+  int? points;
+  String? fcmToken;
+  String? token;
+  String? emailVerifiedAt;
+  String? createdAt;
+  String? updatedAt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

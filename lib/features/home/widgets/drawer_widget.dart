@@ -6,9 +6,9 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
 
-import '../../../core/di.dart';
-import '../../../core/theme/colors.dart';
-import 'drawer_item_widget.dart';
+import 'package:smle/core/di.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/features/home/widgets/drawer_item_widget.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});

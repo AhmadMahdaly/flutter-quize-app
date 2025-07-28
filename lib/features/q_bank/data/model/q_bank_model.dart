@@ -1,7 +1,4 @@
 class QBankModel {
-  int? status;
-  String? message;
-  List<Data>? data;
 
   QBankModel({this.status, this.message, this.data});
 
@@ -15,6 +12,9 @@ class QBankModel {
       });
     }
   }
+  int? status;
+  String? message;
+  List<Data>? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -28,35 +28,6 @@ class QBankModel {
 }
 
 class Data {
-  int? id;
-  String? question;
-  String? photo;
-  int? categoryId;
-  int? subcategoryId;
-  String? a;
-  String? b;
-  String? c;
-  String? d;
-  String? answer;
-  String? selectedAnswer;
-  String? explanation;
-  String? explanationPhoto;
-  String? year;
-  String? month;
-  bool? isActive;
-  String? hint;
-  bool? isFree;
-  bool? isFavourite;
-  String? createdAt;
-  String? updatedAt;
-
-  // Getter to return a list of options
-  List<Options> get options => [
-        Options(key: 'a', value: a ?? ''),
-        Options(key: 'b', value: b ?? ''),
-        Options(key: 'c', value: c ?? ''),
-        Options(key: 'd', value: d ?? '')
-      ];
 
   Data({
     this.id,
@@ -104,6 +75,35 @@ class Data {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
+  int? id;
+  String? question;
+  String? photo;
+  int? categoryId;
+  int? subcategoryId;
+  String? a;
+  String? b;
+  String? c;
+  String? d;
+  String? answer;
+  String? selectedAnswer;
+  String? explanation;
+  String? explanationPhoto;
+  String? year;
+  String? month;
+  bool? isActive;
+  String? hint;
+  bool? isFree;
+  bool? isFavourite;
+  String? createdAt;
+  String? updatedAt;
+
+  // Getter to return a list of options
+  List<Options> get options => [
+        Options(key: 'a', value: a ?? ''),
+        Options(key: 'b', value: b ?? ''),
+        Options(key: 'c', value: c ?? ''),
+        Options(key: 'd', value: d ?? '')
+      ];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -133,8 +133,8 @@ class Data {
 }
 
 class Options {
-  String? key;
-  String? value;
 
   Options({this.key, this.value});
+  String? key;
+  String? value;
 }

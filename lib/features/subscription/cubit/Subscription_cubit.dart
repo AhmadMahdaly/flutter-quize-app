@@ -2,11 +2,11 @@ import 'package:card_scanner/card_scanner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/features/subscription/data/model/checkout_model.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
 import 'package:smle/features/subscription/data/repo/subscription_repo.dart';
 
-import '../../../core/helpers/loading.dart';
-import '../data/model/checkout_model.dart';
 part 'Subscription_state.dart';
 
 class SubscriptionCubit extends Cubit<SubscriptionStates> {
@@ -32,11 +32,12 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
 
   /// Get Your Checkout
   CheckoutModel? yourCheckoutModel;
-  TextEditingController promoCodeController=TextEditingController();
+  TextEditingController promoCodeController = TextEditingController();
   Future getYourCheckout(String? packageId) async {
     showLoading();
     emit(GetYourCheckoutLoadingState());
-    final result = await _subscriptionRepository.getYourCheckout(packageId,promoCodeController.text);
+    final result = await _subscriptionRepository.getYourCheckout(
+        packageId, promoCodeController.text);
     result.when(success: (success) {
       yourCheckoutModel = success;
       hideLoading();
@@ -49,8 +50,8 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
 
   /// Set Selected Package
   String? selectedPackage;
-  setSelectedPackage(String packageId){
-    selectedPackage=packageId;
+  void setSelectedPackage(String packageId) {
+    selectedPackage = packageId;
     emit(SetSelectedPackageState());
   }
 
@@ -59,9 +60,8 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     final cardDetails = await CardScanner.scanCard(
       scanOptions: const CardScanOptions(
         scanCardHolderName: true, // Optional, to get the cardholder's name
-        scanExpiryDate: true,    // Optional, to get the card's expiration date
-        enableLuhnCheck: true,   // Optional, to validate card numbers
-
+        scanExpiryDate: true, // Optional, to get the card's expiration date
+        enableLuhnCheck: true, // Optional, to validate card numbers
       ),
     );
 
@@ -73,5 +73,4 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       print('Card scan cancelled');
     }
   }
-
 }

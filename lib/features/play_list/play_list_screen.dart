@@ -8,7 +8,7 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 import 'package:smle/features/play_list/widgets/play_list_widget.dart';
 import 'package:smle/features/play_list/widgets/playlist_alert_widget.dart';
-import '../../core/theme/text_styles.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
 class PlayListScreen extends StatelessWidget {
   PlayListScreen({super.key, this.questionId});

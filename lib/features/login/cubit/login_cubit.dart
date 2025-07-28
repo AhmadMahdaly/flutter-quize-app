@@ -1,76 +1,90 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/features/login/data/login_api.dart';
 import 'package:smle/features/login/data/model/login_model.dart';
 import 'package:smle/features/login/data/repo/login_repo.dart';
-import '../../../core/helpers/loading.dart';
-import '../../../core/routing/routes.dart';
-import '../data/login_api.dart';
+
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit(this._loginRepository) : super(LoginInitialState());
   final LoginRepository _loginRepository;
-/// logIn With Google
-   GoogleSignInAccount? user;
- Future<bool> logInWithGoogle()async{
-   try {
-    user= await GoogleSignInApi.login();
-    user!.authentication.then((googleKey){
-      log(user!.id);
-      logIn(user!.id,user!.email,user!.displayName!);
-      debugPrintWidget(user!.authHeaders.then((onValue){
-        debugPrintWidget(onValue);
-      }));
-    });
-    return true;
-   } catch (error) {
-     debugPrintWidget(error);
-     return false;
-   } }
+
+  GoogleSignInAccount? user;
   LoginModel? userDataModel;
 
-  Future logIn(String idToken,String email,String name) async {
-    showLoading();
-    emit(LogInLoadingState());
-    final result = await _loginRepository.login( idToken,email,name);
-    result.when(success: (success) {
-      userDataModel = success;
-      hideLoading();
-      emit(LogInSuccessState());
-      // updateFcmToken();
-    }, failure: (error) {
-      hideLoading();
-    emit(LogInFailedState());
-
-    });
-  }
-  /// Log Out From Google
-  Future<bool> logOut()async{
+  Future<void> logInWithGoogle() async {
     try {
-      user= await GoogleSignInApi.logOut();
+      emit(LogInLoadingState());
+      showLoading();
+
+      final googleUser = await GoogleSignInApi.login();
+      if (googleUser == null) {
+        hideLoading();
+        emit(LoginInitialState());
+        return;
+      }
+      user = googleUser;
+
+      await logIn(user!.id, user!.email, user!.displayName!);
+    } catch (error) {
+      debugPrintWidget('Google Sign-In Error: $error');
+      hideLoading();
+
+      emit(
+          LogInFailedState('Failed to sign in with Google. Please try again.'));
+    }
+  }
+
+  Future<void> logIn(String idToken, String email, String name) async {
+    final result = await _loginRepository.login(idToken, email, name);
+
+    hideLoading();
+
+    if (isClosed) return;
+
+    result.when(
+      success: (success) {
+        userDataModel = success;
+        emit(LogInSuccessState());
+      },
+      failure: (error) {
+        emit(LogInFailedState(error.errMessage));
+      },
+    );
+  }
+
+  Future<bool> logOut() async {
+    try {
+      user = await GoogleSignInApi.logOut();
       return true;
     } catch (error) {
       debugPrintWidget(error);
       return false;
-    } }
+    }
+  }
 
-
-  Future deleteAccount(BuildContext context) async {
-    showLoading();
+  Future<void> deleteAccount(BuildContext context) async {
     emit(DeleteAccountLoadingState());
+    showLoading();
     final result = await _loginRepository.deleteAccount();
-    result.when(success: (success) {
-      context.pushReplacementNamed(Routes.loginScreen);
-      hideLoading();
-      emit(DeleteAccountSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(DeleteAccountFailedState());
-    });
+
+    hideLoading();
+    if (isClosed) return;
+
+    result.when(
+      success: (success) {
+        context.pushReplacementNamed(Routes.loginScreen);
+        emit(DeleteAccountSuccessState());
+      },
+      failure: (error) {
+        emit(DeleteAccountFailedState());
+      },
+    );
   }
 }

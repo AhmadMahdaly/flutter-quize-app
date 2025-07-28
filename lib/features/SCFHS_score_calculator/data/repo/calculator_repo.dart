@@ -1,21 +1,20 @@
 import 'package:smle/features/SCFHS_score_calculator/data/model/calculate_result_model.dart';
-import 'package:smle/features/subscription/data/model/packages_model.dart';
-import '../../../../core/network/api_result.dart';
-import '../../../../core/network/dio_factory.dart';
-import '../../../../core/network/end_points.dart';
-import '../../../../core/network/failures.dart';
-import '../../../../core/shared_widgets/debug_print_widget.dart';
-import '../model/calculator_info_model.dart';
+import 'package:smle/core/network/api_result.dart';
+import 'package:smle/core/network/dio_factory.dart';
+import 'package:smle/core/network/end_points.dart';
+import 'package:smle/core/network/failures.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/features/SCFHS_score_calculator/data/model/calculator_info_model.dart';
 
 class CalculatorRepository {
-  final DioFactory _dioFactory;
 
   CalculatorRepository(this._dioFactory);
+  final DioFactory _dioFactory;
 
   Future<ApiResult<CalculatorInfoModel>> getCalculatorInfo() async {
     final response = await _dioFactory.get(endPoint: EndPoints.calculatorInfo);
     if (response!.statusCode == 200 ) {
-      CalculatorInfoModel model = CalculatorInfoModel.fromJson(response.data);
+      final CalculatorInfoModel model = CalculatorInfoModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['error']);
@@ -35,7 +34,7 @@ class CalculatorRepository {
     }
     );
     if (response!.statusCode == 200 ) {
-      CalculateResultModel model = CalculateResultModel.fromJson(response.data);
+      final CalculateResultModel model = CalculateResultModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['error']);

@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/theme/text_styles.dart';
-import '../../splash/cubit/global_cubit/global_cubit.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/splash/cubit/global_cubit/global_cubit.dart';
 
 class OnBoardingText extends StatelessWidget {
   const OnBoardingText({super.key});

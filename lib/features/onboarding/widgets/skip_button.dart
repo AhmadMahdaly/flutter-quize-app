@@ -4,8 +4,8 @@ import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/theme/colors.dart';
 
-import '../../../core/routing/routes.dart';
-import '../../../core/theme/text_styles.dart';
+import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
 class SkipButton extends StatelessWidget {
   const SkipButton({super.key});

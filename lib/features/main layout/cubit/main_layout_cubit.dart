@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/constants.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/features/main%20layout/data/model/profile_model.dart';
-import '../../../core/constants.dart';
-import '../data/repo/main_layout_repo.dart';
+import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
+
 part 'main_layout_state.dart';
 
 class MainLayoutCubit extends Cubit<MainLayoutState> {
@@ -15,6 +16,7 @@ class MainLayoutCubit extends Cubit<MainLayoutState> {
     mainLayoutIntitalScreenIndex = index;
     emit(AppBottomNavState(mainLayoutIntitalScreenIndex));
   }
+
   /// Get Profile
   ProfileModel? profileModel;
   Future getProfile() async {
@@ -30,5 +32,4 @@ class MainLayoutCubit extends Cubit<MainLayoutState> {
       emit(GetProfileFailedState());
     });
   }
-
 }

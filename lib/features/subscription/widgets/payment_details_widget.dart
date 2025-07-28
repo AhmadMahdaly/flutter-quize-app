@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
-
-import '../../../core/theme/colors.dart';
 
 class PaymentDetailsWidget extends StatelessWidget {
   const PaymentDetailsWidget({super.key});

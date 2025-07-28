@@ -3,14 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
 import 'package:smle/features/subscription/widgets/payment_details_widget.dart';
-
-import '../../core/routing/routes.dart';
-import '../../core/theme/colors.dart';
-import '../../core/theme/text_styles.dart';
 
 class PaymentScreen extends StatelessWidget {
   const PaymentScreen({super.key});
@@ -46,7 +45,8 @@ class PaymentScreen extends StatelessWidget {
               TextFormField(
                 textAlign: TextAlign.center,
                 style: interRegular.copyWith(color: AppColors.darkGreyColor),
-                controller: context.read<SubscriptionCubit>().promoCodeController,
+                controller:
+                    context.read<SubscriptionCubit>().promoCodeController,
                 decoration: InputDecoration(
                     hintText: 'optional'.tr(context),
                     fillColor: AppColors.greyColor
@@ -97,9 +97,14 @@ class PaymentScreen extends StatelessWidget {
               BlocBuilder<SubscriptionCubit, SubscriptionStates>(
                 builder: (context, state) {
                   return context.read<SubscriptionCubit>().yourCheckoutModel !=
-                          null?context.read<SubscriptionCubit>().yourCheckoutModel!.data!=null
-                      ? const PaymentDetailsWidget()
-                      : const SizedBox.shrink()
+                          null
+                      ? context
+                                  .read<SubscriptionCubit>()
+                                  .yourCheckoutModel!
+                                  .data !=
+                              null
+                          ? const PaymentDetailsWidget()
+                          : const SizedBox.shrink()
                       : const SizedBox.shrink();
                 },
               ),
@@ -115,7 +120,9 @@ class PaymentScreen extends StatelessWidget {
               Center(
                 child: TextButton(
                   onPressed: () {
-                    context.pushNamed(Routes.applePayScreen,arguments: '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.payments}');
+                    context.pushNamed(Routes.applePayScreen,
+                        arguments:
+                            '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.payments}');
                   },
                   style: ButtonStyle(
                     backgroundColor:

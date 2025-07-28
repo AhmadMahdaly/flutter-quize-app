@@ -1,9 +1,4 @@
 class CalculatorInfoModel {
-  int? status;
-  String? message;
-  RealExamScore? realExamScore;
-  RealExamScore? gPA;
-  CVChecklist? cVChecklist;
 
   CalculatorInfoModel(
       {this.status,
@@ -23,6 +18,11 @@ class CalculatorInfoModel {
         ? CVChecklist.fromJson(json['CV_checklist'])
         : null;
   }
+  int? status;
+  String? message;
+  RealExamScore? realExamScore;
+  RealExamScore? gPA;
+  CVChecklist? cVChecklist;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -42,10 +42,6 @@ class CalculatorInfoModel {
 }
 
 class RealExamScore {
-  String? name;
-  String? key;
-  String? percentage;
-  int? maxScore;
 
   RealExamScore({this.name, this.key, this.percentage, this.maxScore});
 
@@ -55,6 +51,10 @@ class RealExamScore {
     percentage = json['percentage'];
     maxScore = json['max_score'];
   }
+  String? name;
+  String? key;
+  String? percentage;
+  int? maxScore;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -67,10 +67,6 @@ class RealExamScore {
 }
 
 class CVChecklist {
-  String? name;
-  String? key;
-  String? percentage;
-  List<Items>? items;
 
   CVChecklist({this.name, this.key, this.percentage, this.items});
 
@@ -85,6 +81,10 @@ class CVChecklist {
       });
     }
   }
+  String? name;
+  String? key;
+  String? percentage;
+  List<Items>? items;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -99,9 +99,6 @@ class CVChecklist {
 }
 
 class Items {
-  int? id;
-  String? name;
-  int? maxScore;
 
   Items({this.id, this.name, this.maxScore});
 
@@ -110,6 +107,9 @@ class Items {
     name = json['name'];
     maxScore = json['max_score'];
   }
+  int? id;
+  String? name;
+  int? maxScore;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

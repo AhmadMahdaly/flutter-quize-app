@@ -5,9 +5,10 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-
-notificationSnackBar(
-    {required context, required message, required RemoteMessage event}) {
+void notificationSnackBar(
+    {required BuildContext context,
+    required String message,
+    required RemoteMessage event}) {
   showTopSnackBar(
     Overlay.of(context),
     CustomSnackBar.success(
@@ -16,7 +17,10 @@ notificationSnackBar(
       messagePadding: EdgeInsets.only(left: 5.w),
       icon: Padding(
           padding: EdgeInsetsDirectional.symmetric(horizontal: 5.w),
-          child: const Icon(Icons.notifications,color: AppColors.secondaryColor,)),
+          child: const Icon(
+            Icons.notifications,
+            color: AppColors.secondaryColor,
+          )),
     ),
     dismissDirection: [
       DismissDirection.vertical,

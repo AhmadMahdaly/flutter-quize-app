@@ -28,5 +28,5 @@ extension CapExtension on String {
   String get allInCaps => toUpperCase();
 
   String get capitalizeFirstOfEach =>
-      split(" ").map((str) => str.inCaps).join(" ");
+      split(' ').map((str) => str.inCaps).join(' ');
 }

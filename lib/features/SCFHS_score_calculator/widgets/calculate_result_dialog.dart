@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 
-import '../../../core/theme/assets.dart';
-import '../../../core/theme/colors.dart';
-import '../../../core/theme/text_styles.dart';
+import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
 class CalculateResultDialog extends StatelessWidget {
   const CalculateResultDialog({super.key, required this.score});
