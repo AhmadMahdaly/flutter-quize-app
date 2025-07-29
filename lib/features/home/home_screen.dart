@@ -1,19 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
-import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/core/shared_widgets/category_widget.dart';
+import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/home/widgets/drawer_widget.dart';
 import 'package:smle/features/home/widgets/home_app_bar_widget.dart';
 import 'package:smle/features/home/widgets/user_image_name_widget.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
-
-import '../../core/theme/assets.dart';
-import '../../core/theme/colors.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -29,88 +27,96 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BlocBuilder<MainLayoutCubit, MainLayoutState>(
-                builder: (context, state) {
-                  return context.read<MainLayoutCubit>().profileModel != null
-                      ? UserImageNameWidget(
-                          name: context
-                                  .read<MainLayoutCubit>()
-                                  .profileModel!
-                                  .data!
-                                  .name ??
-                              '',
-                          email: context
-                                  .read<MainLayoutCubit>()
-                                  .profileModel!
-                                  .data!
-                                  .email ??
-                              '',
-                          imagePath: context
-                                  .read<MainLayoutCubit>()
-                                  .profileModel!
-                                  .data!
-                                  .photo ??
-                              '',
-                          points:
-                              '${context.read<MainLayoutCubit>().profileModel!.data!.points}',
-                        )
-                      : const SizedBox.shrink();
-                },
+              UserImageNameWidget(
+                name:
+                    context.watch<MainLayoutCubit>().profileModel?.data?.name ==
+                        null
+                    ? 'Welcome User'
+                    : context
+                              .watch<MainLayoutCubit>()
+                              .profileModel
+                              ?.data
+                              ?.name ??
+                          '',
+                email:
+                    context.read<MainLayoutCubit>().profileModel?.data?.email ??
+                    '',
+                imagePath:
+                    context.read<MainLayoutCubit>().profileModel?.data?.photo ??
+                    '',
+                points:
+                    context
+                            .read<MainLayoutCubit>()
+                            .profileModel
+                            ?.data
+                            ?.points ==
+                        null
+                    ? ''
+                    : '${context.read<MainLayoutCubit>().profileModel?.data?.points}',
               ),
               20.verticalSpace,
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                clipBehavior: Clip.none,
+                width: MediaQuery.sizeOf(context).width,
                 decoration: BoxDecoration(
                   color: AppColors.darkGreyColor,
-                  borderRadius: BorderRadius.all(Radius.circular(80.r)),
+                  borderRadius: BorderRadius.all(Radius.circular(100.r)),
                 ),
-                child: Row(
+                child: Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    Expanded( // <-- This lets the text take the remaining space
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Over ',
-                              style: interBold.copyWith(
-                                fontSize: 16.sp,
-                                color: AppColors.thirdColor,
+                    Padding(
+                      padding: EdgeInsets.all(28.r),
+                      child: SizedBox(
+                        width: MediaQuery.sizeOf(context).width - 175,
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Over ',
+                                style: interBold.copyWith(
+                                  fontSize: 16.sp,
+                                  color: AppColors.thirdColor,
+                                ),
                               ),
-                            ),
-                            TextSpan(
-                              text: '400 ',
-                              style: interBold.copyWith(
-                                fontSize: 16.sp,
-                                color: AppColors.secondaryColor,
+                              TextSpan(
+                                text: '400 ',
+                                style: interBold.copyWith(
+                                  fontSize: 16.sp,
+                                  color: AppColors.secondaryColor,
+                                ),
                               ),
-                            ),
-                            TextSpan(
-                              text: 'questions across all medical specialties',
-                              style: interBold.copyWith(
-                                fontSize: 16.sp,
-                                color: AppColors.thirdColor,
+                              TextSpan(
+                                text:
+                                    'questions across all medical specialties',
+                                style: interBold.copyWith(
+                                  fontSize: 16.sp,
+                                  color: AppColors.thirdColor,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    10.horizontalSpace, // Optional spacing
-                    Image.asset(
-                      Assets.homeDoctor,
-                      width: 100.w, // <-- Constrain image width
-                      height: 150.h,
-                      fit: BoxFit.fitHeight,
+                    Positioned(
+                      bottom: 0,
+                      right: -20,
+                      child: Image.asset(
+                        'assets/images/png/home_doctor.png',
+                        height: 180.h,
+                      ),
                     ),
                   ],
                 ),
               ),
-
               20.verticalSpace,
               Text(
                 'top_category'.tr(context),
                 style: interBold.copyWith(
-                    fontSize: 16.sp, decoration: TextDecoration.underline),
+                  fontSize: 16.sp,
+                  decoration: TextDecoration.underline,
+                ),
               ),
               20.verticalSpace,
               Row(
@@ -152,20 +158,18 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              30.verticalSpace,   const EndPageBanner()
-
+              30.verticalSpace,
+              const EndPageBanner(),
             ],
           ),
-          ),
         ),
+      ),
     );
   }
 }
 
 class EndPageBanner extends StatelessWidget {
-  const EndPageBanner({
-    super.key,
-  });
+  const EndPageBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -185,21 +189,25 @@ class EndPageBanner extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 16.h),
               child: Text.rich(
-                TextSpan(children: [
-                  TextSpan(
-                    text: '${'now'.tr(context)}\n',
-                    style: interBold.copyWith(fontSize: 16.sp),
-                  ),
-                  TextSpan(
-                    text: "${'flashback_discount'.tr(context)}\n",
-                    style: interMedium.copyWith(fontSize: 16.sp),
-                  ),
-                  TextSpan(
-                    text: '             ${'discover_now'.tr(context)}',
-                    style: interRegular.copyWith(
-                        fontSize: 16.sp, color: AppColors.secondaryColor),
-                  ),
-                ]),
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${'now'.tr(context)}\n',
+                      style: interBold.copyWith(fontSize: 16.sp),
+                    ),
+                    TextSpan(
+                      text: "${'flashback_discount'.tr(context)}\n",
+                      style: interMedium.copyWith(fontSize: 16.sp),
+                    ),
+                    TextSpan(
+                      text: '             ${'discover_now'.tr(context)}',
+                      style: interRegular.copyWith(
+                        fontSize: 16.sp,
+                        color: AppColors.secondaryColor,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -7,7 +7,9 @@ class CurrentItem extends StatelessWidget {
     required this.text,
     required this.color,
     super.key,
+    required this.isBookmarked,
   });
+  final bool isBookmarked;
   final String text;
   final Color color;
   @override
@@ -18,15 +20,18 @@ class CurrentItem extends StatelessWidget {
         width: 60.w,
         height: 30.h,
         color: color,
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              color: AppColors.thirdColor,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style: TextStyle(color: AppColors.thirdColor, fontSize: 16.sp),
             ),
-          ),
+            isBookmarked
+                ? const Icon(Icons.flag, color: Colors.white)
+                : const SizedBox.shrink(),
+          ],
         ),
       ),
     );

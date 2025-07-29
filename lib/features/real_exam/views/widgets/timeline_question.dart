@@ -10,10 +10,7 @@ import 'package:smle/features/real_exam/views/refactors/timeline/timeline_status
 import 'package:smle/features/real_exam/views/widgets/header_exam_details_card.dart';
 
 class TimelineQuestionPage extends StatefulWidget {
-  const TimelineQuestionPage({
-    required this.examModel,
-    super.key,
-  });
+  const TimelineQuestionPage({required this.examModel, super.key});
   final StartRealExamModel examModel;
 
   @override
@@ -85,9 +82,7 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
       return GestureDetector(
         onTap: () {
           if (!isCurrent) {
-            cubit.goToIndex(
-              questionNumber,
-            );
+            cubit.goToIndex(questionNumber);
           }
         },
         child: Padding(
@@ -189,23 +184,31 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
                   ),
                   8.horizontalSpace,
                   IconButton(
-                      onPressed: () {
-                        context
-                            .read<RealExamCubit>()
-                            .makeQuestionFlag(currentQuestion.id.toString());
-                      },
-                      icon: Container(
-                        width: 30.w,
-                        height: 30.h,
-                        decoration: ShapeDecoration(
-                          color: AppColors.successColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
+                    onPressed: () {
+                      context.read<RealExamCubit>().makeQuestionFlag(
+                        currentQuestion.id.toString(),
+                      );
+                      context.watch()<RealExamCubit>().getQuestion(
+                        currentQuestion.examId!,
+                        currentQuestionNo,
+                        currentQuestion.section!,
+                      );
+                    },
+                    icon: Container(
+                      width: 30.w,
+                      height: 30.h,
+                      decoration: ShapeDecoration(
+                        color: AppColors.successColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
                         ),
-                        child: const Icon(Icons.flag_outlined,
-                            color: AppColors.thirdColor),
-                      )),
+                      ),
+                      child: const Icon(
+                        Icons.flag_outlined,
+                        color: AppColors.thirdColor,
+                      ),
+                    ),
+                  ),
                   8.horizontalSpace,
                   InkWell(
                     onTap: currentQuestionNo == 0 ? null : cubit.goToPrevious,

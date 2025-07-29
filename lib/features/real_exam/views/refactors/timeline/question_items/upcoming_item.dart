@@ -3,7 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/theme/colors.dart';
 
 class UpcomingItem extends StatelessWidget {
-  const UpcomingItem({required this.text, required this.color, super.key});
+  const UpcomingItem({
+    required this.text,
+    required this.color,
+    super.key,
+    required this.isBookmarked,
+  });
+  final bool isBookmarked;
   final String text;
   final Color color;
   @override
