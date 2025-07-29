@@ -1,17 +1,11 @@
 part of 'real_exam_cubit.dart';
 
 class RealExamState {
-  RealExamState({
-    this.currentIndex,
-  });
+  RealExamState({this.currentIndex});
   final int? currentIndex;
 
-  RealExamState copyWith({
-    int? currentIndex,
-  }) {
-    return RealExamState(
-      currentIndex: currentIndex ?? this.currentIndex,
-    );
+  RealExamState copyWith({int? currentIndex}) {
+    return RealExamState(currentIndex: currentIndex ?? this.currentIndex);
   }
 }
 
@@ -20,14 +14,15 @@ class RealExamInitialState extends RealExamState {}
 class StartRealExamLoadingState extends RealExamState {}
 
 class GetQuestionLoadingState extends RealExamState {
-  GetQuestionLoadingState(this.examModel,);
+  GetQuestionLoadingState(this.examModel, this.bookmarkedStatuses);
   final StartRealExamModel examModel;
-
+  final Map<int, bool> bookmarkedStatuses;
 }
 
 class StartRealExamSuccessState extends RealExamState {
-  StartRealExamSuccessState(this.examModel, );
+  StartRealExamSuccessState(this.examModel, this.bookmarkedStatuses);
   final StartRealExamModel examModel;
+  final Map<int, bool> bookmarkedStatuses;
 }
 
 class StartRealExamFailedState extends RealExamState {

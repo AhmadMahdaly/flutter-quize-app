@@ -69,6 +69,11 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
 
     Widget buildTimelineItem(int index) {
       final questionNumber = index + 1;
+      final bookmarkedStatuses =
+          (context.read<RealExamCubit>().state as StartRealExamSuccessState)
+              .bookmarkedStatuses;
+      final isBookmarkedForThisItem =
+          bookmarkedStatuses[questionNumber] ?? false;
 
       final isCurrent = questionNumber == currentQuestionNo;
       TimelineStatus status;
@@ -90,7 +95,7 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
           child: SizedBox(
             height: _itemHeight - 24.h,
             child: TimelineItem(
-              isBookmarked: currentQuestion.isBookmarked!,
+              isBookmarked: isBookmarkedForThisItem,
               number: questionNumber.toString(),
               status: status,
             ),
@@ -185,14 +190,7 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
                   8.horizontalSpace,
                   IconButton(
                     onPressed: () {
-                      context.read<RealExamCubit>().makeQuestionFlag(
-                        currentQuestion.id.toString(),
-                      );
-                      context.watch()<RealExamCubit>().getQuestion(
-                        currentQuestion.examId!,
-                        currentQuestionNo,
-                        currentQuestion.section!,
-                      );
+                      context.read<RealExamCubit>().makeQuestionFlag();
                     },
                     icon: Container(
                       width: 30.w,
