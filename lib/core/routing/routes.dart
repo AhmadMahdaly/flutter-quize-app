@@ -23,4 +23,5 @@ class Routes {
   static const String playListScreen = '/playListScreen';
   static const String playListDetailsScreen = '/playListDetailsScreen';
   static const String realExamScreen = '/realExamScreen';
+  static const String guestScreen = '/GuestMainLayoutScreen';
 }

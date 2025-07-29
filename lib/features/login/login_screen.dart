@@ -80,6 +80,20 @@ class LoginScreen extends StatelessWidget {
                           );
                         },
                       ),
+                      8.verticalSpace,
+                      TextButton(
+                        onPressed: () {
+                          context.pushReplacementNamed(Routes.guestScreen);
+                        },
+                        child: Text(
+                          'Continue As Guest',
+                          style: interBold.copyWith(
+                            color: AppColors.secondaryColor,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                      ),
+
                       25.verticalSpace,
                     ],
                   ),
