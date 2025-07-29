@@ -12,8 +12,8 @@ class CustomTimerWidget extends StatefulWidget {
 }
 
 class _CustomTimerWidgetState extends State<CustomTimerWidget> {
-  bool isButtonDisabled = false; // لمنع الضغط على الزر أثناء العد التنازلي
-  int timeLeftInSeconds = 3600; // ساعة واحدة = 3600 ثانية
+  bool isButtonDisabled = false;
+  int timeLeftInSeconds = 3600;
   Timer? timer;
 
   @override
@@ -30,7 +30,6 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
         });
       } else {
         timer.cancel();
-        // الإجراء بعد انتهاء الوقت
       }
     });
   }

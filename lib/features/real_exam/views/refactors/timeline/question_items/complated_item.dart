@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/theme/colors.dart';
 
-class SelectedQuestionItem extends StatelessWidget {
-  const SelectedQuestionItem({
+class ComplatedItem extends StatelessWidget {
+  const ComplatedItem({
     required this.number,
     required this.color,
     super.key,
+    required this.isBookmarked,
   });
   final String number;
   final Color color;
-
+  final bool isBookmarked;
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // المستطيل الرئيسي
         Container(
           width: 60.w,
           height: 30.h,
@@ -24,13 +24,19 @@ class SelectedQuestionItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(6.r),
           ),
           alignment: Alignment.center,
-          child: Text(
-            number,
-            style: TextStyle(color: AppColors.thirdColor, fontSize: 16.sp),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                number,
+                style: TextStyle(color: AppColors.thirdColor, fontSize: 16.sp),
+              ),
+              isBookmarked
+                  ? const Icon(Icons.flag, color: Colors.white)
+                  : const SizedBox.shrink(),
+            ],
           ),
         ),
-
-        // المثلث في الزاوية العلوية اليسرى
         Positioned(
           top: 0,
           left: 0,
@@ -48,7 +54,6 @@ class SelectedQuestionItem extends StatelessWidget {
   }
 }
 
-// مثلث الزاوية اليسرى
 class TriangleClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

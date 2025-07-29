@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/theme/colors.dart';
 
-class NextQuestionItem extends StatelessWidget {
-  const NextQuestionItem({required this.text, required this.color, super.key});
+class UpcomingItem extends StatelessWidget {
+  const UpcomingItem({required this.text, required this.color, super.key});
   final String text;
   final Color color;
   @override

@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/features/real_exam/data/model/finish_analysis_exam.dart';
 import 'package:smle/features/real_exam/data/model/get_real_exam_model.dart';
-import 'package:smle/features/real_exam/data/model/post_real_exam_model.dart';
 import 'package:smle/features/real_exam/data/model/question_action_model.dart';
 import 'package:smle/features/real_exam/data/repo/real_exam_repo.dart';
 
@@ -11,103 +10,116 @@ part 'real_exam_state.dart';
 class RealExamCubit extends Cubit<RealExamState> {
   RealExamCubit(this.repo) : super(RealExamInitialState());
   final RealExamRepo repo;
-  StartRealExamModel? startRealExamModel;
-  Future startRealExam() async {
-    showLoading();
-    emit(StartRealExamLoadingState());
 
+  Future<void> startRealExam() async {
+    emit(StartRealExamLoadingState());
+    showLoading();
     final result = await repo.startRealExam();
-    result.when(success: (success) {
-      startRealExamModel = success;
-      hideLoading();
-      emit(StartRealExamSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(StartRealExamFailedState());
-    });
+    hideLoading();
+    if (isClosed) return;
+    result.when(
+      success: (successData) {
+        emit(StartRealExamSuccessState(successData));
+      },
+      failure: (error) {
+        emit(StartRealExamFailedState(error.errMessage));
+      },
+    );
   }
 
-  int currentIndex = 0;
-  void goToNext(data) {
-    if (currentIndex < data.length - 1) {
-      currentIndex++;
+  Future<void> getQuestion(int examId, int qNo, int section) async {
+    if (state is! StartRealExamSuccessState) return;
+
+    final previousState = state as StartRealExamSuccessState;
+    final totalQuestions = previousState.examModel.questionsCount;
+    final preservedExamId = previousState.examModel.examId;
+    showLoading();
+    // emit(GetQuestionLoadingState());
+
+    final result = await repo.getQuestion(examId, qNo, section);
+    if (isClosed) return;
+
+    result.when(
+      success: (newQuestionModel) {
+        final mergedModel = StartRealExamModel(
+          status: newQuestionModel.status,
+          message: newQuestionModel.message,
+          examId: preservedExamId,
+          questionsCount: totalQuestions,
+          data: newQuestionModel.data,
+        );
+        hideLoading();
+        emit(StartRealExamSuccessState(mergedModel));
+      },
+      failure: (error) {
+        emit(StartRealExamFailedState(error.errMessage));
+      },
+    );
+  }
+
+  void goToNext() {
+    if (state is StartRealExamSuccessState) {
+      final currentState = state as StartRealExamSuccessState;
+      final examModel = currentState.examModel;
+
+      if (examModel.data?.questionNo != null &&
+          examModel.questionsCount != null) {
+        final currentQuestionNo = examModel.data!.questionNo!;
+        final totalQuestions = examModel.questionsCount!;
+        if (currentQuestionNo < totalQuestions) {
+          getQuestion(examModel.examId!, currentQuestionNo + 1,
+              examModel.data!.section!);
+        }
+      }
     }
   }
 
   void goToPrevious() {
-    if (currentIndex > 0) {
-      currentIndex--;
+    if (state is StartRealExamSuccessState) {
+      final currentState = state as StartRealExamSuccessState;
+      final examModel = currentState.examModel;
+      if (examModel.data?.questionNo != null &&
+          examModel.data!.questionNo! > 1) {
+        getQuestion(examModel.examId!, examModel.data!.questionNo! - 1,
+            examModel.data!.section!);
+      }
     }
   }
 
-  void goToIndex(int index) {
-    emit(state.copyWith(currentIndex: index));
-  }
-
-  Future getQuestion(int examId, int qNo, int section) async {
-    showLoading();
-    emit(GetQuestionLoadingState());
-
-    final result = await repo.getQuestion(examId, qNo, section);
-    result.when(success: (success) {
-      startRealExamModel = success;
-      hideLoading();
-      emit(GetQuestionSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(GetQuestionFailedState());
-    });
-  }
-
-  List<int> postRealExamOffsetList = [];
-  int offset = 0;
-  PostRealExamModel? postRealExamModel;
-  Future getRealExamQuestions(int limit, int examId, bool isHistory) async {
-    if (!postRealExamOffsetList.contains(offset)) {
-      postRealExamOffsetList.add(offset);
-
-      showLoading();
-      emit(GetRealExamQLoadingState());
-
-      final result =
-          await repo.getRealExamQuestions(offset, limit, examId, isHistory);
-      result.when(success: (success) {
-        postRealExamModel = success;
-        hideLoading();
-        emit(GetRealExamQSuccessState());
-      }, failure: (error) {
-        hideLoading();
-        emit(GetRealExamQFailedState());
-      });
+  void goToIndex(int qNo) {
+    if (state is StartRealExamSuccessState) {
+      final currentState = state as StartRealExamSuccessState;
+      final examModel = currentState.examModel;
+      getQuestion(examModel.examId!, qNo, examModel.data!.section!);
     }
   }
 
   QuestionActionModel? questionActionModel;
   Future answerQuestion(String questionId, String answer) async {
-    showLoading();
-    emit(AnswerQLoadingState());
+    // showLoading();
+    // emit(AnswerQLoadingState());
     final result = await repo.answerQuestion(questionId, answer);
     result.when(success: (success) {
       questionActionModel = success;
-      hideLoading();
-      emit(AnswerQSuccessState());
+      // hideLoading();
+      // emit(AnswerQSuccessState());
     }, failure: (error) {
-      hideLoading();
-      emit(AnswerQFailedState());
+      // hideLoading();
+      // emit(AnswerQFailedState());
     });
   }
 
   Future makeQuestionFlag(String questionId) async {
-    showLoading();
-    emit(MakeFlagLoadingState());
+    // showLoading();
+    // emit(MakeFlagLoadingState());
     final result = await repo.makeQuestionFlag(questionId);
     result.when(success: (success) {
       questionActionModel = success;
-      hideLoading();
-      emit(MakeFlagSuccessState());
+      // hideLoading();
+      // emit(MakeFlagSuccessState());
     }, failure: (error) {
-      hideLoading();
-      emit(MakeFlagFailedState());
+      // hideLoading();
+      // emit(MakeFlagFailedState());
     });
   }
 

@@ -170,16 +170,15 @@ class AppRouter {
         );
 
       case Routes.realExamScreen:
-        return PageTransition(
-          child: BlocProvider(
-            create: (context) => getIt<RealExamCubit>()..startRealExam(),
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => RealExamCubit(
+              getIt(),
+            )..startRealExam(),
             child: const RealExamPage(),
           ),
-          type: PageTransitionType.fade,
-          duration: const Duration(milliseconds: 200),
-          alignment: Alignment.center,
-          settings: settings,
         );
+
       default:
         return null;
     }

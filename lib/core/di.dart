@@ -9,7 +9,6 @@ import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';
 import 'package:smle/features/play_list/data/repo/play_list_repo.dart';
 import 'package:smle/features/q_bank/data/repo/q_bank_repo.dart';
-import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/data/repo/real_exam_repo.dart';
 import 'package:smle/features/revision/data/repo/revision_repo.dart';
 import 'package:smle/features/subscription/data/repo/subscription_repo.dart';
@@ -36,5 +35,4 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<QBankRepository>(() => QBankRepository(getIt()));
   getIt.registerFactory<PlayListRepository>(() => PlayListRepository(getIt()));
   getIt.registerFactory<RealExamRepo>(() => RealExamRepo(getIt()));
-  getIt.registerFactory<RealExamCubit>(() => RealExamCubit(getIt()));
 }

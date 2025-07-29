@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/features/real_exam/views/refactors/timeline/question_items/complated_item.dart';
+import 'package:smle/features/real_exam/views/refactors/timeline/question_items/current_item.dart';
 import 'package:smle/features/real_exam/views/refactors/timeline/question_items/next_item.dart';
-import 'package:smle/features/real_exam/views/refactors/timeline/question_items/select_item.dart';
-import 'package:smle/features/real_exam/views/refactors/timeline/question_items/selected_item.dart';
 import 'package:smle/features/real_exam/views/refactors/timeline/timeline_status.dart';
 
 class TimelineItem extends StatelessWidget {
-  const TimelineItem({required this.number, required this.status, super.key});
+  const TimelineItem(
+      {required this.number,
+      required this.status,
+      super.key,
+      required this.isBookmarked});
   final String number;
   final TimelineStatus status;
+  final bool isBookmarked;
 
   Color get backgroundColor {
     switch (status) {
@@ -26,9 +31,13 @@ class TimelineItem extends StatelessWidget {
     return Stack(
       children: [
         if (status == TimelineStatus.completed)
-          SelectedQuestionItem(number: number, color: backgroundColor),
+          ComplatedItem(
+            number: number,
+            color: backgroundColor,
+            isBookmarked: isBookmarked,
+          ),
         if (status == TimelineStatus.current)
-          SelectQuestionItem(text: number, color: backgroundColor),
+          CurrentItem(text: number, color: backgroundColor),
         if (status == TimelineStatus.upcoming)
           NextQuestionItem(text: number, color: backgroundColor),
       ],

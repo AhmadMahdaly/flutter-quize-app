@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/theme/colors.dart';
 
-class SelectQuestionItem extends StatelessWidget {
-  const SelectQuestionItem({
+class CurrentItem extends StatelessWidget {
+  const CurrentItem({
     required this.text,
     required this.color,
     super.key,

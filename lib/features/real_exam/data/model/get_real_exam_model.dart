@@ -9,13 +9,16 @@ class StartRealExamModel {
 
   factory StartRealExamModel.fromJson(Map<String, dynamic> json) {
     return StartRealExamModel(
-      status: json['status'] as int,
-      message: json['message'].toString(),
-      examId: json['exam_id'] as int,
-      questionsCount: json['questions_count'] as int,
-      data: Question.fromJson(json['data'] as Map<String, dynamic>),
+      status: json['status'],
+      message: json['message']?.toString(),
+      examId: json['exam_id'],
+      questionsCount: json['questions_count'],
+      data: json['data'] != null
+          ? Question.fromJson(json['data'] as Map<String, dynamic>)
+          : null,
     );
   }
+
   final int? status;
   final String? message;
   final int? examId;
@@ -53,22 +56,23 @@ class Question {
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
-      id: json['id'] as int,
-      examId: json['exam_id'] as int,
-      section: json['section'] as int,
-      questionNo: json['question_no'] as int,
-      questionText: json['question_text'].toString(),
-      photo: json['photo'].toString(),
-      a: json['a'].toString(),
-      b: json['b'].toString(),
-      c: json['c'].toString(),
-      d: json['d'].toString(),
-      isBookmarked: json['is_bookmarked'] as bool,
-      notes: json['notes'].toString(),
-      isAnswered: json['is_answered'] as bool,
-      userAnswer: json['user_answer'].toString(),
+      id: json['id'],
+      examId: json['exam_id'],
+      section: json['section'],
+      questionNo: json['question_no'],
+      questionText: json['question_text']?.toString(),
+      photo: json['photo']?.toString(),
+      a: json['a']?.toString(),
+      b: json['b']?.toString(),
+      c: json['c']?.toString(),
+      d: json['d']?.toString(),
+      isBookmarked: json['is_bookmarked'] ?? false,
+      notes: json['notes']?.toString(),
+      isAnswered: json['is_answered'] ?? false,
+      userAnswer: json['user_answer']?.toString(),
     );
   }
+
   final int? id;
   final int? examId;
   final int? section;

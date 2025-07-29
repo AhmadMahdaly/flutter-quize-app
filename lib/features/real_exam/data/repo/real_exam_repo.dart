@@ -35,7 +35,7 @@ class RealExamRepo {
       int examId, int qNo, int section) async {
     try {
       final response = await _dioFactory.get(
-          endPoint: '${EndPoints.getQuestion}$examId$qNo$section');
+          endPoint: '${EndPoints.getQuestion}$examId/$qNo/$section');
       if (response!.statusCode == 200) {
         final model = StartRealExamModel.fromJson(response.data);
         return ApiResult.success(model);
