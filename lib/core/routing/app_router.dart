@@ -92,8 +92,9 @@ class AppRouter {
             screen: ScfhsScoreCalculatorScreen(),
             cubit: ScfhsScoreCalculatorCubit(getIt())..getCalculatorInfo());
       case Routes.subscriptionScreen:
+        final offerId = settings.arguments as int;
         return transition(
-            screen: const SubscriptionScreen(),
+            screen:  SubscriptionScreen(offerId: offerId,),
             cubit: SubscriptionCubit(getIt())..getPackages());
       case Routes.paymentScreen:
         final packageId = settings.arguments as String;
@@ -102,7 +103,7 @@ class AppRouter {
             cubit: SubscriptionCubit(getIt())..getYourCheckout(packageId));
       case Routes.addCardScreen:
         return transition(
-            screen: const AddCardScreen(), cubit: SubscriptionCubit(getIt()));
+            screen: const AddCardScreen(), cubit: SubscriptionCubit(getIt())..getCards());
       case Routes.applePayScreen:
         final totalPayment = settings.arguments as String;
         return transition(

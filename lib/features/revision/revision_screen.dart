@@ -44,7 +44,8 @@ class RevisionScreen extends StatelessWidget {
                                     fontSize: 16.sp,
                                     color: AppColors.thirdColor)),
                           ),
-                          // Icon(Icons.add)
+                          10.horizontalSpace,
+                          Image.network('${context.read<RevisionCubit>().subCategoriesModel!.data!.photo}')
                         ],
                       ),
                     ),

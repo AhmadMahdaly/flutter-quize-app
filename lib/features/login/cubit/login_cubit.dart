@@ -60,17 +60,5 @@ class LoginCubit extends Cubit<LoginStates> {
     } }
 
 
-  Future deleteAccount(BuildContext context) async {
-    showLoading();
-    emit(DeleteAccountLoadingState());
-    final result = await _loginRepository.deleteAccount();
-    result.when(success: (success) {
-      context.pushReplacementNamed(Routes.loginScreen);
-      hideLoading();
-      emit(DeleteAccountSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(DeleteAccountFailedState());
-    });
-  }
+
 }

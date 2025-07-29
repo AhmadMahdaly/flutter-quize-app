@@ -110,28 +110,28 @@ class CreateQuizScreen extends StatelessWidget {
                                     color: AppColors.darkGreyColor),
                               ),
                             ),
-                    20.verticalSpace,
-                    Text(
-                      'question_count'.tr(context),
-                      style: interMedium.copyWith(fontSize: 16.sp),
-                    ),
-                    10.verticalSpace,
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(
-                          vertical: 15.h, horizontal: 15.w),
-                      decoration: BoxDecoration(
-                        color: AppColors.greyColor,
-                        borderRadius: BorderRadius.circular(30.r),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '20/800',
-                          style: interRegular.copyWith(
-                              fontSize: 14.sp, color: AppColors.darkGreyColor),
-                        ),
-                      ),
-                    ),
+                    // 20.verticalSpace,
+                    // Text(
+                    //   'question_count'.tr(context),
+                    //   style: interMedium.copyWith(fontSize: 16.sp),
+                    // ),
+                    // 10.verticalSpace,
+                    // Container(
+                    //   width: double.infinity,
+                    //   padding: EdgeInsets.symmetric(
+                    //       vertical: 15.h, horizontal: 15.w),
+                    //   decoration: BoxDecoration(
+                    //     color: AppColors.greyColor,
+                    //     borderRadius: BorderRadius.circular(30.r),
+                    //   ),
+                    //   child: Center(
+                    //     child: Text(
+                    //       '20/800',
+                    //       style: interRegular.copyWith(
+                    //           fontSize: 14.sp, color: AppColors.darkGreyColor),
+                    //     ),
+                    //   ),
+                    // ),
                     50.verticalSpace,
                     Center(
                         child: GestureDetector(

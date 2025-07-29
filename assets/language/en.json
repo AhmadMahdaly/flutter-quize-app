@@ -16,6 +16,7 @@
   "register": "'Register'",
   "trusted_partner": "Your trusted partner for all your medical test",
   "welcome_to": "Welcome to",
+  "welcome": "Welcome",
   "continue_apple": "Continue with apple",
   "continue_google": "Continue with google",
   "profile": "Profile",
@@ -77,6 +78,7 @@
   "apply":"Apply",
   "choose_your_plan":  "Choose your plan",
   "choose_your_extra_plan":  "Choose your extra plan",
+  "extra_packages":  "Extra packages",
   "choose_extra_plan":  "Choose your extra plan",
   "question":  "Question",
   "quit":  "Quit",
@@ -95,6 +97,7 @@
   "mid_level":  "Mid level",
   "fail":  "Fail",
   "exam":  "Exam",
+  "password":  "Password",
   "marks":  "marks",
   "cvv":  "Cvv",
   "explanation":  "Explanation",
@@ -110,7 +113,11 @@
   "edit":  "Edit",
   "delete_playlist":  "Delete PlayList",
   "edit_playlist":  "Edit PlayList",
-  "no_data_found":  "No Data Found"
+  "no_data_found":  "No Data Found",
+  "remaining_real_exams":  "Remaining real exams:",
+  "expire_date":  "Expire date:",
+  "package_subscribed":  "Package subscribed:",
+  "exams":  "exams"
 
 
 

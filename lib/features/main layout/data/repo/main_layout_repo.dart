@@ -22,4 +22,15 @@ class MainLayoutRepository {
     }
   }
 
+/// Delete Account
+  Future<ApiResult> deleteAccount() async {
+    final response = await _dioFactory.get(endPoint: EndPoints.deleteAccount);
+    if (response!.statusCode == 200 ) {
+      return ApiResult.success(response.data);
+    } else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(
+          ServerFailure.fromResponse(response.statusCode, response.data['message']));
+    }
+  }
 }

@@ -30,17 +30,21 @@ class PackagesModel {
 class Data {
   int? id;
   bool? isExtra;
+  bool? monthly;
   String? name;
   int? price;
+  int? isSubscribed;
   List<Features>? features;
 
-  Data({this.id, this.isExtra, this.name, this.price, this.features});
+  Data({this.id, this.isExtra,this.monthly, this.name, this.price,this.isSubscribed, this.features});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     isExtra = json['is_extra'];
+    monthly = json['monthly'];
     name = json['name'];
     price = json['price'];
+    isSubscribed = json['is_subscribed'];
     if (json['features'] != null) {
       features = <Features>[];
       json['features'].forEach((v) {
@@ -53,8 +57,10 @@ class Data {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['is_extra'] = isExtra;
+    data['monthly'] = monthly;
     data['name'] = name;
     data['price'] = price;
+    data['is_subscribed'] = isSubscribed;
     if (features != null) {
       data['features'] = features!.map((v) => v.toJson()).toList();
     }

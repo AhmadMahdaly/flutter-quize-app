@@ -11,6 +11,9 @@ class EndPoints {
   static const String getPackages = 'offers';
   static const String getYourCheckout = 'GetYour/Checkout';
   static const String makeSubscription = 'make/subscription';
+  static const String addCard= 'user/card';
+  static const String getCards= 'user/cards';
+  static const String deleteCard= 'user/card/delete/';
 
   // ? revision
   static const String getCategories = 'categories';

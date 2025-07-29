@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import '../../../core/cache_helper/cache_helper.dart';
 import '../../../core/cache_helper/cache_values.dart';
 import '../../../core/theme/assets.dart';
@@ -28,8 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
   Future<bool>isLoggedIn()async{
-    String? token= await  CacheHelper.getSecuredString(key:CacheKeys.userToken);
-    print(token);
+    String? token= await  CacheHelper.getData(key:CacheKeys.userToken);
+    debugPrintWidget(token);
     return token!=null?true:false;
   }
   Future<void> _route() async {

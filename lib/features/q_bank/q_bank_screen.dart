@@ -37,14 +37,7 @@ class QBankScreen extends StatelessWidget {
                           endValue: context
                                   .read<QBankcubit>()
                                   .qBankModel!
-                                  .data!
-                                  .isNotEmpty
-                              ? context
-                                  .read<QBankcubit>()
-                                  .qBankModel!
-                                  .data!
-                                  .length
-                              : 1,
+                                  .questionsCount??1,
                           switchValue: context.read<QBankcubit>().isAnswered,
                           switchFun: (value) {
                             context.read<QBankcubit>().setIsAnswered();
@@ -215,15 +208,7 @@ class QBankScreen extends StatelessWidget {
                                 )),
                           ),
                       ])
-                : Padding(
-                    padding: EdgeInsets.symmetric(vertical: 300.h),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.primaryColor,
-                        strokeWidth: 3.w,
-                      ),
-                    ),
-                  );
+                : NoDataWidget(noDataImage: '', noDataText:  'no_data_found'.tr(context));
           },
         ),
       ),

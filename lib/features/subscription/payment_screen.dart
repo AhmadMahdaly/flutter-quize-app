@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -111,7 +113,9 @@ class PaymentScreen extends StatelessWidget {
                   decoration: TextDecoration.underline,
                 ),
               ),
+              if(!Platform.isAndroid)
               50.verticalSpace,
+              if(!Platform.isAndroid)
               Center(
                 child: TextButton(
                   onPressed: () {

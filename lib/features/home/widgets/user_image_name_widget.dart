@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class UserImageNameWidget extends StatelessWidget {
-  const UserImageNameWidget({super.key, required this.name, required this.email, required this.imagePath});
-final String name,email,imagePath;
+  const UserImageNameWidget({super.key, required this.name, required this.email, required this.imagePath, required this.points});
+final String name,email,points,imagePath;
   @override
   Widget build(BuildContext context) {
     return             Row(
@@ -31,9 +32,11 @@ final String name,email,imagePath;
         ),
         15.horizontalSpace,
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(name,style: interBold.copyWith(fontSize: 16.sp),),
+            Text('${"welcome".tr(context)} $name',style: interBold.copyWith(fontSize: 16.sp),),
             Text(email,style: interRegular.copyWith(fontSize: 14.sp,color: AppColors.darkGreyColor),),
+            Text('$points ${"points".tr(context)}',style: interRegular.copyWith(fontSize: 16.sp,color: AppColors.primaryColor),),
           ],
         )
       ],

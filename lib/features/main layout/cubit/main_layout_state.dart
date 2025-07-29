@@ -22,3 +22,8 @@ class AppBottomNavState extends MainLayoutState {
 class GetProfileLoadingState extends MainLayoutState {}
 class GetProfileSuccessState extends MainLayoutState {}
 class GetProfileFailedState extends MainLayoutState {}
+
+/// Delete Account
+class DeleteAccountLoadingState extends MainLayoutState {}
+class DeleteAccountSuccessState extends MainLayoutState {}
+class DeleteAccountFailedState extends MainLayoutState {}

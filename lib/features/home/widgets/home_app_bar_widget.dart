@@ -12,21 +12,21 @@ class HomeAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      actions: [
-        GestureDetector(
-          onTap: (){
-            context.pushNamed(Routes.notificationScreen);
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.w),
-            child: Icon(
-              CupertinoIcons.bell,
-              color: AppColors.iconColorBlack,
-              size: 25.sp,
-            ),
-          ),
-        )
-      ],
+      // actions: [
+      //   GestureDetector(
+      //     onTap: (){
+      //       context.pushNamed(Routes.notificationScreen);
+      //     },
+      //     child: Padding(
+      //       padding: EdgeInsets.symmetric(horizontal: 15.w),
+      //       child: Icon(
+      //         CupertinoIcons.bell,
+      //         color: AppColors.iconColorBlack,
+      //         size: 25.sp,
+      //       ),
+      //     ),
+      //   )
+      // ],
       iconTheme: const IconThemeData(
         color: AppColors.iconColorBlack, // Change the drawer icon color here
       ),

@@ -23,7 +23,7 @@ class LoginRepository {
     });
     if (response!.statusCode == 200 ) {
       LoginModel model = LoginModel.fromJson(response.data);
-      await CacheHelper.saveSecuredString(
+      await CacheHelper.saveData(
           key: CacheKeys.userToken, value: model.data!.token);
       return ApiResult.success(model);
     } else {
@@ -33,14 +33,5 @@ class LoginRepository {
     }
   }
 
-  Future<ApiResult> deleteAccount() async {
-    final response = await _dioFactory.get(endPoint: EndPoints.deleteAccount);
-    if (response!.statusCode == 200 ) {
-      return ApiResult.success(response.data);
-    } else {
-      debugPrintWidget(response.data['message']);
-      return ApiResult.failure(
-          ServerFailure.fromResponse(response.statusCode, response.data['message']));
-    }
-  }
+
 }

@@ -17,7 +17,7 @@ class MainLayoutScreen extends StatelessWidget {
         return PopScope(
           canPop: false,
           child: Scaffold(
-            body: AppRouter().screen[mainLayoutIntitalScreenIndex],
+            body: AppRouter().screen[mainLayoutInitialScreenIndex],
             bottomNavigationBar: Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.w),
               child: ClipRRect(
@@ -27,7 +27,7 @@ class MainLayoutScreen extends StatelessWidget {
                   onTap: (index) {
                     MainLayoutCubit.get(context).changeBottomNavBar(index);
                   },
-                  currentIndex: mainLayoutIntitalScreenIndex,
+                  currentIndex: mainLayoutInitialScreenIndex,
                   items: [
                     BottomNavigationBarItem(
                       icon: Container(

@@ -1,3 +1,4 @@
+import 'package:smle/features/subscription/data/model/cards_model.dart';
 import 'package:smle/features/subscription/data/model/checkout_model.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
 import '../../../../core/network/api_result.dart';
@@ -17,9 +18,9 @@ class SubscriptionRepository {
       PackagesModel model = PackagesModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
-      debugPrintWidget(response.data['error']);
+      debugPrintWidget(response.data['message']);
       return ApiResult.failure(ServerFailure.fromResponse(
-          response.statusCode, response.data['error']));
+          response.statusCode, response.data['message']));
     }
   }
 
@@ -36,11 +37,47 @@ class SubscriptionRepository {
       CheckoutModel model = CheckoutModel.fromJson(response.data);
       return ApiResult.success(model);
     }
-    // else if (response.statusCode == 400 ) {
-    //   debugPrintWidget(response.data['message']);
-    //   return ApiResult.failure(
-    //       ServerFailure.fromResponse(response.statusCode, response.data['message']));
-    // }
+    else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(ServerFailure.fromResponse(
+          response.statusCode, response.data['message']));
+    }
+  }
+  Future<ApiResult> addCard(String cardId,String password, String cvv, String expireDate) async {
+    final response = await _dioFactory.post(endPoint: EndPoints.addCard,
+    data: {
+      'card_id': cardId,
+      'password': password,
+      'exp_date': expireDate,
+      'cvv': cvv
+    }
+    );
+    if (response!.statusCode == 200) {
+      return ApiResult.success(response.data['message']);
+    }
+    else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(ServerFailure.fromResponse(
+          response.statusCode, response.data['message']));
+    }
+  }
+  Future<ApiResult<CardsModel>> getCards() async {
+    final response = await _dioFactory.get(endPoint: EndPoints.getCards);
+    if (response!.statusCode == 200) {
+      CardsModel model = CardsModel.fromJson(response.data);
+      return ApiResult.success(model);
+    }
+    else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(ServerFailure.fromResponse(
+          response.statusCode, response.data['message']));
+    }
+  }
+  Future<ApiResult> deleteCard(String cardId) async {
+    final response = await _dioFactory.get(endPoint: '${EndPoints.deleteCard}$cardId');
+    if (response!.statusCode == 200) {
+      return ApiResult.success(response.data['message']);
+    }
     else {
       debugPrintWidget(response.data['message']);
       return ApiResult.failure(ServerFailure.fromResponse(

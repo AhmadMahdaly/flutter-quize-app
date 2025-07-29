@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
 
+import '../../../core/cache_helper/cache_values.dart';
 import '../../../core/di.dart';
 import '../../../core/theme/colors.dart';
+import '../../main layout/cubit/main_layout_cubit.dart';
 import 'drawer_item_widget.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -38,7 +41,7 @@ class DrawerWidget extends StatelessWidget {
             iconAsset: Assets.trophyLight,
             title: 'subscription'.tr(context),
             onTap: () {
-              context.pushNamed(Routes.subscriptionScreen);
+              context.pushNamed(Routes.subscriptionScreen,arguments: context.read<MainLayoutCubit>().profileModel!.data!.offerId??-1);
             },
           ),
           // DrawerItemWidget(iconAsset: Assets.columUpLight,title:'analysis'.tr(context) ,onTap: (){
@@ -67,6 +70,7 @@ class DrawerWidget extends StatelessWidget {
                     onTap: () {
                       context.read<LoginCubit>().logOut().then((value) {
                         if (value == true) {
+                          CacheHelper.sharedPreferences.remove(CacheKeys.userToken);
                           context.pushReplacementNamed(Routes.loginScreen);
                         }
                       });

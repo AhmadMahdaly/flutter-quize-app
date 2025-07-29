@@ -1,6 +1,7 @@
 class QBankModel {
   int? status;
   String? message;
+  int? questionsCount;
   List<Data>? data;
 
   QBankModel({this.status, this.message, this.data});
@@ -8,6 +9,7 @@ class QBankModel {
   QBankModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
+    questionsCount = json['questions_count'];
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
@@ -20,6 +22,7 @@ class QBankModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['message'] = message;
+    data['questions_count'] = questionsCount;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }

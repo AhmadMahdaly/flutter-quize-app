@@ -24,7 +24,7 @@ class DioFactory {
       "Accept": "application/json",
       // "lang": CacheHelper.getCurrentLanguage().toString(),
       "Authorization":
-          "Bearer ${await CacheHelper.getSecuredString(key: CacheKeys.userToken) }",
+          "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken) }",
 
     };
     return await dio.get(endPoint, queryParameters: data);
@@ -35,7 +35,7 @@ class DioFactory {
       "Accept": "application/json",
       // "lang": CacheHelper.getCurrentLanguage().toString(),
       "Authorization":
-          "Bearer ${await CacheHelper.getSecuredString(key: CacheKeys.userToken)}",
+          "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken)}",
     };
     return await dio.post(endPoint, data: data);
   }

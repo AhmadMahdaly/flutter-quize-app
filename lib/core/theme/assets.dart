@@ -79,6 +79,8 @@ class Assets {
   static const String pdfButton = "assets/images/png/pdf_button.png";
   /// assets/images/questionMark.png
   static const String questionMark = "assets/images/png/question_mark.png";
+  /// assets/images/homeDoctor.png
+  static const String homeDoctor = "assets/images/png/home_doctor.png";
 
 }
 

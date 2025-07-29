@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
@@ -9,6 +10,7 @@ import 'package:smle/core/shared_widgets/category_widget.dart';
 import 'package:smle/features/home/widgets/drawer_widget.dart';
 import 'package:smle/features/home/widgets/home_app_bar_widget.dart';
 import 'package:smle/features/home/widgets/user_image_name_widget.dart';
+import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 
 import '../../core/theme/assets.dart';
 import '../../core/theme/colors.dart';
@@ -27,21 +29,83 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const UserImageNameWidget(
-                  name: 'Hager Hifnawy', email: 'hager@gmail.com', imagePath: ''),
+              BlocBuilder<MainLayoutCubit, MainLayoutState>(
+                builder: (context, state) {
+                  return context.read<MainLayoutCubit>().profileModel != null
+                      ? UserImageNameWidget(
+                          name: context
+                                  .read<MainLayoutCubit>()
+                                  .profileModel!
+                                  .data!
+                                  .name ??
+                              '',
+                          email: context
+                                  .read<MainLayoutCubit>()
+                                  .profileModel!
+                                  .data!
+                                  .email ??
+                              '',
+                          imagePath: context
+                                  .read<MainLayoutCubit>()
+                                  .profileModel!
+                                  .data!
+                                  .photo ??
+                              '',
+                          points:
+                              '${context.read<MainLayoutCubit>().profileModel!.data!.points}',
+                        )
+                      : const SizedBox.shrink();
+                },
+              ),
               20.verticalSpace,
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 15.h),
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
                 decoration: BoxDecoration(
                   color: AppColors.darkGreyColor,
-                  borderRadius: BorderRadius.all(Radius.circular(60.r))
+                  borderRadius: BorderRadius.all(Radius.circular(80.r)),
                 ),
-                child: Text.rich(TextSpan(children: [
-                TextSpan(text:  'Over ',style: interBold.copyWith(fontSize: 16.sp,color: AppColors.thirdColor)),
-                TextSpan(text:  '400 ',style: interBold.copyWith(fontSize: 16.sp,color: AppColors.secondaryColor)),
-                TextSpan(text:  'questions across all medical specialties',style: interBold.copyWith(fontSize: 16.sp,color: AppColors.thirdColor)),
-                ]),),
+                child: Row(
+                  children: [
+                    Expanded( // <-- This lets the text take the remaining space
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Over ',
+                              style: interBold.copyWith(
+                                fontSize: 16.sp,
+                                color: AppColors.thirdColor,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '400 ',
+                              style: interBold.copyWith(
+                                fontSize: 16.sp,
+                                color: AppColors.secondaryColor,
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'questions across all medical specialties',
+                              style: interBold.copyWith(
+                                fontSize: 16.sp,
+                                color: AppColors.thirdColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    10.horizontalSpace, // Optional spacing
+                    Image.asset(
+                      Assets.homeDoctor,
+                      width: 100.w, // <-- Constrain image width
+                      height: 150.h,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ],
+                ),
               ),
+
               20.verticalSpace,
               Text(
                 'top_category'.tr(context),
@@ -53,14 +117,14 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CategoryWidget(
-                      onTap: (){
-                        context.pushNamed(Routes.createQuizScreen);
-                      },
+                    onTap: () {
+                      context.pushNamed(Routes.createQuizScreen);
+                    },
                     categoryName: 'question_bank'.tr(context),
                     imagePath: Assets.questionBank,
                   ),
                   CategoryWidget(
-                    onTap: (){
+                    onTap: () {
                       context.pushNamed(Routes.categoriesScreen);
                     },
                     categoryName: 'revision'.tr(context),
@@ -77,7 +141,7 @@ class HomeScreen extends StatelessWidget {
                     imagePath: Assets.examCategory,
                   ),
                   CategoryWidget(
-                    onTap: (){
+                    onTap: () {
                       context.pushNamed(Routes.analysisScreen);
                     },
                     categoryName: 'analysis'.tr(context),
@@ -98,8 +162,8 @@ class HomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(70.r)),
                     ),
                     child: GestureDetector(
-                      onTap: (){
-                        context.pushNamed(Routes.subscriptionScreen);
+                      onTap: () {
+                        context.pushNamed(Routes.subscriptionScreen,arguments: context.read<MainLayoutCubit>().profileModel!.data!.offerId??-1);
                       },
                       child: Text.rich(
                         TextSpan(children: [
@@ -115,7 +179,8 @@ class HomeScreen extends StatelessWidget {
                             text:
                                 '                      ${'discover_now'.tr(context)}',
                             style: interRegular.copyWith(
-                                fontSize: 16.sp, color: AppColors.secondaryColor),
+                                fontSize: 16.sp,
+                                color: AppColors.secondaryColor),
                           ),
                         ]),
                       ),

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -94,6 +95,10 @@ class LoginScreen extends StatelessWidget {
                             text: 'confirm_agreement'.tr(context),
                             style: interRegular.copyWith(fontSize: 14.sp)),
                         TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                context.pushNamed(Routes.privacyPolicyScreen);
+                              },
                             text: 'privacy_policy'.tr(context),
                             style: interRegular.copyWith(
                                 color: AppColors.secondaryColor,

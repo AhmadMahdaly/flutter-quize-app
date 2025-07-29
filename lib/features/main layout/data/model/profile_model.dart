@@ -30,6 +30,10 @@ class Data {
   int? points;
   String? fcmToken;
   String? photo;
+  int? offerId;
+  String? offerName;
+  int? remainingRealExams;
+  String? packageExpireAt;
 
   Data(
       {this.id,
@@ -38,7 +42,12 @@ class Data {
         this.email,
         this.points,
         this.fcmToken,
-        this.photo});
+        this.photo,
+        this.offerId,
+        this.offerName,
+        this.remainingRealExams,
+        this.packageExpireAt
+      });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -48,6 +57,10 @@ class Data {
     points = json['points'];
     fcmToken = json['fcm_token'];
     photo = json['photo'];
+    offerId = json['offer_id'];
+    offerName = json['offer_name'];
+    remainingRealExams = json['remaining_real_exams'];
+    packageExpireAt = json['package_expire_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -59,6 +72,10 @@ class Data {
     data['points'] = points;
     data['fcm_token'] = fcmToken;
     data['photo'] = photo;
+    data['offer_id'] = offerId;
+    data['offer_name'] = offerName;
+    data['remaining_real_exams'] = remainingRealExams;
+    data['package_expire_at'] = packageExpireAt;
     return data;
   }
 }
