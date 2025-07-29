@@ -11,7 +11,7 @@ class RealExamCubit extends Cubit<RealExamState> {
   RealExamCubit(this.repo) : super(RealExamInitialState());
   final RealExamRepo repo;
   final Map<int, bool> _questionBookmarkedStatus = {};
-
+  final Map<int, bool> _questionNoteStatus = {};
   Future<void> startRealExam() async {
     emit(StartRealExamLoadingState());
     showLoading();
@@ -20,11 +20,12 @@ class RealExamCubit extends Cubit<RealExamState> {
     if (isClosed) return;
     result.when(
       success: (successData) {
-        _updateBookmarkStatus(successData.data);
+        _updateStatuses(successData.data);
         emit(
           StartRealExamSuccessState(
             successData,
             Map.from(_questionBookmarkedStatus),
+            Map.from(_questionNoteStatus),
           ),
         );
       },
@@ -48,7 +49,7 @@ class RealExamCubit extends Cubit<RealExamState> {
 
     result.when(
       success: (newQuestionModel) {
-        _updateBookmarkStatus(newQuestionModel.data);
+        _updateStatuses(newQuestionModel.data);
         final mergedModel = StartRealExamModel(
           status: newQuestionModel.status,
           message: newQuestionModel.message,
@@ -61,6 +62,7 @@ class RealExamCubit extends Cubit<RealExamState> {
           StartRealExamSuccessState(
             mergedModel,
             Map.from(_questionBookmarkedStatus),
+            Map.from(_questionNoteStatus),
           ),
         );
       },
@@ -70,12 +72,16 @@ class RealExamCubit extends Cubit<RealExamState> {
     );
   }
 
-  void _updateBookmarkStatus(Question? question) {
-    if (question != null &&
-        question.questionNo != null &&
-        question.isBookmarked != null) {
+  void _updateStatuses(Question? question) {
+    if (question == null || question.questionNo == null) return;
+
+    // تحديث البوكمارك
+    if (question.isBookmarked != null) {
       _questionBookmarkedStatus[question.questionNo!] = question.isBookmarked!;
     }
+    // تحديث الملاحظات
+    _questionNoteStatus[question.questionNo!] =
+        (question.notes ?? '').isNotEmpty;
   }
 
   void goToNext() {
@@ -139,19 +145,6 @@ class RealExamCubit extends Cubit<RealExamState> {
     );
   }
 
-  // Future makeQuestionFlag(String questionId) async {
-  //   // showLoading();
-  //   // emit(MakeFlagLoadingState());
-  //   final result = await repo.makeQuestionFlag(questionId);
-  //   result.when(success: (success) {
-  //     questionActionModel = success;
-  //     // hideLoading();
-  //     // emit(MakeFlagSuccessState());
-  //   }, failure: (error) {
-  //     // hideLoading();
-  //     // emit(MakeFlagFailedState());
-  //   });
-  // }
   Future<void> makeQuestionFlag() async {
     if (state is! StartRealExamSuccessState) return;
 
@@ -160,7 +153,6 @@ class RealExamCubit extends Cubit<RealExamState> {
     final questionNo = examModel.data!.questionNo!;
     final questionId = examModel.data!.id.toString();
 
-    // 1. تحديث الواجهة فورًا (Optimistic UI)
     final newBookmarkStatus = !(_questionBookmarkedStatus[questionNo] ?? false);
     _questionBookmarkedStatus[questionNo] = newBookmarkStatus;
 
@@ -173,28 +165,35 @@ class RealExamCubit extends Cubit<RealExamState> {
       StartRealExamSuccessState(
         updatedExamModel,
         Map.from(_questionBookmarkedStatus),
+        Map.from(_questionNoteStatus),
       ),
     );
 
-    // 2. استدعاء الخادم في الخلفية
     await repo.makeQuestionFlag(questionId);
   }
 
-  Future addQuestionNote(String questionId, String note) async {
-    showLoading();
-    emit(AddNoteLoadingState());
-    final result = await repo.addQuestionNote(questionId, note);
-    result.when(
-      success: (success) {
-        questionActionModel = success;
-        hideLoading();
-        emit(AddNoteSuccessState());
-      },
-      failure: (error) {
-        hideLoading();
-        emit(AddNoteFailedState());
-      },
+  Future<void> addQuestionNote(String note) async {
+    if (state is! StartRealExamSuccessState) return;
+
+    final currentState = state as StartRealExamSuccessState;
+    final examModel = currentState.examModel;
+    final questionNo = examModel.data!.questionNo!;
+    final questionId = examModel.data!.id.toString();
+
+    _questionNoteStatus[questionNo] = note.isNotEmpty;
+
+    final updatedQuestion = examModel.data!.copyWith(notes: note);
+    final updatedExamModel = examModel.copyWith(data: updatedQuestion);
+
+    emit(
+      StartRealExamSuccessState(
+        updatedExamModel,
+        Map.from(_questionBookmarkedStatus),
+        Map.from(_questionNoteStatus),
+      ),
     );
+
+    await repo.addQuestionNote(questionId, note);
   }
 
   FinishAnalysisExamModel? finishAnalysisExamModel;

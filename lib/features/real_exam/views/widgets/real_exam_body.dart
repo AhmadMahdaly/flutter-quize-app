@@ -7,17 +7,20 @@ import 'package:smle/features/real_exam/data/model/get_real_exam_model.dart';
 import 'package:smle/features/real_exam/views/refactors/question_widget.dart';
 import 'package:smle/features/real_exam/views/refactors/timeline/timeline_items.dart';
 import 'package:smle/features/real_exam/views/refactors/timeline/timeline_status.dart';
+import 'package:smle/features/real_exam/views/widgets/bookmark_widget.dart';
+import 'package:smle/features/real_exam/views/widgets/greenline_widget.dart';
 import 'package:smle/features/real_exam/views/widgets/header_exam_details_card.dart';
+import 'package:smle/features/real_exam/views/widgets/note_widget.dart';
 
-class TimelineQuestionPage extends StatefulWidget {
-  const TimelineQuestionPage({required this.examModel, super.key});
+class RealExamBody extends StatefulWidget {
+  const RealExamBody({required this.examModel, super.key});
   final StartRealExamModel examModel;
 
   @override
-  State<TimelineQuestionPage> createState() => _TimelineQuestionPageState();
+  State<RealExamBody> createState() => _RealExamBodyState();
 }
 
-class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
+class _RealExamBodyState extends State<RealExamBody> {
   late final ScrollController _scrollController;
 
   final double _itemHeight = 48.0;
@@ -37,7 +40,7 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
   }
 
   @override
-  void didUpdateWidget(covariant TimelineQuestionPage oldWidget) {
+  void didUpdateWidget(covariant RealExamBody oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (widget.examModel.data?.questionNo !=
@@ -69,12 +72,14 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
 
     Widget buildTimelineItem(int index) {
       final questionNumber = index + 1;
-      final bookmarkedStatuses =
-          (context.read<RealExamCubit>().state as StartRealExamSuccessState)
-              .bookmarkedStatuses;
+      final currentState =
+          context.read<RealExamCubit>().state as StartRealExamSuccessState;
+
+      final bookmarkedStatuses = currentState.bookmarkedStatuses;
+      final noteStatuses = currentState.noteStatuses;
       final isBookmarkedForThisItem =
           bookmarkedStatuses[questionNumber] ?? false;
-
+      final hasNoteForThisItem = noteStatuses[questionNumber] ?? false;
       final isCurrent = questionNumber == currentQuestionNo;
       TimelineStatus status;
       if (isCurrent) {
@@ -98,6 +103,7 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
               isBookmarked: isBookmarkedForThisItem,
               number: questionNumber.toString(),
               status: status,
+              hasNote: hasNoteForThisItem,
             ),
           ),
         ),
@@ -106,7 +112,7 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
 
     return Column(
       children: [
-        ExamDetailsCard(
+        HeaderExamDetailsCard(
           question: currentQuestion,
           totalQuestions: totalQuestions,
         ),
@@ -126,7 +132,7 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
                 ),
               ),
 
-              /// MARK: Q
+              /// MARK: Question
               Expanded(
                 child: Center(
                   child: QuestionWidget(
@@ -142,22 +148,10 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
             ],
           ),
         ),
-        SizedBox(height: 8.h),
+        8.verticalSpace,
         Column(
           children: [
-            Container(
-              width: 359.w,
-              height: 5.h,
-              decoration: ShapeDecoration(
-                color: AppColors.successColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.r),
-                    topRight: Radius.circular(10.r),
-                  ),
-                ),
-              ),
-            ),
+            const GreenlineWidget(),
             Container(
               width: 359.w,
               height: 48.h,
@@ -173,40 +167,9 @@ class _TimelineQuestionPageState extends State<TimelineQuestionPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 30.w,
-                    height: 30.h,
-                    decoration: ShapeDecoration(
-                      color: AppColors.successColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.chat_bubble_outline_rounded,
-                      color: AppColors.thirdColor,
-                    ),
-                  ),
+                  const MakeNoteWidget(),
                   8.horizontalSpace,
-                  IconButton(
-                    onPressed: () {
-                      context.read<RealExamCubit>().makeQuestionFlag();
-                    },
-                    icon: Container(
-                      width: 30.w,
-                      height: 30.h,
-                      decoration: ShapeDecoration(
-                        color: AppColors.successColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.flag_outlined,
-                        color: AppColors.thirdColor,
-                      ),
-                    ),
-                  ),
+                  const MakeFlagWidget(),
                   8.horizontalSpace,
                   InkWell(
                     onTap: currentQuestionNo == 0 ? null : cubit.goToPrevious,

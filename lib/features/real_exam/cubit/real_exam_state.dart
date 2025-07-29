@@ -14,15 +14,25 @@ class RealExamInitialState extends RealExamState {}
 class StartRealExamLoadingState extends RealExamState {}
 
 class GetQuestionLoadingState extends RealExamState {
-  GetQuestionLoadingState(this.examModel, this.bookmarkedStatuses);
+  GetQuestionLoadingState(
+    this.examModel,
+    this.bookmarkedStatuses,
+    this.noteStatuses,
+  );
   final StartRealExamModel examModel;
   final Map<int, bool> bookmarkedStatuses;
+  final Map<int, bool> noteStatuses;
 }
 
 class StartRealExamSuccessState extends RealExamState {
-  StartRealExamSuccessState(this.examModel, this.bookmarkedStatuses);
+  StartRealExamSuccessState(
+    this.examModel,
+    this.bookmarkedStatuses,
+    this.noteStatuses,
+  );
   final StartRealExamModel examModel;
   final Map<int, bool> bookmarkedStatuses;
+  final Map<int, bool> noteStatuses;
 }
 
 class StartRealExamFailedState extends RealExamState {
@@ -48,12 +58,6 @@ class AnswerQLoadingState extends RealExamState {}
 class AnswerQSuccessState extends RealExamState {}
 
 class AnswerQFailedState extends RealExamState {}
-
-class MakeFlagLoadingState extends RealExamState {}
-
-class MakeFlagSuccessState extends RealExamState {}
-
-class MakeFlagFailedState extends RealExamState {}
 
 class AddNoteLoadingState extends RealExamState {}
 

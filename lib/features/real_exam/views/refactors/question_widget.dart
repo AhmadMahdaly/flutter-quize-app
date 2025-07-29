@@ -40,9 +40,10 @@ class _QuestionWidgetState extends State<QuestionWidget> {
       onTap: () async {
         selectAnswer(optionLetter);
 
-        await context
-            .read<RealExamCubit>()
-            .answerQuestion(widget.data.id.toString(), optionLetter);
+        await context.read<RealExamCubit>().answerQuestion(
+          widget.data.id.toString(),
+          optionLetter,
+        );
         context.read<RealExamCubit>().goToNext();
       },
       child: Container(
@@ -51,18 +52,19 @@ class _QuestionWidgetState extends State<QuestionWidget> {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(
-            color: isSelected
-                ? AppColors.successColor
-                : AppColors.thirdColor, //AppColors.greenColor
-            borderRadius: BorderRadius.circular(16.r),
-            border: Border.all(color: AppColors.darkGreyColor)),
+          color: isSelected
+              ? AppColors.successColor
+              : AppColors.thirdColor, //AppColors.greenColor
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(color: AppColors.darkGreyColor),
+        ),
         child: Text(
           text,
           style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              color:
-                  isSelected ? AppColors.offwhiteColor : AppColors.forthColor),
+            fontSize: 14.sp,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            color: isSelected ? AppColors.offwhiteColor : AppColors.forthColor,
+          ),
         ),
       ),
     );
@@ -73,19 +75,20 @@ class _QuestionWidgetState extends State<QuestionWidget> {
     final q = widget.data;
 
     return Container(
-        width: 295.w,
-        decoration: ShapeDecoration(
-          color: AppColors.thirdColor,
-          shape: RoundedRectangleBorder(
-            side: const BorderSide(
-              width: 1,
-              strokeAlign: BorderSide.strokeAlignCenter,
-              color: AppColors.greyColor,
-            ),
-            borderRadius: BorderRadius.circular(24.r),
+      width: 295.w,
+      decoration: ShapeDecoration(
+        color: AppColors.thirdColor,
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(
+            width: 1,
+            strokeAlign: BorderSide.strokeAlignCenter,
+            color: AppColors.greyColor,
           ),
+          borderRadius: BorderRadius.circular(24.r),
         ),
-        child: Column(children: [
+      ),
+      child: Column(
+        children: [
           SizedBox(height: 8.h),
           Expanded(
             child: Container(
@@ -98,48 +101,49 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                 ),
               ),
               child:
-
                   /// inside body
                   Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: ListView(children: [
-                      Text(
-                        q.questionText ?? '',
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          color: AppColors.forthColor,
-                          fontSize: 16.sp,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400,
-                          height: 1.20.h,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: ListView(
+                          children: [
+                            Text(
+                              q.questionText ?? '',
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                color: AppColors.forthColor,
+                                fontSize: 16.sp,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w400,
+                                height: 1.20.h,
+                              ),
+                            ),
+                            if (q.photo != null && q.photo!.isNotEmpty ||
+                                q.photo != null && q.photo != 'null')
+                              Image.network(
+                                q.photo!,
+                                height: 200,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const SizedBox.shrink(),
+                              ),
+                          ],
                         ),
                       ),
-                      if (q.photo != null && q.photo!.isNotEmpty ||
-                          q.photo != null && q.photo != 'null')
-                        Image.network(
-                          q.photo!,
-                          height: 200,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const SizedBox.shrink(),
-                        ),
-                    ]),
-                  ),
-                  // const Spacer(),
 
-                  buildOption('a', q.a ?? ''),
-                  buildOption('b', q.b ?? ''),
-                  buildOption('c', q.c ?? ''),
-                  buildOption('d', q.d ?? ''),
-                  8.verticalSpace
-                ],
-              ),
+                      // const Spacer(),
+                      buildOption('a', q.a ?? ''),
+                      buildOption('b', q.b ?? ''),
+                      buildOption('c', q.c ?? ''),
+                      buildOption('d', q.d ?? ''),
+                      8.verticalSpace,
+                    ],
+                  ),
             ),
           ),
-          8.verticalSpace,
+          // 8.verticalSpace,
 
           /// Button
           // InkWell(
@@ -206,6 +210,8 @@ class _QuestionWidgetState extends State<QuestionWidget> {
           //   ),
           // ),
           8.verticalSpace,
-        ]));
+        ],
+      ),
+    );
   }
 }

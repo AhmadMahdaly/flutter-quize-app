@@ -40,9 +40,23 @@ class UserImageNameWidget extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '${"welcome".tr(context)} $name',
-              style: interBold.copyWith(fontSize: 16.sp),
+            Row(
+              spacing: 4.w,
+              children: [
+                Text(
+                  'welcome'.tr(context),
+                  style: interBold.copyWith(fontSize: 14.sp),
+                ),
+                SizedBox(
+                  width: 130.w,
+                  child: Text(
+                    name,
+                    style: interBold.copyWith(fontSize: 15.sp),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
             ),
             Text(
               email,

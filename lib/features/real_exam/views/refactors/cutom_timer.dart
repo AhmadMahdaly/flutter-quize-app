@@ -13,7 +13,7 @@ class CustomTimerWidget extends StatefulWidget {
 
 class _CustomTimerWidgetState extends State<CustomTimerWidget> {
   bool isButtonDisabled = false;
-  int timeLeftInSeconds = 3600;
+  int timeLeftInSeconds = 7200;
   Timer? timer;
 
   @override
