@@ -7,6 +7,7 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/category_widget.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/guest/guest_login_dialog.dart';
 import 'package:smle/features/home/widgets/confirm_dialog.dart';
@@ -23,7 +24,21 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HomeAppBarWidget(),
+      appBar: isGuest
+          ? AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  context.pushReplacementNamed(Routes.loginScreen);
+                },
+                icon: const RotatedBox(
+                  quarterTurns: 2,
+                  child: Icon(Icons.logout_outlined),
+                ),
+              ),
+
+              iconTheme: const IconThemeData(color: AppColors.iconColorBlack),
+            )
+          : const HomeAppBarWidget(),
       drawer: isGuest ? null : const DrawerWidget(),
       body: SingleChildScrollView(
         child: Padding(
