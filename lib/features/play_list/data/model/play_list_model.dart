@@ -1,7 +1,4 @@
 class PlayListModel {
-  int? status;
-  String? message;
-  List<Data>? data;
 
   PlayListModel({this.status, this.message, this.data});
 
@@ -15,6 +12,9 @@ class PlayListModel {
       });
     }
   }
+  int? status;
+  String? message;
+  List<Data>? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -28,10 +28,6 @@ class PlayListModel {
 }
 
 class Data {
-  int? id;
-  String? name;
-  int? userId;
-  List<Questions>? questions;
 
   Data({this.id, this.name, this.userId, this.questions});
 
@@ -46,6 +42,10 @@ class Data {
       });
     }
   }
+  int? id;
+  String? name;
+  int? userId;
+  List<Questions>? questions;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -60,13 +60,13 @@ class Data {
 }
 
 class Questions {
-  int? id;
 
   Questions({this.id});
 
   Questions.fromJson(Map<String, dynamic> json) {
     id = json['id'];
   }
+  int? id;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

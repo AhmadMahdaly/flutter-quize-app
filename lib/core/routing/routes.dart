@@ -7,7 +7,8 @@ class Routes {
   static const String notificationScreen = '/notificationScreen';
   static const String privacyPolicyScreen = '/privacyPolicyScreen';
   static const String supportScreen = '/supportScreen';
-  static const String sCFHSScoreCalculatorScreen = '/sCFHSScoreCalculatorScreen';
+  static const String sCFHSScoreCalculatorScreen =
+      '/sCFHSScoreCalculatorScreen';
   static const String subscriptionScreen = '/subscription';
   static const String paymentScreen = '/payment';
   static const String addCardScreen = '/addCardScreen';
@@ -21,9 +22,5 @@ class Routes {
   static const String subcategoriesScreen = '/subcategoriesScreen';
   static const String playListScreen = '/playListScreen';
   static const String playListDetailsScreen = '/playListDetailsScreen';
-
-
-
-
-
+  static const String realExamScreen = '/realExamScreen';
 }

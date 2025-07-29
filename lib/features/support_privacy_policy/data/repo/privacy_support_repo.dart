@@ -1,36 +1,37 @@
-import '../../../../core/network/api_result.dart';
-import '../../../../core/network/dio_factory.dart';
-import '../../../../core/network/end_points.dart';
-import '../../../../core/network/failures.dart';
-import '../../../../core/shared_widgets/debug_print_widget.dart';
-import '../model/privacy_support_model.dart';
+import 'package:smle/core/network/api_result.dart';
+import 'package:smle/core/network/dio_factory.dart';
+import 'package:smle/core/network/end_points.dart';
+import 'package:smle/core/network/failures.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/features/support_privacy_policy/data/model/privacy_support_model.dart';
 
 class PrivacySupportRepository {
-  final DioFactory _dioFactory;
-
   PrivacySupportRepository(this._dioFactory);
+  final DioFactory _dioFactory;
 
   Future<ApiResult<PrivacySupportModel>> getSupport() async {
     final response = await _dioFactory.get(endPoint: EndPoints.support);
-    if (response!.statusCode == 200 ) {
-      PrivacySupportModel model = PrivacySupportModel.fromJson(response.data);
+    if (response!.statusCode == 200) {
+      final PrivacySupportModel model =
+          PrivacySupportModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['error']);
-      return ApiResult.failure(
-          ServerFailure.fromResponse(response.statusCode, response.data['error']));
+      return ApiResult.failure(ServerFailure.fromResponse(
+          response.statusCode, response.data['error']));
     }
   }
 
   Future<ApiResult<PrivacySupportModel>> getPrivacyPolicy() async {
     final response = await _dioFactory.get(endPoint: EndPoints.privacyPolicy);
-    if (response!.statusCode == 200 ) {
-      PrivacySupportModel model = PrivacySupportModel.fromJson(response.data);
+    if (response!.statusCode == 200) {
+      final PrivacySupportModel model =
+          PrivacySupportModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['error']);
-      return ApiResult.failure(
-          ServerFailure.fromResponse(response.statusCode, response.data['error']));
+      return ApiResult.failure(ServerFailure.fromResponse(
+          response.statusCode, response.data['error']));
     }
   }
 }

@@ -1,21 +1,21 @@
 import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/app.dart';
 import 'package:smle/core/bloc_observer.dart';
-import 'package:smle/core/fcm.dart';
-import 'core/cache_helper/cache_helper.dart';
-import 'core/di.dart';
-import 'core/network/dio_factory.dart';
+import 'package:smle/core/cache_helper/cache_helper.dart';
+import 'package:smle/core/di.dart';
+import 'package:smle/core/network/dio_factory.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isAndroid&&Platform.isIOS) {
+  if (Platform.isAndroid && Platform.isIOS) {
     HttpOverrides.global = MyHttpOverrides();
-  }  WidgetsFlutterBinding.ensureInitialized();
+  }
+  WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   await setupGetIt();
   await DioFactory.init();
@@ -38,4 +38,3 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
-

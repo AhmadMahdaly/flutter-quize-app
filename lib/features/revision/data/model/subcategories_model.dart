@@ -1,7 +1,4 @@
 class SubCategoriesModel {
-  int? status;
-  String? message;
-  Data? data;
 
   SubCategoriesModel({this.status, this.message, this.data});
 
@@ -10,6 +7,9 @@ class SubCategoriesModel {
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+  int? status;
+  String? message;
+  Data? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -23,11 +23,6 @@ class SubCategoriesModel {
 }
 
 class Data {
-  int? id;
-  String? name;
-  String? photo;
-  List<Subcategories>? subcategories;
-  List<Chapters>? chapters;
 
   Data({this.id, this.name, this.photo, this.subcategories, this.chapters});
 
@@ -48,6 +43,11 @@ class Data {
       });
     }
   }
+  int? id;
+  String? name;
+  String? photo;
+  List<Subcategories>? subcategories;
+  List<Chapters>? chapters;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -65,9 +65,6 @@ class Data {
 }
 
 class Subcategories {
-  int? id;
-  String? name;
-  int? categoryId;
 
   Subcategories({this.id, this.name, this.categoryId});
 
@@ -76,6 +73,9 @@ class Subcategories {
     name = json['name'];
     categoryId = json['category_id'];
   }
+  int? id;
+  String? name;
+  int? categoryId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -87,11 +87,6 @@ class Subcategories {
 }
 
 class Chapters {
-  int? id;
-  String? name;
-  int? categoryId;
-  String? video;
-  String? pdf;
 
   Chapters({this.id, this.name, this.categoryId, this.video, this.pdf});
 
@@ -102,6 +97,11 @@ class Chapters {
     video = json['video'];
     pdf = json['pdf'];
   }
+  int? id;
+  String? name;
+  int? categoryId;
+  String? video;
+  String? pdf;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

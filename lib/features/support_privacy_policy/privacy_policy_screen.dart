@@ -12,41 +12,41 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: CustomAppBar(title: 'privacy_policy'.tr(context),),
-      body: BlocConsumer<PrivacyPolicySupportCubit,PrivacyPolicySupportStates>(
-          listener: (context,state){},
-          builder: (context,state) {
+    return Scaffold(
+      appBar: CustomAppBar(
+        title: 'privacy_policy'.tr(context),
+      ),
+      body: BlocConsumer<PrivacyPolicySupportCubit, PrivacyPolicySupportStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
             return SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
-              child:
-
-              context.read<PrivacyPolicySupportCubit>().privacyPolicyModel == null
-                  ? const Column() :
-              Column(
-                children: [
-                  SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(horizontal: 15.sp),
-                    child:   Padding(
-                      padding:  EdgeInsets.symmetric(vertical: 20.h),
-
-                      child: HtmlWidget(
-                    ' ${context.read<PrivacyPolicySupportCubit>().privacyPolicyModel!.data}',
-                        key: const Key('privacy_policy'),
-                        onTapUrl: (String url) {
-                          return launchUrlString(url,
-                              mode: LaunchMode.externalApplication);
-                        },
-                      ),
+              child: context
+                          .read<PrivacyPolicySupportCubit>()
+                          .privacyPolicyModel ==
+                      null
+                  ? const Column()
+                  : Column(
+                      children: [
+                        SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: EdgeInsets.symmetric(horizontal: 15.sp),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20.h),
+                            child: HtmlWidget(
+                              ' ${context.read<PrivacyPolicySupportCubit>().privacyPolicyModel!.data}',
+                              key: const Key('privacy_policy'),
+                              onTapUrl: (String url) {
+                                return launchUrlString(url,
+                                    mode: LaunchMode.externalApplication);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             );
-          }
-      ),
-
+          }),
     );
   }
 }

@@ -1,9 +1,7 @@
 /// errors : [{"code":"l_name","message":"The last name field is required."},{"code":"password","message":"The password field is required."}]
+library;
 
 class ErrorResponse {
-  List<Errors>? _errors;
-
-  List<Errors>? get errors => _errors;
 
   ErrorResponse({
     List<Errors>? errors}){
@@ -11,18 +9,21 @@ class ErrorResponse {
   }
 
   ErrorResponse.fromJson(dynamic json) {
-    if (json["errors"] != null) {
+    if (json['errors'] != null) {
       _errors = [];
-      json["errors"].forEach((v) {
+      json['errors'].forEach((v) {
         _errors!.add(Errors.fromJson(v));
       });
     }
   }
+  List<Errors>? _errors;
+
+  List<Errors>? get errors => _errors;
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
+    final map = <String, dynamic>{};
     if (_errors != null) {
-      map["errors"] = _errors!.map((v) => v.toJson()).toList();
+      map['errors'] = _errors!.map((v) => v.toJson()).toList();
     }
     return map;
   }
@@ -33,11 +34,6 @@ class ErrorResponse {
 /// message : "The last name field is required."
 
 class Errors {
-  String? _code;
-  String? _message;
-
-  String? get code => _code;
-  String? get message => _message;
 
   Errors({
     String? code,
@@ -47,14 +43,19 @@ class Errors {
   }
 
   Errors.fromJson(dynamic json) {
-    _code = json["code"];
-    _message = json["message"];
+    _code = json['code'];
+    _message = json['message'];
   }
+  String? _code;
+  String? _message;
+
+  String? get code => _code;
+  String? get message => _message;
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["code"] = _code;
-    map["message"] = _message;
+    final map = <String, dynamic>{};
+    map['code'] = _code;
+    map['message'] = _message;
     return map;
   }
 

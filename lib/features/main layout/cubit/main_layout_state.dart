@@ -10,9 +10,9 @@ abstract class MainLayoutState extends Equatable {
 class MainLayoutInitial extends MainLayoutState {}
 
 class AppBottomNavState extends MainLayoutState {
-  final int currentIndex;
 
   const AppBottomNavState(this.currentIndex);
+  final int currentIndex;
 
   @override
   List<Object> get props => [currentIndex];

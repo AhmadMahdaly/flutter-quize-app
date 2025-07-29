@@ -1,20 +1,20 @@
 import 'package:smle/features/play_list/data/model/play_list_model.dart';
 
-import '../../../../core/network/api_result.dart';
-import '../../../../core/network/dio_factory.dart';
-import '../../../../core/network/end_points.dart';
-import '../../../../core/network/failures.dart';
-import '../../../../core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/core/network/api_result.dart';
+import 'package:smle/core/network/dio_factory.dart';
+import 'package:smle/core/network/end_points.dart';
+import 'package:smle/core/network/failures.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 
 class PlayListRepository {
-  final DioFactory _dioFactory;
 
   PlayListRepository(this._dioFactory);
+  final DioFactory _dioFactory;
 
   Future<ApiResult<PlayListModel>> getPlayList() async {
     final response = await _dioFactory.get(endPoint: EndPoints.getPlayList);
     if (response!.statusCode == 200 ) {
-      PlayListModel model = PlayListModel.fromJson(response.data);
+      final PlayListModel model = PlayListModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['message']);
@@ -26,7 +26,7 @@ class PlayListRepository {
   Future<ApiResult<PlayListModel>> getPlayListDetails() async {
     final response = await _dioFactory.get(endPoint: EndPoints.getPlayListDetails);
     if (response!.statusCode == 200 ) {
-      PlayListModel model = PlayListModel.fromJson(response.data);
+      final PlayListModel model = PlayListModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['message']);

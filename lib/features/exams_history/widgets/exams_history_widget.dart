@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/theme/colors.dart';
-import '../../../core/theme/text_styles.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
 class ExamsHistoryWidget extends StatelessWidget {
   const ExamsHistoryWidget({super.key, required this.text, this.onPressed});

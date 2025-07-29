@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/features/support_privacy_policy/data/model/privacy_support_model.dart';
+import 'package:smle/features/support_privacy_policy/data/repo/privacy_support_repo.dart';
 
-import '../../../core/helpers/loading.dart';
-import '../data/model/privacy_support_model.dart';
-import '../data/repo/privacy_support_repo.dart';
 part 'privacy_policy_state.dart';
 
 class PrivacyPolicySupportCubit extends Cubit<PrivacyPolicySupportStates> {
-  PrivacyPolicySupportCubit(this._privacySupportRepository) : super( PrivacyPolicySupportInitialState());
-final PrivacySupportRepository _privacySupportRepository;
-
+  PrivacyPolicySupportCubit(this._privacySupportRepository)
+      : super(PrivacyPolicySupportInitialState());
+  final PrivacySupportRepository _privacySupportRepository;
 
   /// Get Support
   PrivacySupportModel? supportModel;

@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
-import '../../../core/theme/colors.dart';
-import '../../../core/theme/text_styles.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
 class YearPickerWidget extends StatelessWidget {
   const YearPickerWidget({

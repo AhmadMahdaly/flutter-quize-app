@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 
-import '../../../core/routing/routes.dart';
-import '../../../core/theme/colors.dart';
-import '../../../core/theme/text_styles.dart';
-import '../cubit/play_list_cubit.dart';
+import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 
 class PlaylistAlertWidget extends StatelessWidget {
   const PlaylistAlertWidget({super.key,required this.playListNameController, required this.title, required this.isEdit, this.playListName, this.playListId, this.questionId});

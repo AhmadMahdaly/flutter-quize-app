@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
-import '../../../core/theme/assets.dart';
+import 'package:smle/core/theme/assets.dart';
 
 class CircleImageWidget extends StatelessWidget {
   const CircleImageWidget({super.key, required this.imagePath, required this.number});

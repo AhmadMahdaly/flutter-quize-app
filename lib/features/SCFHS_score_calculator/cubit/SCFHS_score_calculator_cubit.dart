@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/helpers/loading.dart';
-import '../data/model/calculate_result_model.dart';
-import '../data/model/calculator_info_model.dart';
-import '../data/repo/calculator_repo.dart';
+import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/features/SCFHS_score_calculator/data/model/calculate_result_model.dart';
+import 'package:smle/features/SCFHS_score_calculator/data/model/calculator_info_model.dart';
+import 'package:smle/features/SCFHS_score_calculator/data/repo/calculator_repo.dart';
 part 'SCFHS_score_calculator_state.dart';
 
 class ScfhsScoreCalculatorCubit extends Cubit<SCFHSScoreCalculatorStates> {
@@ -30,7 +30,7 @@ class ScfhsScoreCalculatorCubit extends Cubit<SCFHSScoreCalculatorStates> {
 
   /// Select Cv Check List Id
   List<int> selectedCvIds=[];
-  selectCvCheckList(int selectedId){
+  void selectCvCheckList(int selectedId){
     if(!selectedCvIds.contains(selectedId)){
       selectedCvIds.add(selectedId);
     }else{

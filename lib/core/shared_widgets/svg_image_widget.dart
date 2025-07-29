@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SvgImage extends StatelessWidget {
+  const SvgImage({super.key, this.height=200, required this.imagePath, this.color,this.isNetwork=false,  this.isFill=false});
   final double? height;
   final String imagePath;
   final Color? color;
   final bool isNetwork;
   final bool isFill;
-  const SvgImage({super.key, this.height=200, required this.imagePath, this.color,this.isNetwork=false,  this.isFill=false});
 
   @override
   Widget build(BuildContext context) {

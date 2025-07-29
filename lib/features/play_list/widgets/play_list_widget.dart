@@ -10,8 +10,8 @@ import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 import 'package:smle/features/play_list/widgets/playlist_alert_widget.dart';
 
-import '../../../core/di.dart';
-import '../../../core/theme/colors.dart';
+import 'package:smle/core/di.dart';
+import 'package:smle/core/theme/colors.dart';
 
 class PlayListWidget extends StatelessWidget {
   const PlayListWidget({super.key, required this.playListName, required this.questionCount, required this.playListId, required this.playListNameController});

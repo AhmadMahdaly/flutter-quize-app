@@ -1,18 +1,16 @@
 import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
-import 'package:smle/features/subscription/data/model/checkout_model.dart';
-import 'package:smle/features/subscription/data/model/packages_model.dart';
-import '../../../../core/network/api_result.dart';
-import '../../../../core/network/dio_factory.dart';
-import '../../../../core/network/end_points.dart';
-import '../../../../core/network/failures.dart';
-import '../../../../core/shared_widgets/debug_print_widget.dart';
-import '../../../revision/data/model/categories_model.dart';
-import '../../../revision/data/model/subcategories_model.dart';
+import 'package:smle/core/network/api_result.dart';
+import 'package:smle/core/network/dio_factory.dart';
+import 'package:smle/core/network/end_points.dart';
+import 'package:smle/core/network/failures.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/features/revision/data/model/categories_model.dart';
+import 'package:smle/features/revision/data/model/subcategories_model.dart';
 
 class QBankRepository {
-  final DioFactory _dioFactory;
 
   QBankRepository(this._dioFactory);
+  final DioFactory _dioFactory;
 
   Future<ApiResult<QBankModel>> getQBank(
       int month, int year, List<int> subcategoryIds) async {
@@ -25,7 +23,7 @@ class QBankRepository {
       'subcategory_id': subcategoryIds,
     });
     if (response!.statusCode == 200) {
-      QBankModel model = QBankModel.fromJson(response.data);
+      final QBankModel model = QBankModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['message']);
@@ -37,7 +35,7 @@ class QBankRepository {
   Future<ApiResult<CategoriesModel>> getCategories() async {
     final response = await _dioFactory.get(endPoint: EndPoints.getCategories);
     if (response!.statusCode == 200) {
-      CategoriesModel model = CategoriesModel.fromJson(response.data);
+      final CategoriesModel model = CategoriesModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['error']);
@@ -51,7 +49,7 @@ class QBankRepository {
     final response = await _dioFactory.get(
         endPoint: '${EndPoints.getSubCategories}$categoryId');
     if (response!.statusCode == 200) {
-      SubCategoriesModel model = SubCategoriesModel.fromJson(response.data);
+      final SubCategoriesModel model = SubCategoriesModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['error']);

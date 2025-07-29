@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/features/q_bank/data/repo/q_bank_repo.dart';
-import '../../../core/helpers/loading.dart';
-import '../../../core/routing/routes.dart';
-import '../../revision/data/model/categories_model.dart';
-import '../../revision/data/model/subcategories_model.dart';
-import '../data/model/q_bank_model.dart';
+import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/features/revision/data/model/categories_model.dart';
+import 'package:smle/features/revision/data/model/subcategories_model.dart';
+import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
 part 'q_bank_state.dart';
 
 class QBankcubit extends Cubit<QBankStates> {
@@ -40,7 +38,7 @@ class QBankcubit extends Cubit<QBankStates> {
   }
   }
   int index =0;
-  setIndexQBank(bool isNext){
+  void setIndexQBank(bool isNext){
     if(isNext){
       index++;
     }else{
@@ -50,7 +48,7 @@ class QBankcubit extends Cubit<QBankStates> {
   }
 
 
-  setOffsetQBank(bool isNext){
+  void setOffsetQBank(bool isNext){
     if(isNext){
       offset++;
     }else{
@@ -95,14 +93,14 @@ class QBankcubit extends Cubit<QBankStates> {
   }
   /// Select Date
   DateTime pickedDate=DateTime(2020);
-  selectDate(DateTime selected) {
+  void selectDate(DateTime selected) {
     pickedDate = selected;
     emit(SelectDateState());
   }
 
   /// Select Category
   String? selectedCategory;
-  selectCategory(String selected) {
+  void selectCategory(String selected) {
     selectedCategory = selected;
     emit(SelectCategoryState());
   }
@@ -110,7 +108,7 @@ class QBankcubit extends Cubit<QBankStates> {
   /// Select Sub Category
   List<int> selectedSubCategoryId=[];
   List<String> selectedSubCategory=[];
-  selectSubCategory(List<int> selectedId,List<String> selectedValues) {
+  void selectSubCategory(List<int> selectedId,List<String> selectedValues) {
     // if(selectedSubCategory==[]){
       selectedSubCategory=selectedValues;
     // }else{
@@ -128,13 +126,13 @@ class QBankcubit extends Cubit<QBankStates> {
     emit(SelectSubCategoryState());
   }
   // String? selectedAnswerKey;
-  selectAnswer(key){
+  void selectAnswer(key){
     qBankModel!.data![index].selectedAnswer=key;
     emit(SelectAnswerState());
   }
 
   bool isAnswered=false;
-  setIsAnswered(){
+  void setIsAnswered(){
     isAnswered= !isAnswered;
     emit(SetIsAnsweredState());
   }

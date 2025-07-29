@@ -1,8 +1,4 @@
 class PrivacySupportModel {
-  int? status;
-  String? message;
-  String? data;
-
   PrivacySupportModel({this.status, this.message, this.data});
 
   PrivacySupportModel.fromJson(Map<String, dynamic> json) {
@@ -10,6 +6,9 @@ class PrivacySupportModel {
     message = json['message'];
     data = json['data'];
   }
+  int? status;
+  String? message;
+  String? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

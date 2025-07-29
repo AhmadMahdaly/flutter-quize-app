@@ -1,15 +1,14 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'cache_values.dart';
+import 'package:smle/core/cache_helper/cache_values.dart';
 
 class CacheHelper {
   static late SharedPreferences sharedPreferences;
 
-  static init() async {
+  static Future<void> init() async {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
@@ -19,21 +18,21 @@ class CacheHelper {
     return sharedPreferences.get(key);
   }
 
-  static bool isEnglish() => getCurrentLanguage() == "en";
+  static bool isEnglish() => getCurrentLanguage() == 'en';
 
   static Future<void> changeLanguageToEn() async {
-    await CacheHelper.saveData(key: CacheKeys.currentLanguage, value: "en");
+    await CacheHelper.saveData(key: CacheKeys.currentLanguage, value: 'en');
   }
 
   static String getCurrentLanguage() {
     return CacheHelper.getData(
           key: CacheKeys.currentLanguage,
         ) ??
-        "en";
+        'en';
   }
 
   static Future<void> changeLanguageToAr() async {
-    await CacheHelper.saveData(key: CacheKeys.currentLanguage, value: "ar");
+    await CacheHelper.saveData(key: CacheKeys.currentLanguage, value: 'ar');
   }
   Future<void> cacheLanguageCode(String languageCode) async {
     sharedPreferences.setString(CacheKeys.currentLanguage, languageCode);
@@ -65,7 +64,7 @@ class CacheHelper {
   }) async {
     const flutterSecureStorage = FlutterSecureStorage();
     debugPrint(
-        "FlutterSecureStorage : setSecuredString with key : $key and value : $value");
+        'FlutterSecureStorage : setSecuredString with key : $key and value : $value');
     await flutterSecureStorage.write(key: key, value: value.toString());
   }
 

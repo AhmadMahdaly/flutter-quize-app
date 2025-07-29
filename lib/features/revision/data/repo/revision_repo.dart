@@ -1,20 +1,20 @@
 import 'package:smle/features/revision/data/model/subcategories_model.dart';
-import '../../../../core/network/api_result.dart';
-import '../../../../core/network/dio_factory.dart';
-import '../../../../core/network/end_points.dart';
-import '../../../../core/network/failures.dart';
-import '../../../../core/shared_widgets/debug_print_widget.dart';
-import '../model/categories_model.dart';
+import 'package:smle/core/network/api_result.dart';
+import 'package:smle/core/network/dio_factory.dart';
+import 'package:smle/core/network/end_points.dart';
+import 'package:smle/core/network/failures.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/features/revision/data/model/categories_model.dart';
 
 class RevisionRepository {
-  final DioFactory _dioFactory;
 
   RevisionRepository(this._dioFactory);
+  final DioFactory _dioFactory;
 
   Future<ApiResult<CategoriesModel>> getCategories() async {
     final response = await _dioFactory.get(endPoint: EndPoints.getCategories);
     if (response!.statusCode == 200 ) {
-      CategoriesModel model = CategoriesModel.fromJson(response.data);
+      final CategoriesModel model = CategoriesModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['error']);
@@ -26,7 +26,7 @@ class RevisionRepository {
   Future<ApiResult<SubCategoriesModel>> getSubCategories(String? categoryId) async {
     final response = await _dioFactory.get(endPoint: '${EndPoints.getSubCategories}$categoryId');
     if (response!.statusCode == 200 ) {
-      SubCategoriesModel model = SubCategoriesModel.fromJson(response.data);
+      final SubCategoriesModel model = SubCategoriesModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['error']);

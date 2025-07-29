@@ -8,9 +8,16 @@ import 'package:smle/core/theme/text_styles.dart';
 class UserImageNameWidget extends StatelessWidget {
   const UserImageNameWidget({super.key, required this.name, required this.email, required this.imagePath, required this.points});
 final String name,email,points,imagePath;
+  const UserImageNameWidget(
+      {super.key,
+      required this.name,
+      required this.email,
+      required this.imagePath,
+      required this.point});
+  final String name, email, imagePath, point;
   @override
   Widget build(BuildContext context) {
-    return             Row(
+    return Row(
       children: [
         Container(
           decoration: BoxDecoration(
@@ -21,7 +28,7 @@ final String name,email,points,imagePath;
             radius: 50.r, // Avatar size
             backgroundColor:AppColors.greyColor,
             child: Padding(
-              padding:  EdgeInsets.only(top: 5.sp),
+              padding: EdgeInsets.only(top: 5.sp),
               child: Image(
                 image: imagePath.isEmpty
                     ?  const AssetImage(Assets.user) // Use a valid asset path
@@ -32,7 +39,6 @@ final String name,email,points,imagePath;
         ),
         15.horizontalSpace,
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('${"welcome".tr(context)} $name',style: interBold.copyWith(fontSize: 16.sp),),
             Text(email,style: interRegular.copyWith(fontSize: 14.sp,color: AppColors.darkGreyColor),),

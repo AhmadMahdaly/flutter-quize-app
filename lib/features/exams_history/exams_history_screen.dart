@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import '../../core/theme/colors.dart';
+import 'package:smle/core/theme/colors.dart';
 
 class ExamsHistoryScreen extends StatelessWidget {
   const ExamsHistoryScreen({super.key});
@@ -28,10 +27,10 @@ class ExamsHistoryScreen extends StatelessWidget {
                   dividerColor: Colors.transparent,
                   tabs: [
                     Tab(
-                      text: "pass".tr(context),
+                      text: 'pass'.tr(context),
                     ),
-                    Tab(text: "mid_level".tr(context)),
-                    Tab(text: "fail".tr(context)),
+                    Tab(text: 'mid_level'.tr(context)),
+                    Tab(text: 'fail'.tr(context)),
                   ],
                 ),
                 Expanded(
@@ -59,7 +58,7 @@ class ExamsHistoryScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(30.r),
                               child: SizedBox(
                                 height: 40.h,
-                                child: LinearProgressIndicator(
+                                child: const LinearProgressIndicator(
                                   value: 60 / 100,
                                   backgroundColor: AppColors.greyColor,
                                   color: AppColors.successColor,
@@ -70,7 +69,7 @@ class ExamsHistoryScreen extends StatelessWidget {
                                 alignment: Alignment.centerRight,
                                 child: Padding(
                                   padding:  EdgeInsets.only(right: 8.w),
-                                  child: Text("60/100%",style: interBold.copyWith(fontSize: 14.sp,color: AppColors.forthColor),),
+                                  child: Text('60/100%',style: interBold.copyWith(fontSize: 14.sp,color: AppColors.forthColor),),
                                 )),
 
                           ],

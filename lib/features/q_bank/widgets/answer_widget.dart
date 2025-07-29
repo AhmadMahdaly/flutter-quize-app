@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
-import '../cubit/q_bank_cubit.dart';
+import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
 
 class AnswerWidget extends StatelessWidget {
   const AnswerWidget({super.key, required this.answerText,  this.isSelected, required this.isTrue});

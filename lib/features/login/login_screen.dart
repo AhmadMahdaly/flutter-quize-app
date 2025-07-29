@@ -7,10 +7,10 @@ import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
 import 'package:smle/features/login/widgets/login_button.dart';
-import '../../core/theme/colors.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

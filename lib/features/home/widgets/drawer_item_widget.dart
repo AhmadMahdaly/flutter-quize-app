@@ -4,10 +4,10 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class DrawerItemWidget extends StatelessWidget {
+  const DrawerItemWidget({super.key, required this.iconAsset, required this.title, required this.onTap});
   final String iconAsset;
   final String title;
   final GestureTapCallback onTap;
-  const DrawerItemWidget({super.key, required this.iconAsset, required this.title, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

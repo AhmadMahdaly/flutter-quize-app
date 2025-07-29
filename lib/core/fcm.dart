@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
@@ -8,7 +9,7 @@ import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/core/shared_widgets/notifcation_snack_bar.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
-  debugPrintWidget("${message.data}");
+  debugPrintWidget('${message.data}');
 }
 
 class PushNotificationService {
@@ -18,9 +19,7 @@ class PushNotificationService {
   void handleMessage(RemoteMessage? message) {
     if (message == null) {
       return;
-    } else {
-
-    }
+    } else {}
   }
 
   Future initLocalNotifications() async {
@@ -46,8 +45,8 @@ class PushNotificationService {
       final notification = event.notification;
       if (notification == null) return;
       notificationSnackBar(
-          context: navigatorKey.currentContext,
-          message: notification.title,
+          context: navigatorKey.currentContext!,
+          message: notification.title!,
           event: event);
     });
   }

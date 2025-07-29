@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,11 +7,11 @@ import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
 import 'package:smle/features/q_bank/widgets/drop_down_widget.dart';
 import 'package:smle/features/q_bank/widgets/question_button_widget.dart';
 import 'package:smle/features/q_bank/widgets/year_picker_widget.dart';
-import '../../core/routing/routes.dart';
-import '../../core/shared_widgets/custom_app_bar.dart';
-import '../../core/theme/colors.dart';
-import '../../core/theme/text_styles.dart';
-import 'data/model/startQuizModel.dart';
+import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/q_bank/data/model/startQuizModel.dart';
 
 class CreateQuizScreen extends StatelessWidget {
   const CreateQuizScreen({super.key});
@@ -88,7 +87,7 @@ class CreateQuizScreen extends StatelessWidget {
                                           .selectedSubCategory ,
                               onChangeFunMulti: (value) {
                                 print(value);
-                                List<int> ids=[];
+                                final List<int> ids=[];
                                 for(int i =0; i<value.length;i++){
                                 print('${context.read<QBankcubit>().subCategoriesModel!.data!.subcategories!.indexWhere((element) =>
                                     value[i]==element.name,)}');

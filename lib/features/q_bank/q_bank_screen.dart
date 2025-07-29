@@ -12,7 +12,7 @@ import 'package:smle/features/q_bank/widgets/answer_widget.dart';
 import 'package:smle/features/q_bank/widgets/q_bank_progress_widget.dart';
 import 'package:smle/features/q_bank/widgets/question_button_widget.dart';
 import 'package:smle/features/q_bank/widgets/question_widget.dart';
-import '../../core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 
 class QBankScreen extends StatelessWidget {
   const QBankScreen({super.key, required this.startQuizModel});
@@ -73,7 +73,7 @@ class QBankScreen extends StatelessWidget {
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  bool isTrue = context
+                                  final bool isTrue = context
                                           .read<QBankcubit>()
                                           .qBankModel!
                                           .data![

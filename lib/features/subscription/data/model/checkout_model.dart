@@ -1,8 +1,4 @@
 class CheckoutModel {
-  int? status;
-  String? message;
-  Data? data;
-
   CheckoutModel({this.status, this.message, this.data});
 
   CheckoutModel.fromJson(Map<String, dynamic> json) {
@@ -10,6 +6,9 @@ class CheckoutModel {
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+  int? status;
+  String? message;
+  Data? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -23,25 +22,15 @@ class CheckoutModel {
 }
 
 class Data {
-  int? offerId;
-  int? offerPrice;
-  String? codeDiscount;
-  int? codeDiscountPrice;
-  int? totalAfterCodeDiscount;
-  int? deductedPoints;
-  int? totalAfterPointsDiscount;
-  double? payments;
-
   Data(
-      {
-        this.offerId,
-        this.offerPrice,
-        this.codeDiscount,
-        this.codeDiscountPrice,
-        this.totalAfterCodeDiscount,
-        this.deductedPoints,
-        this.totalAfterPointsDiscount,
-        this.payments});
+      {this.offerId,
+      this.offerPrice,
+      this.codeDiscount,
+      this.codeDiscountPrice,
+      this.totalAfterCodeDiscount,
+      this.deductedPoints,
+      this.totalAfterPointsDiscount,
+      this.payments});
 
   Data.fromJson(Map<String, dynamic> json) {
     offerId = json['offer_id'];
@@ -53,6 +42,14 @@ class Data {
     totalAfterPointsDiscount = json['total_after_points_discount'];
     payments = json['payments'];
   }
+  int? offerId;
+  int? offerPrice;
+  String? codeDiscount;
+  int? codeDiscountPrice;
+  int? totalAfterCodeDiscount;
+  int? deductedPoints;
+  int? totalAfterPointsDiscount;
+  double? payments;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

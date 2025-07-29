@@ -1,7 +1,4 @@
 class CalculateResultModel {
-  int? status;
-  String? message;
-  String? data;
 
   CalculateResultModel({this.status, this.message, this.data});
 
@@ -10,6 +7,9 @@ class CalculateResultModel {
     message = json['message'];
     data = json['data'];
   }
+  int? status;
+  String? message;
+  String? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

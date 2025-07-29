@@ -1,16 +1,12 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
-import '../../core/theme/text_styles.dart';
-
-
-
-
-messageToast(BuildContext context,String message){
-  return    showToastWidget(
+ToastFuture messageToast(BuildContext context, String message) {
+  return showToastWidget(
     Padding(
-      padding:  EdgeInsets.symmetric(horizontal: 2.h),
+      padding: EdgeInsets.symmetric(horizontal: 2.h),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -19,19 +15,18 @@ messageToast(BuildContext context,String message){
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.0),
           ),
-          color: Theme.of(context).primaryColor.withOpacity(0.65),
+          color: Theme.of(context).primaryColor.withAlpha(160),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding:  EdgeInsets.symmetric(vertical: 5.h,horizontal: 5.w),
+              padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
               child: Center(
-                child: Text(
-                  message,
-                  textAlign: TextAlign.center,
-                  style: interRegular.copyWith(color: Theme.of(context).cardColor)
-                ),
+                child: Text(message,
+                    textAlign: TextAlign.center,
+                    style: interRegular.copyWith(
+                        color: Theme.of(context).cardColor)),
               ),
             ),
           ],

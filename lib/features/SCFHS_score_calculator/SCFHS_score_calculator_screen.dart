@@ -3,18 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/SCFHS_score_calculator/cubit/SCFHS_score_calculator_cubit.dart';
 import 'package:smle/features/SCFHS_score_calculator/widgets/calculate_result_dialog.dart';
 import 'package:smle/features/SCFHS_score_calculator/widgets/text_row_widget.dart';
 
-import '../../core/shared_widgets/custom_app_bar.dart';
+class ScfhsScoreCalculatorScreen extends StatefulWidget {
+  const ScfhsScoreCalculatorScreen({super.key});
 
-class ScfhsScoreCalculatorScreen extends StatelessWidget {
-  ScfhsScoreCalculatorScreen({super.key});
-  int? selectedHour; // Move this outside StatefulBuilder to persist the state
+  @override
+  State<ScfhsScoreCalculatorScreen> createState() =>
+      _ScfhsScoreCalculatorScreenState();
+}
 
+class _ScfhsScoreCalculatorScreenState
+    extends State<ScfhsScoreCalculatorScreen> {
+  int? selectedHour;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +48,9 @@ class ScfhsScoreCalculatorScreen extends StatelessWidget {
                         20.verticalSpace,
                         TextFormField(
                           textAlign: TextAlign.center,
-                          controller: context.read<ScfhsScoreCalculatorCubit>().realExamController,
+                          controller: context
+                              .read<ScfhsScoreCalculatorCubit>()
+                              .realExamController,
                           style: interRegular.copyWith(
                               color: AppColors.darkGreyColor),
                           decoration: InputDecoration(
@@ -79,7 +87,9 @@ class ScfhsScoreCalculatorScreen extends StatelessWidget {
                                 '(${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.gPA!.percentage})'),
                         20.verticalSpace,
                         TextFormField(
-                          controller: context.read<ScfhsScoreCalculatorCubit>().gpaController,
+                          controller: context
+                              .read<ScfhsScoreCalculatorCubit>()
+                              .gpaController,
                           textAlign: TextAlign.center,
                           style: interRegular.copyWith(
                               color: AppColors.darkGreyColor),
@@ -143,8 +153,19 @@ class ScfhsScoreCalculatorScreen extends StatelessWidget {
                                                   .id!);
                                         },
                                         child: Icon(
-                                          context.read<ScfhsScoreCalculatorCubit>().selectedCvIds.contains(context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.cVChecklist!.items![index].id!)?
-                                          CupertinoIcons.checkmark_circle:CupertinoIcons.circle,
+                                          context
+                                                  .read<
+                                                      ScfhsScoreCalculatorCubit>()
+                                                  .selectedCvIds
+                                                  .contains(context
+                                                      .read<
+                                                          ScfhsScoreCalculatorCubit>()
+                                                      .calculatorInfoModel!
+                                                      .cVChecklist!
+                                                      .items![index]
+                                                      .id!)
+                                              ? CupertinoIcons.checkmark_circle
+                                              : CupertinoIcons.circle,
                                           color: AppColors.secondaryColor,
                                         ),
                                       ),
@@ -175,29 +196,31 @@ class ScfhsScoreCalculatorScreen extends StatelessWidget {
                         Center(
                           child: TextButton(
                             onPressed: () {
-                              context.read<ScfhsScoreCalculatorCubit>().getCalculateResult().then((onValue){
+                              context
+                                  .read<ScfhsScoreCalculatorCubit>()
+                                  .getCalculateResult()
+                                  .then((onValue) {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    if(onValue!=null){
-                                      return  CalculateResultDialog(score:
-                                      onValue.data!,);
-                                    }else
-                                      {
-                                    return const SizedBox();
-                                  }
-                                    },
+                                    if (onValue != null) {
+                                      return CalculateResultDialog(
+                                        score: onValue.data!,
+                                      );
+                                    } else {
+                                      return const SizedBox();
+                                    }
+                                  },
                                 );
                               });
-
                             },
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
+                              backgroundColor: WidgetStateProperty.all(
                                   AppColors.secondaryColor),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize: MaterialStateProperty.all(
-                                  const Size(150, 52)),
-                              shape: MaterialStateProperty.all(
+                              minimumSize:
+                                  WidgetStateProperty.all(const Size(150, 52)),
+                              shape: WidgetStateProperty.all(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),

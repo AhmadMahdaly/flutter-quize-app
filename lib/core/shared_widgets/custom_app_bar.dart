@@ -1,21 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import '../../core/theme/colors.dart';
+import 'package:smle/core/theme/colors.dart';
 
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({
+ const CustomAppBar({
     super.key,
      this.title='',
     this.canBack= true,
     this.iconAction,
   });
 
-  String title;
-  bool canBack ;
-  IconData? iconAction ;
+ final String title;
+ final bool canBack ;
+ final IconData? iconAction ;
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'failures.dart';
+import 'package:smle/core/network/failures.dart';
 part 'api_result.freezed.dart';
 
 @Freezed()
