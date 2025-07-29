@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/constants.dart';
+import 'package:smle/core/routing/app_router.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
@@ -15,7 +17,7 @@ class MainLayoutScreen extends StatelessWidget {
         return PopScope(
           canPop: false,
           child: Scaffold(
-            body: AppRouter().screen[mainLayoutIntitalScreenIndex],
+            body: AppRouter().screen[mainLayoutInitialScreenIndex],
             bottomNavigationBar: Container(
               margin: EdgeInsets.symmetric(horizontal: 15.w),
               clipBehavior: Clip.hardEdge,
@@ -29,7 +31,7 @@ class MainLayoutScreen extends StatelessWidget {
                 onTap: (index) {
                   MainLayoutCubit.get(context).changeBottomNavBar(index);
                 },
-                currentIndex: mainLayoutIntitalScreenIndex,
+                currentIndex: mainLayoutInitialScreenIndex,
                 items: [
                   BottomNavigationBarItem(
                     icon: Container(

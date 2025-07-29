@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/helpers/loading.dart';
-import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/features/login/data/model/login_model.dart';
 import 'package:smle/features/login/data/repo/login_repo.dart';
-import '../../../core/helpers/loading.dart';
-import '../../../core/routing/routes.dart';
 import '../data/login_api.dart';
 part 'login_state.dart';
 
@@ -21,7 +17,6 @@ class LoginCubit extends Cubit<LoginStates> {
    try {
     user= await GoogleSignInApi.login();
     user!.authentication.then((googleKey){
-      log(user!.id);
       logIn(user!.id,user!.email,user!.displayName!);
       debugPrintWidget(user!.authHeaders.then((onValue){
         debugPrintWidget(onValue);
@@ -59,18 +54,4 @@ class LoginCubit extends Cubit<LoginStates> {
       return false;
     } }
 
-
-//   Future deleteAccount(BuildContext context) async {
-//     showLoading();
-//     emit(DeleteAccountLoadingState());
-//     final result = await _loginRepository.deleteAccount();
-//     result.when(success: (success) {
-//       context.pushReplacementNamed(Routes.loginScreen);
-//       hideLoading();
-//       emit(DeleteAccountSuccessState());
-//     }, failure: (error) {
-//       hideLoading();
-//       emit(DeleteAccountFailedState());
-//     });
-//   }
-// }
+}

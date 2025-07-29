@@ -81,7 +81,6 @@ class Assets {
   static const String questionMark = "assets/images/png/question_mark.png";
   /// assets/images/homeDoctor.png
   static const String homeDoctor = "assets/images/png/home_doctor.png";
-  static const String questionMark = 'assets/images/png/question_mark.png';
 
 }
 

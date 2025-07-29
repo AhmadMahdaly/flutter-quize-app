@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/real_exam/views/refactors/timeline/question_items/complated_item.dart';
 import 'package:smle/features/real_exam/views/refactors/timeline/question_items/current_item.dart';
-import 'package:smle/features/real_exam/views/refactors/timeline/question_items/next_item.dart';
+import 'package:smle/features/real_exam/views/refactors/timeline/question_items/upcoming_item.dart';
 import 'package:smle/features/real_exam/views/refactors/timeline/timeline_status.dart';
 
 class TimelineItem extends StatelessWidget {
@@ -39,7 +39,7 @@ class TimelineItem extends StatelessWidget {
         if (status == TimelineStatus.current)
           CurrentItem(text: number, color: backgroundColor),
         if (status == TimelineStatus.upcoming)
-          NextQuestionItem(text: number, color: backgroundColor),
+          UpcomingItem(text: number, color: backgroundColor),
       ],
     );
   }

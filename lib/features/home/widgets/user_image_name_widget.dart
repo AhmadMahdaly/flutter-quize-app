@@ -6,15 +6,13 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class UserImageNameWidget extends StatelessWidget {
-  const UserImageNameWidget({super.key, required this.name, required this.email, required this.imagePath, required this.points});
-final String name,email,points,imagePath;
   const UserImageNameWidget(
       {super.key,
       required this.name,
       required this.email,
       required this.imagePath,
-      required this.point});
-  final String name, email, imagePath, point;
+      required this.points});
+  final String name, email, imagePath, points;
   @override
   Widget build(BuildContext context) {
     return Row(
