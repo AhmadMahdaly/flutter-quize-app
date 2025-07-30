@@ -127,7 +127,7 @@ class AppRouter {
       case Routes.analysisScreen:
         return transition(
           screen: const AnalysisScreen(),
-          cubit: AnalysisCubit(),
+          cubit: AnalysisCubit(getIt())..getAnalysis(),
         );
       case Routes.createQuizScreen:
         return transition(
