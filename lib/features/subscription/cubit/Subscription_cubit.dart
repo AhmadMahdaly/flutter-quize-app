@@ -2,20 +2,18 @@ import 'package:card_scanner/card_scanner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/features/subscription/data/model/cards_model.dart';
 import 'package:smle/features/subscription/data/model/checkout_model.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
 import 'package:smle/features/subscription/data/repo/subscription_repo.dart';
 
-import '../../../core/helpers/loading.dart';
-import '../data/model/cards_model.dart';
-import '../data/model/checkout_model.dart';
 part 'Subscription_state.dart';
 
 class SubscriptionCubit extends Cubit<SubscriptionStates> {
   SubscriptionCubit(this._subscriptionRepository)
-      : super(SubscriptionInitialState());
+    : super(SubscriptionInitialState());
   final SubscriptionRepository _subscriptionRepository;
 
   /// Get Packages
@@ -32,8 +30,12 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
         final allPackages = success.data ?? [];
         // adjust according to your model
         // Separate based on isExtra
-        final extraPackages = allPackages.where((pkg) => pkg.isExtra == true).toList();
-        final normalPackages = allPackages.where((pkg) => pkg.isExtra != true).toList();
+        final extraPackages = allPackages
+            .where((pkg) => pkg.isExtra == true)
+            .toList();
+        final normalPackages = allPackages
+            .where((pkg) => pkg.isExtra != true)
+            .toList();
         // Create separate models if needed
         extraPackagesModel = PackagesModel(data: extraPackages);
         packagesModel = PackagesModel(data: normalPackages);
@@ -48,28 +50,33 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     );
   }
 
-
   /// Get Your Checkout
   CheckoutModel? yourCheckoutModel;
-  TextEditingController promoCodeController=TextEditingController();
+  TextEditingController promoCodeController = TextEditingController();
   Future getYourCheckout(String? packageId) async {
     showLoading();
     emit(GetYourCheckoutLoadingState());
-    final result = await _subscriptionRepository.getYourCheckout(packageId,promoCodeController.text);
-    result.when(success: (success) {
-      yourCheckoutModel = success;
-      hideLoading();
-      emit(GetYourCheckoutSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(GetYourCheckoutFailedState());
-    });
+    final result = await _subscriptionRepository.getYourCheckout(
+      packageId,
+      promoCodeController.text,
+    );
+    result.when(
+      success: (success) {
+        yourCheckoutModel = success;
+        hideLoading();
+        emit(GetYourCheckoutSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetYourCheckoutFailedState());
+      },
+    );
   }
 
   /// Set Selected Package
   String? selectedPackage;
-  setSelectedPackage(String packageId){
-    selectedPackage=packageId;
+  setSelectedPackage(String packageId) {
+    selectedPackage = packageId;
     emit(SetSelectedPackageState());
   }
 
@@ -78,9 +85,8 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     final cardDetails = await CardScanner.scanCard(
       scanOptions: const CardScanOptions(
         scanCardHolderName: true, // Optional, to get the cardholder's name
-        scanExpiryDate: true,    // Optional, to get the card's expiration date
-        enableLuhnCheck: true,   // Optional, to validate card numbers
-
+        scanExpiryDate: true, // Optional, to get the card's expiration date
+        enableLuhnCheck: true, // Optional, to validate card numbers
       ),
     );
 
@@ -98,13 +104,16 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     showLoading();
     emit(AddCardLoadingState());
     final result = await _subscriptionRepository.addCard('', '', '', '');
-    result.when(success: (success) {
-      hideLoading();
-      emit(AddCardSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(AddCardFailedState());
-    });
+    result.when(
+      success: (success) {
+        hideLoading();
+        emit(AddCardSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(AddCardFailedState());
+      },
+    );
   }
 
   /// Get Cards
@@ -113,14 +122,17 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     showLoading();
     emit(GetCardsLoadingState());
     final result = await _subscriptionRepository.getCards();
-    result.when(success: (success) {
-      cardsModel = success;
-      hideLoading();
-      emit(GetCardsSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(GetCardsFailedState());
-    });
+    result.when(
+      success: (success) {
+        cardsModel = success;
+        hideLoading();
+        emit(GetCardsSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetCardsFailedState());
+      },
+    );
   }
 
   /// Delete Card
@@ -128,12 +140,15 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     showLoading();
     emit(DeleteCardLoadingState());
     final result = await _subscriptionRepository.deleteCard('');
-    result.when(success: (success) {
-      hideLoading();
-      emit(DeleteCardSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(DeleteCardFailedState());
-    });
+    result.when(
+      success: (success) {
+        hideLoading();
+        emit(DeleteCardSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(DeleteCardFailedState());
+      },
+    );
   }
 }

@@ -118,6 +118,12 @@
   "expire_date":  "Expire date:",
   "package_subscribed":  "Package subscribed:",
   "exams":  "exams",
+  "month":"Month",
+  "not_found_sub_specialty":"Not found Sub Specialty",
+  "selected_items":"Selected items",
+  "select_all":"Select all",
+  "select_specialty_first":"Select Specialty first",
+  "no_items_selected":"No items selected",
   "analysis_title": "This report outlines your strengths and weaknesses across assessed domains to help you understand and improve your performance.",
   "figure1":  "Figure1: Displays your performance in the test domains.",
   "score_who_passed":  "Major score of who passed"
