@@ -23,8 +23,10 @@ class DioFactory {
     dio.options.headers = {
       "Accept": "application/json",
       // "lang": CacheHelper.getCurrentLanguage().toString(),
+      // "Authorization":
+      //     "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken) }",
       "Authorization":
-          "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken) }",
+          "Bearer 81|3CMeTe93iSA1gLMrXNv9PEvCUgIEiAvmxsARNS9Fc88dc013",
 
     };
     return await dio.get(endPoint, queryParameters: data);
@@ -34,8 +36,10 @@ class DioFactory {
     dio.options.headers = {
       "Accept": "application/json",
       // "lang": CacheHelper.getCurrentLanguage().toString(),
+      // "Authorization":
+      //     "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken)}",
       "Authorization":
-          "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken)}",
+      "Bearer 81|3CMeTe93iSA1gLMrXNv9PEvCUgIEiAvmxsARNS9Fc88dc013",
     };
     return await dio.post(endPoint, data: data);
   }
