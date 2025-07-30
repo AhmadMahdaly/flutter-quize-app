@@ -6,12 +6,13 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class UserImageNameWidget extends StatelessWidget {
-  const UserImageNameWidget(
-      {super.key,
-      required this.name,
-      required this.email,
-      required this.imagePath,
-      required this.points});
+  const UserImageNameWidget({
+    super.key,
+    required this.name,
+    required this.email,
+    required this.imagePath,
+    required this.points,
+  });
   final String name, email, imagePath, points;
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,12 @@ class UserImageNameWidget extends StatelessWidget {
           ),
           child: CircleAvatar(
             radius: 50.r, // Avatar size
-            backgroundColor:AppColors.greyColor,
+            backgroundColor: AppColors.greyColor,
             child: Padding(
               padding: EdgeInsets.only(top: 5.sp),
               child: Image(
                 image: imagePath.isEmpty
-                    ?  const AssetImage(Assets.user) // Use a valid asset path
+                    ? const AssetImage(Assets.user) // Use a valid asset path
                     : NetworkImage(imagePath) as ImageProvider,
               ),
             ),
@@ -37,12 +38,28 @@ class UserImageNameWidget extends StatelessWidget {
         ),
         15.horizontalSpace,
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${"welcome".tr(context)} $name',style: interBold.copyWith(fontSize: 16.sp),),
-            Text(email,style: interRegular.copyWith(fontSize: 14.sp,color: AppColors.darkGreyColor),),
-            Text('$points ${"points".tr(context)}',style: interRegular.copyWith(fontSize: 16.sp,color: AppColors.primaryColor),),
+            Text(
+              '${"welcome".tr(context)} $name',
+              style: interBold.copyWith(fontSize: 16.sp),
+            ),
+            Text(
+              email,
+              style: interRegular.copyWith(
+                fontSize: 14.sp,
+                color: AppColors.darkGreyColor,
+              ),
+            ),
+            Text(
+              '$points ${"points".tr(context)}',
+              style: interRegular.copyWith(
+                fontSize: 16.sp,
+                color: AppColors.primaryColor,
+              ),
+            ),
           ],
-        )
+        ),
       ],
     );
   }

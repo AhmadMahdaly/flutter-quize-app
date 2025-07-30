@@ -11,47 +11,62 @@ part 'login_state.dart';
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit(this._loginRepository) : super(LoginInitialState());
   final LoginRepository _loginRepository;
-/// logIn With Google
-   GoogleSignInAccount? user;
- Future<bool> logInWithGoogle()async{
-   try {
-    user= await GoogleSignInApi.login();
-    user!.authentication.then((googleKey){
-      logIn(user!.id,user!.email,user!.displayName!);
-      debugPrintWidget(user!.authHeaders.then((onValue){
-        debugPrintWidget(onValue);
-      }));
-    });
-    return true;
-   } catch (error) {
-     debugPrintWidget(error);
-     return false;
-   } }
+
+  GoogleSignInAccount? user;
   LoginModel? userDataModel;
 
-  Future logIn(String idToken,String email,String name) async {
-    showLoading();
-    emit(LogInLoadingState());
-    final result = await _loginRepository.login( idToken,email,name);
-    result.when(success: (success) {
-      userDataModel = success;
-      hideLoading();
-      emit(LogInSuccessState());
-      // updateFcmToken();
-    }, failure: (error) {
-      hideLoading();
-    emit(LogInFailedState());
-
-    });
-  }
-  /// Log Out From Google
-  Future<bool> logOut()async{
+  Future<void> logInWithGoogle() async {
     try {
-      user= await GoogleSignInApi.logOut();
+      emit(LogInLoadingState());
+      showLoading();
+
+      final googleUser = await GoogleSignInApi.login();
+      if (googleUser == null) {
+        hideLoading();
+        emit(LoginInitialState());
+        return;
+      }
+      user = googleUser;
+
+      await logIn(user!.id, user!.email, user!.displayName!);
+    } catch (error) {
+      debugPrintWidget('Google Sign-In Error: $error');
+      hideLoading();
+
+      emit(
+          LogInFailedState('Failed to sign in with Google. Please try again.'));
+    }
+  }
+
+  Future<void> logIn(String idToken, String email, String name) async {
+    final result = await _loginRepository.login(idToken, email, name);
+
+    hideLoading();
+
+    if (isClosed) return;
+
+    result.when(
+      success: (success) {
+        userDataModel = success;
+        emit(LogInSuccessState());
+      },
+      failure: (error) {
+        emit(LogInFailedState(error.errMessage));
+      },
+    );
+  }
+
+  Future<bool> logOut() async {
+    try {
+      user = await GoogleSignInApi.logOut();
       return true;
     } catch (error) {
       debugPrintWidget(error);
       return false;
-    } }
+    }
+  }
+
+  
+
 
 }

@@ -6,11 +6,12 @@ import 'package:smle/features/real_exam/views/refactors/timeline/question_items/
 import 'package:smle/features/real_exam/views/refactors/timeline/timeline_status.dart';
 
 class TimelineItem extends StatelessWidget {
-  const TimelineItem(
-      {required this.number,
-      required this.status,
-      super.key,
-      required this.isBookmarked});
+  const TimelineItem({
+    required this.number,
+    required this.status,
+    super.key,
+    required this.isBookmarked,
+  });
   final String number;
   final TimelineStatus status;
   final bool isBookmarked;
@@ -37,9 +38,17 @@ class TimelineItem extends StatelessWidget {
             isBookmarked: isBookmarked,
           ),
         if (status == TimelineStatus.current)
-          CurrentItem(text: number, color: backgroundColor),
+          CurrentItem(
+            text: number,
+            color: backgroundColor,
+            isBookmarked: isBookmarked,
+          ),
         if (status == TimelineStatus.upcoming)
-          UpcomingItem(text: number, color: backgroundColor),
+          UpcomingItem(
+            text: number,
+            color: backgroundColor,
+            isBookmarked: isBookmarked,
+          ),
       ],
     );
   }
