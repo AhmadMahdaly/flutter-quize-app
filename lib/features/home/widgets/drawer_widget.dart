@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
+import 'package:smle/core/cache_helper/cache_values.dart';
+import 'package:smle/core/di.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/features/home/widgets/drawer_item_widget.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
-
-import '../../../core/cache_helper/cache_values.dart';
-import '../../../core/di.dart';
-import '../../../core/theme/colors.dart';
-import '../../main layout/cubit/main_layout_cubit.dart';
-import 'drawer_item_widget.dart';
+import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -19,17 +18,17 @@ class DrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: AppColors.thirdColor,
-      width: MediaQuery
-          .of(context)
-          .size
-          .width / 2,
+      width: MediaQuery.of(context).size.width / 2,
       child: ListView(
         children: [
           // Drawer Items
-          DrawerItemWidget(iconAsset: Assets.userCircleLight,title:'profile'.tr(context) ,onTap: (){
-            context.pushNamed(Routes.profileScreen);
-
-          },),
+          DrawerItemWidget(
+            iconAsset: Assets.userCircleLight,
+            title: 'profile'.tr(context),
+            onTap: () {
+              context.pushNamed(Routes.profileScreen);
+            },
+          ),
           DrawerItemWidget(
             iconAsset: Assets.mortarboardLight,
             title: 'SCFHS_score_calculator'.tr(context),
@@ -41,7 +40,16 @@ class DrawerWidget extends StatelessWidget {
             iconAsset: Assets.trophyLight,
             title: 'subscription'.tr(context),
             onTap: () {
-              context.pushNamed(Routes.subscriptionScreen,arguments: context.read<MainLayoutCubit>().profileModel!.data!.offerId??-1);
+              context.pushNamed(
+                Routes.subscriptionScreen,
+                arguments:
+                    context
+                        .read<MainLayoutCubit>()
+                        .profileModel!
+                        .data!
+                        .offerId ??
+                    -1,
+              );
             },
           ),
           // DrawerItemWidget(iconAsset: Assets.columUpLight,title:'analysis'.tr(context) ,onTap: (){
@@ -55,26 +63,30 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           DrawerItemWidget(
-              iconAsset: Assets.privacyPolicy,
-              title: 'privacy_policy'.tr(context),
-              onTap: () {
-                context.pushNamed(Routes.privacyPolicyScreen);
-              }),
+            iconAsset: Assets.privacyPolicy,
+            title: 'privacy_policy'.tr(context),
+            onTap: () {
+              context.pushNamed(Routes.privacyPolicyScreen);
+            },
+          ),
           BlocProvider(
             create: (context) => LoginCubit(getIt()),
             child: BlocBuilder<LoginCubit, LoginStates>(
               builder: (context, state) {
                 return DrawerItemWidget(
-                    iconAsset: Assets.logOut,
-                    title: 'log_out'.tr(context),
-                    onTap: () {
-                      context.read<LoginCubit>().logOut().then((value) {
-                        if (value == true) {
-                          CacheHelper.sharedPreferences.remove(CacheKeys.userToken);
-                          context.pushReplacementNamed(Routes.loginScreen);
-                        }
-                      });
+                  iconAsset: Assets.logOut,
+                  title: 'log_out'.tr(context),
+                  onTap: () {
+                    context.read<LoginCubit>().logOut().then((value) {
+                      if (value == true) {
+                        CacheHelper.sharedPreferences.remove(
+                          CacheKeys.userToken,
+                        );
+                        context.pushReplacementNamed(Routes.loginScreen);
+                      }
                     });
+                  },
+                );
               },
             ),
           ),

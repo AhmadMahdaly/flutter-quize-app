@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
 import 'package:smle/features/subscription/widgets/already_subsciption_dialog.dart';
-import '../../core/routing/routes.dart';
-import '../../core/shared_widgets/custom_app_bar.dart';
-import '../../core/theme/assets.dart';
-import '../../core/theme/colors.dart';
 
 class SubscriptionScreen extends StatelessWidget {
   const SubscriptionScreen({super.key, required this.offerId});
-final int offerId;
+  final int offerId;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SubscriptionCubit, SubscriptionStates>(
@@ -33,29 +33,33 @@ final int offerId;
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                30.verticalSpace,
+                24.verticalSpace,
                 Text(
                   offerId != -1
                       ? 'choose_extra_plan'.tr(context)
                       : 'choose_your_plan'.tr(context),
                   style: interBold.copyWith(
-                    fontSize: 16.sp,
-                    decoration: TextDecoration.underline,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
                   ),
                 ),
-                50.verticalSpace,
+                24.verticalSpace,
                 // Package list
                 ...List.generate(packages.length, (index) {
                   final package = packages[index];
 
                   return Padding(
-                    padding: EdgeInsets.only(bottom: 25.h),
+                    padding: EdgeInsets.only(bottom: 16.h),
                     child: GestureDetector(
                       onTap: () {
                         cubit.getYourCheckout('${package.id}').then((_) {
                           if (cubit.yourCheckoutModel?.data != null) {
-                            context.pushNamed(Routes.paymentScreen,
-                                arguments: '${package.id}');
+                            context.pushNamed(
+                              Routes.paymentScreen,
+                              arguments: '${package.id}',
+                            );
                           } else {
                             showDialog(
                               context: context,
@@ -68,31 +72,54 @@ final int offerId;
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100.r),
+                          borderRadius: BorderRadius.circular(
+                            SizeConfig.responsiveValue(
+                              phone: 100.r,
+                              tablet: 10.r,
+                            ),
+                          ),
                           color: AppColors.secondaryColor,
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
-                              right: 20.sp, left: 60.sp, top: 15.sp),
+                            right: 16.w,
+                            left: SizeConfig.responsiveValue(
+                              phone: 40.w,
+                              tablet: 20.w,
+                            ),
+                            top: 24.h,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  5.verticalSpace,
                                   // Package header
                                   package.name != 'VIP '
                                       ? Container(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: 15.w, vertical: 5.h),
+                                            horizontal: 15.w,
+                                            vertical: 5.h,
+                                          ),
                                           decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(30.r),
+                                            borderRadius: BorderRadius.circular(
+                                              30.r,
+                                            ),
                                             color: AppColors.primaryColor,
                                           ),
-                                          child: Text('Package ${index + 1}',
-                                              style: interBold.copyWith(
-                                                  color: Colors.white)),
+                                          child: Text(
+                                            'Package ${index + 1}',
+                                            style: interBold.copyWith(
+                                              color: Colors.white,
+                                              fontSize:
+                                                  SizeConfig.responsiveValue(
+                                                    phone: 16.sp,
+                                                    tablet: 20.sp,
+                                                  ),
+                                            ),
+                                          ),
                                         )
                                       : Column(
                                           crossAxisAlignment:
@@ -102,12 +129,20 @@ final int offerId;
                                               Assets.crownIcon,
                                               height: 20.h,
                                             ),
-                                            Text('${package.name}Package',
-                                                style: interBold.copyWith(
-                                                    color: Colors.white)),
+                                            Text(
+                                              '${package.name}Package',
+                                              style: interBold.copyWith(
+                                                color: Colors.white,
+                                                fontSize:
+                                                    SizeConfig.responsiveValue(
+                                                      phone: 14.sp,
+                                                      tablet: 18.sp,
+                                                    ),
+                                              ),
+                                            ),
                                           ],
                                         ),
-                                  20.verticalSpace,
+                                  16.verticalSpace,
 
                                   // Features
                                   Column(
@@ -120,8 +155,13 @@ final int offerId;
                                         child: Text(
                                           '* ${package.features![i].name}',
                                           style: interRegular.copyWith(
-                                              fontSize: 14.sp,
-                                              color: AppColors.thirdColor),
+                                            fontSize:
+                                                SizeConfig.responsiveValue(
+                                                  phone: 14.sp,
+                                                  tablet: 18.sp,
+                                                ),
+                                            color: AppColors.thirdColor,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -135,11 +175,14 @@ final int offerId;
                                     '${package.price} SAR',
                                     style: interBold.copyWith(
                                       color: AppColors.thirdColor,
-                                      fontSize: 16.sp,
+                                      fontSize: SizeConfig.responsiveValue(
+                                        phone: 16.sp,
+                                        tablet: 20.sp,
+                                      ),
                                     ),
-                                  )
+                                  ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),

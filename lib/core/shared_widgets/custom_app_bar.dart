@@ -1,43 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
-
+import 'package:smle/core/theme/text_styles.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
- const CustomAppBar({
+  const CustomAppBar({
     super.key,
-     this.title='',
-    this.canBack= true,
+    this.title = '',
+    this.canBack = true,
     this.iconAction,
   });
 
- final String title;
- final bool canBack ;
- final IconData? iconAction ;
+  final String title;
+  final bool canBack;
+  final IconData? iconAction;
 
   @override
   Widget build(BuildContext context) {
-    return  AppBar(
+    return AppBar(
+      toolbarHeight: SizeConfig.responsiveValue(phone: 56.h, tablet: 100.h),
       elevation: 0,
       backgroundColor: AppColors.primaryColor,
       leading: canBack
           ? IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.iconColorBlack),
+              icon: Icon(
+                size: SizeConfig.responsiveValue(phone: 24.sp, tablet: 30.sp),
+                Icons.arrow_back_ios_new,
+                color: AppColors.iconColorBlack,
+              ),
               onPressed: () => Navigator.of(context).pop(),
             )
           : const SizedBox(),
       title: Text(
         title,
         textAlign: TextAlign.center,
-        style:  interBold.copyWith(
+        style: interBold.copyWith(
           color: AppColors.secondaryColor,
-          fontSize: 20.sp,
-            decoration: TextDecoration.underline,
-            decorationColor:  AppColors.secondaryColor,
-            decorationStyle: TextDecorationStyle.solid,
+          fontSize: SizeConfig.responsiveValue(phone: 20.sp, tablet: 24.sp),
+          // decoration: TextDecoration.underline,
+          // decorationColor: AppColors.secondaryColor,
+          // decorationStyle: TextDecorationStyle.solid,
         ),
-
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -47,11 +50,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       actions: [
-        Icon(iconAction,color: AppColors.secondaryColor,size: 30.sp,),
+        Icon(
+          iconAction,
+          color: AppColors.secondaryColor,
+          size: SizeConfig.responsiveValue(phone: 30.sp, tablet: 40.sp),
+        ),
       ],
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>
+      Size.fromHeight(SizeConfig.responsiveValue(phone: 56.h, tablet: 100.h));
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -23,7 +23,7 @@ class BreakTimeDialog extends StatelessWidget {
           textAlign: TextAlign.center,
           'Break Time',
           style: interBold.copyWith(
-            fontSize: 22.sp,
+            fontSize: SizeConfig.responsiveValue(phone: 22.sp, tablet: 26.sp),
             color: AppColors.iconColorGray,
           ),
         ),
@@ -40,7 +40,7 @@ class BreakTimeDialog extends StatelessWidget {
           textAlign: TextAlign.center,
           "You're now on a 30-minute break",
           style: interRegular.copyWith(
-            fontSize: 14.sp,
+            fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
             color: AppColors.iconColorGray,
           ),
         ),
@@ -64,7 +64,10 @@ class BreakTimeDialog extends StatelessWidget {
                 child: Text(
                   'End Break Early',
                   style: interBold.copyWith(
-                    fontSize: 14.sp,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 14.sp,
+                      tablet: 18.sp,
+                    ),
                     color: AppColors.iconColorBlack,
                   ),
                 ),
@@ -127,7 +130,7 @@ class _BreakTimerWidgetState extends State<BreakTimerWidget> {
         Text(
           formatTime(timeLeftInSeconds),
           style: interBold.copyWith(
-            fontSize: 52.sp,
+            fontSize: SizeConfig.responsiveValue(phone: 52.sp, tablet: 56.sp),
             color: AppColors.forthColor,
           ),
         ),

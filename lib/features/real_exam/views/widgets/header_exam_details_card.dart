@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/data/model/get_real_exam_model.dart';
-import 'package:smle/features/real_exam/views/refactors/cutom_timer.dart';
-import 'package:smle/features/real_exam/views/widgets/confirm_finish_exam_dialog.dart';
+import 'package:smle/features/real_exam/views/widgets/cutom_timer.dart';
+import 'package:smle/features/real_exam/views/widgets/finish_exam_dialog.dart';
 
 class HeaderExamDetailsCard extends StatelessWidget {
   const HeaderExamDetailsCard({
@@ -26,15 +27,19 @@ class HeaderExamDetailsCard extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(height: 8.h),
+        8.verticalSpace,
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           decoration: BoxDecoration(
             color: AppColors.secondaryColor,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.r),
-              topRight: Radius.circular(20.r),
+              topLeft: Radius.circular(
+                SizeConfig.responsiveValue(phone: 20.r, tablet: 12.r),
+              ),
+              topRight: Radius.circular(
+                SizeConfig.responsiveValue(phone: 20.r, tablet: 12.r),
+              ),
             ),
           ),
           child: Row(
@@ -46,39 +51,50 @@ class HeaderExamDetailsCard extends StatelessWidget {
                 children: [
                   Text(
                     'Question: $qNo / $totalQuestions',
-                    style: TextStyle(
-                      fontSize: 16.sp,
+                    style: interRegular.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 16.sp,
+                        tablet: 20.sp,
+                      ),
                       color: AppColors.thirdColor,
                     ),
                   ),
                   4.verticalSpace,
                   Text(
                     'Section: $section',
-                    style: TextStyle(
-                      fontSize: 16.sp,
+                    style: interRegular.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 16.sp,
+                        tablet: 20.sp,
+                      ),
                       color: AppColors.thirdColor,
                     ),
                   ),
                   4.verticalSpace,
                   Column(
                     children: [
-                      SizedBox(
-                        width: 130.w,
-                        child: LinearProgressIndicator(
-                          minHeight: 20.h,
-                          borderRadius: BorderRadius.circular(8.r),
-                          value: progressValue,
-                          backgroundColor: AppColors.thirdColor,
-                          valueColor: const AlwaysStoppedAnimation<Color>(
-                            AppColors.successColor,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20.r),
+                        child: SizedBox(
+                          width: 130.w,
+                          child: LinearProgressIndicator(
+                            minHeight: 20.h,
+                            value: progressValue,
+                            backgroundColor: AppColors.thirdColor,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              AppColors.successColor,
+                            ),
                           ),
                         ),
                       ),
                       4.verticalSpace,
                       Text(
                         'Progress ${(progressValue * 100).toInt()}%',
-                        style: TextStyle(
-                          fontSize: 16.sp,
+                        style: interRegular.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 16.sp,
+                            tablet: 20.sp,
+                          ),
                           color: AppColors.thirdColor,
                         ),
                       ),
@@ -96,8 +112,11 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       8.verticalSpace,
                       Text(
                         'Section time remaining',
-                        style: TextStyle(
-                          fontSize: 16.sp,
+                        style: interRegular.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 16.sp,
+                            tablet: 20.sp,
+                          ),
                           color: AppColors.thirdColor,
                         ),
                       ),
@@ -128,9 +147,11 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       ),
                       child: Text(
                         'Finish section',
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
+                        style: interBold.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 20.sp,
+                            tablet: 24.sp,
+                          ),
                           color: AppColors.forthColor,
                         ),
                       ),
@@ -148,8 +169,12 @@ class HeaderExamDetailsCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.successColor,
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20.r),
-              bottomRight: Radius.circular(20.r),
+              bottomLeft: Radius.circular(
+                SizeConfig.responsiveValue(phone: 20.r, tablet: 12.r),
+              ),
+              bottomRight: Radius.circular(
+                SizeConfig.responsiveValue(phone: 20.r, tablet: 12.r),
+              ),
             ),
           ),
           child: Column(
@@ -158,16 +183,22 @@ class HeaderExamDetailsCard extends StatelessWidget {
                 children: [
                   Text(
                     'Test:',
-                    style: TextStyle(
-                      fontSize: 16.sp,
+                    style: interRegular.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 16.sp,
+                        tablet: 20.sp,
+                      ),
                       color: AppColors.thirdColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     'Saudi SLE License Examination',
-                    style: TextStyle(
-                      fontSize: 16.sp,
+                    style: interRegular.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 16.sp,
+                        tablet: 20.sp,
+                      ),
                       color: AppColors.thirdColor,
                     ),
                   ),
@@ -177,26 +208,34 @@ class HeaderExamDetailsCard extends StatelessWidget {
                 children: [
                   Text(
                     'Candidate:',
-                    style: TextStyle(
-                      fontSize: 16.sp,
+                    style: interRegular.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 16.sp,
+                        tablet: 20.sp,
+                      ),
                       color: AppColors.thirdColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     'Saudi-Bot.com',
-                    style: TextStyle(
-                      fontSize: 16.sp,
+                    style: interRegular.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 16.sp,
+                        tablet: 20.sp,
+                      ),
                       color: AppColors.thirdColor,
                     ),
                   ),
                   const Spacer(),
                   Text(
                     'Free Trial',
-                    style: TextStyle(
-                      color: const Color(0xFFEEEDEB),
-                      fontSize: 18.sp,
-                      fontFamily: 'Inter',
+                    style: interBold.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 18.sp,
+                        tablet: 22.sp,
+                      ),
+                      color: AppColors.offwhiteColor,
                       fontWeight: FontWeight.w700,
                       height: 1.50.h,
                     ),

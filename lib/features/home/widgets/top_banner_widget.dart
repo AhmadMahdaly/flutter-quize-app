@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -10,8 +10,7 @@ class TopBannerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      clipBehavior: Clip.none,
-      width: MediaQuery.sizeOf(context).width,
+      width: SizeConfig.screenWidth,
       decoration: BoxDecoration(
         color: AppColors.darkGreyColor,
         borderRadius: BorderRadius.all(Radius.circular(100.r)),
@@ -20,30 +19,39 @@ class TopBannerWidget extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Padding(
-            padding: EdgeInsets.all(28.r),
+            padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
             child: SizedBox(
-              width: MediaQuery.sizeOf(context).width - 175,
+              width: SizeConfig.screenWidth / 2,
               child: Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(
                       text: 'Over ',
                       style: interBold.copyWith(
-                        fontSize: 16.sp,
+                        fontSize: SizeConfig.responsiveValue(
+                          phone: 15.sp,
+                          tablet: 19.sp,
+                        ),
                         color: AppColors.thirdColor,
                       ),
                     ),
                     TextSpan(
                       text: '400 ',
                       style: interBold.copyWith(
-                        fontSize: 16.sp,
+                        fontSize: SizeConfig.responsiveValue(
+                          phone: 15.sp,
+                          tablet: 19.sp,
+                        ),
                         color: AppColors.secondaryColor,
                       ),
                     ),
                     TextSpan(
                       text: 'questions across all medical specialties',
                       style: interBold.copyWith(
-                        fontSize: 16.sp,
+                        fontSize: SizeConfig.responsiveValue(
+                          phone: 15.sp,
+                          tablet: 19.sp,
+                        ),
                         color: AppColors.thirdColor,
                       ),
                     ),
@@ -53,9 +61,12 @@ class TopBannerWidget extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 0,
+            bottom: -5,
             right: -20,
-            child: Image.asset(Assets.homeDoctor, height: 180.h),
+            child: Image.asset(
+              Assets.homeDoctor,
+              height: SizeConfig.responsiveValue(phone: 180.h, tablet: 140.h),
+            ),
           ),
         ],
       ),
