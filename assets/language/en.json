@@ -117,7 +117,13 @@
   "remaining_real_exams":  "Remaining real exams:",
   "expire_date":  "Expire date:",
   "package_subscribed":  "Package subscribed:",
-  "exams":  "exams"
+  "exams":  "exams",
+  "month":"Month",
+  "not_found_sub_specialty":"Not found Sub Specialty",
+  "selected_items":"Selected items",
+  "select_all":"Select all",
+  "select_specialty_first":"Select Specialty first",
+  "no_items_selected":"No items selected"
 
 
 
