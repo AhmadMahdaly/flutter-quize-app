@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -75,7 +77,13 @@ class LoginScreen extends StatelessWidget {
                           }
                           return LoginButton(
                             onTap: () {
-                              context.read<LoginCubit>().logInWithGoogle();
+                              if(Platform.isAndroid){
+                                context.read<LoginCubit>().logInWithGoogle();
+                              }
+                              else{
+                                // context.read<LoginCubit>().logInWithApple();
+                                context.pushReplacementNamed(Routes.mainLayoutScreen);
+                              }
                             },
                           );
                         },

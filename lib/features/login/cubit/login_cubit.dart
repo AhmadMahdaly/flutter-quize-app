@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/features/login/data/model/login_model.dart';
@@ -13,6 +15,7 @@ class LoginCubit extends Cubit<LoginStates> {
   final LoginRepository _loginRepository;
 
   GoogleSignInAccount? user;
+  var userApple;
   LoginModel? userDataModel;
 
   Future<void> logInWithGoogle() async {
@@ -37,8 +40,47 @@ class LoginCubit extends Cubit<LoginStates> {
           LogInFailedState('Failed to sign in with Google. Please try again.'));
     }
   }
+  Future<void> logInWithApple() async {
+    try {
+      emit(LogInLoadingState());
+      showLoading();
 
-  Future<void> logIn(String idToken, String email, String name) async {
+      final appleUser = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      final userId = appleUser.userIdentifier!;
+      final String? email = appleUser.email;
+      final String? givenName = appleUser.givenName;
+      final String? familyName = appleUser.familyName;
+
+      // Debug output
+      print('Apple ID: $userId');
+      print('Email: $email');
+      print('Given Name: $givenName');
+      print('Family Name: $familyName');
+      print('Identity Token: ${appleUser.identityToken}');
+      print('Authorization Code: ${appleUser.authorizationCode}');
+
+      // Ensure required fields are not null before proceeding
+      if (email == null || givenName == null) {
+        await logIn(userId,null,null);
+      }else{
+        await logIn(userId, email, givenName);
+      }
+
+
+    } catch (error) {
+      debugPrintWidget('Apple Sign-In Error: $error');
+      hideLoading();
+      emit(LogInFailedState('Failed to sign in with Apple. Please try again.'));
+    }
+  }
+
+  Future<void> logIn(String idToken, String? email, String? name) async {
     final result = await _loginRepository.login(idToken, email, name);
 
     hideLoading();

@@ -2,7 +2,8 @@ class EndPoints {
   static const String baseUrl = 'https://smle.alsaif.online/api/';
 
   // ? auth
-  static const String login = 'gmail/login';
+  static const String googleLogin = 'gmail/login';
+  static const String appleLogin = 'apple/login';
   static const String deleteAccount = 'user/delete';
   static const String profile = 'profile';
   // static const String login = 'auth/google';

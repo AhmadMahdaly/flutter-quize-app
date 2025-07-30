@@ -73,6 +73,8 @@ dependencies:
   flutter_widget_from_html_core: ^0.17.0
   # Sign in with google account
   google_sign_in: ^6.2.2
+  # Sign in with apple account
+  sign_in_with_apple: ^7.0.1
   # Scan Card
   card_scanner: ^1.0.1
   # year picker

@@ -1,4 +1,4 @@
-
+import 'dart:io';
 
 import 'package:smle/features/login/data/model/login_model.dart';
 
@@ -15,23 +15,57 @@ class LoginRepository {
 
   LoginRepository(this._dioFactory);
 
-  Future<ApiResult<LoginModel>> login(String idToken,String email,String name) async {
-    final response = await _dioFactory.post(endPoint: EndPoints.login,data: {
-      'google_id':idToken,
-      'email':email,
-      'name':name,
-    });
-    if (response!.statusCode == 200 ) {
-      LoginModel model = LoginModel.fromJson(response.data);
-      await CacheHelper.saveData(
-          key: CacheKeys.userToken, value: model.data!.token);
-      return ApiResult.success(model);
+  Future<ApiResult<LoginModel>> login(
+    String idToken,
+    String? email,
+    String? name,
+  ) async {
+    if (Platform.isAndroid) {
+      final response = await _dioFactory.post(
+        endPoint: EndPoints.googleLogin,
+        data: email == null && name == null
+            ? {'google_id': idToken}
+            : {'google_id': idToken, 'email': email, 'name': name},
+      );
+      if (response!.statusCode == 200) {
+        LoginModel model = LoginModel.fromJson(response.data);
+        await CacheHelper.saveData(
+          key: CacheKeys.userToken,
+          value: model.data!.token,
+        );
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['message']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
     } else {
-      debugPrintWidget(response.data['message']);
-      return ApiResult.failure(
-          ServerFailure.fromResponse(response.statusCode, response.data['message']));
+      final response = await _dioFactory.post(
+        endPoint: EndPoints.appleLogin,
+        data: email == null && name == null
+            ? {'apple_id': idToken}
+            : {'apple_id': idToken, 'email': email, 'name': name},
+      );
+      if (response!.statusCode == 200) {
+        LoginModel model = LoginModel.fromJson(response.data);
+        await CacheHelper.saveData(
+          key: CacheKeys.userToken,
+          value: model.data!.token,
+        );
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['message']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
     }
   }
-
-
 }
