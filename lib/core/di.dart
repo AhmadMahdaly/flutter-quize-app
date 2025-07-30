@@ -21,20 +21,24 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<DioFactory>(() => DioFactory());
   getIt.registerFactory<MainLayoutCubit>(() => MainLayoutCubit(getIt()));
   getIt.registerFactory<NotificationCubit>(() => NotificationCubit());
-  getIt.registerFactory<AnalysisCubit>(() => AnalysisCubit(getIt()));
   getIt.registerFactory<AnalysisRepository>(() => AnalysisRepository(getIt()));
+  getIt.registerFactory<AnalysisCubit>(() => AnalysisCubit(getIt()));
 
   getIt.registerFactory<ExamsHistoryCubit>(() => ExamsHistoryCubit());
   getIt.registerFactory<MainLayoutRepository>(
-      () => MainLayoutRepository(getIt()));
+    () => MainLayoutRepository(getIt()),
+  );
   getIt.registerFactory<LoginRepository>(() => LoginRepository(getIt()));
   getIt.registerFactory<SubscriptionRepository>(
-      () => SubscriptionRepository(getIt()));
+    () => SubscriptionRepository(getIt()),
+  );
   getIt.registerFactory<RevisionRepository>(() => RevisionRepository(getIt()));
   getIt.registerFactory<PrivacySupportRepository>(
-      () => PrivacySupportRepository(getIt()));
+    () => PrivacySupportRepository(getIt()),
+  );
   getIt.registerFactory<CalculatorRepository>(
-      () => CalculatorRepository(getIt()));
+    () => CalculatorRepository(getIt()),
+  );
   getIt.registerFactory<QBankRepository>(() => QBankRepository(getIt()));
   getIt.registerFactory<PlayListRepository>(() => PlayListRepository(getIt()));
   getIt.registerFactory<RealExamRepo>(() => RealExamRepo(getIt()));

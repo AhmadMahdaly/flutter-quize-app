@@ -1,5 +1,4 @@
 class AnalysisModel {
-
   AnalysisModel({this.status, this.message, this.totalScore, this.data});
 
   AnalysisModel.fromJson(Map<String, dynamic> json) {
@@ -31,13 +30,12 @@ class AnalysisModel {
 }
 
 class Analysis {
-
   Analysis({this.category, this.averagePercentage, this.examPercentage});
 
   Analysis.fromJson(Map<String, dynamic> json) {
     category = json['category'];
-    averagePercentage = json['average_percentage'];
-    examPercentage = json['exam_percentage'];
+    averagePercentage = (json['average_percentage'] as num).toDouble();
+    examPercentage = (json['exam_percentage'] as num).toDouble();
   }
   String? category;
   double? averagePercentage;
