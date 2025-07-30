@@ -6,66 +6,78 @@ class PerformanceChart extends StatelessWidget {
   const PerformanceChart({super.key, required this.data});
   final List<Analysis> data;
 
+  // Ensure value is valid for plotting
+  double _safeScore(double? value) {
+    if (value == null || value.isNaN || value.isInfinite) return 0.0;
+    return value;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return LineChart(
-      LineChartData(
-        lineBarsData: [
-          _buildLine(
-            color: Colors.teal,
-            spots: data
-                .asMap()
-                .entries
-                .map(
-                  (e) => FlSpot(
-                    e.key.toDouble(),
-                    e.value.examPercentage == 0.0 ? 1 : e.value.examPercentage!,
-                  ),
-                )
-                .toList(),
-          ),
-          _buildLine(
-            color: Colors.blue,
-            spots: data
-                .asMap()
-                .entries
-                .map(
-                  (e) => FlSpot(
-                    e.key.toDouble(),
-                    e.value.averagePercentage == 0.0
-                        ? 1
-                        : e.value.averagePercentage!,
-                  ),
-                )
-                .toList(),
-          ),
-        ],
-        titlesData: FlTitlesData(
-          leftTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: true, interval: 10),
-          ),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, _) {
-                final int index = value.toInt();
-                if (index < 0 || index >= data.length)
-                  return const SizedBox.shrink();
-                return Transform.rotate(
-                  angle: -0.4,
-                  child: Text(
-                    data[index].category!,
+    final examSpots = <FlSpot>[];
+    final averageSpots = <FlSpot>[];
+
+    for (int i = 0; i < data.length; i++) {
+      final exam = _safeScore(data[i].examPercentage);
+      final avg = _safeScore(data[i].averagePercentage);
+      examSpots.add(FlSpot(i.toDouble(), exam));
+      averageSpots.add(FlSpot(i.toDouble(), avg));
+    }
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width: data.length * 50, // adjust width per data point
+        height: 300,
+        child: LineChart(
+          LineChartData(
+            minY: 0,
+            maxY: 100,
+            minX: 0,
+            maxX: data.length.toDouble() - 1,
+            gridData: const FlGridData(show: true),
+            borderData: FlBorderData(show: true),
+            lineBarsData: [
+              _buildLine(color: Colors.teal, spots: examSpots),
+              _buildLine(color: Colors.blue, spots: averageSpots),
+            ],
+            titlesData: FlTitlesData(
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  interval: 5,
+                  reservedSize: 40,
+                  getTitlesWidget: (value, _) => Text(
+                    value.toInt().toString(),
                     style: const TextStyle(fontSize: 10),
                   ),
-                );
-              },
+                ),
+              ),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  interval: 1,
+                  getTitlesWidget: (value, _) {
+                    int index = value.toInt();
+                    if (index < 0 || index >= data.length) {
+                      return const SizedBox.shrink();
+                    }
+                    final label = data[index].category ?? '';
+                    return Transform.rotate(
+                      angle: -0.4,
+                      child: Text(
+                        label.length > 8 ? '${label.substring(0, 8)}...' : label,
+                        style: const TextStyle(fontSize: 10),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
             ),
           ),
         ),
-        minY: 0,
-        maxY: 100,
-        gridData: const FlGridData(show: true),
-        borderData: FlBorderData(show: true),
       ),
     );
   }
@@ -79,6 +91,7 @@ class PerformanceChart extends StatelessWidget {
       color: color,
       barWidth: 3,
       dotData: const FlDotData(show: true),
+      belowBarData: BarAreaData(show: false),
       spots: spots,
     );
   }
