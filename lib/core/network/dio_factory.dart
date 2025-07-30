@@ -26,7 +26,7 @@ class DioFactory {
       // "Authorization":
       //     "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken) }",
       "Authorization":
-          "Bearer 81|3CMeTe93iSA1gLMrXNv9PEvCUgIEiAvmxsARNS9Fc88dc013",
+          "Bearer 78|rmzyh2gGAqHBsUdC6kdpZ57EdQqoJwkVquZJOLRPf29f077f",
 
     };
     return await dio.get(endPoint, queryParameters: data);
@@ -39,7 +39,7 @@ class DioFactory {
       // "Authorization":
       //     "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken)}",
       "Authorization":
-      "Bearer 81|3CMeTe93iSA1gLMrXNv9PEvCUgIEiAvmxsARNS9Fc88dc013",
+      "Bearer 78|rmzyh2gGAqHBsUdC6kdpZ57EdQqoJwkVquZJOLRPf29f077f",
     };
     return await dio.post(endPoint, data: data);
   }

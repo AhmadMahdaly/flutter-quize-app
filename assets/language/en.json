@@ -117,7 +117,10 @@
   "remaining_real_exams":  "Remaining real exams:",
   "expire_date":  "Expire date:",
   "package_subscribed":  "Package subscribed:",
-  "exams":  "exams"
+  "exams":  "exams",
+  "analysis_title": "This report outlines your strengths and weaknesses across assessed domains to help you understand and improve your performance.",
+  "figure1":  "Figure1: Displays your performance in the test domains.",
+  "score_who_passed":  "Major score of who passed"
 
 
 
