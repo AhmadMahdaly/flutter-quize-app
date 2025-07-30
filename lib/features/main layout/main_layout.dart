@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/constants.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/routing/app_router.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -19,6 +19,7 @@ class MainLayoutScreen extends StatelessWidget {
           child: Scaffold(
             body: AppRouter().screen[mainLayoutInitialScreenIndex],
             bottomNavigationBar: Container(
+              height: SizeConfig.responsiveValue(phone: null, tablet: 60.h),
               margin: EdgeInsets.symmetric(horizontal: 15.w),
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
@@ -36,12 +37,15 @@ class MainLayoutScreen extends StatelessWidget {
                   BottomNavigationBarItem(
                     icon: Container(
                       decoration: const BoxDecoration(
-                        color: AppColors
-                            .thirdColor,
+                        color: AppColors.thirdColor,
                         shape: BoxShape.circle,
                       ),
-                      child: const ImageIcon(
-                        AssetImage(Assets.videoLight),
+                      child: ImageIcon(
+                        size: SizeConfig.responsiveValue(
+                          phone: 18.sp,
+                          tablet: 36.sp,
+                        ),
+                        const AssetImage(Assets.videoLight),
                         color: AppColors.forthColor,
                       ),
                     ),
@@ -53,8 +57,12 @@ class MainLayoutScreen extends StatelessWidget {
                         color: AppColors.thirdColor,
                         shape: BoxShape.circle,
                       ),
-                      child: const ImageIcon(
-                        AssetImage(Assets.homeLight),
+                      child: ImageIcon(
+                        size: SizeConfig.responsiveValue(
+                          phone: 18.sp,
+                          tablet: 36.sp,
+                        ),
+                        const AssetImage(Assets.homeLight),
                         color: AppColors.forthColor,
                       ),
                     ),
@@ -66,9 +74,13 @@ class MainLayoutScreen extends StatelessWidget {
                         color: AppColors.thirdColor,
                         shape: BoxShape.circle,
                       ),
-                      child: const Center(
+                      child: Center(
                         child: ImageIcon(
-                          AssetImage(Assets.userCircleLight),
+                          size: SizeConfig.responsiveValue(
+                            phone: 18.sp,
+                            tablet: 36.sp,
+                          ),
+                          const AssetImage(Assets.userCircleLight),
                           color: AppColors.forthColor,
                         ),
                       ),

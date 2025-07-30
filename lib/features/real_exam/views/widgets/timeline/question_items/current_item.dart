@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
 
 class CurrentItem extends StatelessWidget {
@@ -17,16 +17,26 @@ class CurrentItem extends StatelessWidget {
     return ClipPath(
       clipper: ArrowClipper(),
       child: Container(
-        width: 60.w,
-        height: 30.h,
-        color: color,
+        width: SizeConfig.responsiveValue(phone: 60.w, tablet: 50.w),
+        height: SizeConfig.responsiveValue(phone: 30.h, tablet: 60.h),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4.r),
+          color: color,
+        ),
+
         alignment: Alignment.center,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               text,
-              style: TextStyle(color: AppColors.thirdColor, fontSize: 16.sp),
+              style: TextStyle(
+                color: AppColors.thirdColor,
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 16.sp,
+                  tablet: 20.sp,
+                ),
+              ),
             ),
             isBookmarked
                 ? const Icon(Icons.flag, color: Colors.white)

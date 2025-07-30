@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
@@ -49,23 +49,44 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
+                    spacing: 16.h,
                     children: [
-                      Image.asset(Assets.logoCircle),
-                      15.verticalSpace,
+                      Image.asset(
+                        Assets.logoCircle,
+                        height: SizeConfig.responsiveValue(
+                          phone: null,
+                          tablet: 75.h,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                      10.verticalSpace,
                       Text(
                         "  ${'welcome_to'.tr(context)}  \n(${'smle_gate'.tr(context)})",
-                        style: interExtraBold.copyWith(fontSize: 24.sp),
+                        style: interExtraBold.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 24.sp,
+                            tablet: 28.sp,
+                          ),
+                        ),
                       ),
-                      20.verticalSpace,
                       Text(
                         'trusted_partner'.tr(context),
-                        style: interBold.copyWith(fontSize: 20.sp),
+                        style: interBold.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 20.sp,
+                            tablet: 24.sp,
+                          ),
+                        ),
                         textAlign: TextAlign.center,
                       ),
-                      50.verticalSpace,
                       Text(
                         'log_in'.tr(context),
-                        style: interBold.copyWith(fontSize: 18.sp),
+                        style: interBold.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 18.sp,
+                            tablet: 22.sp,
+                          ),
+                        ),
                       ),
                       25.verticalSpace,
                       BlocBuilder<LoginCubit, LoginStates>(
@@ -88,7 +109,22 @@ class LoginScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      25.verticalSpace,
+                      8.verticalSpace,
+                      TextButton(
+                        onPressed: () {
+                          context.pushReplacementNamed(Routes.guestScreen);
+                        },
+                        child: Text(
+                          'Continue As Guest',
+                          style: interBold.copyWith(
+                            color: AppColors.secondaryColor,
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   Align(
@@ -98,24 +134,40 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: 'by_the'.tr(context),
-                            style: interRegular.copyWith(fontSize: 14.sp),
+                            style: interRegular.copyWith(
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 14.sp,
+                                tablet: 18.sp,
+                              ),
+                            ),
                           ),
                           TextSpan(
                             text: 'register'.tr(context),
                             style: interRegular.copyWith(
                               color: AppColors.secondaryColor,
-                              fontSize: 14.sp,
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 14.sp,
+                                tablet: 18.sp,
+                              ),
                             ),
                           ),
                           TextSpan(
                             text: 'confirm_agreement'.tr(context),
-                            style: interRegular.copyWith(fontSize: 14.sp),
+                            style: interRegular.copyWith(
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 14.sp,
+                                tablet: 18.sp,
+                              ),
+                            ),
                           ),
                           TextSpan(
                             text: 'privacy_policy'.tr(context),
                             style: interRegular.copyWith(
                               color: AppColors.secondaryColor,
-                              fontSize: 14.sp,
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 14.sp,
+                                tablet: 18.sp,
+                              ),
                             ),
                           ),
                         ],

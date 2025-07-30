@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
 
 class UpcomingItem extends StatelessWidget {
@@ -15,8 +15,8 @@ class UpcomingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 60.w,
-      height: 30.h,
+      width: SizeConfig.responsiveValue(phone: 60.w, tablet: 50.w),
+      height: SizeConfig.responsiveValue(phone: 30.h, tablet: 60.h),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(10.r),
@@ -26,7 +26,7 @@ class UpcomingItem extends StatelessWidget {
           text,
           style: TextStyle(
             color: AppColors.thirdColor,
-            fontSize: 18.sp,
+            fontSize: SizeConfig.responsiveValue(phone: 18.sp, tablet: 22.sp),
             fontWeight: FontWeight.bold,
           ),
         ),

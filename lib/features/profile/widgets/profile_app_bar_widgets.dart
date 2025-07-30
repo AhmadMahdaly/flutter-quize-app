@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 
-class ProfileAppBarWidgets extends StatelessWidget implements PreferredSizeWidget {
-
+class ProfileAppBarWidgets extends StatelessWidget
+    implements PreferredSizeWidget {
   const ProfileAppBarWidgets({
     super.key,
     this.canBack = true,
     required this.imagePath,
   });
   final bool canBack;
-  final String imagePath ;
+  final String imagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,12 @@ class ProfileAppBarWidgets extends StatelessWidget implements PreferredSizeWidge
           backgroundColor: AppColors.primaryColor,
           leading: canBack
               ? IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.iconColorBlack),
-            onPressed: () => Navigator.of(context).pop(),
-          )
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: AppColors.iconColorBlack,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
               : const SizedBox(),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -36,36 +39,48 @@ class ProfileAppBarWidgets extends StatelessWidget implements PreferredSizeWidge
           ),
         ),
         Positioned(
-          bottom: -80, // Moves the avatar slightly down
-          left: MediaQuery.of(context).size.width / 2 - 80.r, // Centers it
+          bottom: SizeConfig.responsiveValue(phone: -80, tablet: -50.h),
+          left:
+              MediaQuery.of(context).size.width / 2 -
+              SizeConfig.responsiveValue(phone: 80.r, tablet: 30.r),
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: AppColors.darkGreyColor, width: 1.r),
             ),
             child: CircleAvatar(
-              radius: 80.r, // Avatar size
-              backgroundColor:AppColors.greyColor,
+              radius: SizeConfig.responsiveValue(
+                phone: 80.r,
+                tablet: 30.r,
+              ), // Avatar size
+              backgroundColor: AppColors.greyColor,
               child: Stack(
                 children: [
                   Padding(
-                    padding:  EdgeInsets.only(top: 5.sp),
+                    padding: EdgeInsets.only(top: 5.h),
                     child: Image(
                       image: imagePath.isEmpty
-                        ?  const AssetImage(Assets.user) // Use a valid asset path
-                        : NetworkImage(imagePath) as ImageProvider,),
+                          ? const AssetImage(
+                              Assets.user,
+                            ) // Use a valid asset path
+                          : NetworkImage(imagePath) as ImageProvider,
+                    ),
                   ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 5.h,horizontal: 5.w),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.secondaryColor
-                        ),
-                        child: const Icon(CupertinoIcons.camera)),
-                  )
+                      padding: EdgeInsets.symmetric(
+                        vertical: 5.h,
+                        horizontal: 5.w,
+                      ),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.secondaryColor,
+                      ),
+                      child: const Icon(CupertinoIcons.camera),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -73,7 +88,6 @@ class ProfileAppBarWidgets extends StatelessWidget implements PreferredSizeWidge
         ),
       ],
     );
-
   }
 
   @override

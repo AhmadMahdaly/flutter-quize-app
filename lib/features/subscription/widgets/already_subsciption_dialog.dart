@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -12,10 +12,14 @@ class AlreadySubscriptionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40.r), // Rounded corners
+        borderRadius: BorderRadius.circular(
+          SizeConfig.responsiveValue(phone: 40.r, tablet: 20.r),
+        ), // Rounded corners
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(40.r), // Image respects corners
+        borderRadius: BorderRadius.circular(
+          SizeConfig.responsiveValue(phone: 40.r, tablet: 20.r),
+        ), // Image respects corners
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -34,12 +38,13 @@ class AlreadySubscriptionDialog extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Align(
-                      alignment: Alignment.topRight,
-                      child: Icon(
-                        CupertinoIcons.xmark_circle,
-                        color: AppColors.secondaryColor,
-                        size: 30.sp,
-                      )),
+                    alignment: Alignment.topRight,
+                    child: Icon(
+                      CupertinoIcons.xmark_circle,
+                      color: AppColors.secondaryColor,
+                      size: 30.sp,
+                    ),
+                  ),
                 ),
                 60.verticalSpace,
                 Text(

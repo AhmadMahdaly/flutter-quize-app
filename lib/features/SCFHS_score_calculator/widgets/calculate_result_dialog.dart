@@ -1,57 +1,73 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
-
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class CalculateResultDialog extends StatelessWidget {
   const CalculateResultDialog({super.key, required this.score});
-final String score;
+  final String score;
   @override
   Widget build(BuildContext context) {
-    return  Dialog(
+    return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40.r), // Rounded corners
+        borderRadius: BorderRadius.circular(
+          SizeConfig.responsiveValue(phone: 40.r, tablet: 12.r),
+        ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(40.r), // Image respects corners
+        borderRadius: BorderRadius.circular(
+          SizeConfig.responsiveValue(phone: 40.r, tablet: 12.r),
+        ),
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(Assets.calculatorPopupBackground), // Your image path
-              fit: BoxFit.cover, // Fit the image
+              image: AssetImage(Assets.calculatorPopupBackground),
+              fit: BoxFit.cover,
             ),
           ),
           child: Padding(
-            padding:  EdgeInsets.all(15.sp),
+            padding: EdgeInsets.all(
+              SizeConfig.responsiveValue(phone: 15.r, tablet: 12.r),
+            ),
             child: Column(
-              mainAxisSize: MainAxisSize.min, // Flexible height
+              mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
-                  onTap:(){
+                  onTap: () {
                     Navigator.pop(context);
                   },
                   child: Align(
-                      alignment:Alignment.topRight,
-                      child: Icon(CupertinoIcons.xmark_circle,color: AppColors.secondaryColor,size: 30.sp,)),
+                    alignment: Alignment.topRight,
+                    child: Icon(
+                      CupertinoIcons.xmark_circle,
+                      color: AppColors.secondaryColor,
+                      size: 30.sp,
+                    ),
+                  ),
                 ),
                 60.verticalSpace,
                 Text(
                   'your_score'.tr(context),
                   style: interMedium.copyWith(
-                    fontSize: 16.sp,
-                    color: AppColors.secondaryColor, // Text color
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                    color: AppColors.secondaryColor,
                   ),
                 ),
-                25.verticalSpace,
+                20.verticalSpace,
                 Text(
                   score,
                   style: interBold.copyWith(
-                    fontSize: 20.sp,
-                    color: AppColors.secondaryColor, // Text color
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 20.sp,
+                      tablet: 24.sp,
+                    ),
+                    color: AppColors.secondaryColor,
                   ),
                 ),
                 50.verticalSpace,
@@ -60,15 +76,29 @@ final String score;
                   child: Text.rich(
                     TextSpan(
                       children: [
-                        TextSpan(text: 'more_info_calculate'.tr(context),style: interRegular.copyWith(fontSize: 14.sp)),
-                        TextSpan(text: 'here'.tr(context),style: interRegular.copyWith(
-                            color: AppColors.blueColor,fontSize: 14.sp
-                        )),
+                        TextSpan(
+                          text: 'more_info_calculate'.tr(context),
+                          style: interRegular.copyWith(
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
+                            ),
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'here'.tr(context),
+                          style: interRegular.copyWith(
+                            color: AppColors.blueColor,
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-
               ],
             ),
           ),

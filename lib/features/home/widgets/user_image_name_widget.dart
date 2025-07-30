@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -24,13 +24,13 @@ class UserImageNameWidget extends StatelessWidget {
             border: Border.all(color: AppColors.darkGreyColor, width: 1.r),
           ),
           child: CircleAvatar(
-            radius: 50.r, // Avatar size
+            radius: SizeConfig.responsiveValue(phone: 40.r, tablet: 25.r),
             backgroundColor: AppColors.greyColor,
             child: Padding(
               padding: EdgeInsets.only(top: 5.sp),
               child: Image(
                 image: imagePath.isEmpty
-                    ? const AssetImage(Assets.user) // Use a valid asset path
+                    ? const AssetImage(Assets.user)
                     : NetworkImage(imagePath) as ImageProvider,
               ),
             ),
@@ -40,21 +40,56 @@ class UserImageNameWidget extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '${"welcome".tr(context)} $name',
-              style: interBold.copyWith(fontSize: 16.sp),
+            Row(
+              spacing: 4.w,
+              children: [
+                Text(
+                  'welcome'.tr(context),
+                  style: interBold.copyWith(
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 14.sp,
+                      tablet: 18.sp,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width - 240.w,
+                  child: Text(
+                    name,
+                    style: interBold.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 15.sp,
+                        tablet: 19.sp,
+                      ),
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              email,
-              style: interRegular.copyWith(
-                fontSize: 14.sp,
-                color: AppColors.darkGreyColor,
+            SizedBox(
+              width: MediaQuery.sizeOf(context).width - 140.w,
+              child: Text(
+                email,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: interRegular.copyWith(
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 14.sp,
+                    tablet: 18.sp,
+                  ),
+                  color: AppColors.darkGreyColor,
+                ),
               ),
             ),
             Text(
               '$points ${"points".tr(context)}',
-              style: interRegular.copyWith(
-                fontSize: 16.sp,
+              style: interBold.copyWith(
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 16.sp,
+                  tablet: 20.sp,
+                ),
                 color: AppColors.primaryColor,
               ),
             ),

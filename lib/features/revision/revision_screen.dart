@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
-import 'package:smle/core/theme/assets.dart';
-import 'package:smle/features/revision/cubit/revision_cubit.dart';
-
+import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/revision/cubit/revision_cubit.dart';
 
 class RevisionScreen extends StatelessWidget {
   const RevisionScreen({super.key});
@@ -15,9 +16,7 @@ class RevisionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'revision'.tr(context),
-      ),
+      appBar: CustomAppBar(title: 'revision'.tr(context)),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
@@ -28,84 +27,155 @@ class RevisionScreen extends StatelessWidget {
                   if (context.read<RevisionCubit>().subCategoriesModel != null)
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 15.w, vertical: 15.h),
+                        horizontal: 15.w,
+                        vertical: 15.h,
+                      ),
                       decoration: BoxDecoration(
-                          color: AppColors.darkGreyColor,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(60.r))),
+                        color: AppColors.darkGreyColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            SizeConfig.responsiveValue(
+                              phone: 60.r,
+                              tablet: 16.r,
+                            ),
+                          ),
+                        ),
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 30.h),
                             child: Text(
-                                '${context.read<RevisionCubit>().subCategoriesModel!.data!.name}',
-                                style: interBold.copyWith(
-                                    fontSize: 16.sp,
-                                    color: AppColors.thirdColor)),
+                              '${context.read<RevisionCubit>().subCategoriesModel!.data!.name}',
+                              style: interBold.copyWith(
+                                fontSize: SizeConfig.responsiveValue(
+                                  phone: 16.sp,
+                                  tablet: 20.sp,
+                                ),
+                                color: AppColors.thirdColor,
+                              ),
+                            ),
                           ),
                           10.horizontalSpace,
-                          Image.network('${context.read<RevisionCubit>().subCategoriesModel!.data!.photo}')
+                          Image.network(
+                            fit: BoxFit.cover,
+                            '${context.read<RevisionCubit>().subCategoriesModel!.data!.photo}',
+                          ),
                         ],
                       ),
                     ),
                   30.verticalSpace,
                   if (context.read<RevisionCubit>().subCategoriesModel != null)
                     ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) => Column(
-                              children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].name}',
-                                    style: interBold.copyWith(fontSize: 16.sp),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].name}',
+                              style: interBold.copyWith(
+                                fontSize: SizeConfig.responsiveValue(
+                                  phone: 16.sp,
+                                  tablet: 20.sp,
+                                ),
+                              ),
+                            ),
+                          ),
+                          10.verticalSpace,
+                          Container(
+                            width: SizeConfig.responsiveValue(
+                              phone: 150.w,
+                              tablet: 250.w,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(
+                                  SizeConfig.responsiveValue(
+                                    phone: 25.r,
+                                    tablet: 12.r,
                                   ),
                                 ),
-                                10.verticalSpace,
-                                Container(
-                                  width: 150.w,
-                                  decoration: BoxDecoration(
-                                      color: AppColors.primaryColor,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(25.r))),
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 6.h),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        GestureDetector(
-                                            onTap: () {
-                                              context.read<RevisionCubit>().openPDF(
-                                                  '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].pdf}');
-                                            },
-                                            child:
-                                                Image.asset(Assets.pdfButton)),
-                                        GestureDetector(
-                                            onTap: () {
-                                              context
-                                                  .read<RevisionCubit>()
-                                                  .launchVideo(
-                                                      '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].video}');
-                                            },
-                                            child:
-                                                Image.asset(Assets.mp4Button)),
-                                      ],
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: SizeConfig.responsiveValue(
+                                  phone: 6.h,
+                                  tablet: 16.h,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      context.pushNamed(
+                                        Routes.pdfViewerFromUrlScreen,
+                                        arguments: context
+                                            .read<RevisionCubit>()
+                                            .subCategoriesModel!
+                                            .data!
+                                            .chapters![index]
+                                            .pdf,
+                                      );
+                                      // context.read<RevisionCubit>().openPDF(
+                                      //   '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].pdf}',
+                                      // );
+                                    },
+                                    child: Image.asset(
+                                      Assets.pdfButton,
+                                      fit: BoxFit.cover,
+                                      height: SizeConfig.responsiveValue(
+                                        phone: 30.h,
+                                        tablet: 50.h,
+                                      ),
                                     ),
                                   ),
-                                )
-                              ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      context.pushNamed(
+                                        Routes.videoPlayerScreen,
+                                        arguments: context
+                                            .read<RevisionCubit>()
+                                            .subCategoriesModel!
+                                            .data!
+                                            .chapters![index]
+                                            .video,
+                                      );
+                                      // context.read<RevisionCubit>().launchVideo(
+                                      //   '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].video}',
+                                      // );
+                                    },
+                                    child: Image.asset(
+                                      Assets.mp4Button,
+                                      fit: BoxFit.cover,
+                                      height: SizeConfig.responsiveValue(
+                                        phone: 30.h,
+                                        tablet: 50.h,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                        separatorBuilder: (context, index) => 20.verticalSpace,
-                        itemCount: context
-                            .read<RevisionCubit>()
-                            .subCategoriesModel!
-                            .data!
-                            .chapters!
-                            .length)
+                          ),
+                        ],
+                      ),
+                      separatorBuilder: (context, index) => 16.verticalSpace,
+                      itemCount: context
+                          .read<RevisionCubit>()
+                          .subCategoriesModel!
+                          .data!
+                          .chapters!
+                          .length,
+                    ),
+                  // if (context.read<RevisionCubit>().subCategoriesModel == null)
+                  //   const Text('no'),
                 ],
               );
             },

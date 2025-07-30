@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
-import 'package:smle/features/real_exam/views/refactors/timeline/question_items/complated_item.dart';
-import 'package:smle/features/real_exam/views/refactors/timeline/question_items/current_item.dart';
-import 'package:smle/features/real_exam/views/refactors/timeline/question_items/upcoming_item.dart';
-import 'package:smle/features/real_exam/views/refactors/timeline/timeline_status.dart';
+import 'package:smle/features/real_exam/views/widgets/timeline/question_items/complated_item.dart';
+import 'package:smle/features/real_exam/views/widgets/timeline/question_items/current_item.dart';
+import 'package:smle/features/real_exam/views/widgets/timeline/question_items/upcoming_item.dart';
+import 'package:smle/features/real_exam/views/widgets/timeline/timeline_status.dart';
 
 class TimelineItem extends StatelessWidget {
   const TimelineItem({
@@ -11,8 +12,10 @@ class TimelineItem extends StatelessWidget {
     required this.status,
     super.key,
     required this.isBookmarked,
+    required this.hasNote,
   });
   final String number;
+  final bool hasNote;
   final TimelineStatus status;
   final bool isBookmarked;
 
@@ -48,6 +51,22 @@ class TimelineItem extends StatelessWidget {
             text: number,
             color: backgroundColor,
             isBookmarked: isBookmarked,
+          ),
+        if (hasNote)
+          Positioned(
+            top: 0,
+            bottom: 0,
+            right: 0,
+            child: InkWell(
+              onTap: () {
+                /// todo add view notes
+              },
+              child: Icon(
+                Icons.edit,
+                color: AppColors.darkGreyColor,
+                size: 16.r,
+              ),
+            ),
           ),
       ],
     );

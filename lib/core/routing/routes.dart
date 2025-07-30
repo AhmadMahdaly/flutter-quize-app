@@ -23,4 +23,7 @@ class Routes {
   static const String playListScreen = '/playListScreen';
   static const String playListDetailsScreen = '/playListDetailsScreen';
   static const String realExamScreen = '/realExamScreen';
+  static const String guestScreen = '/GuestMainLayoutScreen';
+  static const String pdfViewerFromUrlScreen = '/pdfViewerFromUrlScreen';
+  static const String videoPlayerScreen = '/videoPlayerScreen';
 }

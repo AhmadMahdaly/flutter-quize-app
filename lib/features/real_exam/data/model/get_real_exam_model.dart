@@ -18,6 +18,21 @@ class StartRealExamModel {
           : null,
     );
   }
+  StartRealExamModel copyWith({
+    int? status,
+    String? message,
+    int? examId,
+    int? questionsCount,
+    Question? data,
+  }) {
+    return StartRealExamModel(
+      status: status ?? this.status,
+      message: message ?? this.message,
+      examId: examId ?? this.examId,
+      questionsCount: questionsCount ?? this.questionsCount,
+      data: data ?? this.data,
+    );
+  }
 
   final int? status;
   final String? message;
@@ -37,23 +52,6 @@ class StartRealExamModel {
 }
 
 class Question {
-  Question({
-    required this.id,
-    required this.examId,
-    required this.section,
-    required this.questionNo,
-    required this.questionText,
-    required this.a,
-    required this.b,
-    required this.c,
-    required this.d,
-    required this.isBookmarked,
-    required this.isAnswered,
-    this.photo,
-    this.notes,
-    this.userAnswer,
-  });
-
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
       id: json['id'],
@@ -70,6 +68,55 @@ class Question {
       notes: json['notes']?.toString(),
       isAnswered: json['is_answered'] ?? false,
       userAnswer: json['user_answer']?.toString(),
+    );
+  }
+  Question({
+    required this.id,
+    required this.examId,
+    required this.section,
+    required this.questionNo,
+    required this.questionText,
+    required this.a,
+    required this.b,
+    required this.c,
+    required this.d,
+    required this.isBookmarked,
+    required this.isAnswered,
+    this.photo,
+    this.notes,
+    this.userAnswer,
+  });
+  Question copyWith({
+    int? id,
+    int? examId,
+    int? section,
+    int? questionNo,
+    String? questionText,
+    String? photo,
+    String? a,
+    String? b,
+    String? c,
+    String? d,
+    bool? isBookmarked,
+    String? notes,
+    bool? isAnswered,
+    String? userAnswer,
+  }) {
+    return Question(
+      id: id ?? this.id,
+      examId: examId ?? this.examId,
+      section: section ?? this.section,
+      questionNo: questionNo ?? this.questionNo,
+      questionText: questionText ?? this.questionText,
+      photo: photo ?? this.photo,
+      a: a ?? this.a,
+      b: b ?? this.b,
+      c: c ?? this.c,
+      d: d ?? this.d,
+      isBookmarked: isBookmarked ?? this.isBookmarked,
+      notes: notes ?? this.notes,
+      isAnswered: isAnswered ?? this.isAnswered,
+      userAnswer: userAnswer ?? this.userAnswer,
     );
   }
 
