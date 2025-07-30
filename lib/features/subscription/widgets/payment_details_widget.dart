@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -14,12 +14,15 @@ class PaymentDetailsWidget extends StatelessWidget {
     return BlocBuilder<SubscriptionCubit, SubscriptionStates>(
       builder: (context, state) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'payment_details'.tr(context),
               style: interBold.copyWith(
-                fontSize: 16.sp,
-                decoration: TextDecoration.underline,
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 16.sp,
+                  tablet: 20.sp,
+                ),
               ),
             ),
             30.verticalSpace,
@@ -29,12 +32,23 @@ class PaymentDetailsWidget extends StatelessWidget {
                 Text(
                   'sub_total'.tr(context),
                   style: interRegular.copyWith(
-                      color: AppColors.darkGreyColor, fontSize: 16.sp),
+                    color: AppColors.darkGreyColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                  ),
                 ),
                 Text(
-                    '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.offerPrice} SAR',
-                    style: interRegular.copyWith(
-                        color: AppColors.darkGreyColor, fontSize: 16.sp)),
+                  '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.offerPrice} SAR',
+                  style: interRegular.copyWith(
+                    color: AppColors.darkGreyColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                  ),
+                ),
               ],
             ),
             10.verticalSpace,
@@ -44,12 +58,23 @@ class PaymentDetailsWidget extends StatelessWidget {
                 Text(
                   'promo_code'.tr(context),
                   style: interRegular.copyWith(
-                      color: AppColors.darkGreyColor, fontSize: 16.sp),
+                    color: AppColors.darkGreyColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                  ),
                 ),
                 Text(
-                    '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.offerPrice}',
-                    style: interRegular.copyWith(
-                        color: AppColors.darkGreyColor, fontSize: 16.sp)),
+                  '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.offerPrice}',
+                  style: interRegular.copyWith(
+                    color: AppColors.darkGreyColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                  ),
+                ),
               ],
             ),
             10.verticalSpace,
@@ -59,12 +84,22 @@ class PaymentDetailsWidget extends StatelessWidget {
                 Text(
                   'discount'.tr(context),
                   style: interRegular.copyWith(
-                      color: AppColors.darkGreyColor, fontSize: 16.sp),
+                    color: AppColors.darkGreyColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                  ),
                 ),
                 Text(
                   '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.codeDiscountPrice} SAR',
                   style: interRegular.copyWith(
-                      color: AppColors.darkGreyColor, fontSize: 16.sp),
+                    color: AppColors.darkGreyColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -75,12 +110,22 @@ class PaymentDetailsWidget extends StatelessWidget {
                 Text(
                   'points_discount'.tr(context),
                   style: interRegular.copyWith(
-                      color: AppColors.darkGreyColor, fontSize: 16.sp),
+                    color: AppColors.darkGreyColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                  ),
                 ),
                 Text(
                   '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.deductedPoints} ${'points'.tr(context)}',
                   style: interRegular.copyWith(
-                      color: AppColors.darkGreyColor, fontSize: 16.sp),
+                    color: AppColors.darkGreyColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -90,11 +135,21 @@ class PaymentDetailsWidget extends StatelessWidget {
               children: [
                 Text(
                   'total'.tr(context),
-                  style: interRegular.copyWith(fontSize: 16.sp),
+                  style: interRegular.copyWith(
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                  ),
                 ),
                 Text(
                   '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.payments} SAR',
-                  style: interRegular.copyWith(fontSize: 16.sp),
+                  style: interRegular.copyWith(
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
+                  ),
                 ),
               ],
             ),

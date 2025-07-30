@@ -53,7 +53,7 @@ dependencies:
   flutter_phoenix: ^1.1.1
   intl: ^0.20.0
   # Responsive
-  flutter_screenutil: ^5.9.0
+  # flutter_screenutil: ^5.9.0
   # Text Font Style
   google_fonts: ^6.2.1
   # Navigation
@@ -78,6 +78,9 @@ dependencies:
   # year picker
   month_year_picker: ^0.5.0+1
   multiselect: ^0.1.1
+  device_preview: ^1.2.0
+  flutter_localizations:
+    sdk: flutter
 dev_dependencies:
   flutter_test:
     sdk: flutter

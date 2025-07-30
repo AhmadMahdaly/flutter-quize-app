@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
 class CustomTimerWidget extends StatefulWidget {
   const CustomTimerWidget({super.key});
@@ -54,7 +55,10 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
       children: [
         Text(
           formatTime(timeLeftInSeconds),
-          style: TextStyle(fontSize: 16.sp, color: AppColors.thirdColor),
+          style: interBold.copyWith(
+            fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
+            color: AppColors.thirdColor,
+          ),
         ),
       ],
     );

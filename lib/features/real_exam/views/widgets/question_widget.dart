@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/data/model/get_real_exam_model.dart';
 
@@ -49,7 +50,10 @@ class _QuestionWidgetState extends State<QuestionWidget> {
       child: Container(
         width: double.infinity,
         margin: EdgeInsets.symmetric(vertical: 4.h),
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+          vertical: SizeConfig.responsiveValue(phone: 0, tablet: 2.h),
+        ),
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(
           color: isSelected
@@ -60,8 +64,8 @@ class _QuestionWidgetState extends State<QuestionWidget> {
         ),
         child: Text(
           text,
-          style: TextStyle(
-            fontSize: 14.sp,
+          style: interRegular.copyWith(
+            fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             color: isSelected ? AppColors.offwhiteColor : AppColors.forthColor,
           ),
@@ -89,11 +93,11 @@ class _QuestionWidgetState extends State<QuestionWidget> {
       ),
       child: Column(
         children: [
-          SizedBox(height: 8.h),
+          8.verticalSpace,
           Expanded(
             child: Container(
               width: 283.w,
-              padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 8.h),
+              padding: EdgeInsets.all(6.r),
               decoration: ShapeDecoration(
                 color: AppColors.offwhiteColor,
                 shape: RoundedRectangleBorder(
@@ -112,19 +116,23 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                             Text(
                               q.questionText ?? '',
                               textAlign: TextAlign.justify,
-                              style: TextStyle(
+                              style: interMedium.copyWith(
+                                fontSize: SizeConfig.responsiveValue(
+                                  phone: 16.sp,
+                                  tablet: 20.sp,
+                                ),
                                 color: AppColors.forthColor,
-                                fontSize: 16.sp,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400,
-                                height: 1.20.h,
+                                height: 1.1.h,
                               ),
                             ),
                             if (q.photo != null && q.photo!.isNotEmpty ||
                                 q.photo != null && q.photo != 'null')
                               Image.network(
                                 q.photo!,
-                                height: 200,
+                                height: SizeConfig.responsiveValue(
+                                  phone: 200.h,
+                                  tablet: 140.h,
+                                ),
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) =>
                                     const SizedBox.shrink(),

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
@@ -19,11 +19,9 @@ class PaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
-          title: 'payment'.tr(context),
-        ),
-        body: SingleChildScrollView(
-            child: Padding(
+      appBar: CustomAppBar(title: 'payment'.tr(context)),
+      body: SingleChildScrollView(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,57 +30,74 @@ class PaymentScreen extends StatelessWidget {
               Text(
                 'promotions'.tr(context),
                 style: interBold.copyWith(
-                  fontSize: 16.sp,
-                  decoration: TextDecoration.underline,
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 16.sp,
+                    tablet: 20.sp,
+                  ),
                 ),
               ),
-              20.verticalSpace,
+              12.verticalSpace,
               Text(
                 'redeem_promo_code'.tr(context),
                 style: interMedium.copyWith(
-                  fontSize: 16.sp,
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 14.sp,
+                    tablet: 18.sp,
+                  ),
                 ),
               ),
               10.verticalSpace,
               TextFormField(
                 textAlign: TextAlign.center,
-                style: interRegular.copyWith(color: AppColors.darkGreyColor),
-                controller:
-                    context.read<SubscriptionCubit>().promoCodeController,
+                style: interRegular.copyWith(
+                  color: AppColors.darkGreyColor,
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 12.sp,
+                    tablet: 16.sp,
+                  ),
+                ),
+                controller: context
+                    .read<SubscriptionCubit>()
+                    .promoCodeController,
                 decoration: InputDecoration(
-                    hintText: 'optional'.tr(context),
-                    fillColor: AppColors.greyColor
-                        .withOpacity(0.3), // Background color
-                    filled: true, // Enables the background color
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(40.r)),
-                        borderSide:
-                            const BorderSide(color: AppColors.greyColor)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(40.r)),
-                        borderSide:
-                            const BorderSide(color: AppColors.greyColor)),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(40.r)),
-                        borderSide:
-                            const BorderSide(color: AppColors.greyColor))),
+                  hintText: 'optional'.tr(context),
+                  fillColor: AppColors.greyColor.withOpacity(
+                    0.3,
+                  ), // Background color
+                  filled: true, // Enables the background color
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(40.r)),
+                    borderSide: const BorderSide(color: AppColors.greyColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(40.r)),
+                    borderSide: const BorderSide(color: AppColors.greyColor),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(40.r)),
+                    borderSide: const BorderSide(color: AppColors.greyColor),
+                  ),
+                ),
               ),
-              30.verticalSpace,
+              24.verticalSpace,
               Center(
                 child: TextButton(
                   onPressed: () {
                     context.read<SubscriptionCubit>().getYourCheckout(
-                        '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.offerId}');
+                      '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.offerId}',
+                    );
                   },
                   style: ButtonStyle(
-                    backgroundColor:
-                        WidgetStateProperty.all(AppColors.secondaryColor),
+                    backgroundColor: WidgetStateProperty.all(
+                      AppColors.secondaryColor,
+                    ),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     minimumSize: WidgetStateProperty.all(
-                        const Size(double.infinity, 52)),
+                      Size(double.infinity, 52.h),
+                    ),
                     shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                        borderRadius: BorderRadius.circular(30.r),
                       ),
                     ),
                   ),
@@ -90,23 +105,26 @@ class PaymentScreen extends StatelessWidget {
                     'apply'.tr(context),
                     style: interBold.copyWith(
                       color: AppColors.thirdColor,
-                      fontSize: 16.sp,
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 16.sp,
+                        tablet: 20.sp,
+                      ),
                     ),
                   ),
                 ),
               ),
-              30.verticalSpace,
+              24.verticalSpace,
               BlocBuilder<SubscriptionCubit, SubscriptionStates>(
                 builder: (context, state) {
                   return context.read<SubscriptionCubit>().yourCheckoutModel !=
                           null
                       ? context
-                                  .read<SubscriptionCubit>()
-                                  .yourCheckoutModel!
-                                  .data !=
-                              null
-                          ? const PaymentDetailsWidget()
-                          : const SizedBox.shrink()
+                                    .read<SubscriptionCubit>()
+                                    .yourCheckoutModel!
+                                    .data !=
+                                null
+                            ? const PaymentDetailsWidget()
+                            : const SizedBox.shrink()
                       : const SizedBox.shrink();
                 },
               ),
@@ -114,41 +132,49 @@ class PaymentScreen extends StatelessWidget {
               Text(
                 'add_your_payment_method'.tr(context),
                 style: interBold.copyWith(
-                  fontSize: 16.sp,
-                  decoration: TextDecoration.underline,
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 16.sp,
+                    tablet: 20.sp,
+                  ),
                 ),
               ),
-              if(!Platform.isAndroid)
-              50.verticalSpace,
-              if(!Platform.isAndroid)
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    context.pushNamed(Routes.applePayScreen,
+              if (!Platform.isAndroid) 50.verticalSpace,
+              if (!Platform.isAndroid)
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      context.pushNamed(
+                        Routes.applePayScreen,
                         arguments:
-                            '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.payments}');
-                  },
-                  style: ButtonStyle(
-                    backgroundColor:
-                        WidgetStateProperty.all(AppColors.secondaryColor),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    minimumSize: WidgetStateProperty.all(
-                        const Size(double.infinity, 52)),
-                    shape: WidgetStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                            '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.payments}',
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(
+                        AppColors.secondaryColor,
+                      ),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      minimumSize: WidgetStateProperty.all(
+                        Size(double.infinity, 52.h),
+                      ),
+                      shape: WidgetStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.r),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      'pay_via_apple_pay'.tr(context),
+                      style: interBold.copyWith(
+                        color: AppColors.thirdColor,
+                        fontSize: SizeConfig.responsiveValue(
+                          phone: 16.sp,
+                          tablet: 20.sp,
+                        ),
                       ),
                     ),
                   ),
-                  child: Text(
-                    'pay_via_apple_pay'.tr(context),
-                    style: interBold.copyWith(
-                      color: AppColors.thirdColor,
-                      fontSize: 16.sp,
-                    ),
-                  ),
                 ),
-              ),
               25.verticalSpace,
               Center(
                 child: TextButton(
@@ -156,14 +182,16 @@ class PaymentScreen extends StatelessWidget {
                     context.pushNamed(Routes.addCardScreen);
                   },
                   style: ButtonStyle(
-                    backgroundColor:
-                        WidgetStateProperty.all(AppColors.secondaryColor),
+                    backgroundColor: WidgetStateProperty.all(
+                      AppColors.secondaryColor,
+                    ),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     minimumSize: WidgetStateProperty.all(
-                        const Size(double.infinity, 52)),
+                      Size(double.infinity, 52.h),
+                    ),
                     shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                        borderRadius: BorderRadius.circular(30.r),
                       ),
                     ),
                   ),
@@ -171,7 +199,10 @@ class PaymentScreen extends StatelessWidget {
                     'add_new_card'.tr(context),
                     style: interBold.copyWith(
                       color: AppColors.thirdColor,
-                      fontSize: 16.sp,
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 16.sp,
+                        tablet: 20.sp,
+                      ),
                     ),
                   ),
                 ),
@@ -181,11 +212,13 @@ class PaymentScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(Assets.visa),
-                  Image.asset(Assets.masterCard)
+                  Image.asset(Assets.masterCard),
                 ],
-              )
+              ),
             ],
           ),
-        )));
+        ),
+      ),
+    );
   }
 }

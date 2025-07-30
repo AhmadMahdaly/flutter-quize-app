@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
@@ -55,19 +55,32 @@ class ProfileScreen extends StatelessWidget {
                     vertical: 15.h,
                   ),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Column(
                         children: [
+                          SizeConfig.responsiveValue(
+                            phone: 90.verticalSpace,
+                            tablet: 50.verticalSpace,
+                          ),
                           Text(
                             '${context.read<MainLayoutCubit>().profileModel!.data!.name}',
-                            style: interBold.copyWith(fontSize: 16.sp),
+                            style: interBold.copyWith(
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 18.sp,
+                                tablet: 22.sp,
+                              ),
+                            ),
                           ),
                           Text(
                             '${context.read<MainLayoutCubit>().profileModel!.data!.email}',
                             style: interRegular.copyWith(
                               color: AppColors.darkGreyColor,
-                              fontSize: 14.sp,
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 14.sp,
+                                tablet: 18.sp,
+                              ),
                             ),
                           ),
                           if (context
@@ -80,7 +93,10 @@ class ProfileScreen extends StatelessWidget {
                               '${"package_subscribed".tr(context)} ${context.read<MainLayoutCubit>().profileModel!.data!.offerName}',
                               style: interMedium.copyWith(
                                 color: AppColors.primaryColor,
-                                fontSize: 14.sp,
+                                fontSize: SizeConfig.responsiveValue(
+                                  phone: 14.sp,
+                                  tablet: 18.sp,
+                                ),
                               ),
                             ),
                           if (context
@@ -93,9 +109,13 @@ class ProfileScreen extends StatelessWidget {
                               '${"remaining_real_exams".tr(context)} ${context.read<MainLayoutCubit>().profileModel!.data!.remainingRealExams} ${"exams".tr(context)}',
                               style: interMedium.copyWith(
                                 color: AppColors.primaryColor,
-                                fontSize: 14.sp,
+                                fontSize: SizeConfig.responsiveValue(
+                                  phone: 14.sp,
+                                  tablet: 18.sp,
+                                ),
                               ),
                             ),
+
                           if (context
                                   .read<MainLayoutCubit>()
                                   .profileModel!
@@ -106,12 +126,18 @@ class ProfileScreen extends StatelessWidget {
                               '${"expire_date".tr(context)} ${context.read<MainLayoutCubit>().profileModel!.data!.packageExpireAt}',
                               style: interMedium.copyWith(
                                 color: AppColors.primaryColor,
-                                fontSize: 14.sp,
+                                fontSize: SizeConfig.responsiveValue(
+                                  phone: 14.sp,
+                                  tablet: 18.sp,
+                                ),
                               ),
                             ),
+                          62.verticalSpace,
                         ],
                       ),
+
                       Column(
+                        spacing: 16.h,
                         children: [
                           ProfileButtonWidget(
                             text: 'exams_history'.tr(context),
@@ -120,19 +146,16 @@ class ProfileScreen extends StatelessWidget {
                               context.pushNamed(Routes.examsHistoryScreen);
                             },
                           ),
-                          20.verticalSpace,
                           ProfileButtonWidget(
                             text: 'exams_analysis'.tr(context),
                             imagePath: Assets.lineUp,
                           ),
-                          20.verticalSpace,
                           ProfileButtonWidget(
                             text: 'gifts'.tr(context),
                             imagePath: Assets.gift,
                           ),
                           // 20.verticalSpace,
                           // ProfileButtonWidget(text: 'exam_grades'.tr(context),imagePath: Assets.bookCheck,),
-                          20.verticalSpace,
                           ProfileButtonWidget(
                             text: 'delete_account'.tr(context),
                             imagePath: Assets.tarsh,

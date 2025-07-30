@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -41,7 +41,10 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
                 'Finish Section 1?',
                 style: interBold.copyWith(
-                  fontSize: 18.sp,
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 18.sp,
+                    tablet: 22.sp,
+                  ),
                   color: AppColors.iconColorGray,
                 ),
               ),
@@ -49,7 +52,10 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
                 'You will start a 30-minute break',
                 style: interMedium.copyWith(
-                  fontSize: 16.sp,
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 16.sp,
+                    tablet: 18.sp,
+                  ),
                   color: AppColors.iconColorGray,
                 ),
               ),
@@ -71,7 +77,6 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                       // cubit.finishAnalysisExam();
                     },
                     child: Container(
-                      height: 42.h,
                       padding: EdgeInsets.symmetric(
                         vertical: 8.r,
                         horizontal: 8.w,
@@ -83,7 +88,10 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                       child: Text(
                         'Yes, start break',
                         style: interBold.copyWith(
-                          fontSize: 14.sp,
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
+                          ),
                           color: AppColors.offwhiteColor,
                         ),
                       ),
@@ -94,7 +102,6 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                       context.pop();
                     },
                     child: Container(
-                      height: 42.h,
                       padding: EdgeInsets.all(8.r),
                       decoration: BoxDecoration(
                         color: AppColors.errorColor,
@@ -103,7 +110,10 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                       child: Text(
                         'Cancel',
                         style: interBold.copyWith(
-                          fontSize: 14.sp,
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
+                          ),
                           color: AppColors.offwhiteColor,
                         ),
                       ),
@@ -136,7 +146,10 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
                 'Finish The Exam?',
                 style: interBold.copyWith(
-                  fontSize: 18.sp,
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 18.sp,
+                    tablet: 22.sp,
+                  ),
                   color: AppColors.iconColorGray,
                 ),
               ),
@@ -151,7 +164,6 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                       cubit.finishAnalysisExam();
                     },
                     child: Container(
-                      height: 42.h,
                       padding: EdgeInsets.symmetric(
                         vertical: 8.r,
                         horizontal: 8.w,
@@ -163,7 +175,10 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                       child: Text(
                         'Yes, Finish Exam',
                         style: interBold.copyWith(
-                          fontSize: 14.sp,
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
+                          ),
                           color: AppColors.offwhiteColor,
                         ),
                       ),
@@ -174,7 +189,6 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                       context.pop();
                     },
                     child: Container(
-                      height: 42.h,
                       padding: EdgeInsets.all(8.r),
                       decoration: BoxDecoration(
                         color: AppColors.errorColor,
@@ -183,7 +197,10 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                       child: Text(
                         'Cancel',
                         style: interBold.copyWith(
-                          fontSize: 14.sp,
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
+                          ),
                           color: AppColors.offwhiteColor,
                         ),
                       ),

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smle/core/di.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 import 'package:smle/features/play_list/widgets/play_list_widget.dart';
 import 'package:smle/features/play_list/widgets/playlist_alert_widget.dart';
-import 'package:smle/core/theme/text_styles.dart';
 
 class PlayListScreen extends StatelessWidget {
   PlayListScreen({super.key, this.questionId});
@@ -17,9 +17,7 @@ class PlayListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'playlists'.tr(context),
-      ),
+      appBar: CustomAppBar(title: 'playlists'.tr(context)),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
         child: SingleChildScrollView(
@@ -28,39 +26,40 @@ class PlayListScreen extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  30.verticalSpace,
+                  24.verticalSpace,
                   Text(
                     'recently_added'.tr(context),
                     style: interBold.copyWith(
-                      fontSize: 16.sp,
-                      decoration: TextDecoration.underline,
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 16.sp,
+                        tablet: 20.sp,
+                      ),
                     ),
                   ),
                   30.verticalSpace,
                   if (context.read<PlayListCubit>().playListModel != null)
                     ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) => GestureDetector(
-                              onTap: () {
-
-                              },
-                              child: PlayListWidget(
-                                playListNameController: playListNameController,
-                                playListName:
-                                    '${context.read<PlayListCubit>().playListModel!.data![index].name}',
-                                questionCount:
-                                    '${context.read<PlayListCubit>().playListModel!.data!.length}',
-                                playListId:
-                                    '${context.read<PlayListCubit>().playListModel!.data![index].id}',
-                              ),
-                            ),
-                        separatorBuilder: (context, index) => 15.verticalSpace,
-                        itemCount: context
-                            .read<PlayListCubit>()
-                            .playListModel!
-                            .data!
-                            .length),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {},
+                        child: PlayListWidget(
+                          playListNameController: playListNameController,
+                          playListName:
+                              '${context.read<PlayListCubit>().playListModel!.data![index].name}',
+                          questionCount:
+                              '${context.read<PlayListCubit>().playListModel!.data!.length}',
+                          playListId:
+                              '${context.read<PlayListCubit>().playListModel!.data![index].id}',
+                        ),
+                      ),
+                      separatorBuilder: (context, index) => 12.verticalSpace,
+                      itemCount: context
+                          .read<PlayListCubit>()
+                          .playListModel!
+                          .data!
+                          .length,
+                    ),
                   30.verticalSpace,
                   Center(
                     child: TextButton(
@@ -86,14 +85,16 @@ class PlayListScreen extends StatelessWidget {
                         );
                       },
                       style: ButtonStyle(
-                        backgroundColor:
-                            WidgetStateProperty.all(AppColors.secondaryColor),
+                        backgroundColor: WidgetStateProperty.all(
+                          AppColors.secondaryColor,
+                        ),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         minimumSize: WidgetStateProperty.all(
-                            const Size(double.infinity, 52)),
+                          Size(double.infinity, 52.h),
+                        ),
                         shape: WidgetStateProperty.all(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                            borderRadius: BorderRadius.circular(30.r),
                           ),
                         ),
                       ),
@@ -101,11 +102,14 @@ class PlayListScreen extends StatelessWidget {
                         'create_new_playlist'.tr(context),
                         style: interRegular.copyWith(
                           color: AppColors.thirdColor,
-                          fontSize: 14.sp,
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
+                          ),
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               );
             },

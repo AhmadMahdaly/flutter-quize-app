@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void customToast({required String msg, required var color,  int? time}) =>

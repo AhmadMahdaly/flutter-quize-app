@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class ProfileButtonWidget extends StatelessWidget {
-  const ProfileButtonWidget(
-      {super.key, required this.imagePath, required this.text, this.onPressed});
+  const ProfileButtonWidget({
+    super.key,
+    required this.imagePath,
+    required this.text,
+    this.onPressed,
+  });
   final String imagePath, text;
   final VoidCallback? onPressed;
   @override
@@ -16,11 +20,9 @@ class ProfileButtonWidget extends StatelessWidget {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(AppColors.secondaryColor),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          minimumSize: WidgetStateProperty.all(const Size(double.infinity, 52)),
+          minimumSize: WidgetStateProperty.all(Size(double.infinity, 52.h)),
           shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
-            ),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
           ),
         ),
         child: Row(
@@ -35,7 +37,10 @@ class ProfileButtonWidget extends StatelessWidget {
               text,
               style: interBold.copyWith(
                 color: AppColors.greyColor,
-                fontSize: 16.sp,
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 14.sp,
+                  tablet: 18.sp,
+                ),
               ),
             ),
           ],

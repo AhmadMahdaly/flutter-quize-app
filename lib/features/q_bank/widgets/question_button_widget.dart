@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
@@ -18,7 +18,10 @@ class QuestionButtonWidget extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         text,
-        style: interBold.copyWith(color: AppColors.thirdColor, fontSize: 16.sp),
+        style: interBold.copyWith(
+          color: AppColors.thirdColor,
+          fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
+        ),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
@@ -36,7 +36,10 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              iconTheme: const IconThemeData(color: AppColors.iconColorBlack),
+              iconTheme: IconThemeData(
+                color: AppColors.iconColorBlack,
+                size: SizeConfig.responsiveValue(phone: 24.sp, tablet: 28.sp),
+              ),
             )
           : const HomeAppBarWidget(),
       drawer: isGuest ? null : const DrawerWidget(),
@@ -49,7 +52,12 @@ class HomeScreen extends StatelessWidget {
               isGuest
                   ? Text(
                       '${'welcome'.tr(context)} Guest',
-                      style: interBold.copyWith(fontSize: 18.sp),
+                      style: interBold.copyWith(
+                        fontSize: SizeConfig.responsiveValue(
+                          phone: 18.sp,
+                          tablet: 24.sp,
+                        ),
+                      ),
                     )
                   : UserImageNameWidget(
                       name:
@@ -90,74 +98,89 @@ class HomeScreen extends StatelessWidget {
                           ? ''
                           : '${context.read<MainLayoutCubit>().profileModel?.data?.points}',
                     ),
-              20.verticalSpace,
+              32.verticalSpace,
               const TopBannerWidget(),
               20.verticalSpace,
               Text(
                 'top_category'.tr(context),
-                style: interBold.copyWith(fontSize: 20.sp),
+                style: interBold.copyWith(
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 20.sp,
+                    tablet: 26.sp,
+                  ),
+                ),
               ),
               20.verticalSpace,
               Row(
+                spacing: 8.w,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CategoryWidget(
-                    onTap: () {
-                      isGuest
-                          ? showCustomPrimaryDialog(
-                              context,
-                              widget: const GuestLoginDialog(),
-                            )
-                          : context.pushNamed(Routes.createQuizScreen);
-                    },
-                    categoryName: 'question_bank'.tr(context),
-                    imagePath: Assets.questionBank,
+                  Expanded(
+                    child: CategoryWidget(
+                      onTap: () {
+                        isGuest
+                            ? showCustomPrimaryDialog(
+                                context,
+                                widget: const GuestLoginDialog(),
+                              )
+                            : context.pushNamed(Routes.createQuizScreen);
+                      },
+                      categoryName: 'question_bank'.tr(context),
+                      imagePath: Assets.questionBank,
+                    ),
                   ),
-                  CategoryWidget(
-                    onTap: () {
-                      isGuest
-                          ? showCustomPrimaryDialog(
-                              context,
-                              widget: const GuestLoginDialog(),
-                            )
-                          : context.pushNamed(Routes.categoriesScreen);
-                    },
-                    categoryName: 'revision'.tr(context),
-                    imagePath: Assets.revisionCategory,
+                  Expanded(
+                    child: CategoryWidget(
+                      onTap: () {
+                        isGuest
+                            ? showCustomPrimaryDialog(
+                                context,
+                                widget: const GuestLoginDialog(),
+                              )
+                            : context.pushNamed(Routes.categoriesScreen);
+                      },
+                      categoryName: 'revision'.tr(context),
+                      imagePath: Assets.revisionCategory,
+                    ),
                   ),
                 ],
               ),
-              20.verticalSpace,
+              10.verticalSpace,
               Row(
+                spacing: 8.w,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CategoryWidget(
-                    onTap: () {
-                      isGuest
-                          ? showCustomPrimaryDialog(
-                              context,
-                              widget: const GuestLoginDialog(),
-                            )
-                          : showCustomPrimaryDialog(
-                              context,
-                              widget:
-                                  const ConfirmAccessToRealExamDialogWidget(),
-                            );
-                    },
-                    categoryName: 'real_exam'.tr(context),
-                    imagePath: Assets.examCategory,
+                  Expanded(
+                    child: CategoryWidget(
+                      onTap: () {
+                        isGuest
+                            ? showCustomPrimaryDialog(
+                                context,
+                                widget: const GuestLoginDialog(),
+                              )
+                            : showCustomPrimaryDialog(
+                                context,
+                                widget:
+                                    const ConfirmAccessToRealExamDialogWidget(),
+                              );
+                      },
+                      categoryName: 'real_exam'.tr(context),
+                      imagePath: Assets.examCategory,
+                    ),
                   ),
-                  CategoryWidget(
-                    onTap: () {
-                      isGuest
-                          ? showCustomPrimaryDialog(
-                              context,
-                              widget: const GuestLoginDialog(),
-                            )
-                          : context.pushNamed(Routes.analysisScreen);
-                    },
-                    categoryName: 'analysis'.tr(context),
-                    imagePath: Assets.analysisCategory,
+                  Expanded(
+                    child: CategoryWidget(
+                      onTap: () {
+                        isGuest
+                            ? showCustomPrimaryDialog(
+                                context,
+                                widget: const GuestLoginDialog(),
+                              )
+                            : context.pushNamed(Routes.analysisScreen);
+                      },
+                      categoryName: 'analysis'.tr(context),
+                      imagePath: Assets.analysisCategory,
+                    ),
                   ),
                 ],
               ),

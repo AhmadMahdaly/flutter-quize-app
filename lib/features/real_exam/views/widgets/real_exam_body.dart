@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/data/model/get_real_exam_model.dart';
-import 'package:smle/features/real_exam/views/refactors/question_widget.dart';
-import 'package:smle/features/real_exam/views/refactors/timeline/timeline_items.dart';
-import 'package:smle/features/real_exam/views/refactors/timeline/timeline_status.dart';
 import 'package:smle/features/real_exam/views/widgets/bookmark_widget.dart';
 import 'package:smle/features/real_exam/views/widgets/greenline_widget.dart';
 import 'package:smle/features/real_exam/views/widgets/header_exam_details_card.dart';
 import 'package:smle/features/real_exam/views/widgets/note_widget.dart';
+import 'package:smle/features/real_exam/views/widgets/question_widget.dart';
+import 'package:smle/features/real_exam/views/widgets/timeline/timeline_items.dart';
+import 'package:smle/features/real_exam/views/widgets/timeline/timeline_status.dart';
 
 class RealExamBody extends StatefulWidget {
   const RealExamBody({required this.examModel, super.key});
@@ -96,7 +97,9 @@ class _RealExamBodyState extends State<RealExamBody> {
           }
         },
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.h),
+          padding: EdgeInsets.symmetric(
+            vertical: SizeConfig.responsiveValue(phone: 12.h, tablet: 4.h),
+          ),
           child: SizedBox(
             height: _itemHeight - 24.h,
             child: TimelineItem(
@@ -125,6 +128,12 @@ class _RealExamBodyState extends State<RealExamBody> {
                 width: 80.w,
                 color: AppColors.thirdColor,
                 child: ListView.builder(
+                  padding: EdgeInsets.symmetric(
+                    vertical: SizeConfig.responsiveValue(
+                      phone: 12.h,
+                      tablet: 4.h,
+                    ),
+                  ),
                   controller: _scrollController,
                   itemCount: totalQuestions,
                   itemExtent: _itemHeight,
@@ -190,10 +199,12 @@ class _RealExamBodyState extends State<RealExamBody> {
                           Text(
                             '<Back',
                             textAlign: TextAlign.justify,
-                            style: TextStyle(
+                            style: interRegular.copyWith(
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 16.sp,
+                                tablet: 20.sp,
+                              ),
                               color: AppColors.thirdColor,
-                              fontSize: 16.sp,
-                              fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
                               height: 1.h,
                             ),
@@ -224,10 +235,12 @@ class _RealExamBodyState extends State<RealExamBody> {
                           Text(
                             'Next>',
                             textAlign: TextAlign.justify,
-                            style: TextStyle(
+                            style: interRegular.copyWith(
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 16.sp,
+                                tablet: 20.sp,
+                              ),
                               color: AppColors.thirdColor,
-                              fontSize: 16.sp,
-                              fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
                               height: 1.h,
                             ),
