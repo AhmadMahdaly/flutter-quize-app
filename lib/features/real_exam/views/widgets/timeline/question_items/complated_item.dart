@@ -17,7 +17,7 @@ class ComplatedItem extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          width: 60.w,
+          width: SizeConfig.responsiveValue(phone: 60.w, tablet: 50.w),
           height: SizeConfig.responsiveValue(phone: 30.h, tablet: 60.h),
           decoration: BoxDecoration(
             color: color,

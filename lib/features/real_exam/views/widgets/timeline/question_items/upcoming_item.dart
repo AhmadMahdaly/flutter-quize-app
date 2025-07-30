@@ -15,7 +15,7 @@ class UpcomingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 60.w,
+      width: SizeConfig.responsiveValue(phone: 60.w, tablet: 50.w),
       height: SizeConfig.responsiveValue(phone: 30.h, tablet: 60.h),
       decoration: BoxDecoration(
         color: color,

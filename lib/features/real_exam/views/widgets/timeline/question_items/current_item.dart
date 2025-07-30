@@ -17,9 +17,13 @@ class CurrentItem extends StatelessWidget {
     return ClipPath(
       clipper: ArrowClipper(),
       child: Container(
-        width: 60.w,
+        width: SizeConfig.responsiveValue(phone: 60.w, tablet: 50.w),
         height: SizeConfig.responsiveValue(phone: 30.h, tablet: 60.h),
-        color: color,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4.r),
+          color: color,
+        ),
+
         alignment: Alignment.center,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -98,6 +98,7 @@ class _RealExamBodyState extends State<RealExamBody> {
         },
         child: Padding(
           padding: EdgeInsets.symmetric(
+            horizontal: SizeConfig.responsiveValue(phone: 0, tablet: 6.w),
             vertical: SizeConfig.responsiveValue(phone: 12.h, tablet: 4.h),
           ),
           child: SizedBox(

@@ -64,7 +64,7 @@ class TimelineItem extends StatelessWidget {
               child: Icon(
                 Icons.edit,
                 color: AppColors.darkGreyColor,
-                size: 18.r,
+                size: 16.r,
               ),
             ),
           ),

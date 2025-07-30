@@ -81,6 +81,9 @@ dependencies:
   device_preview: ^1.2.0
   flutter_localizations:
     sdk: flutter
+  syncfusion_flutter_pdfviewer: ^30.1.42
+  video_player: ^2.10.0
+  chewie: ^1.12.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

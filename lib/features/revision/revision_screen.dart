@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -112,9 +114,18 @@ class RevisionScreen extends StatelessWidget {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      context.read<RevisionCubit>().openPDF(
-                                        '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].pdf}',
+                                      context.pushNamed(
+                                        Routes.pdfViewerFromUrlScreen,
+                                        arguments: context
+                                            .read<RevisionCubit>()
+                                            .subCategoriesModel!
+                                            .data!
+                                            .chapters![index]
+                                            .pdf,
                                       );
+                                      // context.read<RevisionCubit>().openPDF(
+                                      //   '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].pdf}',
+                                      // );
                                     },
                                     child: Image.asset(
                                       Assets.pdfButton,
@@ -127,9 +138,18 @@ class RevisionScreen extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      context.read<RevisionCubit>().launchVideo(
-                                        '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].video}',
+                                      context.pushNamed(
+                                        Routes.videoPlayerScreen,
+                                        arguments: context
+                                            .read<RevisionCubit>()
+                                            .subCategoriesModel!
+                                            .data!
+                                            .chapters![index]
+                                            .video,
                                       );
+                                      // context.read<RevisionCubit>().launchVideo(
+                                      //   '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].video}',
+                                      // );
                                     },
                                     child: Image.asset(
                                       Assets.mp4Button,
