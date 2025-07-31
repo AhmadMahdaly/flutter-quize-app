@@ -201,7 +201,7 @@ class _RealExamBodyState extends State<RealExamBody> {
                             textAlign: TextAlign.justify,
                             style: interRegular.copyWith(
                               fontSize: SizeConfig.responsiveValue(
-                                phone: 16.sp,
+                                phone: 14.sp,
                                 tablet: 20.sp,
                               ),
                               color: AppColors.thirdColor,
@@ -237,7 +237,7 @@ class _RealExamBodyState extends State<RealExamBody> {
                             textAlign: TextAlign.justify,
                             style: interRegular.copyWith(
                               fontSize: SizeConfig.responsiveValue(
-                                phone: 16.sp,
+                                phone: 14.sp,
                                 tablet: 20.sp,
                               ),
                               color: AppColors.thirdColor,

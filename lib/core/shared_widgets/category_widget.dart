@@ -29,6 +29,7 @@ class CategoryWidget extends StatelessWidget {
           ),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ImageIcon(
               AssetImage(imagePath),

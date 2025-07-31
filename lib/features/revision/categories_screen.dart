@@ -45,7 +45,7 @@ class CategoriesScreen extends StatelessWidget {
                             crossAxisCount: 2,
                             crossAxisSpacing: 20.0,
                             mainAxisSpacing: 33.0,
-                            childAspectRatio: 1.9,
+                            childAspectRatio: 1.5,
                           ),
                       itemCount: context
                           .read<RevisionCubit>()

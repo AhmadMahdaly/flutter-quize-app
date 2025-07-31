@@ -37,7 +37,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
         8.verticalSpace,
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
           decoration: BoxDecoration(
             color: AppColors.secondaryColor,
             borderRadius: BorderRadius.only(
@@ -60,7 +60,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     'Question: $qNo / $totalQuestions',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
+                        phone: 14.sp,
                         tablet: 20.sp,
                       ),
                       color: AppColors.thirdColor,
@@ -71,7 +71,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     'Section: $section',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
+                        phone: 14.sp,
                         tablet: 20.sp,
                       ),
                       color: AppColors.thirdColor,
@@ -83,7 +83,10 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20.r),
                         child: SizedBox(
-                          width: 130.w,
+                          width: SizeConfig.responsiveValue(
+                            phone: 120.w,
+                            tablet: 130.w,
+                          ),
                           child: LinearProgressIndicator(
                             minHeight: 20.h,
                             value: progressValue,
@@ -99,7 +102,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                         'Progress ${(progressValue * 100).toInt()}%',
                         style: interRegular.copyWith(
                           fontSize: SizeConfig.responsiveValue(
-                            phone: 16.sp,
+                            phone: 14.sp,
                             tablet: 20.sp,
                           ),
                           color: AppColors.thirdColor,
@@ -115,8 +118,15 @@ class HeaderExamDetailsCard extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.alarm, color: AppColors.thirdColor),
-                      8.verticalSpace,
+                      Icon(
+                        Icons.alarm,
+                        color: AppColors.thirdColor,
+                        size: SizeConfig.responsiveValue(
+                          phone: 20.h,
+                          tablet: 24.h,
+                        ),
+                      ),
+                      4.horizontalSpace,
                       Text(
                         'Section time remaining',
                         style: interRegular.copyWith(
@@ -174,7 +184,10 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5.w),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 5.w,
+                        horizontal: 10.w,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.thirdColor,
                         border: Border.all(),
@@ -184,7 +197,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                         'Finish section',
                         style: interBold.copyWith(
                           fontSize: SizeConfig.responsiveValue(
-                            phone: 20.sp,
+                            phone: 16.sp,
                             tablet: 24.sp,
                           ),
                           color: AppColors.forthColor,
@@ -220,7 +233,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     'Test:',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
+                        phone: 14.sp,
                         tablet: 20.sp,
                       ),
                       color: AppColors.thirdColor,
@@ -231,7 +244,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     'Saudi SLE License Examination',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
+                        phone: 14.sp,
                         tablet: 20.sp,
                       ),
                       color: AppColors.thirdColor,
@@ -245,7 +258,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     'Candidate:',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
+                        phone: 14.sp,
                         tablet: 20.sp,
                       ),
                       color: AppColors.thirdColor,
@@ -256,7 +269,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     'Saudi-Bot.com',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
+                        phone: 14.sp,
                         tablet: 20.sp,
                       ),
                       color: AppColors.thirdColor,

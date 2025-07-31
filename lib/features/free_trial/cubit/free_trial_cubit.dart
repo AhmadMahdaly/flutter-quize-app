@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/network/failures.dart';
 import 'package:smle/features/free_trial/data/models/trial_exam_model.dart';
 import 'package:smle/features/free_trial/data/repo/free_trial_repo.dart';
@@ -11,11 +12,15 @@ class TrialExamCubit extends Cubit<TrialExamState> {
   final TrialExamRepository _repository;
 
   Future<void> fetchTrialExam() async {
+    showLoading();
+
     emit(state.copyWith(status: FetchStatus.loading));
     final result = await _repository.getTrialExam();
     result.when(
       success: (success) {
         final questions = result.data.data;
+        hideLoading();
+
         emit(
           state.copyWith(
             status: FetchStatus.success,
@@ -25,6 +30,8 @@ class TrialExamCubit extends Cubit<TrialExamState> {
         );
       },
       failure: (ServerFailure errorHandler) {
+        hideLoading();
+
         emit(
           state.copyWith(
             status: FetchStatus.failure,

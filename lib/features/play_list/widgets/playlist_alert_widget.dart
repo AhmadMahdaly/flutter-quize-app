@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
-import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
@@ -83,10 +82,7 @@ class PlaylistAlertWidget extends StatelessWidget {
                   .editPlayList(playListId!, playListNameController.text)
                   .then((onValue) {
                     Navigator.pop(context);
-                    context.pushReplacementNamed(
-                      Routes.playListScreen,
-                      arguments: questionId,
-                    );
+                    context.pop();
                   });
             }
             {
@@ -95,10 +91,7 @@ class PlaylistAlertWidget extends StatelessWidget {
                   .createPlayList(playListNameController.text, questionId)
                   .then((onValue) {
                     Navigator.pop(context);
-                    context.pushReplacementNamed(
-                      Routes.playListScreen,
-                      arguments: questionId,
-                    );
+                    context.pop();
                   });
             }
           },

@@ -31,7 +31,7 @@ class PlayListWidget extends StatelessWidget {
       children: [
         Image.asset(
           Assets.questionMark,
-          height: SizeConfig.responsiveValue(phone: 100.h, tablet: 80.h),
+          height: SizeConfig.responsiveValue(phone: 80.h, tablet: 80.h),
         ),
         10.horizontalSpace,
         Column(

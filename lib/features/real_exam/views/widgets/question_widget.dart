@@ -65,7 +65,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
         child: Text(
           text,
           style: interRegular.copyWith(
-            fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
+            fontSize: SizeConfig.responsiveValue(phone: 12.sp, tablet: 18.sp),
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             color: isSelected ? AppColors.offwhiteColor : AppColors.forthColor,
           ),

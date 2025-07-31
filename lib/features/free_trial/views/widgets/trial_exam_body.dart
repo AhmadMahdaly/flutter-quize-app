@@ -73,9 +73,8 @@ class _TrialExamBodyState extends State<TrialExamBody> {
             Expanded(
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 80,
-                    color: Colors.blueGrey[50],
                     child: ListView.builder(
                       controller: _scrollController,
                       itemCount: totalQuestions,
