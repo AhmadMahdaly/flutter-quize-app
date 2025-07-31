@@ -196,6 +196,7 @@ class HomeScreen extends StatelessWidget {
               ),
               30.verticalSpace,
               const EndPageBanner(),
+              60.verticalSpace,
             ],
           ),
         ),

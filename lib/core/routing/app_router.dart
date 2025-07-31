@@ -197,8 +197,8 @@ class AppRouter {
 
       case Routes.realExamScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<RealExamCubit>(),
+          builder: (_) => BlocProvider.value(
+            value: getIt<RealExamCubit>(),
             child: const RealExamPage(),
           ),
         );

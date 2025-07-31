@@ -78,7 +78,7 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
     return Text(
       _formatTime(_timeLeft),
       style: interBold.copyWith(
-        fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
+        fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
         color: AppColors.thirdColor,
       ),
     );

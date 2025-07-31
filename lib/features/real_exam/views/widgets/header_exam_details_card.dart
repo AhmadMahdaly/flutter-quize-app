@@ -137,12 +137,11 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       // You can show a dialog or automatically end the section.
                       showCustomPrimaryDialog(
                         context,
-                        widget: AlertDialog(
-                          title: const Text("Time's Up!"),
-                          content: Text(
-                            'The time for section $section has ended.',
-                          ),
-                          actions: [
+                        widget: Column(
+                          children: [
+                            const Text("Time's Up!"),
+                            Text('The time for section $section has ended.'),
+
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();

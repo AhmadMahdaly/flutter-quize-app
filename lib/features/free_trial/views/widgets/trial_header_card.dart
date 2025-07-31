@@ -50,8 +50,8 @@ class TrialHeaderCard extends StatelessWidget {
                     'Question: $qNo / $totalQuestions',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
-                        tablet: 20.sp,
+                        phone: 14.sp,
+                        tablet: 18.sp,
                       ),
                       color: AppColors.thirdColor,
                     ),
@@ -79,8 +79,8 @@ class TrialHeaderCard extends StatelessWidget {
                         'Progress ${(progressValue * 100).toInt()}%',
                         style: interRegular.copyWith(
                           fontSize: SizeConfig.responsiveValue(
-                            phone: 16.sp,
-                            tablet: 20.sp,
+                            phone: 14.sp,
+                            tablet: 18.sp,
                           ),
                           color: AppColors.thirdColor,
                         ),
@@ -98,11 +98,11 @@ class TrialHeaderCard extends StatelessWidget {
                       const Icon(Icons.alarm, color: AppColors.thirdColor),
                       8.verticalSpace,
                       Text(
-                        'Section time remaining',
+                        'Test time remaining',
                         style: interRegular.copyWith(
                           fontSize: SizeConfig.responsiveValue(
-                            phone: 16.sp,
-                            tablet: 20.sp,
+                            phone: 14.sp,
+                            tablet: 18.sp,
                           ),
                           color: AppColors.thirdColor,
                         ),
@@ -111,7 +111,7 @@ class TrialHeaderCard extends StatelessWidget {
                   ),
                   5.verticalSpace,
                   CustomTimerWidget(
-                    endTime: DateTime(2050),
+                    endTime: DateTime.now().add(const Duration(hours: 2)),
                     onTimerFinish: () {
                       showCustomPrimaryDialog(
                         context,
@@ -120,7 +120,9 @@ class TrialHeaderCard extends StatelessWidget {
                           content: const Text('The time for exam has ended.'),
                           actions: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                /// todo:
+                              },
                               child: const Text('OK'),
                             ),
                           ],
@@ -130,7 +132,6 @@ class TrialHeaderCard extends StatelessWidget {
                   ),
                   5.verticalSpace,
 
-                  5.verticalSpace,
                   InkWell(
                     onTap: () {
                       showDialog(
@@ -141,7 +142,10 @@ class TrialHeaderCard extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5.w),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 5.h,
+                        horizontal: 10.w,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.thirdColor,
                         border: Border.all(),
@@ -151,8 +155,8 @@ class TrialHeaderCard extends StatelessWidget {
                         'Finish Exam',
                         style: interBold.copyWith(
                           fontSize: SizeConfig.responsiveValue(
-                            phone: 20.sp,
-                            tablet: 24.sp,
+                            phone: 16.sp,
+                            tablet: 20.sp,
                           ),
                           color: AppColors.forthColor,
                         ),
@@ -187,8 +191,8 @@ class TrialHeaderCard extends StatelessWidget {
                     'Test:',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
-                        tablet: 20.sp,
+                        phone: 14.sp,
+                        tablet: 18.sp,
                       ),
                       color: AppColors.thirdColor,
                       fontWeight: FontWeight.bold,
@@ -198,8 +202,8 @@ class TrialHeaderCard extends StatelessWidget {
                     'Saudi SLE License Examination',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
-                        tablet: 20.sp,
+                        phone: 14.sp,
+                        tablet: 18.sp,
                       ),
                       color: AppColors.thirdColor,
                     ),
@@ -212,8 +216,8 @@ class TrialHeaderCard extends StatelessWidget {
                     'Candidate:',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
-                        tablet: 20.sp,
+                        phone: 14.sp,
+                        tablet: 18.sp,
                       ),
                       color: AppColors.thirdColor,
                       fontWeight: FontWeight.bold,
@@ -223,8 +227,8 @@ class TrialHeaderCard extends StatelessWidget {
                     'Saudi-Bot.com',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
-                        tablet: 20.sp,
+                        phone: 14.sp,
+                        tablet: 18.sp,
                       ),
                       color: AppColors.thirdColor,
                     ),
@@ -234,8 +238,8 @@ class TrialHeaderCard extends StatelessWidget {
                     'Free Trial',
                     style: interBold.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 18.sp,
-                        tablet: 22.sp,
+                        phone: 16.sp,
+                        tablet: 20.sp,
                       ),
                       color: AppColors.offwhiteColor,
                       fontWeight: FontWeight.w700,

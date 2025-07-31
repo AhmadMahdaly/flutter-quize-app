@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -24,22 +23,26 @@ class CompactCheckbox extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            width: 24.w, // Constrain checkbox width
-            height: 24.h, // Constrain checkbox height
+            width: 24.w,
+            height: 24.h,
             child: Checkbox(
               value: value,
               onChanged: onChanged,
               activeColor: AppColors.primaryColor,
-              materialTapTargetSize:
-                  MaterialTapTargetSize.shrinkWrap, // Removes extra tap area
-              visualDensity: VisualDensity.compact, // Makes it more compact
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              visualDensity: VisualDensity.compact,
             ),
           ),
-          8.horizontalSpace, // Minimal spacing
+          8.horizontalSpace,
           Expanded(
             child: Text(
               title,
-              style: interRegular.copyWith(fontSize: 14.sp),
+              style: interRegular.copyWith(
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 14.sp,
+                  tablet: 18.sp,
+                ),
+              ),
               overflow: TextOverflow.ellipsis,
             ),
           ),

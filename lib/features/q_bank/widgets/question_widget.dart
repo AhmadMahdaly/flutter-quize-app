@@ -134,7 +134,10 @@ class QuestionWidget extends StatelessWidget {
                               ? ''
                               : lightBulbExplain,
                           style: interRegular.copyWith(
-                            fontSize: 16.sp,
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 16.sp,
+                              tablet: 20.sp,
+                            ),
                             color: AppColors.forthColor,
                           ),
                         ),
@@ -178,7 +181,10 @@ class QuestionWidget extends StatelessWidget {
                               ? ''
                               : questionCircleExplain,
                           style: interRegular.copyWith(
-                            fontSize: 16.sp,
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 16.sp,
+                              tablet: 20.sp,
+                            ),
                             color: AppColors.forthColor,
                           ),
                         ),

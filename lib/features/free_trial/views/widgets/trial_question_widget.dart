@@ -29,15 +29,15 @@ class TrialQuestionWidget extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.sp),
               child: Column(
                 children: [
                   Text(
                     question.question,
-                    textAlign: TextAlign.justify,
+
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
+                        phone: 14.sp,
                         tablet: 20.sp,
                       ),
                     ),
@@ -99,17 +99,17 @@ class TrialQuestionWidget extends StatelessWidget {
           : () => cubit.answerQuestion(question.id, optionLetter),
       child: Container(
         width: double.infinity,
-        margin: const EdgeInsets.symmetric(vertical: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        margin: EdgeInsets.symmetric(vertical: 4.h),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: borderColor, width: 1.5),
         ),
         child: Text(
           text,
           style: interRegular.copyWith(
-            fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
+            fontSize: SizeConfig.responsiveValue(phone: 12.sp, tablet: 18.sp),
             fontWeight: hasAnswered && (isSelected || isCorrect)
                 ? FontWeight.bold
                 : FontWeight.normal,

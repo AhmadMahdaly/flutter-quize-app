@@ -32,9 +32,10 @@ class ComplatedItem extends StatelessWidget {
                 style: TextStyle(
                   color: AppColors.thirdColor,
                   fontSize: SizeConfig.responsiveValue(
-                    phone: 16.sp,
+                    phone: 14.sp,
                     tablet: 20.sp,
                   ),
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               isBookmarked

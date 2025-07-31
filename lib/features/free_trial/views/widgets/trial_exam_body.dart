@@ -98,7 +98,7 @@ class _TrialExamBodyState extends State<TrialExamBody> {
                 ],
               ),
             ),
-            8.verticalSpace,
+
             _buildBottomBar(
               context,
               cubit,
@@ -106,6 +106,7 @@ class _TrialExamBodyState extends State<TrialExamBody> {
               totalQuestions,
               currentQuestion.id,
             ),
+            60.verticalSpace,
           ],
         );
       },
@@ -146,15 +147,15 @@ class _TrialExamBodyState extends State<TrialExamBody> {
     final bool isLast = currentQuestionNo == totalQuestions;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
         color: AppColors.offwhiteColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(
-            SizeConfig.responsiveValue(phone: 12.r, tablet: 8.r),
+            SizeConfig.responsiveValue(phone: 8.r, tablet: 8.r),
           ),
           topRight: Radius.circular(
-            SizeConfig.responsiveValue(phone: 12.r, tablet: 8.r),
+            SizeConfig.responsiveValue(phone: 8.r, tablet: 8.r),
           ),
         ),
         boxShadow: const [
@@ -195,13 +196,13 @@ class _TrialExamBodyState extends State<TrialExamBody> {
         ),
         padding: EdgeInsets.symmetric(
           horizontal: 24.w,
-          vertical: SizeConfig.responsiveValue(phone: 12.h, tablet: 8.h),
+          vertical: SizeConfig.responsiveValue(phone: 8.h, tablet: 8.h),
         ),
       ),
       child: Text(
         text,
         style: interBold.copyWith(
-          fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
+          fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 20.sp),
         ),
       ),
     );
@@ -287,64 +288,91 @@ class ResultsDialog extends StatelessWidget {
     final unanswered = totalQuestions - (correctAnswers + incorrectAnswers);
 
     return AlertDialog(
-      title: const Text('Test Finished!', textAlign: TextAlign.center),
+      title: Text(
+        'Test Finished!',
+        textAlign: TextAlign.center,
+        style: interRegular.copyWith(
+          fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
+        ),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             'Your Score: ${score.toStringAsFixed(1)}%',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+            style: interBold.copyWith(
+              fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
+
               color: score >= 50
                   ? AppColors.successColor
                   : AppColors.errorColor,
             ),
           ),
-          const SizedBox(height: 20),
-          _buildResultRow(
-            'Total Questions:',
-            '$totalQuestions',
-            AppColors.forthColor,
+          20.verticalSpace,
+          ResultRow(
+            title: 'Total Questions:',
+            value: '$totalQuestions',
+            color: AppColors.forthColor,
           ),
-          _buildResultRow(
-            'Correct Answers:',
-            '$correctAnswers',
-            Colors.green.shade700,
+          ResultRow(
+            title: 'Correct Answers:',
+            value: '$correctAnswers',
+            color: Colors.green.shade700,
           ),
-          _buildResultRow(
-            'Incorrect Answers:',
-            '$incorrectAnswers',
-            AppColors.errorColor,
+          ResultRow(
+            title: 'Incorrect Answers:',
+            value: '$incorrectAnswers',
+            color: AppColors.errorColor,
           ),
-          _buildResultRow(
-            'Unanswered:',
-            '$unanswered',
-            AppColors.darkGreyColor,
+          ResultRow(
+            title: 'Unanswered:',
+            value: '$unanswered',
+            color: AppColors.darkGreyColor,
           ),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Close'),
+          child: Text(
+            'Close',
+            style: interRegular.copyWith(
+              fontSize: SizeConfig.responsiveValue(phone: 12.sp, tablet: 16.sp),
+              color: AppColors.iconColorBlack,
+            ),
+          ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildResultRow(String title, String value, Color color) {
+class ResultRow extends StatelessWidget {
+  const ResultRow({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.color,
+  });
+  final String title, value;
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: EdgeInsets.symmetric(vertical: 4.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: const TextStyle(fontSize: 16)),
+          Text(
+            title,
+            style: interRegular.copyWith(
+              fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
+            ),
+          ),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+            style: interBold.copyWith(
+              fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
               color: color,
             ),
           ),
