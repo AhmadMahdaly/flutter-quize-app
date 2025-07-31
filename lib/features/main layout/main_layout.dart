@@ -17,78 +17,91 @@ class MainLayoutScreen extends StatelessWidget {
         return PopScope(
           canPop: false,
           child: Scaffold(
-            body: AppRouter().screen[mainLayoutInitialScreenIndex],
-            bottomNavigationBar: Container(
-              height: SizeConfig.responsiveValue(phone: null, tablet: 60.h),
-              margin: EdgeInsets.symmetric(horizontal: 15.w),
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(60.r)),
-              ),
-              child: BottomNavigationBar(
-                selectedFontSize: 0,
-                unselectedFontSize: 0,
-                backgroundColor: AppColors.primaryColor,
-                onTap: (index) {
-                  MainLayoutCubit.get(context).changeBottomNavBar(index);
-                },
-                currentIndex: mainLayoutInitialScreenIndex,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Container(
-                      decoration: const BoxDecoration(
-                        color: AppColors.thirdColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: ImageIcon(
-                        size: SizeConfig.responsiveValue(
-                          phone: 18.sp,
-                          tablet: 36.sp,
-                        ),
-                        const AssetImage(Assets.videoLight),
-                        color: AppColors.forthColor,
-                      ),
+            body: Stack(
+              fit: StackFit.expand,
+              children: [
+                AppRouter().screen[mainLayoutInitialScreenIndex],
+                Positioned(
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                  child: Container(
+                    height: SizeConfig.responsiveValue(
+                      phone: 60.h,
+                      tablet: 60.h,
                     ),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Container(
-                      decoration: const BoxDecoration(
-                        color: AppColors.thirdColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: ImageIcon(
-                        size: SizeConfig.responsiveValue(
-                          phone: 18.sp,
-                          tablet: 36.sp,
-                        ),
-                        const AssetImage(Assets.homeLight),
-                        color: AppColors.forthColor,
-                      ),
+                    margin: EdgeInsets.symmetric(horizontal: 15.w),
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(60.r)),
                     ),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Container(
-                      decoration: const BoxDecoration(
-                        color: AppColors.thirdColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: ImageIcon(
-                          size: SizeConfig.responsiveValue(
-                            phone: 18.sp,
-                            tablet: 36.sp,
+                    child: BottomNavigationBar(
+                      selectedFontSize: 0,
+                      unselectedFontSize: 0,
+                      backgroundColor: AppColors.primaryColor,
+                      onTap: (index) {
+                        MainLayoutCubit.get(context).changeBottomNavBar(index);
+                      },
+                      currentIndex: mainLayoutInitialScreenIndex,
+                      items: [
+                        BottomNavigationBarItem(
+                          icon: Container(
+                            decoration: const BoxDecoration(
+                              color: AppColors.thirdColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: ImageIcon(
+                              size: SizeConfig.responsiveValue(
+                                phone: 18.sp,
+                                tablet: 36.sp,
+                              ),
+                              const AssetImage(Assets.videoLight),
+                              color: AppColors.forthColor,
+                            ),
                           ),
-                          const AssetImage(Assets.userCircleLight),
-                          color: AppColors.forthColor,
+                          label: '',
                         ),
-                      ),
+                        BottomNavigationBarItem(
+                          icon: Container(
+                            decoration: const BoxDecoration(
+                              color: AppColors.thirdColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: ImageIcon(
+                              size: SizeConfig.responsiveValue(
+                                phone: 18.sp,
+                                tablet: 36.sp,
+                              ),
+                              const AssetImage(Assets.homeLight),
+                              color: AppColors.forthColor,
+                            ),
+                          ),
+                          label: '',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Container(
+                            decoration: const BoxDecoration(
+                              color: AppColors.thirdColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: ImageIcon(
+                                size: SizeConfig.responsiveValue(
+                                  phone: 18.sp,
+                                  tablet: 36.sp,
+                                ),
+                                const AssetImage(Assets.userCircleLight),
+                                color: AppColors.forthColor,
+                              ),
+                            ),
+                          ),
+                          label: '',
+                        ),
+                      ],
                     ),
-                    label: '',
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );

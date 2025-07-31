@@ -24,7 +24,7 @@ class SubSpecialtyList extends StatelessWidget {
           child: Text(
             'select_specialty_first'.tr(context),
             style: interRegular.copyWith(
-              fontSize: 14.sp,
+              fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
               color: AppColors.darkGreyColor,
             ),
           ),

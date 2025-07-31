@@ -87,6 +87,8 @@ dependencies:
   video_player: ^2.10.0
   chewie: ^1.12.1
   fl_chart: ^0.63.0
+  hydrated_bloc: ^9.1.5
+  path_provider: ^2.1.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

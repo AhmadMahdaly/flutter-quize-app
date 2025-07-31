@@ -9,6 +9,7 @@ import 'package:smle/features/analysis/analysis_screen.dart';
 import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/exams_history_screen.dart';
+import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
 import 'package:smle/features/gifts/gifts_screen.dart';
 import 'package:smle/features/guest/main_layout_page.dart';
 import 'package:smle/features/home/home_screen.dart';
@@ -28,7 +29,9 @@ import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
 import 'package:smle/features/q_bank/data/model/startQuizModel.dart';
 import 'package:smle/features/q_bank/q_bank_screen.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
+import 'package:smle/features/real_exam/data/model/finish_analysis_exam.dart';
 import 'package:smle/features/real_exam/views/exam_page.dart';
+import 'package:smle/features/real_exam/views/exam_results_page.dart';
 import 'package:smle/features/revision/categories_screen.dart';
 import 'package:smle/features/revision/cubit/revision_cubit.dart';
 import 'package:smle/features/revision/revision_screen.dart';
@@ -200,10 +203,15 @@ class AppRouter {
 
       case Routes.realExamScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => RealExamCubit(getIt())..startRealExam(),
+          builder: (_) => BlocProvider.value(
+            value: getIt<RealExamCubit>(),
             child: const RealExamPage(),
           ),
+        );
+      case Routes.examResultsPage:
+        final results = settings.arguments as FinishAnalysisExamModel;
+        return MaterialPageRoute(
+          builder: (_) => ExamResultsPage(results: results),
         );
       case Routes.guestScreen:
         return MaterialPageRoute(
@@ -222,13 +230,15 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => VideoPlayerScreen(videoUrl: url),
         );
+      case Routes.trialExamScreen:
+        return MaterialPageRoute(builder: (_) => const TrialExamScreen());
       default:
         return null;
     }
   }
 
   List<Widget> screen = [
-    const HomeScreen(isGuest: false),
+    const TrialExamScreen(),
     const HomeScreen(isGuest: false),
     const ProfileScreen(),
   ];

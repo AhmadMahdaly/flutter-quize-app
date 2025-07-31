@@ -5,7 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:smle/app.dart';
 import 'package:smle/core/bloc_observer.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
@@ -18,12 +19,16 @@ void main() async {
     HttpOverrides.global = MyHttpOverrides();
   }
   WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
   await CacheHelper.init();
   await setupGetIt();
   await DioFactory.init();
   await Firebase.initializeApp();
   // await PushNotificationService().initialize();
   // FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

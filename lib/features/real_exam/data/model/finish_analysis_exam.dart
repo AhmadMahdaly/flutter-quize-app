@@ -41,12 +41,12 @@ class ScoreData {
   factory ScoreData.fromJson(Map<String, dynamic> json) {
     return ScoreData(
       category: json['category'],
-      averagePercentage: json['average_percentage'],
+      averagePercentage: (json['average_percentage'] as num).toDouble(),
       examPercentage: (json['exam_percentage'] as num).toDouble(),
     );
   }
   final String category;
-  final int averagePercentage;
+  final double averagePercentage;
   final double examPercentage;
 
   Map<String, dynamic> toJson() {

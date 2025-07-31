@@ -85,7 +85,10 @@ class CreateQuizScreen extends StatelessWidget {
                       child: Text(
                         'not_found_sub_specialty'.tr(context),
                         style: interRegular.copyWith(
-                          fontSize: 14.sp,
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
+                          ),
                           color: AppColors.darkGreyColor,
                         ),
                       ),
@@ -99,7 +102,12 @@ class CreateQuizScreen extends StatelessWidget {
                     iconColor: AppColors.forthColor,
                     title: Text(
                       'selected_items'.tr(context),
-                      style: interMedium.copyWith(fontSize: 16.sp),
+                      style: interMedium.copyWith(
+                        fontSize: SizeConfig.responsiveValue(
+                          phone: 16.sp,
+                          tablet: 20.sp,
+                        ),
+                      ),
                     ),
 
                     children: [SelectedItemsWidget(cubit: cubit)],
@@ -162,7 +170,12 @@ class CreateQuizScreen extends StatelessWidget {
           children: [
             Text(
               'select_all'.tr(context),
-              style: interRegular.copyWith(fontSize: 14.sp),
+              style: interRegular.copyWith(
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 14.sp,
+                  tablet: 16.sp,
+                ),
+              ),
             ),
             Checkbox(
               value: isAllSelected,

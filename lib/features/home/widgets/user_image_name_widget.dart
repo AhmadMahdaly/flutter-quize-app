@@ -29,7 +29,9 @@ class UserImageNameWidget extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(top: 5.sp),
               child: Image(
-                image: imagePath.isEmpty
+                image: imagePath.contains('png')
+                    ? AssetImage(imagePath)
+                    : imagePath.isEmpty
                     ? const AssetImage(Assets.user)
                     : NetworkImage(imagePath) as ImageProvider,
               ),

@@ -1,8 +1,5 @@
 class QuestionActionModel {
-  QuestionActionModel({
-    required this.status,
-    required this.message,
-  });
+  QuestionActionModel({required this.status, required this.message});
 
   factory QuestionActionModel.fromJson(Map<String, dynamic> json) {
     return QuestionActionModel(

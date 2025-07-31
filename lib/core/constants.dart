@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-int mainLayoutInitialScreenIndex = 0;
-
+int mainLayoutInitialScreenIndex = 1;
 
 final navigatorKey = GlobalKey<NavigatorState>();
 

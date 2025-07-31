@@ -1,4 +1,4 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/features/real_exam/data/model/finish_analysis_exam.dart';
 import 'package:smle/features/real_exam/data/model/get_real_exam_model.dart';
@@ -7,165 +7,209 @@ import 'package:smle/features/real_exam/data/repo/real_exam_repo.dart';
 
 part 'real_exam_state.dart';
 
-class RealExamCubit extends Cubit<RealExamState> {
-  RealExamCubit(this.repo) : super(RealExamInitialState());
+class RealExamCubit extends HydratedCubit<RealExamState> {
+  RealExamCubit(this.repo) : super(const RealExamState());
   final RealExamRepo repo;
-  final Map<int, bool> _questionBookmarkedStatus = {};
-  final Map<int, bool> _questionNoteStatus = {};
-  Future<void> startRealExam() async {
-    emit(StartRealExamLoadingState());
+
+  @override
+  RealExamState? fromJson(Map<String, dynamic> json) =>
+      RealExamState.fromJson(json);
+
+  @override
+  Map<String, dynamic>? toJson(RealExamState state) => state.toJson();
+
+  Future<void> startOrResumeExam() async {
+    if (state.status == ExamStatus.success && state.examModel != null ||
+        state.status == ExamStatus.onBreak) {
+      return;
+    }
+
+    emit(state.copyWith(status: ExamStatus.loading));
     showLoading();
+
     final result = await repo.startRealExam();
     hideLoading();
     if (isClosed) return;
     result.when(
       success: (successData) {
-        _updateStatuses(successData.data);
+        final newBookmarks = <int, bool>{};
+        final newNotes = <int, bool>{};
+        _updateStatuses(successData.data, newBookmarks, newNotes);
+        final newEndTimes = Map<int, String>.from(state.sectionEndTimes);
+
+        if (!newEndTimes.containsKey(1)) {
+          final endTime = DateTime.now().add(const Duration(minutes: 120));
+          newEndTimes[1] = endTime.toIso8601String();
+        }
+
         emit(
-          StartRealExamSuccessState(
-            successData,
-            Map.from(_questionBookmarkedStatus),
-            Map.from(_questionNoteStatus),
+          state.copyWith(
+            status: ExamStatus.success,
+            examModel: successData,
+            sectionEndTimes: newEndTimes,
+            bookmarkedStatuses: newBookmarks,
+            noteStatuses: newNotes,
           ),
         );
       },
       failure: (error) {
-        emit(StartRealExamFailedState(error.errMessage));
+        emit(
+          state.copyWith(
+            status: ExamStatus.error,
+            errorMessage: error.errMessage,
+          ),
+        );
       },
     );
   }
 
   Future<void> getQuestion(int examId, int qNo, int section) async {
-    if (state is! StartRealExamSuccessState) return;
-
-    final previousState = state as StartRealExamSuccessState;
-    final totalQuestions = previousState.examModel.questionsCount;
-    final preservedExamId = previousState.examModel.examId;
+    if (isClosed) return;
     showLoading();
-    // emit(GetQuestionLoadingState());
 
     final result = await repo.getQuestion(examId, qNo, section);
+    hideLoading();
     if (isClosed) return;
 
     result.when(
       success: (newQuestionModel) {
-        _updateStatuses(newQuestionModel.data);
+        final currentBookmarks = Map<int, bool>.from(state.bookmarkedStatuses);
+        final currentNotes = Map<int, bool>.from(state.noteStatuses);
+        _updateStatuses(newQuestionModel.data, currentBookmarks, currentNotes);
+
         final mergedModel = StartRealExamModel(
           status: newQuestionModel.status,
           message: newQuestionModel.message,
-          examId: preservedExamId,
-          questionsCount: totalQuestions,
+          examId: state.examModel!.examId,
+          questionsCount: state.examModel!.questionsCount,
           data: newQuestionModel.data,
         );
-        hideLoading();
         emit(
-          StartRealExamSuccessState(
-            mergedModel,
-            Map.from(_questionBookmarkedStatus),
-            Map.from(_questionNoteStatus),
+          state.copyWith(
+            status: ExamStatus.success,
+            examModel: mergedModel,
+            bookmarkedStatuses: currentBookmarks,
+            noteStatuses: currentNotes,
           ),
         );
       },
       failure: (error) {
-        emit(StartRealExamFailedState(error.errMessage));
+        emit(
+          state.copyWith(
+            status: ExamStatus.error,
+            errorMessage: error.errMessage,
+          ),
+        );
       },
     );
   }
 
-  void _updateStatuses(Question? question) {
+  void _updateStatuses(
+    Question? question,
+    Map<int, bool> bookmarks,
+    Map<int, bool> notes,
+  ) {
     if (question == null || question.questionNo == null) return;
-
-    // تحديث البوكمارك
     if (question.isBookmarked != null) {
-      _questionBookmarkedStatus[question.questionNo!] = question.isBookmarked!;
+      bookmarks[question.questionNo!] = question.isBookmarked!;
     }
-    // تحديث الملاحظات
-    _questionNoteStatus[question.questionNo!] =
-        (question.notes ?? '').isNotEmpty;
+    notes[question.questionNo!] = (question.notes ?? '').isNotEmpty;
   }
 
   void goToNext() {
-    if (state is StartRealExamSuccessState) {
-      final currentState = state as StartRealExamSuccessState;
-      final examModel = currentState.examModel;
-
-      if (examModel.data?.questionNo != null &&
-          examModel.questionsCount != null) {
-        final currentQuestionNo = examModel.data!.questionNo!;
-        final totalQuestions = examModel.questionsCount!;
-        if (currentQuestionNo < totalQuestions) {
-          getQuestion(
-            examModel.examId!,
-            currentQuestionNo + 1,
-            examModel.data!.section!,
-          );
-        }
+    if (state.examModel?.data?.questionNo != null) {
+      final currentQuestionNo = state.examModel!.data!.questionNo!;
+      final totalQuestions = state.examModel!.questionsCount!;
+      if (currentQuestionNo < totalQuestions) {
+        getQuestion(
+          state.examModel!.examId!,
+          currentQuestionNo + 1,
+          state.examModel!.data!.section!,
+        );
       }
     }
   }
 
   void goToPrevious() {
-    if (state is StartRealExamSuccessState) {
-      final currentState = state as StartRealExamSuccessState;
-      final examModel = currentState.examModel;
-      if (examModel.data?.questionNo != null &&
-          examModel.data!.questionNo! > 1) {
-        getQuestion(
-          examModel.examId!,
-          examModel.data!.questionNo! - 1,
-          examModel.data!.section!,
-        );
-      }
+    if (state.examModel?.data?.questionNo != null &&
+        state.examModel!.data!.questionNo! > 1) {
+      getQuestion(
+        state.examModel!.examId!,
+        state.examModel!.data!.questionNo! - 1,
+        state.examModel!.data!.section!,
+      );
     }
   }
 
   void goToIndex(int qNo) {
-    if (state is StartRealExamSuccessState) {
-      final currentState = state as StartRealExamSuccessState;
-      final examModel = currentState.examModel;
-      getQuestion(examModel.examId!, qNo, examModel.data!.section!);
+    if (state.examModel != null) {
+      getQuestion(
+        state.examModel!.examId!,
+        qNo,
+        state.examModel!.data!.section!,
+      );
     }
+  }
+
+  void finishSection1AndStartBreak() {
+    if (isClosed) return;
+    emit(
+      state.copyWith(
+        status: ExamStatus.onBreak,
+        breakEndTime: DateTime.now().add(const Duration(minutes: 30)),
+      ),
+    );
+  }
+
+  void startNextSection() {
+    if (isClosed || state.examModel == null) return;
+
+    final newEndTimes = Map<int, String>.from(state.sectionEndTimes);
+    if (!newEndTimes.containsKey(2)) {
+      final endTime = DateTime.now().add(const Duration(minutes: 120));
+      newEndTimes[2] = endTime.toIso8601String();
+    }
+
+    emit(
+      state.copyWith(
+        status: ExamStatus.loading,
+        clearBreakTime: true,
+        sectionEndTimes: newEndTimes,
+      ),
+    );
+    getQuestion(state.examModel!.examId!, 1, 2);
   }
 
   QuestionActionModel? questionActionModel;
   Future answerQuestion(String questionId, String answer) async {
-    // showLoading();
-    // emit(AnswerQLoadingState());
     final result = await repo.answerQuestion(questionId, answer);
     result.when(
       success: (success) {
         questionActionModel = success;
-        // hideLoading();
-        // emit(AnswerQSuccessState());
       },
-      failure: (error) {
-        // hideLoading();
-        // emit(AnswerQFailedState());
-      },
+      failure: (error) {},
     );
   }
 
   Future<void> makeQuestionFlag() async {
-    if (state is! StartRealExamSuccessState) return;
+    if (state.examModel?.data == null) return;
 
-    final currentState = state as StartRealExamSuccessState;
-    final examModel = currentState.examModel;
-    final questionNo = examModel.data!.questionNo!;
-    final questionId = examModel.data!.id.toString();
+    final questionNo = state.examModel!.data!.questionNo!;
+    final questionId = state.examModel!.data!.id.toString();
 
-    final newBookmarkStatus = !(_questionBookmarkedStatus[questionNo] ?? false);
-    _questionBookmarkedStatus[questionNo] = newBookmarkStatus;
+    final newBookmarkStatus = !(state.bookmarkedStatuses[questionNo] ?? false);
+    final updatedBookmarks = Map<int, bool>.from(state.bookmarkedStatuses);
+    updatedBookmarks[questionNo] = newBookmarkStatus;
 
-    final updatedQuestion = examModel.data!.copyWith(
+    final updatedQuestion = state.examModel!.data!.copyWith(
       isBookmarked: newBookmarkStatus,
     );
-    final updatedExamModel = examModel.copyWith(data: updatedQuestion);
+    final updatedExamModel = state.examModel!.copyWith(data: updatedQuestion);
 
     emit(
-      StartRealExamSuccessState(
-        updatedExamModel,
-        Map.from(_questionBookmarkedStatus),
-        Map.from(_questionNoteStatus),
+      state.copyWith(
+        examModel: updatedExamModel,
+        bookmarkedStatuses: updatedBookmarks,
       ),
     );
 
@@ -173,44 +217,59 @@ class RealExamCubit extends Cubit<RealExamState> {
   }
 
   Future<void> addQuestionNote(String note) async {
-    if (state is! StartRealExamSuccessState) return;
+    if (state.status != ExamStatus.success || state.examModel?.data == null)
+      return;
 
-    final currentState = state as StartRealExamSuccessState;
-    final examModel = currentState.examModel;
-    final questionNo = examModel.data!.questionNo!;
-    final questionId = examModel.data!.id.toString();
+    final questionNo = state.examModel!.data!.questionNo!;
+    final questionId = state.examModel!.data!.id.toString();
 
-    _questionNoteStatus[questionNo] = note.isNotEmpty;
+    final updatedNotes = Map<int, bool>.from(state.noteStatuses);
 
-    final updatedQuestion = examModel.data!.copyWith(notes: note);
-    final updatedExamModel = examModel.copyWith(data: updatedQuestion);
+    updatedNotes[questionNo] = note.isNotEmpty;
+
+    final updatedQuestion = state.examModel!.data!.copyWith(notes: note);
+    final updatedExamModel = state.examModel!.copyWith(data: updatedQuestion);
 
     emit(
-      StartRealExamSuccessState(
-        updatedExamModel,
-        Map.from(_questionBookmarkedStatus),
-        Map.from(_questionNoteStatus),
-      ),
+      state.copyWith(examModel: updatedExamModel, noteStatuses: updatedNotes),
     );
 
     await repo.addQuestionNote(questionId, note);
   }
 
-  FinishAnalysisExamModel? finishAnalysisExamModel;
-  Future finishAnalysisExam() async {
+  Future<void> finishExam() async {
+    if (isClosed) return;
+
     showLoading();
-    emit(FinishAnalysisExamLoadingState());
+    emit(state.copyWith(status: ExamStatus.loading));
+
     final result = await repo.finishAnalysisExam();
+    hideLoading();
+    if (isClosed) return;
+
     result.when(
-      success: (success) {
-        finishAnalysisExamModel = success;
-        hideLoading();
-        emit(FinishAnalysisExamSuccessState());
+      success: (examResultData) {
+        emit(
+          state.copyWith(
+            status: ExamStatus.finished,
+            examResult: examResultData,
+          ),
+        );
       },
       failure: (error) {
-        hideLoading();
-        emit(FinishAnalysisExamFailedState());
+        emit(
+          state.copyWith(
+            status: ExamStatus.success,
+            errorMessage: 'Failed to load results. Please try again.',
+          ),
+        );
       },
     );
+  }
+
+  void resetExam() {
+    if (isClosed) return;
+    emit(const RealExamState(status: ExamStatus.initial));
+    clear();
   }
 }

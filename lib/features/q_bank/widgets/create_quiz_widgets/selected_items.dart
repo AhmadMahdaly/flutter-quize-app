@@ -26,7 +26,15 @@ class SelectedItemsWidget extends StatelessWidget {
               children: cubit.selectedSubCategoryNames
                   .map(
                     (name) => Chip(
-                      label: Text(name),
+                      label: Text(
+                        name,
+                        style: interRegular.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
+                          ),
+                        ),
+                      ),
                       onDeleted: () {
                         final subCategory = cubit.aggregatedSubcategories
                             .firstWhere((element) => element.name == name);
@@ -43,7 +51,10 @@ class SelectedItemsWidget extends StatelessWidget {
               child: Text(
                 'no_items_selected'.tr(context),
                 style: interRegular.copyWith(
-                  fontSize: 14.sp,
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 14.sp,
+                    tablet: 18.sp,
+                  ),
                   color: AppColors.darkGreyColor,
                 ),
               ),

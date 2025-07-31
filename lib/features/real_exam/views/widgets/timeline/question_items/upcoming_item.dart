@@ -26,7 +26,7 @@ class UpcomingItem extends StatelessWidget {
           text,
           style: TextStyle(
             color: AppColors.thirdColor,
-            fontSize: SizeConfig.responsiveValue(phone: 18.sp, tablet: 22.sp),
+            fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 22.sp),
             fontWeight: FontWeight.bold,
           ),
         ),
