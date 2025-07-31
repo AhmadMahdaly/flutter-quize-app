@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
@@ -6,6 +7,7 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 
 class EndPageBanner extends StatelessWidget {
   const EndPageBanner({super.key});
@@ -22,7 +24,13 @@ class EndPageBanner extends StatelessWidget {
           ),
           child: GestureDetector(
             onTap: () {
-              context.pushNamed(Routes.subscriptionScreen);
+              context.pushNamed(Routes.subscriptionScreen ,arguments:
+                  context
+                  .read<MainLayoutCubit>()
+                  .profileModel!
+                  .data!
+                  .offerId ??
+                  -1,);
             },
             child: Padding(
               padding: EdgeInsets.symmetric(

@@ -99,15 +99,15 @@ class LoginScreen extends StatelessWidget {
                           return LoginButton(
                             onTap: () {
                               if (Platform.isAndroid) {
-                                // context.read<LoginCubit>().logInWithGoogle();
-                                context.pushReplacementNamed(
-                                  Routes.mainLayoutScreen,
-                                );
+                                context.read<LoginCubit>().logInWithGoogle();
+                                // context.pushReplacementNamed(
+                                //   Routes.mainLayoutScreen,
+                                // );
                               } else {
-                                // context.read<LoginCubit>().logInWithApple();
-                                context.pushReplacementNamed(
-                                  Routes.mainLayoutScreen,
-                                );
+                                context.read<LoginCubit>().logInWithApple();
+                                // context.pushReplacementNamed(
+                                //   Routes.mainLayoutScreen,
+                                // );
                               }
                             },
                           );

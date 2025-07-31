@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:smle/core/cache_helper/cache_helper.dart';
+import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/network/end_points.dart';
 
 class DioFactory {
@@ -21,10 +23,10 @@ class DioFactory {
     dio.options.headers = {
       'Accept': 'application/json',
       // "lang": CacheHelper.getCurrentLanguage().toString(),
-      // "Authorization":
-      //     "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken) }",
-      'Authorization':
-          'Bearer 78|rmzyh2gGAqHBsUdC6kdpZ57EdQqoJwkVquZJOLRPf29f077f',
+      "Authorization":
+          "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken) }",
+      // 'Authorization':
+      //     'Bearer 78|rmzyh2gGAqHBsUdC6kdpZ57EdQqoJwkVquZJOLRPf29f077f',
     };
     return await dio.get(endPoint, queryParameters: data);
   }
@@ -33,10 +35,10 @@ class DioFactory {
     dio.options.headers = {
       'Accept': 'application/json',
       // "lang": CacheHelper.getCurrentLanguage().toString(),
-      // "Authorization":
-      //     "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken)}",
-      'Authorization':
-          'Bearer 78|rmzyh2gGAqHBsUdC6kdpZ57EdQqoJwkVquZJOLRPf29f077f',
+      "Authorization":
+          "Bearer ${await CacheHelper.getData(key: CacheKeys.userToken)}",
+      // 'Authorization':
+      //     'Bearer 78|rmzyh2gGAqHBsUdC6kdpZ57EdQqoJwkVquZJOLRPf29f077f',
     };
     return await dio.post(endPoint, data: data);
   }
