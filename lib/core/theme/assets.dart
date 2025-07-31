@@ -41,6 +41,8 @@ class Assets {
   static const String coinsIcon = 'assets/images/png/coins_icon.png';
   /// assets/images/crownIcon.png
   static const String crownIcon = 'assets/images/png/crown_icon.png';
+  /// assets/images/crownGifts.png
+  static const String crownGifts = 'assets/images/png/crown_gifts.png';
   /// assets/images/calculatorPopupBackground.png
   static const String calculatorPopupBackground = 'assets/images/png/calculator_popup_background.png';
   /// assets/images/visa.png
@@ -78,9 +80,11 @@ class Assets {
   /// assets/images/pdfButton.png
   static const String pdfButton = 'assets/images/png/pdf_button.png';
   /// assets/images/questionMark.png
-  static const String questionMark = "assets/images/png/question_mark.png";
+  static const String questionMark = 'assets/images/png/question_mark.png';
   /// assets/images/homeDoctor.png
-  static const String homeDoctor = "assets/images/png/home_doctor.png";
+  static const String homeDoctor = 'assets/images/png/home_doctor.png';
+  /// assets/images/present.png
+  static const String present = 'assets/images/png/present.png';
 
 }
 

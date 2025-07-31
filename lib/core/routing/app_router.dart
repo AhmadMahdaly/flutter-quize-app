@@ -9,6 +9,7 @@ import 'package:smle/features/analysis/analysis_screen.dart';
 import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/exams_history_screen.dart';
+import 'package:smle/features/gifts/gifts_screen.dart';
 import 'package:smle/features/guest/main_layout_page.dart';
 import 'package:smle/features/home/home_screen.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
@@ -79,6 +80,11 @@ class AppRouter {
         return transition(
           screen: const ProfileScreen(),
           cubit: MainLayoutCubit(getIt())..getProfile(),
+        );
+        case Routes.giftsScreen:
+        return transition(
+          screen: const GiftsScreen(),
+          cubit: MainLayoutCubit(getIt())..getGifts(),
         );
 
       case Routes.notificationScreen:

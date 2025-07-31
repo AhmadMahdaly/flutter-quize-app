@@ -6,6 +6,8 @@ class EndPoints {
   static const String appleLogin = 'apple/login';
   static const String deleteAccount = 'user/delete';
   static const String profile = 'profile';
+  static const String gifts = 'gifts';
+
   // static const String login = 'auth/google';
 
   // ? subscriptionH

@@ -114,6 +114,7 @@ class AddCardScreen extends StatelessWidget {
               ),
               10.verticalSpace,
               TextFormField(
+                controller: context.read<SubscriptionCubit>().cardIdController,
                 textAlign: TextAlign.center,
                 style: interRegular.copyWith(color: AppColors.darkGreyColor),
                 decoration: InputDecoration(
@@ -147,6 +148,7 @@ class AddCardScreen extends StatelessWidget {
               ),
               10.verticalSpace,
               TextFormField(
+                controller: context.read<SubscriptionCubit>().passwordController,
                 textAlign: TextAlign.center,
                 style: interRegular.copyWith(color: AppColors.darkGreyColor),
                 decoration: InputDecoration(
@@ -178,6 +180,7 @@ class AddCardScreen extends StatelessWidget {
               ),
               10.verticalSpace,
               TextFormField(
+                controller: context.read<SubscriptionCubit>().cvvController,
                 textAlign: TextAlign.center,
                 style: interRegular.copyWith(color: AppColors.darkGreyColor),
                 decoration: InputDecoration(
@@ -209,6 +212,7 @@ class AddCardScreen extends StatelessWidget {
               ),
               10.verticalSpace,
               TextFormField(
+                controller: context.read<SubscriptionCubit>().expiryDateController,
                 textAlign: TextAlign.center,
                 style: interRegular.copyWith(color: AppColors.darkGreyColor),
                 decoration: InputDecoration(

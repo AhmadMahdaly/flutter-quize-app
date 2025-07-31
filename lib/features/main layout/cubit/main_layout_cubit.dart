@@ -6,6 +6,7 @@ import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/routing/routes.dart';
+import 'package:smle/features/main%20layout/data/model/gifts_model.dart';
 import 'package:smle/features/main%20layout/data/model/profile_model.dart';
 import '../../../core/constants.dart';
 import '../data/repo/main_layout_repo.dart';
@@ -35,7 +36,21 @@ class MainLayoutCubit extends Cubit<MainLayoutState> {
       emit(GetProfileFailedState());
     });
   }
-
+  /// Get Gifts
+  GiftsModel? giftsModel;
+  Future getGifts() async {
+    showLoading();
+    emit(GetGiftsLoadingState());
+    final result = await _mainLayoutRepository.getGifts();
+    result.when(success: (success) {
+      giftsModel = success;
+      hideLoading();
+      emit(GetGiftsSuccessState());
+    }, failure: (error) {
+      hideLoading();
+      emit(GetGiftsFailedState());
+    });
+  }
   /// Delete Account
   Future deleteAccount(BuildContext context) async {
     showLoading();
