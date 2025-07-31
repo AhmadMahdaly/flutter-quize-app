@@ -22,13 +22,13 @@ class DrawerWidget extends StatelessWidget {
       child: ListView(
         children: [
           // Drawer Items
-          DrawerItemWidget(
-            iconAsset: Assets.userCircleLight,
-            title: 'profile'.tr(context),
-            onTap: () {
-              context.pushNamed(Routes.profileScreen);
-            },
-          ),
+          // DrawerItemWidget(
+          //   iconAsset: Assets.userCircleLight,
+          //   title: 'profile'.tr(context),
+          //   onTap: () {
+          //     context.pushNamed(Routes.profileScreen);
+          //   },
+          // ),
           DrawerItemWidget(
             iconAsset: Assets.mortarboardLight,
             title: 'SCFHS_score_calculator'.tr(context),

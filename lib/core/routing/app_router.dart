@@ -120,12 +120,12 @@ class AppRouter {
         final packageId = settings.arguments as String;
         return transition(
           screen: const PaymentScreen(),
-          cubit: SubscriptionCubit(getIt())..getYourCheckout(packageId),
+          cubit: SubscriptionCubit(getIt())..getCards()..getYourCheckout(packageId),
         );
       case Routes.addCardScreen:
         return transition(
-          screen: const AddCardScreen(),
-          cubit: SubscriptionCubit(getIt())..getCards(),
+          screen:  AddCardScreen(),
+          cubit: SubscriptionCubit(getIt()),
         );
       case Routes.applePayScreen:
         final totalPayment = settings.arguments as String;
@@ -134,8 +134,9 @@ class AppRouter {
           cubit: SubscriptionCubit(getIt()),
         );
       case Routes.analysisScreen:
+        final isExam = settings.arguments as bool;
         return transition(
-          screen: const AnalysisScreen(),
+          screen:  AnalysisScreen(isExam: isExam,),
           cubit: AnalysisCubit(getIt())..getAnalysis(),
         );
       case Routes.createQuizScreen:
@@ -208,11 +209,11 @@ class AppRouter {
             child: const RealExamPage(),
           ),
         );
-      case Routes.examResultsPage:
-        final results = settings.arguments as FinishAnalysisExamModel;
-        return MaterialPageRoute(
-          builder: (_) => ExamResultsPage(results: results),
-        );
+      // case Routes.examResultsPage:
+      //   final results = settings.arguments as FinishAnalysisExamModel;
+      //   return MaterialPageRoute(
+      //     builder: (_) => ExamResultsPage(results: results),
+      //   );
       case Routes.guestScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(

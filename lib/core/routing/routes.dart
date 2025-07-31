@@ -27,6 +27,6 @@ class Routes {
   static const String guestScreen = '/GuestMainLayoutScreen';
   static const String pdfViewerFromUrlScreen = '/pdfViewerFromUrlScreen';
   static const String videoPlayerScreen = '/videoPlayerScreen';
-  static const String examResultsPage = '/examResultsPage';
+  // static const String examResultsPage = '/examResultsPage';
   static const String trialExamScreen = '/trialExamScreen';
 }

@@ -4,6 +4,7 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -20,11 +21,7 @@ class ProfileScreen extends StatelessWidget {
       builder: (context, state) {
         return context.read<MainLayoutCubit>().profileModel == null
             ? Scaffold(
-                appBar: const ProfileAppBarWidgets(
-                  canBack: false,
-                  imagePath:
-                      'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
-                ),
+                appBar: CustomAppBar(title: 'profile'.tr(context),),
                 body: Column(
                   children: [
                     Center(
@@ -37,18 +34,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               )
             : Scaffold(
-                appBar: ProfileAppBarWidgets(
-                  canBack: false,
-                  imagePath:
-                      context
-                              .read<MainLayoutCubit>()
-                              .profileModel!
-                              .data!
-                              .photo ==
-                          null
-                      ? 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
-                      : '${context.read<MainLayoutCubit>().profileModel!.data!.photo}',
-                ),
+          appBar: CustomAppBar(title: 'profile'.tr(context),),
                 body: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 15.w,
@@ -151,7 +137,7 @@ class ProfileScreen extends StatelessWidget {
                               text: 'exams_analysis'.tr(context),
                               imagePath: Assets.lineUp,
                               onPressed: (){
-                                context.pushNamed(Routes.analysisScreen);
+                                context.pushNamed(Routes.analysisScreen,arguments: false);
                               },
                             ),
                             ProfileButtonWidget(
