@@ -48,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
                         Column(
                           children: [
                             SizeConfig.responsiveValue(
-                              phone: 90.verticalSpace,
+                              phone: 40.verticalSpace,
                               tablet: 50.verticalSpace,
                             ),
                             Text(
@@ -119,7 +119,7 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                            62.verticalSpace,
+                            40.verticalSpace,
                           ],
                         ),
                     
@@ -159,6 +159,11 @@ class ProfileScreen extends StatelessWidget {
                               },
                             ),
                           ],
+                        ),
+
+                        SizeConfig.responsiveValue(
+                          phone: 60.verticalSpace,
+                          tablet: 60.verticalSpace,
                         ),
                       ],
                     ),
