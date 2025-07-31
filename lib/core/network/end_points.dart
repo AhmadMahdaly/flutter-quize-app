@@ -12,9 +12,9 @@ class EndPoints {
   static const String getPackages = 'offers';
   static const String getYourCheckout = 'GetYour/Checkout';
   static const String makeSubscription = 'make/subscription';
-  static const String addCard= 'user/card';
-  static const String getCards= 'user/cards';
-  static const String deleteCard= 'user/card/delete/';
+  static const String addCard = 'user/card';
+  static const String getCards = 'user/cards';
+  static const String deleteCard = 'user/card/delete/';
 
   // ? revision
   static const String getCategories = 'categories';
@@ -44,5 +44,5 @@ class EndPoints {
   static const String makeQuestionFlag = 'question/flag';
   static const String addQuestionNote = 'question/note';
   static const String finishAnalysisExam = 'exam/analysis';
-  static const String examHistory = 'exam/history';
+  static const String getExamHistory = 'exam/history';
 }

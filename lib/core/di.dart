@@ -4,6 +4,7 @@ import 'package:smle/features/SCFHS_score_calculator/data/repo/calculator_repo.d
 import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
 import 'package:smle/features/analysis/data/repo/analysis_repo.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
+import 'package:smle/features/exams_history/data/repo/exams_history_repository.dart';
 import 'package:smle/features/login/data/repo/login_repo.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
@@ -23,8 +24,11 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<NotificationCubit>(() => NotificationCubit());
   getIt.registerFactory<AnalysisRepository>(() => AnalysisRepository(getIt()));
   getIt.registerFactory<AnalysisCubit>(() => AnalysisCubit(getIt()));
+  getIt.registerFactory<ExamsHistoryRepository>(
+    () => ExamsHistoryRepository(getIt()),
+  );
 
-  getIt.registerFactory<ExamsHistoryCubit>(() => ExamsHistoryCubit());
+  getIt.registerFactory<ExamsHistoryCubit>(() => ExamsHistoryCubit(getIt()));
   getIt.registerFactory<MainLayoutRepository>(
     () => MainLayoutRepository(getIt()),
   );

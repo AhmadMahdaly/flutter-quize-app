@@ -150,7 +150,7 @@ class AppRouter {
       case Routes.examsHistoryScreen:
         return transition(
           screen: const ExamsHistoryScreen(),
-          cubit: ExamsHistoryCubit(),
+          cubit: ExamsHistoryCubit(getIt())..fetchExamsHistory(),
         );
       case Routes.revisionScreen:
         final categoryId = settings.arguments as String;

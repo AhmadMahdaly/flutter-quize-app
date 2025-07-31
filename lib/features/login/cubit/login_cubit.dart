@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/features/login/data/login_api.dart';
 import 'package:smle/features/login/data/model/login_model.dart';
 import 'package:smle/features/login/data/repo/login_repo.dart';
-import '../data/login_api.dart';
+
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
@@ -37,9 +37,11 @@ class LoginCubit extends Cubit<LoginStates> {
       hideLoading();
 
       emit(
-          LogInFailedState('Failed to sign in with Google. Please try again.'));
+        LogInFailedState('Failed to sign in with Google. Please try again.'),
+      );
     }
   }
+
   Future<void> logInWithApple() async {
     try {
       emit(LogInLoadingState());
@@ -67,12 +69,10 @@ class LoginCubit extends Cubit<LoginStates> {
 
       // Ensure required fields are not null before proceeding
       if (email == null || givenName == null) {
-        await logIn(userId,null,null);
-      }else{
+        await logIn(userId, null, null);
+      } else {
         await logIn(userId, email, givenName);
       }
-
-
     } catch (error) {
       debugPrintWidget('Apple Sign-In Error: $error');
       hideLoading();
@@ -107,8 +107,4 @@ class LoginCubit extends Cubit<LoginStates> {
       return false;
     }
   }
-
-  
-
-
 }

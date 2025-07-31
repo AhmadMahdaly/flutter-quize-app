@@ -213,21 +213,4 @@ class RealExamCubit extends Cubit<RealExamState> {
       },
     );
   }
-
-  Future examHistory(int offset, int limit) async {
-    showLoading();
-    emit(ExamHistoryLoadingState());
-    final result = await repo.examHistory(offset, limit);
-    result.when(
-      success: (success) {
-        finishAnalysisExamModel = success;
-        hideLoading();
-        emit(ExamHistorySuccessState());
-      },
-      failure: (error) {
-        hideLoading();
-        emit(ExamHistoryFailedState());
-      },
-    );
-  }
 }
