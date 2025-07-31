@@ -37,11 +37,11 @@ class SubscriptionRepository {
           ? {'offer_id': offerId}
           : {'offer_id': offerId, 'code': promoCode},
     );
-    if (response!.statusCode == 200 || response.statusCode == 400) {
+    if (response!.statusCode == 200 ) {
       final CheckoutModel model = CheckoutModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
-      debugPrintWidget(response.data['message']);
+      debugPrintWidget('${response.data['message']}');
       return ApiResult.failure(
         ServerFailure.fromResponse(
           response.statusCode,

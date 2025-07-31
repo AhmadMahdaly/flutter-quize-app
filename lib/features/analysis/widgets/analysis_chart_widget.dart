@@ -1,6 +1,108 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:smle/core/functions/responsive_config.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/analysis/data/model/analysis_model.dart';
+Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
+  return Card(
+    elevation: 2,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    clipBehavior: Clip.antiAlias,
+    child: SingleChildScrollView( // ✅ هذا يحل مشكلة overflow
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        headingRowColor: WidgetStateProperty.all(Colors.grey.shade200),
+        headingTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        columns: [
+          DataColumn(
+            label: Text(
+              'Category',
+              style: interMedium.copyWith(
+                color: AppColors.forthColor,
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 14.sp,
+                  tablet: 18.sp,
+                ),
+              ),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Your %',
+              style: interMedium.copyWith(
+                color: AppColors.forthColor,
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 14.sp,
+                  tablet: 18.sp,
+                ),
+              ),
+            ),
+            numeric: true,
+          ),
+          DataColumn(
+            label: Text(
+              'Average %',
+              style: interMedium.copyWith(
+                color: AppColors.forthColor,
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 14.sp,
+                  tablet: 18.sp,
+                ),
+              ),
+            ),
+            numeric: true,
+          ),
+        ],
+        rows: data.map((item) {
+          return DataRow(
+            cells: [
+              DataCell(
+                Text(
+                  item.category!,
+                  style: interRegular.copyWith(
+                    color: AppColors.forthColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 12.sp,
+                      tablet: 16.sp,
+                    ),
+                  ),
+                ),
+              ),
+              DataCell(
+                Text(
+                  '${item.examPercentage!.toStringAsFixed(1)}%',
+                  style: interRegular.copyWith(
+                    color: AppColors.forthColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 12.sp,
+                      tablet: 16.sp,
+                    ),
+                  ),
+                ),
+              ),
+              DataCell(
+                Text(
+                  '${item.averagePercentage!.toStringAsFixed(1)}%',
+                  style: interRegular.copyWith(
+                    color: AppColors.forthColor,
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 12.sp,
+                      tablet: 16.sp,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }).toList(),
+      ),
+    ),
+  );
+}
 
 class PerformanceChart extends StatelessWidget {
   const PerformanceChart({super.key, required this.data});
@@ -24,75 +126,124 @@ class PerformanceChart extends StatelessWidget {
       averageSpots.add(FlSpot(i.toDouble(), avg));
     }
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width: data.length * 50, // adjust width per data point
-        height: 300,
-        child: LineChart(
-          LineChartData(
-            minY: 0,
-            maxY: 100,
-            minX: 0,
-            maxX: data.length.toDouble() - 1,
-            gridData: const FlGridData(show: true),
-            borderData: FlBorderData(show: true),
-            lineBarsData: [
-              _buildLine(color: Colors.teal, spots: examSpots),
-              _buildLine(color: Colors.blue, spots: averageSpots),
-            ],
-            titlesData: FlTitlesData(
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  interval: 5,
-                  reservedSize: 40,
-                  getTitlesWidget: (value, _) => Text(
-                    value.toInt().toString(),
-                    style: const TextStyle(fontSize: 10),
+    return Column(
+      children: [
+        SizedBox(
+          height: 300.h,
+          child: LineChart(
+            LineChartData(
+              minY: 0,
+              maxY: 100,
+              minX: 0,
+              maxX: (data.length - 1).toDouble(),
+              gridData: FlGridData(
+                show: true,
+                getDrawingHorizontalLine: (value) =>
+                const FlLine(color: Colors.black12, strokeWidth: 1),
+                getDrawingVerticalLine: (value) =>
+                const FlLine(color: Colors.black12, strokeWidth: 1),
+              ),
+              borderData: FlBorderData(
+                show: true,
+                border: Border.all(color: Colors.black26),
+              ),
+              lineBarsData: [
+                _buildLine(
+                  color: Colors.teal,
+                  spots: examSpots,
+                  shadow: Colors.teal.withAlpha(55),
+                ),
+                _buildLine(
+                  color: Colors.blueAccent,
+                  spots: averageSpots,
+                  shadow: Colors.blueAccent.withAlpha(55),
+                ),
+              ],
+              titlesData: FlTitlesData(
+                leftTitles: const AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    interval: 20,
+                    reservedSize: 40,
                   ),
                 ),
-              ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  interval: 1,
-                  getTitlesWidget: (value, _) {
-                    int index = value.toInt();
-                    if (index < 0 || index >= data.length) {
-                      return const SizedBox.shrink();
-                    }
-                    final label = data[index].category ?? '';
-                    return Transform.rotate(
-                      angle: -0.4,
-                      child: Text(
-                        label.length > 8 ? '${label.substring(0, 8)}...' : label,
-                        style: const TextStyle(fontSize: 10),
-                      ),
-                    );
-                  },
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    interval: 1,
+                    reservedSize: 40,
+                    getTitlesWidget: (value, meta) {
+                      final int index = value.toInt();
+                      if (index < 0 || index >= data.length) {
+                        return const SizedBox.shrink();
+                      }
+                      final label = data[index].category;
+                      return SideTitleWidget(
+                        axisSide: meta.axisSide,
+                        space: 8.0,
+                        child: Text(
+                          label!.length > 14
+                              ? '${label.substring(0, 14)}...'
+                              : label,
+                          style: interBold.copyWith(
+                            color: AppColors.forthColor,
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 10.sp,
+                              tablet: 14.sp,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                rightTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                topTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
                 ),
               ),
-              rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-              topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 
+
+  Widget _legendItem(Color color, String text) {
+    return Row(
+      children: [
+        Container(width: 16.w, height: 16.h, color: color),
+        8.horizontalSpace,
+        Text(
+          text,
+          style: interRegular.copyWith(
+            color: AppColors.iconColorGray,
+            fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
+          ),
+        ),
+      ],
+    );
+  }
   LineChartBarData _buildLine({
     required Color color,
     required List<FlSpot> spots,
+    Color? shadow,
   }) {
     return LineChartBarData(
       isCurved: true,
       color: color,
-      barWidth: 3,
+      barWidth: 2.w,
       dotData: const FlDotData(show: true),
       belowBarData: BarAreaData(show: false),
       spots: spots,
+      shadow: Shadow(
+        color: shadow ?? Colors.transparent,
+        blurRadius: 8,
+        offset: const Offset(0, 4),
+      ),
     );
-  }
+}
 }

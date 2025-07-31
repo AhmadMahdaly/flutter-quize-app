@@ -24,8 +24,8 @@ class RealExamPage extends StatelessWidget {
         listener: (context, state) {
           if (state.status == ExamStatus.finished && state.examResult != null) {
             context.pushReplacementNamed(
-              Routes.examResultsPage,
-              arguments: state.examResult!,
+              Routes.analysisScreen,
+              arguments: true,
             );
           }
         },

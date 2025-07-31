@@ -186,7 +186,7 @@ class HomeScreen extends StatelessWidget {
                                 context,
                                 widget: const GuestLoginDialog(),
                               )
-                            : context.pushNamed(Routes.analysisScreen);
+                            : context.pushNamed(Routes.analysisScreen,arguments: false);
                       },
                       categoryName: 'analysis'.tr(context),
                       imagePath: Assets.analysisCategory,

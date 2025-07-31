@@ -62,7 +62,9 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     );
     result.when(
       success: (success) {
-        yourCheckoutModel = success;
+        if (success.data != null) {
+          yourCheckoutModel = success;
+        }
         hideLoading();
         emit(GetYourCheckoutSuccessState());
       },
@@ -87,6 +89,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
         scanCardHolderName: true, // Optional, to get the cardholder's name
         scanExpiryDate: true, // Optional, to get the card's expiration date
         enableLuhnCheck: true, // Optional, to validate card numbers
+
       ),
     );
 
@@ -94,16 +97,27 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       debugPrintWidget('Card Number: ${cardDetails.cardNumber}');
       debugPrintWidget('Card Holder: ${cardDetails.cardHolderName}');
       debugPrintWidget('Expiry Date: ${cardDetails.expiryDate}');
+      cardIdController.text=cardDetails.cardNumber;
+      expiryDateController.text=cardDetails.expiryDate;
     } else {
       debugPrintWidget('Card scan cancelled');
     }
   }
 
   /// Add Card
+  TextEditingController cardIdController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController cvvController = TextEditingController();
+  TextEditingController expiryDateController = TextEditingController();
   Future addCard() async {
     showLoading();
     emit(AddCardLoadingState());
-    final result = await _subscriptionRepository.addCard('', '', '', '');
+    final result = await _subscriptionRepository.addCard(
+      cardIdController.text,
+      passwordController.text,
+      cvvController.text,
+      expiryDateController.text,
+    );
     result.when(
       success: (success) {
         hideLoading();

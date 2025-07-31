@@ -127,8 +127,10 @@
   "analysis_title": "This report outlines your strengths and weaknesses across assessed domains to help you understand and improve your performance.",
   "figure1":  "Figure1: Displays your performance in the test domains.",
   "score_who_passed":  "Major score of who passed",
-"no_exams_found":"No exams found"
-
+"no_exams_found":"No exams found",
+"in_your_wallet":"In your wallet",
+"sharing_with_friends":"Sharing with your friends",
+"must_entered":"is must be entered"
 
 
 

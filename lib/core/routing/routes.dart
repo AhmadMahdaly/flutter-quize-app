@@ -3,6 +3,7 @@ class Routes {
   static const String onBoardingScreen = '/onBoardingScreen';
   static const String loginScreen = '/loginScreen';
   static const String profileScreen = '/profileScreen';
+  static const String giftsScreen = '/giftsScreen';
   static const String mainLayoutScreen = '/mainLayoutScreen';
   static const String notificationScreen = '/notificationScreen';
   static const String privacyPolicyScreen = '/privacyPolicyScreen';
@@ -26,6 +27,6 @@ class Routes {
   static const String guestScreen = '/GuestMainLayoutScreen';
   static const String pdfViewerFromUrlScreen = '/pdfViewerFromUrlScreen';
   static const String videoPlayerScreen = '/videoPlayerScreen';
-  static const String examResultsPage = '/examResultsPage';
+  // static const String examResultsPage = '/examResultsPage';
   static const String trialExamScreen = '/trialExamScreen';
 }

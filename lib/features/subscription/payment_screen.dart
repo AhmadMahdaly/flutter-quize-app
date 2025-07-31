@@ -11,6 +11,7 @@ import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
+import 'package:smle/features/subscription/widgets/cards_widget.dart';
 import 'package:smle/features/subscription/widgets/payment_details_widget.dart';
 
 class PaymentScreen extends StatelessWidget {
@@ -21,7 +22,9 @@ class PaymentScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(title: 'payment'.tr(context)),
       body: SingleChildScrollView(
-        child: Padding(
+        child: BlocBuilder<SubscriptionCubit, SubscriptionStates>(
+  builder: (context, state) {
+    return Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,6 +141,13 @@ class PaymentScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              if (context.read<SubscriptionCubit>().cardsModel != null)
+                SizedBox(
+                  height: 250.h,
+                  child: CardsListWidget(
+                    cards: context.read<SubscriptionCubit>().cardsModel!.data!,
+                  ),
+                ),
               if (!Platform.isAndroid) 50.verticalSpace,
               if (!Platform.isAndroid)
                 Center(
@@ -217,7 +227,9 @@ class PaymentScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
+        );
+  },
+),
       ),
     );
   }

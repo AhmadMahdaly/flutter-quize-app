@@ -115,14 +115,12 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                           children: [
                             Text(
                               q.questionText ?? '',
-                              textAlign: TextAlign.justify,
                               style: interMedium.copyWith(
                                 fontSize: SizeConfig.responsiveValue(
-                                  phone: 16.sp,
+                                  phone: 14.sp,
                                   tablet: 20.sp,
                                 ),
                                 color: AppColors.forthColor,
-                                height: 1.1.h,
                               ),
                             ),
                             if (q.photo != null && q.photo!.isNotEmpty ||
@@ -137,16 +135,17 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                                 errorBuilder: (context, error, stackTrace) =>
                                     const SizedBox.shrink(),
                               ),
+                            // const Spacer(),
+                            buildOption('a', q.a ?? ''),
+                            buildOption('b', q.b ?? ''),
+                            buildOption('c', q.c ?? ''),
+                            buildOption('d', q.d ?? ''),
+                            8.verticalSpace,
                           ],
                         ),
                       ),
 
-                      // const Spacer(),
-                      buildOption('a', q.a ?? ''),
-                      buildOption('b', q.b ?? ''),
-                      buildOption('c', q.c ?? ''),
-                      buildOption('d', q.d ?? ''),
-                      8.verticalSpace,
+
                     ],
                   ),
             ),

@@ -21,7 +21,7 @@ class DrawerWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width / 2,
       child: ListView(
         children: [
-          // // Drawer Items
+          // Drawer Items
           // DrawerItemWidget(
           //   iconAsset: Assets.userCircleLight,
           //   title: 'profile'.tr(context),

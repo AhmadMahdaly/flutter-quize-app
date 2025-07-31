@@ -10,6 +10,7 @@ import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/exams_history_screen.dart';
 import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
+import 'package:smle/features/gifts/gifts_screen.dart';
 import 'package:smle/features/guest/main_layout_page.dart';
 import 'package:smle/features/home/home_screen.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
@@ -83,6 +84,11 @@ class AppRouter {
           screen: const ProfileScreen(),
           cubit: MainLayoutCubit(getIt())..getProfile(),
         );
+        case Routes.giftsScreen:
+        return transition(
+          screen: const GiftsScreen(),
+          cubit: MainLayoutCubit(getIt())..getGifts(),
+        );
 
       case Routes.notificationScreen:
         return transition(
@@ -114,12 +120,12 @@ class AppRouter {
         final packageId = settings.arguments as String;
         return transition(
           screen: const PaymentScreen(),
-          cubit: SubscriptionCubit(getIt())..getYourCheckout(packageId),
+          cubit: SubscriptionCubit(getIt())..getCards()..getYourCheckout(packageId),
         );
       case Routes.addCardScreen:
         return transition(
-          screen: const AddCardScreen(),
-          cubit: SubscriptionCubit(getIt())..getCards(),
+          screen:  AddCardScreen(),
+          cubit: SubscriptionCubit(getIt()),
         );
       case Routes.applePayScreen:
         final totalPayment = settings.arguments as String;
@@ -128,8 +134,9 @@ class AppRouter {
           cubit: SubscriptionCubit(getIt()),
         );
       case Routes.analysisScreen:
+        final isExam = settings.arguments as bool;
         return transition(
-          screen: const AnalysisScreen(),
+          screen:  AnalysisScreen(isExam: isExam,),
           cubit: AnalysisCubit(getIt())..getAnalysis(),
         );
       case Routes.createQuizScreen:
@@ -202,11 +209,11 @@ class AppRouter {
             child: const RealExamPage(),
           ),
         );
-      case Routes.examResultsPage:
-        final results = settings.arguments as FinishAnalysisExamModel;
-        return MaterialPageRoute(
-          builder: (_) => ExamResultsPage(results: results),
-        );
+      // case Routes.examResultsPage:
+      //   final results = settings.arguments as FinishAnalysisExamModel;
+      //   return MaterialPageRoute(
+      //     builder: (_) => ExamResultsPage(results: results),
+      //   );
       case Routes.guestScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(

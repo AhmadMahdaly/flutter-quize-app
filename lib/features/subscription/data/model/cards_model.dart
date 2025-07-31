@@ -1,7 +1,4 @@
 class CardsModel {
-  int? status;
-  String? message;
-  List<Data>? data;
 
   CardsModel({this.status, this.message, this.data});
 
@@ -9,12 +6,15 @@ class CardsModel {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <CardItem>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(CardItem.fromJson(v));
       });
     }
   }
+  int? status;
+  String? message;
+  List<CardItem>? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -27,17 +27,9 @@ class CardsModel {
   }
 }
 
-class Data {
-  int? id;
-  int? userId;
-  String? cardId;
-  String? cvv;
-  String? password;
-  String? expDate;
-  String? createdAt;
-  String? updatedAt;
+class CardItem {
 
-  Data(
+  CardItem(
       {this.id,
       this.userId,
       this.cardId,
@@ -47,7 +39,7 @@ class Data {
       this.createdAt,
       this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  CardItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     cardId = json['card_id'];
@@ -57,6 +49,14 @@ class Data {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
+  int? id;
+  int? userId;
+  String? cardId;
+  String? cvv;
+  String? password;
+  String? expDate;
+  String? createdAt;
+  String? updatedAt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
