@@ -4,34 +4,24 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
-import 'package:smle/features/real_exam/data/model/get_real_exam_model.dart';
+import 'package:smle/features/free_trial/cubit/free_trial_cubit.dart';
+import 'package:smle/features/free_trial/views/widgets/trial_exam_body.dart';
 import 'package:smle/features/real_exam/views/widgets/cutom_timer.dart';
-import 'package:smle/features/real_exam/views/widgets/finish_exam_dialog.dart';
 
-class HeaderExamDetailsCard extends StatelessWidget {
-  const HeaderExamDetailsCard({
-    required this.question,
+class TrialHeaderCard extends StatelessWidget {
+  const TrialHeaderCard({
+    required this.questionNumber,
     required this.totalQuestions,
     super.key,
   });
 
-  final Question question;
+  final int questionNumber;
   final int totalQuestions;
 
   @override
   Widget build(BuildContext context) {
-    final qNo = question.questionNo;
-    final section = question.section;
-    final progressValue = qNo! / totalQuestions;
-
-    // Get the timer state from the cubit
-    final cubit = context.watch<RealExamCubit>();
-    final sectionEndTimeString = cubit.state.sectionEndTimes[section];
-    final endTime = sectionEndTimeString != null
-        ? DateTime.parse(sectionEndTimeString)
-        : DateTime.now();
-
+    final qNo = questionNumber;
+    final progressValue = qNo / totalQuestions;
     return Column(
       children: [
         8.verticalSpace,
@@ -66,17 +56,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       color: AppColors.thirdColor,
                     ),
                   ),
-                  4.verticalSpace,
-                  Text(
-                    'Section: $section',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
-                        tablet: 20.sp,
-                      ),
-                      color: AppColors.thirdColor,
-                    ),
-                  ),
+
                   4.verticalSpace,
                   Column(
                     children: [
@@ -131,28 +111,16 @@ class HeaderExamDetailsCard extends StatelessWidget {
                   ),
                   5.verticalSpace,
                   CustomTimerWidget(
-                    endTime: endTime,
+                    endTime: DateTime(2050),
                     onTimerFinish: () {
-                      // This will be called when the timer hits zero.
-                      // You can show a dialog or automatically end the section.
                       showCustomPrimaryDialog(
                         context,
                         widget: AlertDialog(
                           title: const Text("Time's Up!"),
-                          content: Text(
-                            'The time for section $section has ended.',
-                          ),
+                          content: const Text('The time for exam has ended.'),
                           actions: [
                             TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                // Logic to end the section
-                                if (section == 1) {
-                                  cubit.finishSection1AndStartBreak();
-                                } else {
-                                  cubit.finishExam();
-                                }
-                              },
+                              onPressed: () {},
                               child: const Text('OK'),
                             ),
                           ],
@@ -165,12 +133,10 @@ class HeaderExamDetailsCard extends StatelessWidget {
                   5.verticalSpace,
                   InkWell(
                     onTap: () {
-                      final cubit = context.read<RealExamCubit>();
-                      showCustomPrimaryDialog(
-                        context,
-                        widget: ConfirmFinishExamDialog(
-                          cubit: cubit,
-                          section: section!,
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => ResultsDialog(
+                          state: context.read<TrialExamCubit>().state,
                         ),
                       );
                     },
@@ -182,7 +148,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(100.r),
                       ),
                       child: Text(
-                        'Finish section',
+                        'Finish Exam',
                         style: interBold.copyWith(
                           fontSize: SizeConfig.responsiveValue(
                             phone: 20.sp,
@@ -264,18 +230,18 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  // Text(
-                  //   'Free Trial',
-                  //   style: interBold.copyWith(
-                  //     fontSize: SizeConfig.responsiveValue(
-                  //       phone: 18.sp,
-                  //       tablet: 22.sp,
-                  //     ),
-                  //     color: AppColors.offwhiteColor,
-                  //     fontWeight: FontWeight.w700,
-                  //     height: 1.50.h,
-                  //   ),
-                  // ),
+                  Text(
+                    'Free Trial',
+                    style: interBold.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 18.sp,
+                        tablet: 22.sp,
+                      ),
+                      color: AppColors.offwhiteColor,
+                      fontWeight: FontWeight.w700,
+                      height: 1.50.h,
+                    ),
+                  ),
                 ],
               ),
             ],

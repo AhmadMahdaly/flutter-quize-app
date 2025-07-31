@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-
 import 'package:smle/core/theme/colors.dart';
 
 class CustomJourneyDot extends StatelessWidget {
@@ -22,13 +20,15 @@ class CustomJourneyDot extends StatelessWidget {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal:7.w),
+            padding: EdgeInsets.symmetric(horizontal: 7.w),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 500),
               height: 10.h,
-              width: 12.w ,
+              width: 12.w,
               decoration: BoxDecoration(
-                color: activeIndex == index ?AppColors.secondaryColor:AppColors.primaryColor.withOpacity(0.4),
+                color: activeIndex == index
+                    ? AppColors.secondaryColor
+                    : AppColors.primaryColor.withAlpha(77),
                 borderRadius: BorderRadius.circular(15.w),
               ),
             ),

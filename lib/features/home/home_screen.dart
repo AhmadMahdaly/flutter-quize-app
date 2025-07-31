@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
@@ -17,6 +18,7 @@ import 'package:smle/features/home/widgets/home_app_bar_widget.dart';
 import 'package:smle/features/home/widgets/top_banner_widget.dart';
 import 'package:smle/features/home/widgets/user_image_name_widget.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
+import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key, required this.isGuest});
@@ -81,13 +83,13 @@ class HomeScreen extends StatelessWidget {
                               ?.data
                               ?.email ??
                           '',
-                      imagePath:
-                          context
-                              .read<MainLayoutCubit>()
-                              .profileModel
-                              ?.data
-                              ?.photo ??
-                          '',
+                      imagePath: Assets.logoCircle,
+                      // context
+                      //     .read<MainLayoutCubit>()
+                      //     .profileModel
+                      //     ?.data
+                      //     ?.photo ??
+                      // '',
                       points:
                           context
                                   .read<MainLayoutCubit>()
@@ -153,16 +155,24 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: CategoryWidget(
                       onTap: () {
-                        isGuest
-                            ? showCustomPrimaryDialog(
-                                context,
-                                widget: const GuestLoginDialog(),
-                              )
-                            : showCustomPrimaryDialog(
-                                context,
-                                widget:
-                                    const ConfirmAccessToRealExamDialogWidget(),
-                              );
+                        final examState = getIt<RealExamCubit>().state;
+
+                        final bool isExamInProgress =
+                            examState.status == ExamStatus.success ||
+                            examState.status == ExamStatus.onBreak;
+                        if (isGuest) {
+                          showCustomPrimaryDialog(
+                            context,
+                            widget: const GuestLoginDialog(),
+                          );
+                        } else if (isExamInProgress) {
+                          context.pushNamed(Routes.realExamScreen);
+                        } else {
+                          showCustomPrimaryDialog(
+                            context,
+                            widget: const ConfirmAccessToRealExamDialogWidget(),
+                          );
+                        }
                       },
                       categoryName: 'real_exam'.tr(context),
                       imagePath: Assets.examCategory,

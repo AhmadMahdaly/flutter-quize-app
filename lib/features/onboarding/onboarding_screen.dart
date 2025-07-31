@@ -63,7 +63,10 @@ class OnBoardingScreen extends StatelessWidget {
                                   'sign_up'.tr(context),
                                   style: interBold.copyWith(
                                     color: AppColors.secondaryColor,
-                                    fontSize: 20.sp,
+                                    fontSize: SizeConfig.responsiveValue(
+                                      phone: 20.sp,
+                                      tablet: 24.sp,
+                                    ),
                                   ),
                                 ),
                               ),

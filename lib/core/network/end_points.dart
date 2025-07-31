@@ -35,6 +35,7 @@ class EndPoints {
   static const String createPlayList = 'create/playlist';
   static const String deletePlayList = 'remove/playlist';
   static const String editPlayList = 'update/playlist';
+  static const String getFreeTrial = 'start/free/trial';
 
   /// ? Real Exam
   static const String startRealExam = 'start/real/exam';

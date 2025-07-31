@@ -1,6 +1,3 @@
-// exam_repository.dart
-import 'dart:developer';
-
 import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
@@ -8,7 +5,6 @@ import 'package:smle/core/network/failures.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/features/real_exam/data/model/finish_analysis_exam.dart';
 import 'package:smle/features/real_exam/data/model/get_real_exam_model.dart';
-import 'package:smle/features/real_exam/data/model/post_real_exam_model.dart';
 import 'package:smle/features/real_exam/data/model/question_action_model.dart';
 
 class RealExamRepo {
@@ -30,7 +26,6 @@ class RealExamRepo {
         );
       }
     } catch (e) {
-      log(e.toString());
       rethrow;
     }
   }
@@ -57,36 +52,6 @@ class RealExamRepo {
         );
       }
     } catch (e) {
-      log(e.toString());
-      rethrow;
-    }
-  }
-
-  Future<ApiResult<PostRealExamModel>> getRealExamQuestions(
-    int offset,
-    int limit,
-    int examId,
-    bool isHistory,
-  ) async {
-    try {
-      final response = await _dioFactory.post(
-        endPoint: EndPoints.getRealExamQuestions,
-        data: {'limit': limit, 'exam_id': examId, 'is_history': isHistory},
-      );
-      if (response!.statusCode == 200) {
-        final model = PostRealExamModel.fromJson(response.data);
-        return ApiResult.success(model);
-      } else {
-        debugPrintWidget(response.data['message']);
-        return ApiResult.failure(
-          ServerFailure.fromResponse(
-            response.statusCode,
-            response.data['message'],
-          ),
-        );
-      }
-    } catch (e) {
-      log(e.toString());
       rethrow;
     }
   }
@@ -113,7 +78,6 @@ class RealExamRepo {
         );
       }
     } catch (e) {
-      log(e.toString());
       rethrow;
     }
   }
@@ -139,7 +103,6 @@ class RealExamRepo {
         );
       }
     } catch (e) {
-      log(e.toString());
       rethrow;
     }
   }
@@ -166,7 +129,6 @@ class RealExamRepo {
         );
       }
     } catch (e) {
-      log(e.toString());
       rethrow;
     }
   }
@@ -189,7 +151,6 @@ class RealExamRepo {
         );
       }
     } catch (e) {
-      log(e.toString());
       rethrow;
     }
   }

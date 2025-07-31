@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -14,8 +14,16 @@ import 'package:smle/features/real_exam/views/widgets/timeline/timeline_items.da
 import 'package:smle/features/real_exam/views/widgets/timeline/timeline_status.dart';
 
 class RealExamBody extends StatefulWidget {
-  const RealExamBody({required this.examModel, super.key});
+  const RealExamBody({
+    required this.examModel,
+    required this.bookmarkedStatuses,
+    required this.noteStatuses,
+    super.key,
+  });
+
   final StartRealExamModel examModel;
+  final Map<int, bool> bookmarkedStatuses;
+  final Map<int, bool> noteStatuses;
 
   @override
   State<RealExamBody> createState() => _RealExamBodyState();
@@ -23,14 +31,12 @@ class RealExamBody extends StatefulWidget {
 
 class _RealExamBodyState extends State<RealExamBody> {
   late final ScrollController _scrollController;
-
   final double _itemHeight = 48.0;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToCurrent());
   }
 
@@ -43,7 +49,6 @@ class _RealExamBodyState extends State<RealExamBody> {
   @override
   void didUpdateWidget(covariant RealExamBody oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     if (widget.examModel.data?.questionNo !=
         oldWidget.examModel.data?.questionNo) {
       _scrollToCurrent();
@@ -53,9 +58,7 @@ class _RealExamBodyState extends State<RealExamBody> {
   void _scrollToCurrent() {
     if (_scrollController.hasClients) {
       final currentQuestionIndex = (widget.examModel.data?.questionNo ?? 1) - 1;
-
       final targetOffset = _itemHeight * currentQuestionIndex;
-
       _scrollController.animateTo(
         targetOffset,
         duration: const Duration(milliseconds: 400),
@@ -66,22 +69,19 @@ class _RealExamBodyState extends State<RealExamBody> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<RealExamCubit>();
+    final cubit = getIt<RealExamCubit>();
     final Question currentQuestion = widget.examModel.data!;
     final int totalQuestions = widget.examModel.questionsCount!;
     final int currentQuestionNo = currentQuestion.questionNo!;
 
     Widget buildTimelineItem(int index) {
       final questionNumber = index + 1;
-      final currentState =
-          context.read<RealExamCubit>().state as StartRealExamSuccessState;
 
-      final bookmarkedStatuses = currentState.bookmarkedStatuses;
-      final noteStatuses = currentState.noteStatuses;
       final isBookmarkedForThisItem =
-          bookmarkedStatuses[questionNumber] ?? false;
-      final hasNoteForThisItem = noteStatuses[questionNumber] ?? false;
+          widget.bookmarkedStatuses[questionNumber] ?? false;
+      final hasNoteForThisItem = widget.noteStatuses[questionNumber] ?? false;
       final isCurrent = questionNumber == currentQuestionNo;
+
       TimelineStatus status;
       if (isCurrent) {
         status = TimelineStatus.current;
@@ -90,6 +90,7 @@ class _RealExamBodyState extends State<RealExamBody> {
       } else {
         status = TimelineStatus.upcoming;
       }
+
       return GestureDetector(
         onTap: () {
           if (!isCurrent) {
@@ -141,8 +142,6 @@ class _RealExamBodyState extends State<RealExamBody> {
                   itemBuilder: (context, index) => buildTimelineItem(index),
                 ),
               ),
-
-              /// MARK: Question
               Expanded(
                 child: Center(
                   child: QuestionWidget(
