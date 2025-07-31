@@ -21,14 +21,14 @@ class DrawerWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width / 2,
       child: ListView(
         children: [
-          // Drawer Items
-          DrawerItemWidget(
-            iconAsset: Assets.userCircleLight,
-            title: 'profile'.tr(context),
-            onTap: () {
-              context.pushNamed(Routes.profileScreen);
-            },
-          ),
+          // // Drawer Items
+          // DrawerItemWidget(
+          //   iconAsset: Assets.userCircleLight,
+          //   title: 'profile'.tr(context),
+          //   onTap: () {
+          //     context.pushNamed(Routes.profileScreen);
+          //   },
+          // ),
           DrawerItemWidget(
             iconAsset: Assets.mortarboardLight,
             title: 'SCFHS_score_calculator'.tr(context),

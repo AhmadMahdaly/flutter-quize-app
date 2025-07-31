@@ -39,7 +39,14 @@ class ComplatedItem extends StatelessWidget {
                 ),
               ),
               isBookmarked
-                  ? const Icon(Icons.flag, color: Colors.white)
+                  ? Icon(
+                      Icons.flag,
+                      color: Colors.white,
+                      size: SizeConfig.responsiveValue(
+                        phone: 18.h,
+                        tablet: 20.h,
+                      ),
+                    )
                   : const SizedBox.shrink(),
             ],
           ),

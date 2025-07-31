@@ -19,48 +19,56 @@ class TrialQuestionWidget extends StatelessWidget {
     final hasAnswered = userAnswer != null;
 
     return Container(
-      padding: EdgeInsets.all(8.r),
+      padding: EdgeInsets.all(4.r),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.thirdColor,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: AppColors.offwhiteColor),
+        border: Border.all(color: AppColors.greyColor),
       ),
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(8.sp),
-              child: Column(
-                children: [
-                  Text(
-                    question.question,
+      child: Container(
+        padding: EdgeInsets.all(8.r),
+        decoration: BoxDecoration(
+          color: AppColors.offwhiteColor,
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(color: AppColors.greyColor),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(8.sp),
+                child: Column(
+                  children: [
+                    Text(
+                      question.question,
 
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 20.sp,
+                      style: interRegular.copyWith(
+                        fontSize: SizeConfig.responsiveValue(
+                          phone: 14.sp,
+                          tablet: 20.sp,
+                        ),
                       ),
                     ),
-                  ),
-                  if (question.photo != null && question.photo!.isNotEmpty)
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.h),
-                      child: Image.network(
-                        question.photo!,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const SizedBox.shrink(),
+                    if (question.photo != null && question.photo!.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        child: Image.network(
+                          question.photo!,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const SizedBox.shrink(),
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          16.verticalSpace,
-          _buildOption('a', question.a, cubit, userAnswer, hasAnswered),
-          _buildOption('b', question.b, cubit, userAnswer, hasAnswered),
-          _buildOption('c', question.c, cubit, userAnswer, hasAnswered),
-          _buildOption('d', question.d, cubit, userAnswer, hasAnswered),
-        ],
+            16.verticalSpace,
+            _buildOption('a', question.a, cubit, userAnswer, hasAnswered),
+            _buildOption('b', question.b, cubit, userAnswer, hasAnswered),
+            _buildOption('c', question.c, cubit, userAnswer, hasAnswered),
+            _buildOption('d', question.d, cubit, userAnswer, hasAnswered),
+          ],
+        ),
       ),
     );
   }
@@ -74,8 +82,7 @@ class TrialQuestionWidget extends StatelessWidget {
   ) {
     final isSelected = userAnswer == optionLetter;
     final isCorrect = question.answer == optionLetter;
-
-    Color borderColor = Colors.grey.shade400;
+    Color borderColor = AppColors.darkGreyColor;
     Color backgroundColor = Colors.white;
     Color textColor = Colors.black;
 
@@ -104,7 +111,7 @@ class TrialQuestionWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: borderColor, width: 1.5),
+          border: Border.all(color: borderColor, width: 0.5.w),
         ),
         child: Text(
           text,

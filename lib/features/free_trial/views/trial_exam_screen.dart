@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/free_trial/cubit/free_trial_cubit.dart';
 import 'package:smle/features/free_trial/views/widgets/trial_exam_body.dart';
 
@@ -15,12 +14,11 @@ class TrialExamScreen extends StatelessWidget {
       create: (context) => TrialExamCubit(getIt())..fetchTrialExam(),
       child: Scaffold(
         appBar: const CustomAppBar(canBack: false, title: 'Free Trial'),
-        backgroundColor: AppColors.greyColor,
         body: BlocBuilder<TrialExamCubit, TrialExamState>(
           builder: (context, state) {
             if (state.status == FetchStatus.loading ||
                 state.status == FetchStatus.initial) {
-              return const Center(child: CircularProgressIndicator());
+              return const SizedBox.shrink();
             }
             if (state.status == FetchStatus.failure) {
               return Center(

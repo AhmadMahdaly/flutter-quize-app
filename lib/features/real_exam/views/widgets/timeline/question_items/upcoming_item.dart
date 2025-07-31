@@ -22,13 +22,28 @@ class UpcomingItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.r),
       ),
       child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            color: AppColors.thirdColor,
-            fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 22.sp),
-            fontWeight: FontWeight.bold,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                color: AppColors.thirdColor,
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 14.sp,
+                  tablet: 22.sp,
+                ),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            isBookmarked
+                ? Icon(
+                    Icons.flag,
+                    color: Colors.white,
+                    size: SizeConfig.responsiveValue(phone: 18.h, tablet: 20.h),
+                  )
+                : const SizedBox.shrink(),
+          ],
         ),
       ),
     );

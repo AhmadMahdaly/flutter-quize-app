@@ -40,7 +40,7 @@ class SubscriptionScreen extends StatelessWidget {
                       : 'choose_your_plan'.tr(context),
                   style: interBold.copyWith(
                     fontSize: SizeConfig.responsiveValue(
-                      phone: 16.sp,
+                      phone: 14.sp,
                       tablet: 20.sp,
                     ),
                   ),
@@ -74,7 +74,7 @@ class SubscriptionScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(
                             SizeConfig.responsiveValue(
-                              phone: 100.r,
+                              phone: 16.r,
                               tablet: 10.r,
                             ),
                           ),
@@ -82,9 +82,9 @@ class SubscriptionScreen extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(
-                            right: 16.w,
+                            right: 25.w,
                             left: SizeConfig.responsiveValue(
-                              phone: 40.w,
+                              phone: 16.w,
                               tablet: 20.w,
                             ),
                             top: 24.h,
@@ -98,28 +98,31 @@ class SubscriptionScreen extends StatelessWidget {
                                   5.verticalSpace,
                                   // Package header
                                   package.name != 'VIP '
-                                      ? Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 15.w,
-                                            vertical: 5.h,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              30.r,
+                                      ? Row(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 15.w,
+                                                vertical: 5.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30.r),
+                                                color: AppColors.primaryColor,
+                                              ),
+                                              child: Text(
+                                                'Package ${index + 1}',
+                                                style: interBold.copyWith(
+                                                  color: Colors.white,
+                                                  fontSize:
+                                                      SizeConfig.responsiveValue(
+                                                        phone: 14.sp,
+                                                        tablet: 20.sp,
+                                                      ),
+                                                ),
+                                              ),
                                             ),
-                                            color: AppColors.primaryColor,
-                                          ),
-                                          child: Text(
-                                            'Package ${index + 1}',
-                                            style: interBold.copyWith(
-                                              color: Colors.white,
-                                              fontSize:
-                                                  SizeConfig.responsiveValue(
-                                                    phone: 16.sp,
-                                                    tablet: 20.sp,
-                                                  ),
-                                            ),
-                                          ),
+                                          ],
                                         )
                                       : Column(
                                           crossAxisAlignment:
@@ -169,19 +172,15 @@ class SubscriptionScreen extends StatelessWidget {
                                   20.verticalSpace,
                                 ],
                               ),
-                              Column(
-                                children: [
-                                  Text(
-                                    '${package.price} SAR',
-                                    style: interBold.copyWith(
-                                      color: AppColors.thirdColor,
-                                      fontSize: SizeConfig.responsiveValue(
-                                        phone: 16.sp,
-                                        tablet: 20.sp,
-                                      ),
-                                    ),
+                              Text(
+                                '${package.price} SAR',
+                                style: interBold.copyWith(
+                                  color: AppColors.thirdColor,
+                                  fontSize: SizeConfig.responsiveValue(
+                                    phone: 14.sp,
+                                    tablet: 20.sp,
                                   ),
-                                ],
+                                ),
                               ),
                             ],
                           ),
