@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:smle/core/cache_helper/cache_helper.dart';
-import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/network/end_points.dart';
 
 class DioFactory {

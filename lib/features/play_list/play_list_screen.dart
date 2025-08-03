@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
@@ -23,6 +22,7 @@ class PlayListScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: BlocBuilder<PlayListCubit, PlayListStates>(
             builder: (context, state) {
+              final cubit = context.read<PlayListCubit>();
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -37,7 +37,7 @@ class PlayListScreen extends StatelessWidget {
                     ),
                   ),
                   30.verticalSpace,
-                  if (context.read<PlayListCubit>().playListModel != null)
+                  if (cubit.playListModel != null)
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -46,19 +46,13 @@ class PlayListScreen extends StatelessWidget {
                         child: PlayListWidget(
                           playListNameController: playListNameController,
                           playListName:
-                              '${context.read<PlayListCubit>().playListModel!.data![index].name}',
-                          questionCount:
-                              '${context.read<PlayListCubit>().playListModel!.data!.length}',
-                          playListId:
-                              '${context.read<PlayListCubit>().playListModel!.data![index].id}',
+                              '${cubit.playListModel!.data![index].name}',
+                          questionCount: '${cubit.playListModel!.data!.length}',
+                          playListId: '${cubit.playListModel!.data![index].id}',
                         ),
                       ),
                       separatorBuilder: (context, index) => 12.verticalSpace,
-                      itemCount: context
-                          .read<PlayListCubit>()
-                          .playListModel!
-                          .data!
-                          .length,
+                      itemCount: cubit.playListModel!.data!.length,
                     ),
                   30.verticalSpace,
                   Center(
@@ -67,18 +61,13 @@ class PlayListScreen extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return BlocProvider(
-                              create: (context) => PlayListCubit(getIt()),
-                              child: BlocBuilder<PlayListCubit, PlayListStates>(
-                                builder: (context, state) {
-                                  return PlaylistAlertWidget(
-                                    playListNameController:
-                                        playListNameController,
-                                    title: 'new_playlist'.tr(context),
-                                    isEdit: false,
-                                    questionId: questionId,
-                                  );
-                                },
+                            return BlocProvider.value(
+                              value: cubit,
+                              child: PlaylistAlertWidget(
+                                playListNameController: playListNameController,
+                                title: 'new_playlist'.tr(context),
+                                isEdit: false,
+                                questionId: questionId,
                               ),
                             );
                           },

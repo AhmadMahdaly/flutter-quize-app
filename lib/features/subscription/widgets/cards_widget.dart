@@ -4,14 +4,14 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/subscription/data/model/cards_model.dart';
 
 class CardsListWidget extends StatelessWidget {
-  final List<CardItem> cards;
 
   const CardsListWidget({super.key, required this.cards});
+  final List<CardItem> cards;
 
   @override
   Widget build(BuildContext context) {
     if (cards.isEmpty) {
-      return const Center(child: Text("No cards available."));
+      return const Center(child: Text('No cards available.'));
     }
 
     return SizedBox(

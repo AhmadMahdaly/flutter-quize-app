@@ -9,7 +9,6 @@ import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
-import 'package:smle/features/profile/widgets/profile_app_bar_widgets.dart';
 import 'package:smle/features/profile/widgets/profile_button_widget.dart';
 
 class ProfileScreen extends StatelessWidget {

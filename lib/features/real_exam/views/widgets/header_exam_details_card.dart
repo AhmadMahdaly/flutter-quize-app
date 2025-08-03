@@ -131,7 +131,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                         'Section time remaining',
                         style: interRegular.copyWith(
                           fontSize: SizeConfig.responsiveValue(
-                            phone: 16.sp,
+                            phone: 14.sp,
                             tablet: 20.sp,
                           ),
                           color: AppColors.thirdColor,

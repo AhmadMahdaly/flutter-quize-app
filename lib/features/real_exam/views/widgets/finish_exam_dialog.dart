@@ -56,51 +56,55 @@ class ConfirmFinishExamDialog extends StatelessWidget {
           spacing: 6.w,
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextButton(
-              onPressed: () {
-                context.pop();
-                if (isSection1) {
-                  cubit.finishSection1AndStartBreak();
-                } else {
-                  cubit.finishExam();
-                }
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8.r, horizontal: 8.w),
-                decoration: BoxDecoration(
-                  color: AppColors.greenColor,
-                  borderRadius: BorderRadius.circular(6.r),
-                ),
-                child: Text(
-                  isSection1 ? 'Yes, start break' : 'Yes, Finish Exam',
-                  style: interBold.copyWith(
-                    fontSize: SizeConfig.responsiveValue(
-                      phone: 14.sp,
-                      tablet: 18.sp,
+            Expanded(
+              child: TextButton(
+                onPressed: () {
+                  context.pop();
+                  if (isSection1) {
+                    cubit.finishSection1AndStartBreak();
+                  } else {
+                    cubit.finishExam();
+                  }
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 8.r, horizontal: 8.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.greenColor,
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  child: Text(
+                    isSection1 ? 'Yes, start break' : 'Yes, Finish Exam',
+                    style: interBold.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 14.sp,
+                        tablet: 18.sp,
+                      ),
+                      color: AppColors.offwhiteColor,
                     ),
-                    color: AppColors.offwhiteColor,
                   ),
                 ),
               ),
             ),
-            TextButton(
-              onPressed: () {
-                context.pop();
-              },
-              child: Container(
-                padding: EdgeInsets.all(8.r),
-                decoration: BoxDecoration(
-                  color: AppColors.errorColor,
-                  borderRadius: BorderRadius.circular(6.r),
-                ),
-                child: Text(
-                  'Cancel',
-                  style: interBold.copyWith(
-                    fontSize: SizeConfig.responsiveValue(
-                      phone: 14.sp,
-                      tablet: 18.sp,
+            Expanded(
+              child: TextButton(
+                onPressed: () {
+                  context.pop();
+                },
+                child: Container(
+                  padding: EdgeInsets.all(8.r),
+                  decoration: BoxDecoration(
+                    color: AppColors.errorColor,
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  child: Text(
+                    'Cancel',
+                    style: interBold.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 14.sp,
+                        tablet: 18.sp,
+                      ),
+                      color: AppColors.offwhiteColor,
                     ),
-                    color: AppColors.offwhiteColor,
                   ),
                 ),
               ),

@@ -135,7 +135,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                                 errorBuilder: (context, error, stackTrace) =>
                                     const SizedBox.shrink(),
                               ),
-                            // const Spacer(),
+                            16.verticalSpace,
                             buildOption('a', q.a ?? ''),
                             buildOption('b', q.b ?? ''),
                             buildOption('c', q.c ?? ''),
@@ -144,8 +144,6 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                           ],
                         ),
                       ),
-
-
                     ],
                   ),
             ),

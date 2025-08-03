@@ -8,8 +8,8 @@ import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/features/main%20layout/data/model/gifts_model.dart';
 import 'package:smle/features/main%20layout/data/model/profile_model.dart';
-import '../../../core/constants.dart';
-import '../data/repo/main_layout_repo.dart';
+import 'package:smle/core/constants.dart';
+import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 part 'main_layout_state.dart';
 
 class MainLayoutCubit extends Cubit<MainLayoutState> {

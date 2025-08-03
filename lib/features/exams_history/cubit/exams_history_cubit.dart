@@ -11,9 +11,10 @@ class ExamsHistoryCubit extends Cubit<ExamsHistoryState> {
   final ExamsHistoryRepository _repository;
 
   List<Exam> allExams = [];
-  List<Exam> passedExams = [];
-  List<Exam> midLevelExams = [];
-  List<Exam> failedExams = [];
+  // تم حذف القوائم المخصصة للفئات لأنها لم تعد ضرورية
+  // List<Exam> passedExams = [];
+  // List<Exam> midLevelExams = [];
+  // List<Exam> failedExams = [];
 
   Future<void> fetchExamsHistory() async {
     showLoading();
@@ -23,7 +24,8 @@ class ExamsHistoryCubit extends Cubit<ExamsHistoryState> {
     result.when(
       success: (examsHistoryModel) {
         allExams = examsHistoryModel.data ?? [];
-        _filterExams();
+        // تم إزالة استدعاء دالة التصفية لأننا لم نعد نحتاجها
+        // _filterExams();
         hideLoading();
         emit(ExamsHistorySuccess());
       },
@@ -34,23 +36,24 @@ class ExamsHistoryCubit extends Cubit<ExamsHistoryState> {
     );
   }
 
-  void _filterExams() {
-    passedExams.clear();
-    midLevelExams.clear();
-    failedExams.clear();
-
-    const int passThreshold = 60;
-    const int failThreshold = 40;
-
-    for (var exam in allExams) {
-      final score = exam.score ?? 0;
-      if (score >= passThreshold) {
-        passedExams.add(exam);
-      } else if (score < failThreshold) {
-        failedExams.add(exam);
-      } else {
-        midLevelExams.add(exam);
-      }
-    }
-  }
+  // تم إزالة دالة التصفية لأنها لم تعد مستخدمة في الكود
+  // void _filterExams() {
+  //   passedExams.clear();
+  //   midLevelExams.clear();
+  //   failedExams.clear();
+  //
+  //   const int passThreshold = 60;
+  //   const int failThreshold = 40;
+  //
+  //   for (var exam in allExams) {
+  //     final score = exam.score ?? 0;
+  //     if (score >= passThreshold) {
+  //       passedExams.add(exam);
+  //     } else if (score < failThreshold) {
+  //       failedExams.add(exam);
+  //     } else {
+  //       midLevelExams.add(exam);
+  //     }
+  //   }
+  // }
 }

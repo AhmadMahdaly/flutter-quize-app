@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
-import 'package:smle/core/helpers/extensions.dart';
-import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -25,8 +22,8 @@ class PlayListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<PlayListCubit>();
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Image.asset(
@@ -72,28 +69,20 @@ class PlayListWidget extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return BlocProvider(
-                    create: (context) => PlayListCubit(getIt()),
-                    child: BlocBuilder<PlayListCubit, PlayListStates>(
-                      builder: (context, state) {
-                        return PlaylistAlertWidget(
-                          playListNameController: playListNameController,
-                          title: 'edit_playlist'.tr(context),
-                          isEdit: true,
-                          playListName: playListName,
-                          playListId: playListId,
-                        );
-                      },
+                  return BlocProvider.value(
+                    value: cubit,
+                    child: PlaylistAlertWidget(
+                      playListNameController: playListNameController,
+                      title: 'edit_playlist'.tr(context),
+                      isEdit: true,
+                      playListName: playListName,
+                      playListId: playListId,
                     ),
                   );
                 },
               );
             } else if (value == 'delete') {
-              context.read<PlayListCubit>().deletePlayList(playListId).then((
-                onValue,
-              ) {
-                context.pushReplacementNamed(Routes.playListScreen);
-              });
+              cubit.deletePlayList(playListId);
             }
           },
           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -103,7 +92,6 @@ class PlayListWidget extends StatelessWidget {
                 children: [
                   Icon(
                     CupertinoIcons.delete_simple,
-
                     size: SizeConfig.responsiveValue(phone: 20.r, tablet: 16.r),
                   ),
                   6.horizontalSpace,

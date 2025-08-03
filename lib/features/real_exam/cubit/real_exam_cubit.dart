@@ -217,8 +217,9 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
   }
 
   Future<void> addQuestionNote(String note) async {
-    if (state.status != ExamStatus.success || state.examModel?.data == null)
+    if (state.status != ExamStatus.success || state.examModel?.data == null) {
       return;
+    }
 
     final questionNo = state.examModel!.data!.questionNo!;
     final questionId = state.examModel!.data!.id.toString();

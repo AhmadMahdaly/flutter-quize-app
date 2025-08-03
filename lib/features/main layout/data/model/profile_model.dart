@@ -1,7 +1,4 @@
 class ProfileModel {
-  int? status;
-  String? message;
-  Data? data;
 
   ProfileModel({this.status, this.message, this.data});
 
@@ -10,6 +7,9 @@ class ProfileModel {
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+  int? status;
+  String? message;
+  Data? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -23,17 +23,6 @@ class ProfileModel {
 }
 
 class Data {
-  int? id;
-  String? name;
-  String? code;
-  String? email;
-  int? points;
-  String? fcmToken;
-  String? photo;
-  int? offerId;
-  String? offerName;
-  int? remainingRealExams;
-  String? packageExpireAt;
 
   Data(
       {this.id,
@@ -62,6 +51,17 @@ class Data {
     remainingRealExams = json['remaining_real_exams'];
     packageExpireAt = json['package_expire_at'];
   }
+  int? id;
+  String? name;
+  String? code;
+  String? email;
+  int? points;
+  String? fcmToken;
+  String? photo;
+  int? offerId;
+  String? offerName;
+  int? remainingRealExams;
+  String? packageExpireAt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smle/core/functions/responsive_config.dart';
@@ -106,7 +105,7 @@ class AddCardScreen extends StatelessWidget {
                   controller: cubit.expiryDateController,
                   readOnly: true, // يمنع الكتابة اليدوية
                   onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
+                    final DateTime? pickedDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2000),
@@ -114,7 +113,7 @@ class AddCardScreen extends StatelessWidget {
                     );
 
                     if (pickedDate != null) {
-                      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                      final String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                       cubit.expiryDateController.text = formattedDate;
                     }
                   },

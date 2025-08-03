@@ -4,12 +4,14 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/analysis/data/model/analysis_model.dart';
+
 Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
   return Card(
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     clipBehavior: Clip.antiAlias,
-    child: SingleChildScrollView( // ✅ هذا يحل مشكلة overflow
+    child: SingleChildScrollView(
+      // ✅ هذا يحل مشكلة overflow
       scrollDirection: Axis.horizontal,
       child: DataTable(
         headingRowColor: WidgetStateProperty.all(Colors.grey.shade200),
@@ -139,9 +141,9 @@ class PerformanceChart extends StatelessWidget {
               gridData: FlGridData(
                 show: true,
                 getDrawingHorizontalLine: (value) =>
-                const FlLine(color: Colors.black12, strokeWidth: 1),
+                    const FlLine(color: Colors.black12, strokeWidth: 1),
                 getDrawingVerticalLine: (value) =>
-                const FlLine(color: Colors.black12, strokeWidth: 1),
+                    const FlLine(color: Colors.black12, strokeWidth: 1),
               ),
               borderData: FlBorderData(
                 show: true,
@@ -211,22 +213,22 @@ class PerformanceChart extends StatelessWidget {
     );
   }
 
+  // Widget _legendItem(Color color, String text) {
+  //   return Row(
+  //     children: [
+  //       Container(width: 16.w, height: 16.h, color: color),
+  //       8.horizontalSpace,
+  //       Text(
+  //         text,
+  //         style: interRegular.copyWith(
+  //           color: AppColors.iconColorGray,
+  //           fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
-  Widget _legendItem(Color color, String text) {
-    return Row(
-      children: [
-        Container(width: 16.w, height: 16.h, color: color),
-        8.horizontalSpace,
-        Text(
-          text,
-          style: interRegular.copyWith(
-            color: AppColors.iconColorGray,
-            fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
-          ),
-        ),
-      ],
-    );
-  }
   LineChartBarData _buildLine({
     required Color color,
     required List<FlSpot> spots,
@@ -245,5 +247,5 @@ class PerformanceChart extends StatelessWidget {
         offset: const Offset(0, 4),
       ),
     );
-}
+  }
 }
