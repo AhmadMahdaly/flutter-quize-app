@@ -32,10 +32,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _route() async {
+    final isOnboardingComplete =
+        await CacheHelper.getData(key: CacheKeys.isFirstOpen) as bool? ?? false;
     if (await isLoggedIn()) {
       context.pushReplacementNamed(Routes.mainLayoutScreen);
     } else {
-      context.pushReplacementNamed(Routes.onBoardingScreen);
+      if (!isOnboardingComplete) {
+        context.pushReplacementNamed(Routes.onBoardingScreen);
+      } else {
+        context.pushReplacementNamed(Routes.loginScreen);
+      }
     }
   }
 
