@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -13,6 +14,15 @@ class PdfViewerFromUrlScreen extends StatefulWidget {
 
 class _PdfViewerFromUrlScreenState extends State<PdfViewerFromUrlScreen> {
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+  @override
+  void initState() {
+    blockScreenshot();
+    super.initState();
+  }
+
+  Future<void> blockScreenshot() async {
+    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+  }
 
   @override
   Widget build(BuildContext context) {
