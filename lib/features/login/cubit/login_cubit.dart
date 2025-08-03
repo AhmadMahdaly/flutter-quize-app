@@ -60,12 +60,12 @@ class LoginCubit extends Cubit<LoginStates> {
       final String? familyName = appleUser.familyName;
 
       // Debug output
-      print('Apple ID: $userId');
-      print('Email: $email');
-      print('Given Name: $givenName');
-      print('Family Name: $familyName');
-      print('Identity Token: ${appleUser.identityToken}');
-      print('Authorization Code: ${appleUser.authorizationCode}');
+      debugPrintWidget('Apple ID: $userId');
+      debugPrintWidget('Email: $email');
+      debugPrintWidget('Given Name: $givenName');
+      debugPrintWidget('Family Name: $familyName');
+      debugPrintWidget('Identity Token: ${appleUser.identityToken}');
+      debugPrintWidget('Authorization Code: ${appleUser.authorizationCode}');
 
       // Ensure required fields are not null before proceeding
       if (email == null || givenName == null) {

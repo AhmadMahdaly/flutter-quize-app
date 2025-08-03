@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfViewerFromUrlScreen extends StatefulWidget {
@@ -54,8 +55,8 @@ class _PdfViewerFromUrlScreenState extends State<PdfViewerFromUrlScreen> {
         key: _pdfViewerKey,
         onDocumentLoadFailed: (details) {
           // يمكنك التعامل مع أخطاء التحميل هنا
-          print('Failed to load PDF: ${details.error}');
-          print(details.description);
+          debugPrintWidget('Failed to load PDF: ${details.error}');
+          debugPrintWidget(details.description);
         },
       ),
     );

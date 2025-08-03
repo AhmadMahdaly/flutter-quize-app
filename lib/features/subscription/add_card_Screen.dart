@@ -32,7 +32,10 @@ class AddCardScreen extends StatelessWidget {
                 Text(
                   'enter_credit_card_info'.tr(context),
                   style: interBold.copyWith(
-                    fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
+                    fontSize: SizeConfig.responsiveValue(
+                      phone: 16.sp,
+                      tablet: 20.sp,
+                    ),
                   ),
                 ),
                 24.verticalSpace,
@@ -40,23 +43,36 @@ class AddCardScreen extends StatelessWidget {
                   child: TextButton(
                     onPressed: () => cubit.scanCard(),
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(AppColors.secondaryColor),
+                      backgroundColor: WidgetStateProperty.all(
+                        AppColors.secondaryColor,
+                      ),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      minimumSize: WidgetStateProperty.all(Size(double.infinity, 52.h)),
+                      minimumSize: WidgetStateProperty.all(
+                        Size(double.infinity, 52.h),
+                      ),
                       shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.r),
+                        ),
                       ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(CupertinoIcons.camera, color: AppColors.greyColor, size: 30.sp),
+                        Icon(
+                          CupertinoIcons.camera,
+                          color: AppColors.greyColor,
+                          size: 30.sp,
+                        ),
                         5.horizontalSpace,
                         Text(
                           'scan_card'.tr(context),
                           style: interBold.copyWith(
                             color: AppColors.greyColor,
-                            fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 16.sp,
+                              tablet: 20.sp,
+                            ),
                           ),
                         ),
                       ],
@@ -66,15 +82,27 @@ class AddCardScreen extends StatelessWidget {
                 30.verticalSpace,
                 Row(
                   children: [
-                    Expanded(child: Divider(height: 1.sp, color: AppColors.darkGreyColor)),
+                    Expanded(
+                      child: Divider(
+                        height: 1.sp,
+                        color: AppColors.darkGreyColor,
+                      ),
+                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: Text(
                         'or'.tr(context),
-                        style: interRegular.copyWith(color: AppColors.darkGreyColor),
+                        style: interRegular.copyWith(
+                          color: AppColors.darkGreyColor,
+                        ),
                       ),
                     ),
-                    Expanded(child: Divider(height: 1.sp, color: AppColors.darkGreyColor)),
+                    Expanded(
+                      child: Divider(
+                        height: 1.sp,
+                        color: AppColors.darkGreyColor,
+                      ),
+                    ),
                   ],
                 ),
                 30.verticalSpace,
@@ -82,7 +110,9 @@ class AddCardScreen extends StatelessWidget {
                   context,
                   label: 'card_number'.tr(context),
                   controller: cubit.cardIdController,
-                  validator: (value) => value!.isEmpty ?"${'card_number'.tr(context)} ${'must_entered'.tr(context)}" : null,
+                  validator: (value) => value!.isEmpty
+                      ? "${'card_number'.tr(context)} ${'must_entered'.tr(context)}"
+                      : null,
                 ),
                 20.verticalSpace,
                 _buildLabeledField(
@@ -90,7 +120,9 @@ class AddCardScreen extends StatelessWidget {
                   label: 'password'.tr(context),
                   controller: cubit.passwordController,
                   obscureText: true,
-                  validator: (value) => value!.isEmpty ? "${'password'.tr(context)} ${'must_entered'.tr(context)}" : null,
+                  validator: (value) => value!.isEmpty
+                      ? "${'password'.tr(context)} ${'must_entered'.tr(context)}"
+                      : null,
                 ),
                 20.verticalSpace,
                 _buildLabeledField(
@@ -98,7 +130,9 @@ class AddCardScreen extends StatelessWidget {
                   label: 'cvv'.tr(context),
                   controller: cubit.cvvController,
                   keyboardType: TextInputType.number,
-                  validator: (value) => value!.isEmpty ? "${'cvv'.tr(context)} ${'must_entered'.tr(context)}" : null,
+                  validator: (value) => value!.isEmpty
+                      ? "${'cvv'.tr(context)} ${'must_entered'.tr(context)}"
+                      : null,
                 ),
                 20.verticalSpace,
                 TextFormField(
@@ -113,7 +147,9 @@ class AddCardScreen extends StatelessWidget {
                     );
 
                     if (pickedDate != null) {
-                      final String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                      final String formattedDate = DateFormat(
+                        'yyyy-MM-dd',
+                      ).format(pickedDate);
                       cubit.expiryDateController.text = formattedDate;
                     }
                   },
@@ -144,18 +180,25 @@ class AddCardScreen extends StatelessWidget {
                       }
                     },
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(AppColors.secondaryColor),
+                      backgroundColor: WidgetStateProperty.all(
+                        AppColors.secondaryColor,
+                      ),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       minimumSize: WidgetStateProperty.all(Size(150.w, 52.h)),
                       shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.r),
+                        ),
                       ),
                     ),
                     child: Text(
                       'add_card'.tr(context),
                       style: interBold.copyWith(
                         color: AppColors.greyColor,
-                        fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
+                        fontSize: SizeConfig.responsiveValue(
+                          phone: 16.sp,
+                          tablet: 20.sp,
+                        ),
                       ),
                     ),
                   ),
@@ -169,13 +212,13 @@ class AddCardScreen extends StatelessWidget {
   }
 
   Widget _buildLabeledField(
-      BuildContext context, {
-        required String label,
-        required TextEditingController controller,
-        bool obscureText = false,
-        TextInputType keyboardType = TextInputType.text,
-        String? Function(String?)? validator,
-      }) {
+    BuildContext context, {
+    required String label,
+    required TextEditingController controller,
+    bool obscureText = false,
+    TextInputType keyboardType = TextInputType.text,
+    String? Function(String?)? validator,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

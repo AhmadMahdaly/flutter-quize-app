@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
 import 'package:smle/features/q_bank/data/repo/q_bank_repo.dart';
 import 'package:smle/features/revision/data/model/categories_model.dart';
@@ -111,7 +112,9 @@ class QBankcubit extends Cubit<QBankStates> {
             }
           },
           failure: (error) {
-            print('Failed to fetch subcategories for category $categoryId');
+            debugPrintWidget(
+              'Failed to fetch subcategories for category $categoryId',
+            );
           },
         );
       }
