@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
+import 'package:smle/core/constants.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
@@ -33,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _route() async {
     final isOnboardingComplete =
-        await CacheHelper.getData(key: CacheKeys.isFirstOpen) as bool? ?? false;
+        await CacheHelper.getData(key: firstTimeRun) as bool? ?? false;
     if (await isLoggedIn()) {
       context.pushReplacementNamed(Routes.mainLayoutScreen);
     } else {

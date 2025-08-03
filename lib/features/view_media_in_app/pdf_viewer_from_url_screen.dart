@@ -21,10 +21,15 @@ class _PdfViewerFromUrlScreenState extends State<PdfViewerFromUrlScreen> {
     super.initState();
   }
 
-void blockScreenshot() {
-  const platform = MethodChannel('secure_screen');
-  platform.invokeMethod('secure');
-}
+  static const platform = MethodChannel('secure_screen');
+
+  Future<void> blockScreenshot() async {
+    try {
+      await platform.invokeMethod('secure');
+    } on PlatformException catch (e) {
+      debugPrintWidget("Failed to secure screen: '${e.message}'.");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

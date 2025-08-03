@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
@@ -44,9 +45,14 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     });
   }
 
-  void blockScreenshot() {
-    const platform = MethodChannel('secure_screen');
-    platform.invokeMethod('secure');
+  static const platform = MethodChannel('secure_screen');
+
+  Future<void> blockScreenshot() async {
+    try {
+      await platform.invokeMethod('secure');
+    } on PlatformException catch (e) {
+      debugPrintWidget("Failed to secure screen: '${e.message}'.");
+    }
   }
 
   @override

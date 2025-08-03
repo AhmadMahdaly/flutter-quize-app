@@ -88,12 +88,12 @@ class OnBoardingScreen extends StatelessWidget {
                                         .read<GlobalCubit>()
                                         .onBoardingIndex ==
                                     2) {
-                                  context.pushReplacementNamed(
-                                    Routes.loginScreen,
-                                  );
                                   CacheHelper.sharedPreferences.setBool(
                                     firstTimeRun,
                                     true,
+                                  );
+                                  context.pushReplacementNamed(
+                                    Routes.loginScreen,
                                   );
                                 } else if (context
                                         .read<GlobalCubit>()
