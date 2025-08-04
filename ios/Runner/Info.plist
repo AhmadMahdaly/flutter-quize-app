@@ -50,5 +50,7 @@
       <string>https</string>
       <string>http</string>
     </array>
+    <key>NSCameraUsageDescription</key>
+    <string>This app needs camera access to scan your payment card.</string>
 </dict>
 </plist>
