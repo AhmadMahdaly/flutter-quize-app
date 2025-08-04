@@ -41,7 +41,7 @@ class AddCardScreen extends StatelessWidget {
                 24.verticalSpace,
                 Center(
                   child: TextButton(
-                    onPressed: () => cubit.scanCard(),
+                    onPressed: () => cubit.scanCard(context),
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(
                         AppColors.secondaryColor,

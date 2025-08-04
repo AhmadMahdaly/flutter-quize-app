@@ -28,7 +28,7 @@ class AddCardLoadingState extends SubscriptionStates {}
 class AddCardSuccessState extends SubscriptionStates {}
 
 class AddCardFailedState extends SubscriptionStates {}
-
+class CardScannedSuccessState  extends SubscriptionStates {}
 /// Get Cards
 class GetCardsLoadingState extends SubscriptionStates {}
 
