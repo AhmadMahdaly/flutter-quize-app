@@ -20,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
       builder: (context, state) {
         return context.read<MainLayoutCubit>().profileModel == null
             ? Scaffold(
-                appBar: CustomAppBar(title: 'profile'.tr(context),),
+                appBar: CustomAppBar(title: 'profile'.tr(context),canBack: false,),
                 body: Column(
                   children: [
                     Center(
@@ -33,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               )
             : Scaffold(
-          appBar: CustomAppBar(title: 'profile'.tr(context),),
+          appBar: CustomAppBar(title: 'profile'.tr(context),canBack: false,),
                 body: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 15.w,

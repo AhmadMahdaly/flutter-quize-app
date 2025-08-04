@@ -20,7 +20,8 @@ class AnalysisScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'analysis'.tr(context)),
+      appBar: CustomAppBar(title: 'analysis'.tr(context),
+      canBack: !isExam,),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
         child: BlocBuilder<AnalysisCubit, AnalysisStates>(
