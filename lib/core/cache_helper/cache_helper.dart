@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:smle/core/cache_helper/cache_values.dart';
@@ -53,37 +53,37 @@ class CacheHelper {
   }) async {
     return await sharedPreferences.remove(key);
   }
-
-  static Future<bool> clearAllData() async {
-    return await sharedPreferences.clear();
-  }
-
-  static Future saveSecuredString({
-    required String key,
-    required dynamic value,
-  }) async {
-    const flutterSecureStorage = FlutterSecureStorage();
-    debugPrint(
-        'FlutterSecureStorage : setSecuredString with key : $key and value : $value');
-    await flutterSecureStorage.write(key: key, value: value.toString());
-  }
-
-  static Future getSecuredString({
-    required String key,
-  }) async {
-    const flutterSecureStorage = FlutterSecureStorage();
-    debugPrint('FlutterSecureStorage : getSecuredString with key :');
-    try {
-      return await flutterSecureStorage.read(key: key);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  static Future clearAllSecuredData() async {
-    debugPrint('FlutterSecureStorage : all data has been cleared');
-    const flutterSecureStorage = FlutterSecureStorage();
-    await flutterSecureStorage.deleteAll();
-  }
+  //
+  // static Future<bool> clearAllData() async {
+  //   return await sharedPreferences.clear();
+  // }
+  //
+  // static Future saveSecuredString({
+  //   required String key,
+  //   required dynamic value,
+  // }) async {
+  //   const flutterSecureStorage = FlutterSecureStorage();
+  //   debugPrint(
+  //       'FlutterSecureStorage : setSecuredString with key : $key and value : $value');
+  //   await flutterSecureStorage.write(key: key, value: value.toString());
+  // }
+  //
+  // static Future getSecuredString({
+  //   required String key,
+  // }) async {
+  //   const flutterSecureStorage = FlutterSecureStorage();
+  //   debugPrint('FlutterSecureStorage : getSecuredString with key :');
+  //   try {
+  //     return await flutterSecureStorage.read(key: key);
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
+  //
+  // static Future clearAllSecuredData() async {
+  //   debugPrint('FlutterSecureStorage : all data has been cleared');
+  //   const flutterSecureStorage = FlutterSecureStorage();
+  //   await flutterSecureStorage.deleteAll();
+  // }
 
 }

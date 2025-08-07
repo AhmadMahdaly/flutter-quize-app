@@ -13,7 +13,7 @@ class GuestMainLayoutScreen extends StatelessWidget {
         return PopScope(
           canPop: false,
           child: Scaffold(
-            body: AppRouter().guestScreen[mainLayoutInitialScreenIndex],
+            body: AppRouter().guestScreen[0],
           ),
         );
       },
