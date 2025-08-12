@@ -4,7 +4,7 @@ class AnalysisModel {
   AnalysisModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    totalScore = json['total_score'];
+    totalScore = (json['total_score']as num).toDouble();
     if (json['data'] != null) {
       data = <Analysis>[];
       json['data'].forEach((v) {
@@ -14,7 +14,7 @@ class AnalysisModel {
   }
   int? status;
   String? message;
-  int? totalScore;
+  double? totalScore;
   List<Analysis>? data;
 
   Map<String, dynamic> toJson() {

@@ -60,7 +60,6 @@ dependencies:
   chewie: ^1.12.1
   fl_chart: ^0.63.0
   hydrated_bloc: ^9.1.5
-  path_provider: ^2.1.5
   flutter_launcher_icons: ^0.14.4
 #  mobile_scanner: ^7.0.1
 dev_dependencies:

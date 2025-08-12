@@ -80,31 +80,31 @@ class AddCardScreen extends StatelessWidget {
                 //   ),
                 // ),
                 // 30.verticalSpace,
-                Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        height: 1.sp,
-                        color: AppColors.darkGreyColor,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      child: Text(
-                        'or'.tr(context),
-                        style: interRegular.copyWith(
-                          color: AppColors.darkGreyColor,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        height: 1.sp,
-                        color: AppColors.darkGreyColor,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: Divider(
+                //         height: 1.sp,
+                //         color: AppColors.darkGreyColor,
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: EdgeInsets.symmetric(horizontal: 8.w),
+                //       child: Text(
+                //         'or'.tr(context),
+                //         style: interRegular.copyWith(
+                //           color: AppColors.darkGreyColor,
+                //         ),
+                //       ),
+                //     ),
+                //     Expanded(
+                //       child: Divider(
+                //         height: 1.sp,
+                //         color: AppColors.darkGreyColor,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 30.verticalSpace,
                 _buildLabeledField(
                   context,
