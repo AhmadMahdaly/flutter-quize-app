@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
-import 'package:smle/features/subscription/card_scanner_screen.dart';
+// import 'package:smle/features/subscription/card_scanner_screen.dart';
 import 'package:smle/features/subscription/data/model/cards_model.dart';
 import 'package:smle/features/subscription/data/model/checkout_model.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
@@ -83,31 +83,31 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
   }
 
   /// Scan Card To Pay
-  Future<void> scanCard(BuildContext context) async {
-    // The new screen returns a String? containing the raw scanned value.
-    final String? scannedData = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const CardScannerScreen(),
-      ),
-    );
-
-    // Check if data was returned.
-    if (scannedData != null && scannedData.isNotEmpty) {
-      debugPrintWidget('Scanned Data: $scannedData');
-
-      // The mobile_scanner returns a raw string. We assume it's the card number.
-      // It does NOT provide expiry date or other details automatically.
-      cardIdController.text = scannedData;
-
-      // It's good practice to clear other fields that are no longer relevant
-      // from the scan, so the user knows to fill them manually.
-      expiryDateController.clear();
-
-      emit(CardScannedSuccessState()); // A state to notify the UI if needed
-    } else {
-      debugPrintWidget('Card scan was cancelled or returned no data');
-    }
-  }
+  // Future<void> scanCard(BuildContext context) async {
+  //   // The new screen returns a String? containing the raw scanned value.
+  //   final String? scannedData = await Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (context) => const CardScannerScreen(),
+  //     ),
+  //   );
+  //
+  //   // Check if data was returned.
+  //   if (scannedData != null && scannedData.isNotEmpty) {
+  //     debugPrintWidget('Scanned Data: $scannedData');
+  //
+  //     // The mobile_scanner returns a raw string. We assume it's the card number.
+  //     // It does NOT provide expiry date or other details automatically.
+  //     cardIdController.text = scannedData;
+  //
+  //     // It's good practice to clear other fields that are no longer relevant
+  //     // from the scan, so the user knows to fill them manually.
+  //     expiryDateController.clear();
+  //
+  //     emit(CardScannedSuccessState()); // A state to notify the UI if needed
+  //   } else {
+  //     debugPrintWidget('Card scan was cancelled or returned no data');
+  //   }
+  // }
 
   TextEditingController cardIdController = TextEditingController();
   TextEditingController passwordController = TextEditingController();

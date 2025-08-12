@@ -79,16 +79,16 @@ class LoginScreen extends StatelessWidget {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      Text(
-                        'log_in'.tr(context),
-                        style: interBold.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 18.sp,
-                            tablet: 22.sp,
-                          ),
-                        ),
-                      ),
-                      25.verticalSpace,
+                      // Text(
+                      //   'log_in'.tr(context),
+                      //   style: interBold.copyWith(
+                      //     fontSize: SizeConfig.responsiveValue(
+                      //       phone: 18.sp,
+                      //       tablet: 22.sp,
+                      //     ),
+                      //   ),
+                      // ),
+                      30.verticalSpace,
                       BlocBuilder<LoginCubit, LoginStates>(
                         builder: (context, state) {
                           if (state is LogInLoadingState) {
@@ -131,55 +131,39 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'by_the'.tr(context),
-                            style: interRegular.copyWith(
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 14.sp,
-                                tablet: 18.sp,
-                              ),
-                            ),
+                  Row(
+                    children: [
+                      Text('by_the'.tr(context),
+                        style: interRegular.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
+                          ),)), Text('register'.tr(context),
+                        style: interRegular.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
                           ),
-                          TextSpan(
-                            text: 'register'.tr(context),
-                            style: interRegular.copyWith(
-                              color: AppColors.secondaryColor,
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 14.sp,
-                                tablet: 18.sp,
-                              ),
-                            ),
+            ),
+          ),Text('confirm_agreement'.tr(context),
+                        style: interRegular.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
                           ),
-                          TextSpan(
-                            text: 'confirm_agreement'.tr(context),
-                            style: interRegular.copyWith(
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 14.sp,
-                                tablet: 18.sp,
-                              ),
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'privacy_policy'.tr(context),
-                            style: interRegular.copyWith(
-                              color: AppColors.secondaryColor,
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 14.sp,
-                                tablet: 18.sp,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                        ),), InkWell(
+                        onTap: ()=>context.pushNamed(Routes.privacyPolicyScreen),
+                        child:Text('privacy_policy'.tr(context),
+                        style: interRegular.copyWith(
+                          color: AppColors.secondaryColor,
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 14.sp,
+                            tablet: 18.sp,
+                          ),)
+                        ),)
+                    ],
                   ),
+
                 ],
               ),
             ),

@@ -39,72 +39,72 @@ class AddCardScreen extends StatelessWidget {
                   ),
                 ),
                 24.verticalSpace,
-                Center(
-                  child: TextButton(
-                    onPressed: () => cubit.scanCard(context),
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(
-                        AppColors.secondaryColor,
-                      ),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      minimumSize: WidgetStateProperty.all(
-                        Size(double.infinity, 52.h),
-                      ),
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.r),
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          CupertinoIcons.camera,
-                          color: AppColors.greyColor,
-                          size: 30.sp,
-                        ),
-                        5.horizontalSpace,
-                        Text(
-                          'scan_card'.tr(context),
-                          style: interBold.copyWith(
-                            color: AppColors.greyColor,
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 16.sp,
-                              tablet: 20.sp,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                30.verticalSpace,
-                Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        height: 1.sp,
-                        color: AppColors.darkGreyColor,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      child: Text(
-                        'or'.tr(context),
-                        style: interRegular.copyWith(
-                          color: AppColors.darkGreyColor,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        height: 1.sp,
-                        color: AppColors.darkGreyColor,
-                      ),
-                    ),
-                  ],
-                ),
+                // Center(
+                //   child: TextButton(
+                //     onPressed: () => cubit.scanCard(context),
+                //     style: ButtonStyle(
+                //       backgroundColor: WidgetStateProperty.all(
+                //         AppColors.secondaryColor,
+                //       ),
+                //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                //       minimumSize: WidgetStateProperty.all(
+                //         Size(double.infinity, 52.h),
+                //       ),
+                //       shape: WidgetStateProperty.all(
+                //         RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(30.r),
+                //         ),
+                //       ),
+                //     ),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         Icon(
+                //           CupertinoIcons.camera,
+                //           color: AppColors.greyColor,
+                //           size: 30.sp,
+                //         ),
+                //         5.horizontalSpace,
+                        // Text(
+                        //   'scan_card'.tr(context),
+                        //   style: interBold.copyWith(
+                        //     color: AppColors.greyColor,
+                        //     fontSize: SizeConfig.responsiveValue(
+                        //       phone: 16.sp,
+                        //       tablet: 20.sp,
+                        //     ),
+                        //   ),
+                        // ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // 30.verticalSpace,
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: Divider(
+                //         height: 1.sp,
+                //         color: AppColors.darkGreyColor,
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: EdgeInsets.symmetric(horizontal: 8.w),
+                //       child: Text(
+                //         'or'.tr(context),
+                //         style: interRegular.copyWith(
+                //           color: AppColors.darkGreyColor,
+                //         ),
+                //       ),
+                //     ),
+                //     Expanded(
+                //       child: Divider(
+                //         height: 1.sp,
+                //         color: AppColors.darkGreyColor,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 30.verticalSpace,
                 _buildLabeledField(
                   context,
