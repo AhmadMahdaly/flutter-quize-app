@@ -11,7 +11,7 @@ extension Navigation on BuildContext {
   }
 
   Future<dynamic> pushNamedAndRemoveUntil(
-      String routeName, 
+      String routeName, bool Function(dynamic route) param1, 
       {Object? arguments, }) {
     return Navigator.of(this).pushNamedAndRemoveUntil(
         routeName, (route) => false,

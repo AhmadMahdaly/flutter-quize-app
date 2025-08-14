@@ -7,7 +7,7 @@ import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
 
 class SelectedItemsWidget extends StatelessWidget {
   const SelectedItemsWidget({super.key, required this.cubit});
-  final QBankcubit cubit;
+  final QBankCubit cubit;
   @override
   Widget build(BuildContext context) {
     return Container(

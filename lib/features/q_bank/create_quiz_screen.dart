@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
@@ -15,19 +16,24 @@ import 'package:smle/features/q_bank/widgets/create_quiz_widgets/sub_specialty_l
 import 'package:smle/features/q_bank/widgets/question_button_widget.dart';
 import 'package:smle/features/q_bank/widgets/year_picker_widget.dart';
 
-class CreateQuizScreen extends StatelessWidget {
+class CreateQuizScreen extends StatefulWidget {
   const CreateQuizScreen({super.key});
 
   @override
+  State<CreateQuizScreen> createState() => _CreateQuizScreenState();
+}
+
+class _CreateQuizScreenState extends State<CreateQuizScreen> {
+  @override
   Widget build(BuildContext context) {
-    final cubit = context.read<QBankcubit>();
+    final cubit = context.read<QBankCubit>();
 
     return Scaffold(
       appBar: CustomAppBar(title: 'create_quiz'.tr(context)),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-          child: BlocBuilder<QBankcubit, QBankStates>(
+          child: BlocBuilder<QBankCubit, QBankStates>(
             builder: (context, state) {
               final bool areAllCategoriesSelected =
                   (cubit.categoriesModel?.data?.isNotEmpty ?? false) &&
@@ -39,18 +45,50 @@ class CreateQuizScreen extends StatelessWidget {
                   cubit.selectedSubCategoryIds.length ==
                       cubit.aggregatedSubcategories.length;
 
+              final bool isQuestionCountValid =
+                  cubit.numberOfQuestionsController.text.isNotEmpty &&
+                  (int.tryParse(cubit.numberOfQuestionsController.text) ?? 0) >
+                      0 &&
+                  (int.tryParse(cubit.numberOfQuestionsController.text) ?? 0) <=
+                      cubit.questionsCount;
+
+              final bool canStartQuiz =
+                  cubit.selectedSubCategoryIds.isNotEmpty &&
+                  isQuestionCountValid;
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   10.verticalSpace,
-                  Text(
-                    'month'.tr(context),
-                    style: interMedium.copyWith(fontSize: 16.sp),
+                  Row(
+                    children: [
+                      Text(
+                        'year'.tr(context),
+                        style: interMedium.copyWith(fontSize: 16.sp),
+                      ),
+                      const Spacer(),
+                      Text(
+                        'All Years',
+                        style: interRegular.copyWith(fontSize: 14.sp),
+                      ),
+                      Checkbox(
+                        value: cubit.isAllYearsSelected,
+                        onChanged: (value) {
+                          cubit.toggleAllYears(value ?? false);
+                        },
+                        activeColor: AppColors.primaryColor,
+                      ),
+                    ],
                   ),
                   10.verticalSpace,
-                  const YearPickerWidget(),
+                  Opacity(
+                    opacity: cubit.isAllYearsSelected ? 0.5 : 1.0,
+                    child: AbsorbPointer(
+                      absorbing: cubit.isAllYearsSelected,
+                      child: const YearPickerWidget(),
+                    ),
+                  ),
                   20.verticalSpace,
-
                   _buildSectionHeader(
                     context,
                     title: 'specialty'.tr(context),
@@ -66,7 +104,6 @@ class CreateQuizScreen extends StatelessWidget {
                   else
                     const Center(child: CircularProgressIndicator()),
                   20.verticalSpace,
-
                   _buildSectionHeader(
                     context,
                     title: 'sub_specialty'.tr(context),
@@ -96,7 +133,8 @@ class CreateQuizScreen extends StatelessWidget {
                   else
                     SubSpecialtyList(cubit: cubit),
                   20.verticalSpace,
-
+                  _buildAdvancedFilters(context, cubit, state),
+                  20.verticalSpace,
                   ExpansionTile(
                     collapsedIconColor: AppColors.forthColor,
                     iconColor: AppColors.forthColor,
@@ -109,31 +147,37 @@ class CreateQuizScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     children: [SelectedItemsWidget(cubit: cubit)],
                   ),
                   50.verticalSpace,
-
                   Center(
                     child: GestureDetector(
-                      onTap: (cubit.selectedSubCategoryIds.isNotEmpty)
+                      onTap: canStartQuiz
                           ? () {
-                              context.pushReplacementNamed(
-                                Routes.qBankScreen,
-                                arguments: StartQuizModel(
-                                  context: context,
-                                  offset: cubit.offset,
-                                  pickedDate: cubit.pickedDate,
-                                  selectedSubCategoryId:
-                                      cubit.selectedSubCategoryIds,
-                                ),
-                              );
+                              cubit.getQuestions().then((_) {
+                                if (cubit.qBankModel != null &&
+                                    (cubit.qBankModel?.data?.isNotEmpty ??
+                                        false)) {
+                                  context.pushReplacementNamed(
+                                    Routes.qBankScreen,
+                                    arguments: StartQuizModel(
+                                      qBankModel: cubit.qBankModel,
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'no_questions_found'.tr(context),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              });
                             }
                           : null,
                       child: Opacity(
-                        opacity: (cubit.selectedSubCategoryIds.isNotEmpty)
-                            ? 1.0
-                            : 0.5,
+                        opacity: canStartQuiz ? 1.0 : 0.5,
                         child: QuestionButtonWidget(
                           text: 'start_quiz'.tr(context),
                         ),
@@ -186,6 +230,79 @@ class CreateQuizScreen extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildAdvancedFilters(
+    BuildContext context,
+    QBankCubit cubit,
+    QBankStates state,
+  ) {
+    return Container(
+      padding: EdgeInsets.all(12.r),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.greyColor),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Unanswered Questions Only',
+                style: interMedium.copyWith(fontSize: 15.sp),
+              ),
+              Switch(
+                value: cubit.unansweredOnly,
+                onChanged: (value) {
+                  cubit.toggleUnansweredOnly(value);
+                },
+                activeColor: AppColors.primaryColor,
+              ),
+            ],
+          ),
+          10.verticalSpace,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  '${'Available'}: ${cubit.questionsCount}',
+                  style: interMedium.copyWith(fontSize: 15.sp),
+                ),
+              ),
+              if (state is GetQuestionsCountLoadingState)
+                const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+            ],
+          ),
+          15.verticalSpace,
+          TextField(
+            controller: cubit.numberOfQuestionsController,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: InputDecoration(
+              labelText: 'Number of questions',
+              hintText: '${'max'.tr(context)}: ${cubit.questionsCount}',
+              border: const OutlineInputBorder(),
+              errorText:
+                  (cubit.numberOfQuestionsController.text.isNotEmpty &&
+                      (int.tryParse(cubit.numberOfQuestionsController.text) ??
+                              0) >
+                          cubit.questionsCount)
+                  ? 'error_max_questions'.tr(context)
+                  : null,
+            ),
+            onChanged: (value) {
+              setState(() {});
+            },
+          ),
+        ],
+      ),
     );
   }
 }

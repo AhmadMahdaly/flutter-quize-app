@@ -82,7 +82,7 @@ class AppRouter {
           screen: const ProfileScreen(),
           cubit: MainLayoutCubit(getIt())..getProfile(),
         );
-        case Routes.giftsScreen:
+      case Routes.giftsScreen:
         return transition(
           screen: const GiftsScreen(),
           cubit: MainLayoutCubit(getIt())..getGifts(),
@@ -118,11 +118,13 @@ class AppRouter {
         final packageId = settings.arguments as String;
         return transition(
           screen: const PaymentScreen(),
-          cubit: SubscriptionCubit(getIt())..getCards()..getYourCheckout(packageId),
+          cubit: SubscriptionCubit(getIt())
+            ..getCards()
+            ..getYourCheckout(packageId),
         );
       case Routes.addCardScreen:
         return transition(
-          screen:  AddCardScreen(),
+          screen: AddCardScreen(),
           cubit: SubscriptionCubit(getIt()),
         );
       case Routes.applePayScreen:
@@ -134,26 +136,19 @@ class AppRouter {
       case Routes.analysisScreen:
         final isExam = settings.arguments as bool;
         return transition(
-          screen:  AnalysisScreen(isExam: isExam,),
+          screen: AnalysisScreen(isExam: isExam),
           cubit: AnalysisCubit(getIt())..getAnalysis(),
         );
       case Routes.createQuizScreen:
         return transition(
           screen: const CreateQuizScreen(),
-          cubit: QBankcubit(getIt())..getCategories(),
+          cubit: QBankCubit(getIt())..getCategories(),
         );
       case Routes.qBankScreen:
-        final StartQuizModel startQuizModel =
-            settings.arguments as StartQuizModel;
+        final startQuizModel = settings.arguments as StartQuizModel;
         return transition(
           screen: QBankScreen(startQuizModel: startQuizModel),
-          cubit: QBankcubit(getIt())
-            ..startQuiz(
-              startQuizModel.context!,
-              startQuizModel.pickedDate!.month,
-              startQuizModel.pickedDate!.year,
-              startQuizModel.selectedSubCategoryId!,
-            ),
+          cubit: QBankCubit(getIt()),
         );
       case Routes.examsHistoryScreen:
         return transition(

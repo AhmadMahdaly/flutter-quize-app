@@ -8,11 +8,11 @@ import 'package:smle/features/q_bank/widgets/create_quiz_widgets/compact_checkbo
 
 class SubSpecialtyList extends StatelessWidget {
   const SubSpecialtyList({super.key, required this.cubit});
-  final QBankcubit cubit;
+  final QBankCubit cubit;
   @override
   Widget build(BuildContext context) {
     final subCategories = cubit.aggregatedSubcategories;
-    if (subCategories.isEmpty) {
+    if (cubit.selectedCategoryIds.isEmpty) {
       return Container(
         padding: EdgeInsets.all(20.h),
         width: double.infinity,

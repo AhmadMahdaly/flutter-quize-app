@@ -13,9 +13,25 @@ import 'package:smle/features/q_bank/widgets/q_bank_progress_widget.dart';
 import 'package:smle/features/q_bank/widgets/question_button_widget.dart';
 import 'package:smle/features/q_bank/widgets/question_widget.dart';
 
-class QBankScreen extends StatelessWidget {
+class QBankScreen extends StatefulWidget {
   const QBankScreen({super.key, required this.startQuizModel});
   final StartQuizModel startQuizModel;
+
+  @override
+  State<QBankScreen> createState() => _QBankScreenState();
+}
+
+class _QBankScreenState extends State<QBankScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.startQuizModel.qBankModel != null) {
+      context.read<QBankCubit>().setQuizModel(
+        widget.startQuizModel.qBankModel!,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,208 +39,160 @@ class QBankScreen extends StatelessWidget {
       appBar: CustomAppBar(title: 'q_bank'.tr(context)),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-        child: BlocBuilder<QBankcubit, QBankStates>(
+
+        child: BlocBuilder<QBankCubit, QBankStates>(
           builder: (context, state) {
-            return context.read<QBankcubit>().qBankModel != null
+            final cubit = context.read<QBankCubit>();
+
+            if (cubit.qBankModel == null) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            return (cubit.qBankModel!.data?.isNotEmpty ?? false)
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       QBankProgressWidget(
-                        currentValue: context.read<QBankcubit>().index,
-                        endValue:
-                            context
-                                .read<QBankcubit>()
-                                .qBankModel!
-                                .questionsCount ??
-                            1,
-                        switchValue: context.read<QBankcubit>().isAnswered,
+                        currentValue: cubit.index,
+                        endValue: cubit.qBankModel!.data!.length,
+                        switchValue: cubit.isAnswered,
                         switchFun: (value) {
-                          context.read<QBankcubit>().setIsAnswered();
+                          cubit.setIsAnswered();
                         },
                       ),
                       20.verticalSpace,
-                      if (context
-                          .read<QBankcubit>()
-                          .qBankModel!
-                          .data!
-                          .isNotEmpty)
-                        QuestionWidget(
-                          addCircledFun: () {
-                            context.pushNamed(
-                              Routes.playListScreen,
-                              arguments: context
-                                  .read<QBankcubit>()
-                                  .qBankModel!
-                                  .data![context.read<QBankcubit>().index]
-                                  .id,
-                            );
-                          },
-                          currentQuestion:
-                              '${context.read<QBankcubit>().index + 1}',
-                          isFav: context
-                              .read<QBankcubit>()
-                              .qBankModel!
-                              .data![context.read<QBankcubit>().index]
-                              .isFavourite!,
-                          question:
-                              '${context.read<QBankcubit>().qBankModel!.data![context.read<QBankcubit>().index].question}',
-                          newsExplain:
-                              '${context.read<QBankcubit>().qBankModel!.data![context.read<QBankcubit>().index].hint}',
-                          questionCircleExplain:
-                              '${context.read<QBankcubit>().qBankModel!.data![context.read<QBankcubit>().index].explanation}',
-                          lightBulbExplain:
-                              '${context.read<QBankcubit>().qBankModel!.data![context.read<QBankcubit>().index].hint}',
-                        ),
+                      QuestionWidget(
+                        addCircledFun: () {
+                          context.pushNamed(
+                            Routes.playListScreen,
+                            arguments: cubit.qBankModel!.data![cubit.index].id,
+                          );
+                        },
+                        currentQuestion: '${cubit.index + 1}',
+                        isFav:
+                            cubit.qBankModel!.data![cubit.index].isFavorite ??
+                            false,
+                        question:
+                            '${cubit.qBankModel!.data![cubit.index].question}',
+                        newsExplain:
+                            '${cubit.qBankModel!.data![cubit.index].hint}',
+                        questionCircleExplain:
+                            '${cubit.qBankModel!.data![cubit.index].explanation}',
+                        lightBulbExplain:
+                            '${cubit.qBankModel!.data![cubit.index].hint}',
+                      ),
                       20.verticalSpace,
-                      context.read<QBankcubit>().qBankModel!.data!.isNotEmpty
-                          ? ListView.separated(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                final bool isTrue =
-                                    context
-                                        .read<QBankcubit>()
-                                        .qBankModel!
-                                        .data![context.read<QBankcubit>().index]
-                                        .answer ==
-                                    context
-                                        .read<QBankcubit>()
-                                        .qBankModel!
-                                        .data![context.read<QBankcubit>().index]
-                                        .options[index]
-                                        .key;
-                                return GestureDetector(
-                                  onTap: () {
-                                    context.read<QBankcubit>().selectAnswer(
-                                      context
-                                          .read<QBankcubit>()
-                                          .qBankModel!
-                                          .data![context
-                                              .read<QBankcubit>()
-                                              .index]
-                                          .options[index]
-                                          .key,
-                                    );
-                                  },
-                                  child: context.read<QBankcubit>().isAnswered
-                                      ? AnsweredWidget(
-                                          answerText: context
-                                              .read<QBankcubit>()
-                                              .qBankModel!
-                                              .data![context
-                                                  .read<QBankcubit>()
-                                                  .index]
-                                              .options[index]
-                                              .value!,
-                                          isTrue: isTrue,
-                                        )
-                                      : AnswerWidget(
-                                          answerText: context
-                                              .read<QBankcubit>()
-                                              .qBankModel!
-                                              .data![context
-                                                  .read<QBankcubit>()
-                                                  .index]
-                                              .options[index]
-                                              .value!,
-                                          isSelected:
-                                              context
-                                                  .read<QBankcubit>()
-                                                  .qBankModel!
-                                                  .data![context
-                                                      .read<QBankcubit>()
-                                                      .index]
-                                                  .selectedAnswer ==
-                                              context
-                                                  .read<QBankcubit>()
-                                                  .qBankModel!
-                                                  .data![context
-                                                      .read<QBankcubit>()
-                                                      .index]
-                                                  .options[index]
-                                                  .key,
-                                          isTrue: isTrue,
-                                        ),
+                      ListView.separated(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, optionIndex) {
+                          final currentQuestion =
+                              cubit.qBankModel!.data![cubit.index];
+                          final currentOption =
+                              currentQuestion.options[optionIndex];
+                          final bool isCorrectAnswer =
+                              currentQuestion.answer == currentOption.key;
+
+                          return GestureDetector(
+                            onTap: () {
+                              if (currentQuestion.selectedAnswer == null) {
+                                cubit.selectAnswer(
+                                  currentOption.key!,
+                                  currentQuestion.questionbankId!,
                                 );
-                              },
-                              separatorBuilder: (context, index) =>
-                                  8.verticalSpace,
-                              itemCount: context
-                                  .read<QBankcubit>()
-                                  .qBankModel!
-                                  .data![context.read<QBankcubit>().index]
-                                  .options
-                                  .length,
-                            )
-                          : NoDataWidget(
-                              noDataImage: '',
-                              noDataText: 'no_data_found'.tr(context),
-                            ),
+                              }
+                            },
+                            child:
+                                cubit.isAnswered ||
+                                    currentQuestion.selectedAnswer != null
+                                ? AnsweredWidget(
+                                    answerText: currentOption.value!,
+                                    isTrue: isCorrectAnswer,
+                                    isSelected:
+                                        currentQuestion.selectedAnswer ==
+                                        currentOption.key,
+                                  )
+                                : AnswerWidget(
+                                    answerText: currentOption.value!,
+                                    isSelected:
+                                        currentQuestion.selectedAnswer ==
+                                        currentOption.key,
+                                  ),
+                          );
+                        },
+                        separatorBuilder: (context, index) => 8.verticalSpace,
+                        itemCount:
+                            cubit.qBankModel!.data![cubit.index].options.length,
+                      ),
                       20.verticalSpace,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          if (context.read<QBankcubit>().index != 0)
+                          if (cubit.index > 0)
                             GestureDetector(
                               onTap: () {
-                                context.read<QBankcubit>().setIndexQBank(false);
+                                cubit.setIndexQBank(false);
                               },
                               child: QuestionButtonWidget(
                                 text: 'back'.tr(context),
                               ),
                             ),
-                          if (context.read<QBankcubit>().index == 0)
+                          if (cubit.index == 0)
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                context.pushNamedAndRemoveUntil(
+                                  Routes.mainLayoutScreen,
+                                  (route) => false,
+                                );
+                              },
                               child: QuestionButtonWidget(
                                 text: 'quit'.tr(context),
                               ),
                             ),
                           GestureDetector(
                             onTap: () {
-                              if (context.read<QBankcubit>().index <
-                                  context
-                                          .read<QBankcubit>()
-                                          .qBankModel!
-                                          .data!
-                                          .length -
-                                      1) {
-                                // context.read<QBankcubit>().selectAnswer(null);
-                                context.read<QBankcubit>().setIndexQBank(true);
+                              if (cubit.index <
+                                  cubit.qBankModel!.data!.length - 1) {
+                                cubit.setIndexQBank(true);
                               } else {
-                                context.read<QBankcubit>().setOffsetQBank(true);
-                                context.read<QBankcubit>().startQuiz(
-                                  context,
-                                  startQuizModel.pickedDate!.month,
-                                  startQuizModel.pickedDate!.year,
-                                  startQuizModel.selectedSubCategoryId!,
+                                context.pushNamedAndRemoveUntil(
+                                  Routes.mainLayoutScreen,
+                                  (route) => false,
                                 );
                               }
                             },
                             child: QuestionButtonWidget(
-                              text: 'next'.tr(context),
+                              text:
+                                  cubit.index <
+                                      cubit.qBankModel!.data!.length - 1
+                                  ? 'next'.tr(context)
+                                  : 'finish'.tr(context),
                             ),
                           ),
                         ],
                       ),
-                      if (context.read<QBankcubit>().index != 0)
+                      if (cubit.index > 0) ...[
                         20.verticalSpace,
-                      if (context.read<QBankcubit>().index != 0)
                         Center(
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              context.pushNamedAndRemoveUntil(
+                                Routes.mainLayoutScreen,
+                                (route) => false,
+                              );
+                            },
                             child: QuestionButtonWidget(
                               text: 'quit'.tr(context),
                             ),
                           ),
                         ),
+                      ],
                     ],
                   )
-                : const SizedBox.shrink();
-            //  NoDataWidget(
-            //     noDataImage: '',
-            //     noDataText: 'no_data_found'.tr(context),
-            //   );
+                : NoDataWidget(
+                    noDataImage: '',
+                    noDataText: 'no_data_found'.tr(context),
+                  );
           },
         ),
       ),

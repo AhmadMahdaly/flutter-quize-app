@@ -1,10 +1,10 @@
 class QBankModel {
-
-  QBankModel({this.status, this.message, this.data});
+  QBankModel({this.status, this.message, this.questionsCount, this.data});
 
   QBankModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
+
     questionsCount = json['questions_count'];
     if (json['data'] != null) {
       data = <Data>[];
@@ -31,13 +31,10 @@ class QBankModel {
 }
 
 class Data {
-
   Data({
     this.id,
     this.question,
     this.photo,
-    this.categoryId,
-    this.subcategoryId,
     this.a,
     this.b,
     this.c,
@@ -48,20 +45,16 @@ class Data {
     this.explanationPhoto,
     this.year,
     this.month,
-    this.isActive,
     this.hint,
-    this.isFree,
-    this.isFavourite,
-    this.createdAt,
-    this.updatedAt,
+    this.isFavorite,
+    this.isAnswered,
+    this.questionbankId,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     question = json['question'];
     photo = json['photo'];
-    categoryId = json['category_id'];
-    subcategoryId = json['subcategory_id'];
     a = json['a'];
     b = json['b'];
     c = json['c'];
@@ -71,18 +64,15 @@ class Data {
     explanationPhoto = json['explanation_photo'];
     year = json['year'];
     month = json['month'];
-    isActive = json['is_active'];
     hint = json['hint'];
-    isFree = json['is_free'];
-    isFavourite = json['is_favourite'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    isFavorite = json['is_favorite'];
+
+    isAnswered = json['is_answered'] == 1;
+    questionbankId = json['questionbank_id'];
   }
   int? id;
   String? question;
   String? photo;
-  int? categoryId;
-  int? subcategoryId;
   String? a;
   String? b;
   String? c;
@@ -93,50 +83,41 @@ class Data {
   String? explanationPhoto;
   String? year;
   String? month;
-  bool? isActive;
   String? hint;
-  bool? isFree;
-  bool? isFavourite;
-  String? createdAt;
-  String? updatedAt;
+  bool? isFavorite;
+  bool? isAnswered;
+  int? questionbankId;
 
-  // Getter to return a list of options
   List<Options> get options => [
-        Options(key: 'a', value: a ?? ''),
-        Options(key: 'b', value: b ?? ''),
-        Options(key: 'c', value: c ?? ''),
-        Options(key: 'd', value: d ?? '')
-      ];
+    Options(key: 'a', value: a ?? ''),
+    Options(key: 'b', value: b ?? ''),
+    Options(key: 'c', value: c ?? ''),
+    Options(key: 'd', value: d ?? ''),
+  ];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['question'] = question;
     data['photo'] = photo;
-    data['category_id'] = categoryId;
-    data['subcategory_id'] = subcategoryId;
     data['a'] = a;
     data['b'] = b;
     data['c'] = c;
     data['d'] = d;
-    data['options'] = options; // Include list of options
     data['answer'] = answer;
     data['explanation'] = explanation;
     data['explanation_photo'] = explanationPhoto;
     data['year'] = year;
     data['month'] = month;
-    data['is_active'] = isActive;
     data['hint'] = hint;
-    data['is_free'] = isFree;
-    data['is_favourite'] = isFavourite;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
+    data['is_favorite'] = isFavorite;
+    data['is_answered'] = isAnswered;
+    data['questionbank_id'] = questionbankId;
     return data;
   }
 }
 
 class Options {
-
   Options({this.key, this.value});
   String? key;
   String? value;

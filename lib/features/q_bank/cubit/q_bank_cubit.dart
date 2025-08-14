@@ -9,78 +9,80 @@ import 'package:smle/features/revision/data/model/subcategories_model.dart';
 
 part 'q_bank_state.dart';
 
-class QBankcubit extends Cubit<QBankStates> {
-  QBankcubit(this._qBankRepository) : super(QBankInitialState());
+class QBankCubit extends Cubit<QBankStates> {
+  QBankCubit(this._qBankRepository) : super(QBankInitialState());
   final QBankRepository _qBankRepository;
 
+  @override
+  Future<void> close() {
+    numberOfQuestionsController.dispose();
+    return super.close();
+  }
+
   QBankModel? qBankModel;
-  List<int> questionOffsetList = [];
-  int offset = 0;
-  Future startQuiz(
-    BuildContext context,
-    int month,
-    int year,
-    List<int> subcategoryIds,
-  ) async {
-    if (!questionOffsetList.contains(offset)) {
-      questionOffsetList.add(offset);
-      showLoading();
-      emit(StartQuizLoadingState());
-      final result = await _qBankRepository.getQBank(
-        month,
-        year,
-        subcategoryIds,
-      );
-      result.when(
-        success: (success) {
-          if (offset == 0) {
-            qBankModel = success;
-          } else {
-            qBankModel!.data!.addAll(success.data!);
-          }
-          hideLoading();
-          emit(StartQuizSuccessState());
-        },
-        failure: (error) {
-          hideLoading();
-          emit(StartQuizFailedState());
-        },
-      );
-    }
+
+  void setQuizModel(QBankModel model) {
+    qBankModel = model;
+    index = 0;
+    isAnswered = false;
+
+    emit(QuizModelSetState());
+  }
+
+  Future<void> getQuestions() async {
+    showLoading();
+    emit(StartQuizLoadingState());
+
+    final int limit = int.tryParse(numberOfQuestionsController.text) ?? 0;
+
+    final result = await _qBankRepository.startQuiz(
+      month: 'all',
+      year: isAllYearsSelected ? 'all' : pickedDate.year.toString(),
+      subcategoryIds: selectedSubCategoryIds,
+      unansweredOnly: unansweredOnly ? 1 : 0,
+      limit: limit,
+    );
+
+    result.when(
+      success: (success) {
+        qBankModel = success;
+        index = 0;
+        isAnswered = false;
+        hideLoading();
+        emit(StartQuizSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(StartQuizFailedState());
+      },
+    );
   }
 
   int index = 0;
   void setIndexQBank(bool isNext) {
     if (isNext) {
-      index++;
+      if (index < (qBankModel?.data?.length ?? 1) - 1) {
+        index++;
+        isAnswered = false;
+      }
     } else {
-      index--;
+      if (index > 0) {
+        index--;
+      }
     }
     emit(SetIndexQuizState());
   }
 
-  void setOffsetQBank(bool isNext) {
-    if (isNext) {
-      offset++;
-    } else {
-      offset--;
-    }
-    emit(SetOffsetQuizState());
-  }
-
   CategoriesModel? categoriesModel;
   Future getCategories() async {
-    showLoading();
     emit(GetCategoriesLoadingState());
     final result = await _qBankRepository.getCategories();
     result.when(
       success: (success) {
         categoriesModel = success;
-        hideLoading();
         emit(GetCategoriesSuccessState());
       },
       failure: (error) {
-        hideLoading();
         emit(GetCategoriesFailedState());
       },
     );
@@ -88,15 +90,15 @@ class QBankcubit extends Cubit<QBankStates> {
 
   List<Subcategories> aggregatedSubcategories = [];
   Future getSubCategoriesForSelected() async {
-    showLoading();
     emit(GetSubCategoriesLoadingState());
-
     aggregatedSubcategories.clear();
+
+    final previousSubCategoryIds = List<int>.from(selectedSubCategoryIds);
     selectedSubCategoryIds.clear();
     selectedSubCategoryNames.clear();
 
     if (selectedCategoryIds.isEmpty) {
-      hideLoading();
+      await updateAvailableQuestionsCount();
       emit(GetSubCategoriesSuccessState());
       return;
     }
@@ -125,18 +127,76 @@ class QBankcubit extends Cubit<QBankStates> {
       }
       aggregatedSubcategories = uniqueSubcategories.values.toList();
 
-      hideLoading();
+      for (var sub in aggregatedSubcategories) {
+        if (previousSubCategoryIds.contains(sub.id)) {
+          selectedSubCategoryIds.add(sub.id!);
+          selectedSubCategoryNames.add(sub.name!);
+        }
+      }
+
+      await updateAvailableQuestionsCount();
       emit(GetSubCategoriesSuccessState());
     } catch (e) {
-      hideLoading();
       emit(GetSubCategoriesFailedState());
     }
   }
 
-  DateTime pickedDate = DateTime(2020);
+  DateTime pickedDate = DateTime(2024);
+  bool isAllYearsSelected = false;
+  bool unansweredOnly = false;
+  int questionsCount = 0;
+  final TextEditingController numberOfQuestionsController =
+      TextEditingController();
+
   void selectDate(DateTime selected) {
     pickedDate = selected;
+    updateAvailableQuestionsCount();
     emit(SelectDateState());
+  }
+
+  void toggleAllYears(bool selectAll) {
+    isAllYearsSelected = selectAll;
+    updateAvailableQuestionsCount();
+    emit(SelectDateState());
+  }
+
+  void toggleUnansweredOnly(bool value) {
+    unansweredOnly = value;
+    updateAvailableQuestionsCount();
+    emit(FilterChangedState());
+  }
+
+  Future<void> updateAvailableQuestionsCount() async {
+    if (selectedSubCategoryIds.isEmpty && selectedCategoryIds.isNotEmpty) {
+      questionsCount = 0;
+      emit(GetQuestionsCountSuccessState());
+      return;
+    }
+
+    emit(GetQuestionsCountLoadingState());
+
+    final result = await _qBankRepository.getQuestionsCount(
+      month: 'all',
+      year: isAllYearsSelected ? 'all' : pickedDate.year.toString(),
+      subcategoryIds: selectedSubCategoryIds,
+      unansweredOnly: unansweredOnly ? 1 : 0,
+    );
+
+    result?.when(
+      success: (model) {
+        questionsCount = model.count ?? 0;
+        final currentInput =
+            int.tryParse(numberOfQuestionsController.text) ?? 0;
+        if (currentInput > questionsCount) {
+          numberOfQuestionsController.clear();
+        }
+        emit(GetQuestionsCountSuccessState());
+      },
+      failure: (error) {
+        questionsCount = 0;
+        emit(GetQuestionsCountFailedState());
+      },
+    );
   }
 
   List<int> selectedCategoryIds = [];
@@ -154,7 +214,7 @@ class QBankcubit extends Cubit<QBankStates> {
     emit(SelectCategoryState());
   }
 
-  void selectAllCategories(bool selectAll) {
+  void selectAllCategories(bool selectAll) async {
     selectedCategoryIds.clear();
     selectedCategoryNames.clear();
     if (selectAll && categoriesModel?.data != null) {
@@ -163,7 +223,12 @@ class QBankcubit extends Cubit<QBankStates> {
         selectedCategoryNames.add(category.name!);
       }
     }
-    getSubCategoriesForSelected();
+    await getSubCategoriesForSelected();
+    if (selectAll) {
+      selectAllSubCategories(true);
+    } else {
+      selectAllSubCategories(false);
+    }
     emit(SelectCategoryState());
   }
 
@@ -178,6 +243,7 @@ class QBankcubit extends Cubit<QBankStates> {
       selectedSubCategoryIds.add(subCategoryId);
       selectedSubCategoryNames.add(subCategoryName);
     }
+    updateAvailableQuestionsCount();
     emit(SelectSubCategoryState());
   }
 
@@ -190,12 +256,29 @@ class QBankcubit extends Cubit<QBankStates> {
         selectedSubCategoryNames.add(subCategory.name!);
       }
     }
+    updateAvailableQuestionsCount();
     emit(SelectSubCategoryState());
   }
 
-  void selectAnswer(key) {
+  void selectAnswer(String key, int questionId) {
     qBankModel!.data![index].selectedAnswer = key;
+    markQuestionAsAnswered(questionId);
     emit(SelectAnswerState());
+  }
+
+  Future<void> markQuestionAsAnswered(int questionId) async {
+    emit(MarkingAsAnsweredState());
+    final result = await _qBankRepository.markQuestionAsAnswered(questionId);
+    result.when(
+      success: (success) {
+        debugPrintWidget('Question $questionId marked as answered.');
+        emit(MarkAsAnsweredSuccessState());
+      },
+      failure: (error) {
+        debugPrintWidget('Failed to mark question $questionId as answered.');
+        emit(MarkAsAnsweredFailedState());
+      },
+    );
   }
 
   bool isAnswered = false;
