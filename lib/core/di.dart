@@ -49,7 +49,7 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<QBankRepository>(() => QBankRepository(getIt()));
   getIt.registerFactory<PlayListRepository>(() => PlayListRepository(getIt()));
   getIt.registerFactory<RealExamRepo>(() => RealExamRepo(getIt()));
-  getIt.registerSingleton<RealExamCubit>(RealExamCubit(getIt()));
+  getIt.registerLazySingleton<RealExamCubit>(()=>RealExamCubit(getIt()));
   getIt.registerFactory<TrialExamRepository>(
     () => TrialExamRepository(getIt()),
   );

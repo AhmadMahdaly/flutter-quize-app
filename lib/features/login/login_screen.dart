@@ -131,37 +131,39 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Text('by_the'.tr(context),
-                        style: interRegular.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 18.sp,
-                          ),)), Text('register'.tr(context),
-                        style: interRegular.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 18.sp,
-                          ),
-            ),
-          ),Text('confirm_agreement'.tr(context),
-                        style: interRegular.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 18.sp,
-                          ),
-                        ),), InkWell(
-                        onTap: ()=>context.pushNamed(Routes.privacyPolicyScreen),
-                        child:Text('privacy_policy'.tr(context),
-                        style: interRegular.copyWith(
-                          color: AppColors.secondaryColor,
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 18.sp,
+                  FittedBox(
+                    child: Row(
+                      children: [
+                        Text('by_the'.tr(context),
+                          style: interRegular.copyWith(
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
+                            ),)), Text('register'.tr(context),
+                          style: interRegular.copyWith(
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
+                            ),
+                                ),
+                              ), Text('confirm_agreement'.tr(context),
+                            style: interRegular.copyWith(
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 14.sp,
+                                tablet: 18.sp,
+                            ),),
+                              ), InkWell(
+                          onTap: ()=>context.pushNamed(Routes.privacyPolicyScreen),
+                          child:Text('privacy_policy'.tr(context),
+                          style: interRegular.copyWith(
+                            color: AppColors.secondaryColor,
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
+                            ),)
                           ),)
-                        ),)
-                    ],
+                      ],
+                    ),
                   ),
 
                 ],
