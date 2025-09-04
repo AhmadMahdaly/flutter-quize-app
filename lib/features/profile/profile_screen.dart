@@ -69,22 +69,22 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            if (context
-                                    .read<MainLayoutCubit>()
-                                    .profileModel!
-                                    .data!
-                                    .offerName !=
-                                null)
-                              Text(
-                                '${"package_subscribed".tr(context)} ${context.read<MainLayoutCubit>().profileModel!.data!.offerName}',
-                                style: interMedium.copyWith(
-                                  color: AppColors.primaryColor,
-                                  fontSize: SizeConfig.responsiveValue(
-                                    phone: 14.sp,
-                                    tablet: 18.sp,
-                                  ),
-                                ),
-                              ),
+                            // if (context
+                            //         .read<MainLayoutCubit>()
+                            //         .profileModel!
+                            //         .data!
+                            //         .offerName !=
+                            //     null)
+                            //   Text(
+                            //     '${"package_subscribed".tr(context)} ${context.read<MainLayoutCubit>().profileModel!.data!.offerName}',
+                            //     style: interMedium.copyWith(
+                            //       color: AppColors.primaryColor,
+                            //       fontSize: SizeConfig.responsiveValue(
+                            //         phone: 14.sp,
+                            //         tablet: 18.sp,
+                            //       ),
+                            //     ),
+                            //   ),
                             if (context
                                     .read<MainLayoutCubit>()
                                     .profileModel!

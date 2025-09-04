@@ -18,7 +18,13 @@ void main() async {
   // 1. Ensure bindings are initialized FIRST. This is critical.
   WidgetsFlutterBinding.ensureInitialized();
   // 4. Initialize other services
-  await CacheHelper.init();
+  await Future.delayed(Duration(milliseconds: 100));
+
+  try {
+    await CacheHelper.init();
+  } catch (e) {
+    print('SharedPreferences initialization failed: $e');
+  }
   await setupGetIt();
   await DioFactory.init();
   // 2. Initialize Firebase
