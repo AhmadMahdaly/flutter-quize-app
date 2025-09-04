@@ -131,62 +131,41 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                  Column(
-                    children: [
-      
                   FittedBox(
                     child: Row(
                       children: [
                         Text('by_the'.tr(context),
-                          style: interRegular.copyWith(
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 14.sp,
-                              tablet: 18.sp,
-                            ),)), Text('register'.tr(context),
-                          style: interRegular.copyWith(
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 14.sp,
-                              tablet: 18.sp,
-                            ),
-                                ),
-                              ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'confirm_agreement'.tr(context),
-
                             style: interRegular.copyWith(
                               fontSize: SizeConfig.responsiveValue(
-                                phone: 12.sp,
+                                phone: 14.sp,
                                 tablet: 18.sp,
-                              ),
+                              ),)), Text('register'.tr(context),
+                          style: interRegular.copyWith(
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
                             ),
                           ),
-                          InkWell(
-                            onTap: () =>
-                                context.pushNamed(Routes.privacyPolicyScreen),
-                            child: Text(
-                              'privacy_policy'.tr(context),
-
+                        ), Text('confirm_agreement'.tr(context),
+                          style: interRegular.copyWith(
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
+                            ),),
+                        ), InkWell(
+                          onTap: ()=>context.pushNamed(Routes.privacyPolicyScreen),
+                          child:Text('privacy_policy'.tr(context),
                               style: interRegular.copyWith(
                                 color: AppColors.secondaryColor,
                                 fontSize: SizeConfig.responsiveValue(
-                                  phone: 12.sp,
+                                  phone: 14.sp,
                                   tablet: 18.sp,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-
+                                ),)
+                          ),)
+                      ],
+                    ),
                   ),
+
                 ],
               ),
             ),
