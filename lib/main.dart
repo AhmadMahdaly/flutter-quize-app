@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -10,7 +9,6 @@ import 'package:smle/app.dart';
 import 'package:smle/core/bloc_observer.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/di.dart';
-import 'package:smle/core/fcm.dart';
 import 'package:smle/core/network/dio_factory.dart';
 
 void main() async {
@@ -19,25 +17,19 @@ void main() async {
     HttpOverrides.global = MyHttpOverrides();
   }
   WidgetsFlutterBinding.ensureInitialized();
-  try{
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: await getApplicationDocumentsDirectory(),
-  );}catch(_){};
+  try {
+    HydratedBloc.storage = await HydratedStorage.build(
+      storageDirectory: await getApplicationDocumentsDirectory(),
+    );
+  } catch (_) {}
   await CacheHelper.init();
   await setupGetIt();
   await DioFactory.init();
-  await Firebase.initializeApp(
-  );
-  try {
-    await PushNotificationService().initialize();
-    FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
-  }catch(_){}
+  await Firebase.initializeApp();
 
   await setLockedOrientation();
   Bloc.observer = MyBlocObserver();
-  runApp(
-     const MyApp(),
-  );
+  runApp(const MyApp());
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -48,6 +40,7 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
+
 Future<void> setLockedOrientation() async {
   try {
     await SystemChrome.setPreferredOrientations([
@@ -56,7 +49,7 @@ Future<void> setLockedOrientation() async {
     ]);
   } catch (e) {
     // طباعة رسالة توضيحية بدلاً من الخطأ الأحمر
-    print("Failed to set orientation: $e");
+    print('Failed to set orientation: $e');
     // يمكنك ترك هذا الجزء فارغاً لتجاهل الخطأ بصمت
   }
 }

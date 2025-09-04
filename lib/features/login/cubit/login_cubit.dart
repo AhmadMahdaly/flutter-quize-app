@@ -81,7 +81,7 @@ class LoginCubit extends Cubit<LoginStates> {
   }
 
   Future<void> logIn(String idToken, String? email, String? name) async {
-    final result = await _loginRepository.login(idToken, email, name);
+    final result = await _loginRepository.login(idToken, null, null);
 
     hideLoading();
 

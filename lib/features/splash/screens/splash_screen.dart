@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/constants.dart';
+import 'package:smle/core/fcm.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
@@ -21,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
     Future.delayed(const Duration(milliseconds: 3460), () {
       _route();
     });
@@ -33,6 +36,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _route() async {
+    try {
+      await PushNotificationService().initialize();
+      FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+    } catch (_) {}
+
     final isOnboardingComplete =
         await CacheHelper.getData(key: firstTimeRun) as bool? ?? false;
     if (await isLoggedIn()) {
