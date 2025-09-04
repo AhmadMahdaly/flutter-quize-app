@@ -28,14 +28,10 @@ class MyApp extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  SizeConfig.init(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
-      child: OrientationBuilder(
-        builder: (context, orientation) {
-          SizeConfig.init(context);
-
-          return MaterialApp(
+      child:  MaterialApp(
             onGenerateRoute: AppRouter().generateRoute,
             initialRoute:
                 CacheHelper.getData(key: CacheKeys.isFirstOpen) == true
@@ -57,7 +53,6 @@ class MyApp extends StatelessWidget {
               return supportedLocales.first;
             },
             supportedLocales: const [Locale('en'), Locale('ar')],
-            locale: Locale(CacheHelper.getCurrentLanguage()),
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -95,8 +90,7 @@ class MyApp extends StatelessWidget {
               );
               return myWidget;
             },
-          );
-        },
+
       ),
     );
   }

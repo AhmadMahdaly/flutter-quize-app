@@ -36,22 +36,22 @@ class DrawerWidget extends StatelessWidget {
               context.pushNamed(Routes.sCFHSScoreCalculatorScreen);
             },
           ),
-          DrawerItemWidget(
-            iconAsset: Assets.trophyLight,
-            title: 'subscription'.tr(context),
-            onTap: () {
-              context.pushNamed(
-                Routes.subscriptionScreen,
-                arguments:
-                    context
-                        .read<MainLayoutCubit>()
-                        .profileModel!
-                        .data!
-                        .offerId ??
-                    -1,
-              );
-            },
-          ),
+          // DrawerItemWidget(
+          //   iconAsset: Assets.trophyLight,
+          //   title: 'subscription'.tr(context),
+          //   onTap: () {
+          //     context.pushNamed(
+          //       Routes.subscriptionScreen,
+          //       arguments:
+          //           context
+          //               .read<MainLayoutCubit>()
+          //               .profileModel!
+          //               .data!
+          //               .offerId ??
+          //           -1,
+          //     );
+          //   },
+          // ),
           // DrawerItemWidget(iconAsset: Assets.columUpLight,title:'analysis'.tr(context) ,onTap: (){
           //   context.pushNamed(Routes.analysisScreen);
           // },),

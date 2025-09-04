@@ -9,13 +9,16 @@ class CacheHelper {
   static late SharedPreferences sharedPreferences;
 
   static Future<void> init() async {
-    sharedPreferences = await SharedPreferences.getInstance();
+    try {
+      sharedPreferences = await SharedPreferences.getInstance();
+    } catch (e) {
+      print('sharedPreferences error $e');
+    }
   }
-
   static dynamic getData({
     required String key,
-  }) {
-    return sharedPreferences.get(key);
+  }) {try{
+    return sharedPreferences.get(key);}catch(e){print('sharedPreferences error $e');}
   }
 
   static bool isEnglish() => getCurrentLanguage() == 'en';

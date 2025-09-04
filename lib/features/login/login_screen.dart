@@ -131,29 +131,26 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+
                   Column(
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-
-                        children: [
-                          Text(
-                            'by_the'.tr(context),
-                            style: interRegular.copyWith(
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 14.sp,
-                                tablet: 18.sp,
-                              ),
+      
+                  FittedBox(
+                    child: Row(
+                      children: [
+                        Text('by_the'.tr(context),
+                          style: interRegular.copyWith(
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
+                            ),)), Text('register'.tr(context),
+                          style: interRegular.copyWith(
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
                             ),
-                          ),
-                          Text(
-                            'register'.tr(context),
-                            style: interRegular.copyWith(
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 14.sp,
-                                tablet: 18.sp,
+                                ),
                               ),
-                            ),
                           ),
                         ],
                       ),
@@ -188,6 +185,7 @@ class LoginScreen extends StatelessWidget {
                         ],
                       ),
                     ],
+
                   ),
                 ],
               ),
