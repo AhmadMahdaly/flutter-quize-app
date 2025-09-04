@@ -20,26 +20,12 @@ class DioFactory {
   }
 
   Future<Response?> get({required String endPoint, data}) async {
-    dio.options.headers = {
-      'Accept': 'application/json',
-      // "lang": CacheHelper.getCurrentLanguage().toString(),
-      'Authorization':
-          'Bearer ${await CacheHelper.getData(key: CacheKeys.userToken)}',
-      // 'Authorization':
-      //     'Bearer 95|TFOKpShunVwSfIkoM3vWcbyFODvUK4vWr17S5hPub20e8251',
-    };
+   
     return await dio.get(endPoint, queryParameters: data);
   }
 
   Future<Response?> post({required String endPoint, data}) async {
-    dio.options.headers = {
-      'Accept': 'application/json',
-      // "lang": CacheHelper.getCurrentLanguage().toString(),
-      'Authorization':
-          'Bearer ${await CacheHelper.getData(key: CacheKeys.userToken)}',
-      // 'Authorization':
-      //     'Bearer 95|TFOKpShunVwSfIkoM3vWcbyFODvUK4vWr17S5hPub20e8251',
-    };
+   
     return await dio.post(endPoint, data: data);
   }
 
@@ -50,6 +36,18 @@ class DioFactory {
         requestHeader: true,
         responseHeader: true,
         responseBody: true,
+      ),
+    );
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final token = await CacheHelper.getData(key: CacheKeys.userToken);
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          options.headers['Accept'] = 'application/json';
+          return handler.next(options); 
+        },
       ),
     );
   }

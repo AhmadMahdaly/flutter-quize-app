@@ -6,7 +6,7 @@ import 'package:smle/features/q_bank/widgets/create_quiz_widgets/compact_checkbo
 
 class SpecialtyList extends StatelessWidget {
   const SpecialtyList({super.key, required this.cubit});
-  final QBankcubit cubit;
+  final QBankCubit cubit;
   @override
   Widget build(BuildContext context) {
     final categories = cubit.categoriesModel!.data!;

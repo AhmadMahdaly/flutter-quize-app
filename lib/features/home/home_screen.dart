@@ -131,20 +131,20 @@ class HomeScreen extends StatelessWidget {
                       imagePath: Assets.questionBank,
                     ),
                   ),
-                  Expanded(
-                    child: CategoryWidget(
-                      onTap: () {
-                        isGuest
-                            ? showCustomPrimaryDialog(
-                                context,
-                                widget: const GuestLoginDialog(),
-                              )
-                            : context.pushNamed(Routes.categoriesScreen);
-                      },
-                      categoryName: 'revision'.tr(context),
-                      imagePath: Assets.revisionCategory,
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: CategoryWidget(
+                  //     onTap: () {
+                  //       isGuest
+                  //           ? showCustomPrimaryDialog(
+                  //               context,
+                  //               widget: const GuestLoginDialog(),
+                  //             )
+                  //           : context.pushNamed(Routes.categoriesScreen);
+                  //     },
+                  //     categoryName: 'revision'.tr(context),
+                  //     imagePath: Assets.revisionCategory,
+                  //   ),
+                  // ),
                 ],
               ),
               10.verticalSpace,
@@ -186,7 +186,10 @@ class HomeScreen extends StatelessWidget {
                                 context,
                                 widget: const GuestLoginDialog(),
                               )
-                            : context.pushNamed(Routes.analysisScreen,arguments: false);
+                            : context.pushNamed(
+                                Routes.analysisScreen,
+                                arguments: false,
+                              );
                       },
                       categoryName: 'analysis'.tr(context),
                       imagePath: Assets.analysisCategory,
