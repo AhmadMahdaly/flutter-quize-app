@@ -12,33 +12,20 @@ class GetPackagesSuccessState extends SubscriptionStates {}
 
 class GetPackagesFailedState extends SubscriptionStates {}
 
-/// Get Your Checkout
-class GetYourCheckoutLoadingState extends SubscriptionStates {}
-
-class GetYourCheckoutSuccessState extends SubscriptionStates {}
-
-class GetYourCheckoutFailedState extends SubscriptionStates {}
-
 /// Set Selected Package
 class SetSelectedPackageState extends SubscriptionStates {}
+class GetStoreProductsLoadingState extends SubscriptionStates {}
+class GetStoreProductsSuccessState extends SubscriptionStates {}
+class GetStoreProductsFailedState extends SubscriptionStates {
+  GetStoreProductsFailedState(this.message);
+  final String message;
+}
 
-/// Add Card
-class AddCardLoadingState extends SubscriptionStates {}
-
-class AddCardSuccessState extends SubscriptionStates {}
-
-class AddCardFailedState extends SubscriptionStates {}
-class CardScannedSuccessState  extends SubscriptionStates {}
-/// Get Cards
-class GetCardsLoadingState extends SubscriptionStates {}
-
-class GetCardsSuccessState extends SubscriptionStates {}
-
-class GetCardsFailedState extends SubscriptionStates {}
-
-/// Delete Card
-class DeleteCardLoadingState extends SubscriptionStates {}
-
-class DeleteCardSuccessState extends SubscriptionStates {}
-
-class DeleteCardFailedState extends SubscriptionStates {}
+// Purchase States
+class PurchaseLoadingState extends SubscriptionStates {}
+class PurchaseVerificationLoadingState extends SubscriptionStates {}
+class PurchaseSuccessState extends SubscriptionStates {}
+class PurchaseFailedState extends SubscriptionStates {
+  PurchaseFailedState( this.message);
+  final String message;
+}

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/constants.dart';
+import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/routing/app_router.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/themes.dart';
+import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -31,7 +34,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {  SizeConfig.init(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
-      child:  MaterialApp(
+      child:   BlocProvider(
+        create: (context) => CheckSubscriptionCubit(
+          getIt(),
+        ),
+  child: MaterialApp(
             onGenerateRoute: AppRouter().generateRoute,
             initialRoute:
                 CacheHelper.getData(key: CacheKeys.isFirstOpen) == true
@@ -92,6 +99,7 @@ class MyApp extends StatelessWidget {
             },
 
       ),
+),
     );
   }
 }

@@ -1,11 +1,11 @@
+// lib/features/q_bank/data/model/q_bank_model.dart (تعديل لدعم photo و a,b,c,d)
 class QBankModel {
   QBankModel({this.status, this.message, this.questionsCount, this.data});
 
   QBankModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-
-    questionsCount = json['questions_count'];
+    questionsCount = json['questions_count'] ?? json['data']?.length ?? 0; // دعم للـ count إذا غير موجود
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
@@ -49,6 +49,12 @@ class Data {
     this.isFavorite,
     this.isAnswered,
     this.questionbankId,
+    this.categoryId,
+    this.subcategoryId,
+    this.isActive,
+    this.isFree,
+    this.createdAt,
+    this.updatedAt,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -65,10 +71,15 @@ class Data {
     year = json['year'];
     month = json['month'];
     hint = json['hint'];
-    isFavorite = json['is_favorite'];
-
+    isFavorite = json['is_favourite'] ?? json['is_favorite'];
     isAnswered = json['is_answered'] == 1;
     questionbankId = json['questionbank_id'];
+    categoryId = json['category_id'];
+    subcategoryId = json['subcategory_id'];
+    isActive = json['is_active'];
+    isFree = json['is_free'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
   int? id;
   String? question;
@@ -87,6 +98,12 @@ class Data {
   bool? isFavorite;
   bool? isAnswered;
   int? questionbankId;
+  int? categoryId;
+  int? subcategoryId;
+  bool? isActive;
+  bool? isFree;
+  String? createdAt;
+  String? updatedAt;
 
   List<Options> get options => [
     Options(key: 'a', value: a ?? ''),
@@ -110,9 +127,15 @@ class Data {
     data['year'] = year;
     data['month'] = month;
     data['hint'] = hint;
-    data['is_favorite'] = isFavorite;
+    data['is_favourite'] = isFavorite;
     data['is_answered'] = isAnswered;
     data['questionbank_id'] = questionbankId;
+    data['category_id'] = categoryId;
+    data['subcategory_id'] = subcategoryId;
+    data['is_active'] = isActive;
+    data['is_free'] = isFree;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -122,3 +145,5 @@ class Options {
   String? key;
   String? value;
 }
+
+

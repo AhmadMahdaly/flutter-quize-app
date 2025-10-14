@@ -20,7 +20,7 @@ class QBankCubit extends Cubit<QBankStates> {
   }
 
   QBankModel? qBankModel;
-
+Future<void>init()async{_qBankRepository.init();}
   void setQuizModel(QBankModel model) {
     qBankModel = model;
     index = 0;
@@ -260,12 +260,18 @@ class QBankCubit extends Cubit<QBankStates> {
     emit(SelectSubCategoryState());
   }
 
+  // void selectAnswer(String key, int questionId) {
+  //   qBankModel!.data![index].selectedAnswer = key;
+  //   markQuestionAsAnswered(questionId);
+  //   emit(SelectAnswerState());
+  // }
   void selectAnswer(String key, int questionId) {
+    // selectedAnswer = key;
     qBankModel!.data![index].selectedAnswer = key;
+    isAnswered = true; // أضف هذا لتحديث isAnswered فوراً
     markQuestionAsAnswered(questionId);
     emit(SelectAnswerState());
   }
-
   Future<void> markQuestionAsAnswered(int questionId) async {
     emit(MarkingAsAnsweredState());
     final result = await _qBankRepository.markQuestionAsAnswered(questionId);
@@ -285,5 +291,40 @@ class QBankCubit extends Cubit<QBankStates> {
   void setIsAnswered() {
     isAnswered = !isAnswered;
     emit(SetIsAnsweredState());
+  }
+
+  Future<void> getPlaylistQuestions(int playlistId, {int offset = 0}) async {
+    showLoading();
+    emit(GetPlaylistQuestionsLoadingState());
+    final result = await _qBankRepository.getPlaylistQuestions(
+      playlistId: playlistId,
+      limit: 1, // سؤال واحد فقط
+      offset: offset,
+    );
+    result.when(
+      success: (success) {
+        // إذا كان data فارغ، انتهى الـ playlist
+        if (success.data == null || success.data!.isEmpty) {
+          hideLoading();
+          emit(PlaylistQuestionsEndState());
+          return;
+        }
+        // أضف السؤال إلى النموذج أو استبدل (هنا نستبدل لسؤال واحد)
+        qBankModel = QBankModel(
+          status: success.status,
+          message: success.message,
+          data: success.data,
+        );
+        index = 0; // دائماً index=0 لأن limit=1
+        isAnswered = false;
+        // selectedAnswer = null;
+        hideLoading();
+        emit(GetPlaylistQuestionsSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetPlaylistQuestionsFailedState());
+      },
+    );
   }
 }

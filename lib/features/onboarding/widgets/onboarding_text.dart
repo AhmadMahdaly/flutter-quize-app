@@ -15,7 +15,7 @@ class OnBoardingText extends StatelessWidget {
       builder: (context, state) {
         return Align(
           alignment: Alignment.topLeft,
-          child: Text(
+          child: Text(textAlign: TextAlign.center,
             context.read<GlobalCubit>().onBoardingIndex == 0
                 ? 'onBoarding1'.tr(context)
                 : context.read<GlobalCubit>().onBoardingIndex == 1

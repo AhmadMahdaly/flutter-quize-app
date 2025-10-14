@@ -26,10 +26,17 @@ class PackagesModel {
     return data;
   }
 }
-
 class Data {
-
-  Data({this.id, this.isExtra,this.monthly, this.name, this.price,this.isSubscribed, this.features});
+  Data({
+    this.id,
+    this.isExtra,
+    this.monthly,
+    this.name,
+    this.price,
+    this.isSubscribed,
+    this.features,
+    this.appleProductId,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -38,6 +45,7 @@ class Data {
     name = json['name'];
     price = json['price'];
     isSubscribed = json['is_subscribed'];
+    appleProductId = json['apple_product_id'];
     if (json['features'] != null) {
       features = <Features>[];
       json['features'].forEach((v) {
@@ -45,12 +53,14 @@ class Data {
       });
     }
   }
+
   int? id;
   bool? isExtra;
   bool? monthly;
   String? name;
   int? price;
   int? isSubscribed;
+  String? appleProductId;
   List<Features>? features;
 
   Map<String, dynamic> toJson() {
@@ -61,12 +71,14 @@ class Data {
     data['name'] = name;
     data['price'] = price;
     data['is_subscribed'] = isSubscribed;
+    data['apple_product_id'] = appleProductId;
     if (features != null) {
       data['features'] = features!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
+
 
 class Features {
 

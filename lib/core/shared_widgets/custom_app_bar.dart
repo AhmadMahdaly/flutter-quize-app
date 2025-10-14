@@ -8,13 +8,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.title = '',
     this.canBack = true,
-    this.iconAction,
+    this.iconAction, this.leading,
   });
 
   final String title;
   final bool canBack;
   final IconData? iconAction;
-
+final Widget? leading;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -30,7 +30,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onPressed: () => Navigator.of(context).pop(),
             )
-          : const SizedBox(),
+          : leading,
       title: Text(
         title,
         textAlign: TextAlign.center,

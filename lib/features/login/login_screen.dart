@@ -60,8 +60,8 @@ class LoginScreen extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                       10.verticalSpace,
-                      Text(
-                        "  ${'welcome_to'.tr(context)}  \n(${'smle_gate'.tr(context)})",
+                      Text(textAlign: TextAlign.center,
+                        "${'welcome_to'.tr(context)}\n(${'smle_gate'.tr(context)})",
                         style: interExtraBold.copyWith(
                           fontSize: SizeConfig.responsiveValue(
                             phone: 24.sp,
@@ -73,9 +73,9 @@ class LoginScreen extends StatelessWidget {
                         'trusted_partner'.tr(context),
                         style: interBold.copyWith(
                           fontSize: SizeConfig.responsiveValue(
-                            phone: 20.sp,
-                            tablet: 24.sp,
-                          ),
+                            phone: 18.sp,
+                            tablet: 20.sp,
+                          ),fontWeight: FontWeight.w500
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -131,41 +131,58 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+
+                  Column(
+                    children: [
+      
                   FittedBox(
                     child: Row(
                       children: [
                         Text('by_the'.tr(context),
-                            style: interRegular.copyWith(
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 14.sp,
-                                tablet: 18.sp,
-                              ),)), Text('register'.tr(context),
+                          style: interRegular.copyWith(
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 14.sp,
+                              tablet: 18.sp,
+                            ),)), Text('${'register'.tr(context)} ',
                           style: interRegular.copyWith(
                             fontSize: SizeConfig.responsiveValue(
                               phone: 14.sp,
                               tablet: 18.sp,
                             ),
+                                ),
+                              ),
+                          
+                   
+                          Text(
+                            'confirm_agreement'.tr(context),
+
+                            style: interRegular.copyWith(
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 12.sp,
+                                tablet: 18.sp,
+                              ),
+                            ),
                           ),
-                        ), Text('confirm_agreement'.tr(context),
-                          style: interRegular.copyWith(
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 14.sp,
-                              tablet: 18.sp,
-                            ),),
-                        ), InkWell(
-                          onTap: ()=>context.pushNamed(Routes.privacyPolicyScreen),
-                          child:Text('privacy_policy'.tr(context),
+                          InkWell(
+                            onTap: () =>
+                                context.pushNamed(Routes.privacyPolicyScreen),
+                            child: Text(
+                              'privacy_policy'.tr(context),
+
                               style: interRegular.copyWith(
                                 color: AppColors.secondaryColor,
                                 fontSize: SizeConfig.responsiveValue(
-                                  phone: 14.sp,
+                                  phone: 12.sp,
                                   tablet: 18.sp,
-                                ),)
-                          ),)
-                      ],
-                    ),
-                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  )  ],
 
+                  ),
                 ],
               ),
             ),

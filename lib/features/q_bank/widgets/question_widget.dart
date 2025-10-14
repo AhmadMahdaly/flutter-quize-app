@@ -14,12 +14,13 @@ class QuestionWidget extends StatelessWidget {
     this.addCircledFun,
     required this.newsExplain,
     required this.lightBulbExplain,
-    required this.questionCircleExplain,
+    required this.questionCircleExplain,  this.isAdd=false,
   });
   final String currentQuestion, question;
   final bool isFav;
   final GestureTapCallback? addCircledFun;
   final String newsExplain, lightBulbExplain, questionCircleExplain;
+  final bool isAdd;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -44,12 +45,14 @@ class QuestionWidget extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: addCircledFun,
-                    child: Icon(
-                      CupertinoIcons.add_circled,
-                      color: AppColors.forthColor.withOpacity(0.7),
-                      size: SizeConfig.responsiveValue(
-                        phone: 20.sp,
-                        tablet: 40.sp,
+                    child: ExcludeSemantics( // أضف هذا لتقليل semantics tree
+                      child: Icon(
+                        isAdd?CupertinoIcons.delete:   CupertinoIcons.add_circled,
+                        color: AppColors.forthColor.withOpacity(0.7),
+                        size: SizeConfig.responsiveValue(
+                          phone: 20.sp,
+                          tablet: 40.sp,
+                        ),
                       ),
                     ),
                   ),
@@ -89,7 +92,7 @@ class QuestionWidget extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: newsExplain == 'null' ? '' : newsExplain,
+                          text: newsExplain == 'null'||newsExplain == 'NULL'||newsExplain == null ? '' : newsExplain,
                           style: interRegular.copyWith(
                             fontSize: 16.sp,
                             color: AppColors.forthColor,
@@ -130,7 +133,7 @@ class QuestionWidget extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: lightBulbExplain == 'null'
+                          text: lightBulbExplain == 'null'||lightBulbExplain==null||lightBulbExplain=='NULL'
                               ? ''
                               : lightBulbExplain,
                           style: interRegular.copyWith(
@@ -144,7 +147,8 @@ class QuestionWidget extends StatelessWidget {
                       ],
                     ),
                     child: Icon(
-                      CupertinoIcons.lightbulb,
+                      lightBulbExplain == 'null'||lightBulbExplain==null||lightBulbExplain=='NULL'?  CupertinoIcons.lightbulb_slash:
+                      CupertinoIcons.lightbulb_fill,
                       size: SizeConfig.responsiveValue(
                         phone: 20.sp,
                         tablet: 40.sp,

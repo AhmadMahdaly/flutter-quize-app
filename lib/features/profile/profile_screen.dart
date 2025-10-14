@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/cache_helper/cache_helper.dart';
+import 'package:smle/core/cache_helper/cache_values.dart';
+import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
@@ -8,6 +11,7 @@ import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/login/cubit/login_cubit.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/profile/widgets/profile_button_widget.dart';
 
@@ -16,7 +20,9 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainLayoutCubit, MainLayoutState>(
+    return BlocProvider(
+  create: (context) =>  LoginCubit(getIt()),
+  child: BlocBuilder<MainLayoutCubit, MainLayoutState>(
       builder: (context, state) {
         return context.read<MainLayoutCubit>().profileModel == null
             ? Scaffold(
@@ -126,6 +132,16 @@ class ProfileScreen extends StatelessWidget {
                           spacing: 16.h,
                           children: [
                             ProfileButtonWidget(
+                              text: 'Playlist',
+                              imagePath: Assets.questionLight,
+                              onPressed: () {
+                                context.pushNamed(Routes.playListScreen, arguments: {
+                                  'questionId':0,
+                                  'isAdd':true
+                                }, );
+                              },
+                            ),
+                            ProfileButtonWidget(
                               text: 'exams_history'.tr(context),
                               imagePath: Assets.history,
                               onPressed: () {
@@ -157,6 +173,16 @@ class ProfileScreen extends StatelessWidget {
                                 );
                               },
                             ),
+                            ProfileButtonWidget(
+                              text: 'log_out'.tr(context),
+                              imagePath: Assets.logOut,
+                              onPressed: () {
+                                context.read<LoginCubit>().logOut().then((value) {
+                                  CacheHelper.sharedPreferences.remove(CacheKeys.userToken);
+                                  context.pushReplacementNamed(Routes.loginScreen);
+                                });
+                              },
+                            ),
                           ],
                         ),
 
@@ -170,6 +196,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               );
       },
-    );
+    ),
+);
   }
 }

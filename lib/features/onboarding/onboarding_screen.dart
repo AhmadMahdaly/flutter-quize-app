@@ -20,22 +20,20 @@ class OnBoardingScreen extends StatelessWidget {
   final PageController _pageController = PageController();
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<GlobalCubit, GlobalStates>(
-      listener: (context, state) {},
+    return BlocBuilder<GlobalCubit, GlobalStates>(
       builder: (context, state) {
         return SafeArea(
-          child: Scaffold(
+          child: Scaffold(backgroundColor: AppColors.primaryColor,
             body: PageView.builder(
               itemCount: 3,
               controller: _pageController,
-              physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 return Stack(
                   children: [
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
+                        image: DecorationImage(filterQuality :FilterQuality.high,
                           image: AssetImage(
                             context.read<GlobalCubit>().onBoardingIndex == 0
                                 ? Assets.onBoarding1
@@ -44,7 +42,7 @@ class OnBoardingScreen extends StatelessWidget {
                                 ? Assets.onBoarding2
                                 : Assets.onBoarding3,
                           ),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitWidth,
                         ),
                       ),
                       child: Padding(

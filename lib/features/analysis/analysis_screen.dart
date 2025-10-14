@@ -21,7 +21,15 @@ class AnalysisScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'analysis'.tr(context),
-      canBack: !isExam,),
+      canBack: !isExam,
+      leading:IconButton(
+          icon: Icon(
+            size: SizeConfig.responsiveValue(phone: 24.sp, tablet: 30.sp),
+            Icons.arrow_back_ios_new,
+            color: AppColors.iconColorBlack,
+          ),
+          onPressed: () {  getIt<RealExamCubit>().resetExam();
+          context.pushReplacementNamed(Routes.mainLayoutScreen);},)),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
         child: BlocBuilder<AnalysisCubit, AnalysisStates>(
@@ -183,7 +191,8 @@ class AnalysisScreen extends StatelessWidget {
                       },
                     ),
                 ],
-              ):NoDataWidget(noDataImage: '', noDataText: 'no_data_found'.tr(context)),
+              ):context
+                .read<AnalysisCubit>().state is GetAnalysisLoadingState?const SizedBox.shrink():NoDataWidget(noDataImage: '', noDataText: 'no_data_found'.tr(context)),
             );
           },
         ),

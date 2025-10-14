@@ -3,6 +3,7 @@ import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/features/SCFHS_score_calculator/data/repo/calculator_repo.dart';
 import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
 import 'package:smle/features/analysis/data/repo/analysis_repo.dart';
+import 'package:smle/features/check_subscription/data/repo/check_subscription_repo.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/data/repo/exams_history_repository.dart';
 import 'package:smle/features/free_trial/cubit/free_trial_cubit.dart';
@@ -11,6 +12,7 @@ import 'package:smle/features/login/data/repo/login_repo.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';
+import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 import 'package:smle/features/play_list/data/repo/play_list_repo.dart';
 import 'package:smle/features/q_bank/data/repo/q_bank_repo.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
@@ -36,6 +38,7 @@ Future<void> setupGetIt() async {
     () => MainLayoutRepository(getIt()),
   );
   getIt.registerFactory<LoginRepository>(() => LoginRepository(getIt()));
+
   getIt.registerFactory<SubscriptionRepository>(
     () => SubscriptionRepository(getIt()),
   );
@@ -50,8 +53,12 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<PlayListRepository>(() => PlayListRepository(getIt()));
   getIt.registerFactory<RealExamRepo>(() => RealExamRepo(getIt()));
   getIt.registerLazySingleton<RealExamCubit>(()=>RealExamCubit(getIt()));
+  getIt.registerLazySingleton<PlayListCubit>(()=>PlayListCubit(getIt()));
+
   getIt.registerFactory<TrialExamRepository>(
     () => TrialExamRepository(getIt()),
   );
   getIt.registerFactory<TrialExamCubit>(() => TrialExamCubit(getIt()));
+  getIt.registerFactory<CheckSubscriptionRepository>(() => CheckSubscriptionRepository(getIt()));
+
 }

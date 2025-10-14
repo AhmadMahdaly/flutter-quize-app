@@ -1,6 +1,6 @@
 part of 'login_cubit.dart';
 
-@immutable
+// STATES
 @immutable
 abstract class LoginStates {}
 
@@ -15,8 +15,11 @@ class LogInFailedState extends LoginStates {
   final String message;
 }
 
-class DeleteAccountLoadingState extends LoginStates {}
+class LogOutLoadingState extends LoginStates {}
 
-class DeleteAccountSuccessState extends LoginStates {}
+class LogOutSuccessState extends LoginStates {}
 
-class DeleteAccountFailedState extends LoginStates {}
+class LogOutFailedState extends LoginStates {
+  LogOutFailedState(this.message);
+  final String message;
+}

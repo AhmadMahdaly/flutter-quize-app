@@ -49,3 +49,10 @@ class MarkAsAnsweredSuccessState extends QBankStates {}
 class MarkAsAnsweredFailedState extends QBankStates {}
 
 class SetIsAnsweredState extends QBankStates {}
+class GetPlaylistQuestionsLoadingState extends QBankStates {}
+
+class GetPlaylistQuestionsSuccessState extends QBankStates {}
+
+class GetPlaylistQuestionsFailedState extends QBankStates {}
+
+class PlaylistQuestionsEndState extends QBankStates {}

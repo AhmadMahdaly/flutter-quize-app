@@ -138,6 +138,7 @@ class TrialHeaderCard extends StatelessWidget {
                         context: context,
                         builder: (ctx) => ResultsDialog(
                           state: context.read<TrialExamCubit>().state,
+                          cubit: context.read<TrialExamCubit>(),
                         ),
                       );
                     },

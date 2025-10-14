@@ -165,10 +165,7 @@ class GiftsScreen extends StatelessWidget {
                           noDataImage: '',
                           noDataText: 'no_data_found'.tr(context),
                         )
-                : NoDataWidget(
-                    noDataImage: '',
-                    noDataText: 'no_data_found'.tr(context),
-                  );
+                : const SizedBox.shrink();
           },
         ),
       ),

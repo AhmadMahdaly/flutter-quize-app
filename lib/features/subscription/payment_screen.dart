@@ -12,225 +12,83 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
 import 'package:smle/features/subscription/widgets/cards_widget.dart';
+import 'package:smle/features/subscription/widgets/pay_done_dialog.dart';
 import 'package:smle/features/subscription/widgets/payment_details_widget.dart';
 
 class PaymentScreen extends StatelessWidget {
   const PaymentScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(title: 'payment'.tr(context)),
-      body: SingleChildScrollView(
-        child: BlocBuilder<SubscriptionCubit, SubscriptionStates>(
-  builder: (context, state) {
-    return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              30.verticalSpace,
-              Text(
-                'promotions'.tr(context),
-                style: interBold.copyWith(
-                  fontSize: SizeConfig.responsiveValue(
-                    phone: 16.sp,
-                    tablet: 20.sp,
-                  ),
-                ),
-              ),
-              12.verticalSpace,
-              Text(
-                'redeem_promo_code'.tr(context),
-                style: interMedium.copyWith(
-                  fontSize: SizeConfig.responsiveValue(
-                    phone: 14.sp,
-                    tablet: 18.sp,
-                  ),
-                ),
-              ),
-              10.verticalSpace,
-              TextFormField(
-                textAlign: TextAlign.center,
-                style: interRegular.copyWith(
-                  color: AppColors.darkGreyColor,
-                  fontSize: SizeConfig.responsiveValue(
-                    phone: 12.sp,
-                    tablet: 16.sp,
-                  ),
-                ),
-                controller: context
-                    .read<SubscriptionCubit>()
-                    .promoCodeController,
-                decoration: InputDecoration(
-                  hintText: 'optional'.tr(context),
-                  fillColor: AppColors.greyColor.withOpacity(
-                    0.3,
-                  ), // Background color
-                  filled: true, // Enables the background color
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(40.r)),
-                    borderSide: const BorderSide(color: AppColors.greyColor),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(40.r)),
-                    borderSide: const BorderSide(color: AppColors.greyColor),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(40.r)),
-                    borderSide: const BorderSide(color: AppColors.greyColor),
-                  ),
-                ),
-              ),
-              24.verticalSpace,
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    context.read<SubscriptionCubit>().getYourCheckout(
-                      '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.offerId}',
-                    );
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(
-                      AppColors.secondaryColor,
-                    ),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    minimumSize: WidgetStateProperty.all(
-                      Size(double.infinity, 52.h),
-                    ),
-                    shape: WidgetStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.r),
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'apply'.tr(context),
-                    style: interBold.copyWith(
-                      color: AppColors.thirdColor,
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
-                        tablet: 20.sp,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              24.verticalSpace,
-              BlocBuilder<SubscriptionCubit, SubscriptionStates>(
-                builder: (context, state) {
-                  return context.read<SubscriptionCubit>().yourCheckoutModel !=
-                          null
-                      ? context
-                                    .read<SubscriptionCubit>()
-                                    .yourCheckoutModel!
-                                    .data !=
-                                null
-                            ? const PaymentDetailsWidget()
-                            : const SizedBox.shrink()
-                      : const SizedBox.shrink();
-                },
-              ),
-              50.verticalSpace,
-              Text(
-                'add_your_payment_method'.tr(context),
-                style: interBold.copyWith(
-                  fontSize: SizeConfig.responsiveValue(
-                    phone: 16.sp,
-                    tablet: 20.sp,
-                  ),
-                ),
-              ),
-              if (context.read<SubscriptionCubit>().cardsModel != null)
-                SizedBox(
-                  height: 250.h,
-                  child: CardsListWidget(
-                    cards: context.read<SubscriptionCubit>().cardsModel!.data!,
-                  ),
-                ),
-              if (!Platform.isAndroid) 50.verticalSpace,
-              if (!Platform.isAndroid)
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      context.pushNamed(
-                        Routes.applePayScreen,
-                        arguments:
-                            '${context.read<SubscriptionCubit>().yourCheckoutModel!.data!.payments}',
-                      );
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(
-                        AppColors.secondaryColor,
-                      ),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      minimumSize: WidgetStateProperty.all(
-                        Size(double.infinity, 52.h),
-                      ),
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.r),
+    return BlocConsumer<SubscriptionCubit, SubscriptionStates>(
+      listener: (context, state) {
+        if (state is PurchaseSuccessState) {
+          // تم الشراء بنجاح، اظهر رسالة أو انتقل لشاشة أخرى
+          showDialog(
+            context: context,
+            builder: (context) => const PayDoneDialog(),
+          );
+        } else if (state is PurchaseFailedState) {
+          // فشلت عملية الشراء، اظهر رسالة خطأ
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
+      },
+      builder: (context, state) {
+        final cubit = context.read<SubscriptionCubit>();
+
+        if (cubit.storeProducts.isEmpty) {
+          // جاري التحميل أو لم يتم العثور على منتجات
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+
+        return Scaffold(
+          appBar: CustomAppBar(title: 'subscription'.tr(context)),
+          body: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ... (نصوص العنوان)
+
+                // عرض قائمة المنتجات من متجر Apple
+                ...List.generate(cubit.storeProducts.length, (index) {
+                  final product = cubit.storeProducts[index];
+                  // يمكنك البحث عن تفاصيل الباقة من `packagesModel` باستخدام `product.id`
+                  // للعثور على الميزات وغيرها
+
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: GestureDetector(
+                      onTap: () {
+                        // بدء عملية الشراء
+                        cubit.buyPackage(product);
+                      },
+                      child: Container(
+                        // ... (تصميم الكارت الخاص بك)
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(product.title, style: interBold), // اسم المنتج من Apple
+                                Text(product.description), // وصف المنتج من Apple
+                                // ... عرض الميزات من الـ packagesModel
+                              ],
+                            ),
+                            Text(product.price, style: interBold), // السعر من Apple (جاهز بالعملة المحلية)
+                          ],
                         ),
                       ),
                     ),
-                    child: Text(
-                      'pay_via_apple_pay'.tr(context),
-                      style: interBold.copyWith(
-                        color: AppColors.thirdColor,
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 16.sp,
-                          tablet: 20.sp,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              25.verticalSpace,
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    context.pushNamed(Routes.addCardScreen);
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(
-                      AppColors.secondaryColor,
-                    ),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    minimumSize: WidgetStateProperty.all(
-                      Size(double.infinity, 52.h),
-                    ),
-                    shape: WidgetStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.r),
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'add_new_card'.tr(context),
-                    style: interBold.copyWith(
-                      color: AppColors.thirdColor,
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
-                        tablet: 20.sp,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              50.verticalSpace,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(Assets.visa),
-                  Image.asset(Assets.masterCard),
-                ],
-              ),
-            ],
+                  );
+                }),
+              ],
+            ),
           ),
         );
-  },
-),
-      ),
+      },
     );
   }
 }

@@ -15,6 +15,8 @@ class EndPoints {
   static const String addCard = 'user/card';
   static const String getCards = 'user/cards';
   static const String deleteCard = 'user/card/delete/';
+  static const String getPlaylistQuestions = 'playlist/questions/';
+  static const String removeQuestionFromPlaylist= 'remove/playlist/question';
 
   // ? revision
   static const String getCategories = 'categories';
@@ -39,6 +41,7 @@ class EndPoints {
   static const String createPlayList = 'create/playlist';
   static const String deletePlayList = 'remove/playlist';
   static const String editPlayList = 'update/playlist';
+  static const String addToPlayList = 'add/question/to/playlist';
   static const String getFreeTrial = 'start/free/trial';
   static const String markAsAnswered = 'qbank/mark-as-answered';
   static const String createQBank = 'create/q_bank';
@@ -52,4 +55,6 @@ class EndPoints {
   static const String addQuestionNote = 'question/note';
   static const String finishAnalysisExam = 'exam/analysis';
   static const String getExamHistory = 'exam/history';
+  static const String verifyPurchase='verifyPurchase';
+  static const String checkSubscribe='check/subscribed';
 }

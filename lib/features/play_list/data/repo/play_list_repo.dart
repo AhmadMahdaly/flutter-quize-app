@@ -5,6 +5,7 @@ import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
 import 'package:smle/core/network/failures.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
 
 class PlayListRepository {
 
@@ -23,10 +24,21 @@ class PlayListRepository {
     }
   }
 
-  Future<ApiResult<PlayListModel>> getPlayListDetails() async {
-    final response = await _dioFactory.get(endPoint: EndPoints.getPlayListDetails);
-    if (response!.statusCode == 200 ) {
-      final PlayListModel model = PlayListModel.fromJson(response.data);
+  Future<ApiResult<QBankModel>> getPlayListDetails({
+    required String playlistId,
+    int limit = 1, // افتراضي 1 لسؤال واحد
+    int offset = 0,
+  }) async {
+    final response = await _dioFactory.post(
+      endPoint: EndPoints.getPlayListDetails, // /playlist/questions
+      data: {
+        'playlist_id': playlistId,
+        'limit': limit,
+        'offset': offset,
+      },
+    );
+    if (response!.statusCode == 200) {
+      final QBankModel model = QBankModel.fromJson(response.data);
       return ApiResult.success(model);
     } else {
       debugPrintWidget(response.data['message']);
@@ -40,7 +52,7 @@ class PlayListRepository {
     questionId!=null?
     {
       'name':name,
-      'question_id':[questionId],
+      'question_id[0]':questionId,
     }:{
       'name':name,
     });
@@ -65,7 +77,32 @@ class PlayListRepository {
           ServerFailure.fromResponse(response.statusCode, response.data['message']));
     }
   }
-
+  Future<ApiResult> addToPlayList(String playListID, String questionID) async {
+    final response = await _dioFactory.post(endPoint: EndPoints.addToPlayList,data: {
+      'playlist_id':playListID,
+      'question_id':questionID,
+    });
+    if (response!.statusCode == 200 ) {
+      return ApiResult.success(response);
+    } else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(
+          ServerFailure.fromResponse(response.statusCode, response.data['message']));
+    }
+  }
+  Future<ApiResult> removeFromPlayList(String playListID, String questionID) async {
+    final response = await _dioFactory.post(endPoint: EndPoints.removeQuestionFromPlaylist,data: {
+      'playlist_id':playListID,
+      'question_id':questionID,
+    });
+    if (response!.statusCode == 200 ) {
+      return ApiResult.success(response);
+    } else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(
+          ServerFailure.fromResponse(response.statusCode, response.data['message']));
+    }
+  }
   Future<ApiResult> editPlayList(String playListID,String name) async {
     final response = await _dioFactory.post(endPoint: EndPoints.editPlayList,data: {
       'playlist_id':playListID,

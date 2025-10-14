@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/features/play_list/data/model/play_list_model.dart';
 import 'package:smle/features/play_list/data/repo/play_list_repo.dart';
+import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
 
 part 'play_list_state.dart';
 
@@ -43,7 +44,7 @@ class PlayListCubit extends Cubit<PlayListStates> {
       success: (success) {
         hideLoading();
         emit(CreatePlayListSuccessState());
-        getPlayList();
+        getPlayList(); // تحديث القائمة
       },
       failure: (error) {
         hideLoading();
@@ -60,8 +61,8 @@ class PlayListCubit extends Cubit<PlayListStates> {
     result.when(
       success: (success) {
         hideLoading();
-
-        getPlayList();
+        emit(DeletePlayListSuccessState());
+        getPlayList(); // تحديث القائمة
       },
       failure: (error) {
         hideLoading();
@@ -69,6 +70,7 @@ class PlayListCubit extends Cubit<PlayListStates> {
       },
     );
   }
+
 
   /// Edit PlayList
   Future<void> editPlayList(String playListId, String playListName) async {
@@ -82,11 +84,77 @@ class PlayListCubit extends Cubit<PlayListStates> {
       success: (success) {
         hideLoading();
         emit(EditPlayListSuccessState());
-        getPlayList();
+        getPlayList(); // تحديث القائمة
       },
       failure: (error) {
         hideLoading();
         emit(EditPlayListFailedState());
+      },
+    );
+  }
+  Future<void> addToPlayList(String playListId, String questionId) async {
+    showLoading();
+    emit(AddToPlayListLoadingState());
+    final result = await _playListRepository.addToPlayList(playListId, questionId);
+    result.when(
+      success: (success) {
+        hideLoading();
+        emit(AddToPlayListSuccessState());
+        getPlayList();
+      },
+      failure: (error) {
+        hideLoading();
+        emit(AddToPlayListFailedState());
+      },
+    );
+  }
+  Future<void> removeFromPlayList(String playListId, String questionId, {int? offset}) async {
+    showLoading();
+    emit(RemoveFromPlayListLoadingState());
+    final result = await _playListRepository.removeFromPlayList(playListId, questionId);
+    result.when(
+      success: (success) {
+        hideLoading();
+        emit(RemoveFromPlayListSuccessState());
+        getPlayList();
+        if (offset != null) {
+          getPlayListDetails(
+            playlistId: playListId,
+            limit: 1,
+            offset: offset,
+          );
+        }
+      },
+      failure: (error) {
+        hideLoading();
+        emit(RemoveFromPlayListFailedState());
+      },
+    );
+  }
+
+  QBankModel? playListQuestionsModel; // غير إلى QBankModel للأسئلة
+
+  Future<void> getPlayListDetails({
+    required String playlistId,
+    int limit = 1,
+    int offset = 0,
+  }) async {
+    showLoading();
+    emit(GetPlayListDetailsLoadingState());
+    final result = await _playListRepository.getPlayListDetails(
+      playlistId: playlistId,
+      limit: limit,
+      offset: offset,
+    );
+    result.when(
+      success: (success) {
+        playListQuestionsModel = success;
+        hideLoading();
+        emit(GetPlayListDetailsSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetPlayListDetailsFailedState());
       },
     );
   }

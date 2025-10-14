@@ -15,14 +15,15 @@ class TopBannerWidget extends StatelessWidget {
         color: AppColors.darkGreyColor,
         borderRadius: BorderRadius.all(Radius.circular(100.r)),
       ),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
-            child: SizedBox(
+      child: Padding(
+    padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
+    child:Stack(
+      clipBehavior: Clip.none,  children: [
+           SizedBox(
               width: SizeConfig.screenWidth / 2,
-              child: Text.rich(
+              child:   FittedBox(
+                child:Text.rich(
+                maxLines:2,
                 TextSpan(
                   children: [
                     TextSpan(
@@ -46,7 +47,7 @@ class TopBannerWidget extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: 'questions across all medical specialties',
+                      text: 'questions across\nall medical specialties',
                       style: interBold.copyWith(
                         fontSize: SizeConfig.responsiveValue(
                           phone: 15.sp,
@@ -58,17 +59,17 @@ class TopBannerWidget extends StatelessWidget {
                   ],
                 ),
               ),
+            ),),
+        Positioned(
+          bottom: -5,
+          right: -20,
+          child:
+          Image.asset(
+              'assets/images/png/medical-check.png',
+              height: SizeConfig.responsiveValue(phone: 90.h, tablet: 70.h),
             ),
-          ),
-          Positioned(
-            bottom: -5,
-            right: -20,
-            child: Image.asset(
-              Assets.homeDoctor,
-              height: SizeConfig.responsiveValue(phone: 180.h, tablet: 140.h),
-            ),
-          ),
-        ],
+        )
+     ],),
       ),
     );
   }

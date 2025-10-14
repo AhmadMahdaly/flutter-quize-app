@@ -58,57 +58,71 @@ class _TrialExamBodyState extends State<TrialExamBody> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<TrialExamCubit>();
-    return BlocBuilder<TrialExamCubit, TrialExamState>(
-      builder: (context, state) {
-        final currentQuestion = state.questions[state.currentQuestionIndex];
-        final totalQuestions = state.questions.length;
-        final currentQuestionNo = state.currentQuestionIndex + 1;
+    return BlocListener<TrialExamCubit, TrialExamState>(
+      listener: (context, state) {
+        // التحقق من الانتهاء التلقائي: آخر سؤال + إجابة عليه
+        if (state.status == FetchStatus.success &&
+            state.questions.isNotEmpty &&
+            state.currentQuestionIndex == state.questions.length - 1 &&
+            state.userAnswers.containsKey(state.questions[state.currentQuestionIndex].id)) {
+          showDialog(
+            context: context,
+            builder: (ctx) => ResultsDialog(state: state,cubit: cubit,),
+          );
+        }
+      },
+      child: BlocBuilder<TrialExamCubit, TrialExamState>(
+        builder: (context, state) {
+          final currentQuestion = state.questions[state.currentQuestionIndex];
+          final totalQuestions = state.questions.length;
+          final currentQuestionNo = state.currentQuestionIndex + 1;
 
-        return Column(
-          children: [
-            TrialHeaderCard(
-              questionNumber: currentQuestionNo,
-              totalQuestions: totalQuestions,
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 80,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: totalQuestions,
-                      itemExtent: _itemHeight,
-                      itemBuilder: (context, index) {
-                        return buildTimelineItem(context, index);
-                      },
-                    ),
-                  ),
-
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(8.r),
-                      child: TrialQuestionWidget(
-                        key: ValueKey(currentQuestion.id),
-                        question: currentQuestion,
+          return Column(
+            children: [
+              TrialHeaderCard(
+                questionNumber: currentQuestionNo,
+                totalQuestions: totalQuestions,
+              ),
+              Expanded(
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 80,
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: totalQuestions,
+                        itemExtent: _itemHeight,
+                        itemBuilder: (context, index) {
+                          return buildTimelineItem(context, index);
+                        },
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
 
-            _buildBottomBar(
-              context,
-              cubit,
-              currentQuestionNo,
-              totalQuestions,
-              currentQuestion.id,
-            ),
-            60.verticalSpace,
-          ],
-        );
-      },
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(8.r),
+                        child: TrialQuestionWidget(
+                          key: ValueKey(currentQuestion.id),
+                          question: currentQuestion,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              _buildBottomBar(
+                context,
+                cubit,
+                currentQuestionNo,
+                totalQuestions,
+                currentQuestion.id,
+              ),
+              60.verticalSpace,
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -136,12 +150,12 @@ class _TrialExamBodyState extends State<TrialExamBody> {
   }
 
   Widget _buildBottomBar(
-    BuildContext context,
-    TrialExamCubit cubit,
-    int currentQuestionNo,
-    int totalQuestions,
-    int currentQuestionId,
-  ) {
+      BuildContext context,
+      TrialExamCubit cubit,
+      int currentQuestionNo,
+      int totalQuestions,
+      int currentQuestionId,
+      ) {
     final bool isFirst = currentQuestionNo == 1;
     final bool isLast = currentQuestionNo == totalQuestions;
 
@@ -261,7 +275,12 @@ class TimelineItem extends StatelessWidget {
 }
 
 class ResultsDialog extends StatelessWidget {
-  const ResultsDialog({super.key, required this.state});
+  const ResultsDialog({
+    super.key,
+    required this.cubit, // إضافة: تمرير cubit مباشرة
+    required this.state,
+  });
+  final TrialExamCubit cubit;
   final TrialExamState state;
 
   @override
@@ -338,6 +357,23 @@ class ResultsDialog extends StatelessWidget {
             style: interRegular.copyWith(
               fontSize: SizeConfig.responsiveValue(phone: 12.sp, tablet: 16.sp),
               color: AppColors.iconColorBlack,
+            ),
+          ),
+        ),
+        // استخدام cubit المُمرر مباشرة بدلاً من context.read
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            cubit.resetExam();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.successColor,
+            foregroundColor: AppColors.offwhiteColor,
+          ),
+          child: Text(
+            'Start New Test',
+            style: interRegular.copyWith(
+              fontSize: SizeConfig.responsiveValue(phone: 12.sp, tablet: 16.sp),
             ),
           ),
         ),

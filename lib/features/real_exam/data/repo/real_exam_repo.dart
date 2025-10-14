@@ -11,22 +11,18 @@ class RealExamRepo {
   RealExamRepo(this._dioFactory);
   final DioFactory _dioFactory;
   Future<ApiResult<StartRealExamModel>> startRealExam() async {
-    try {
-      final response = await _dioFactory.get(endPoint: EndPoints.startRealExam);
-      if (response!.statusCode == 200) {
-        final model = StartRealExamModel.fromJson(response.data);
-        return ApiResult.success(model);
-      } else {
-        debugPrintWidget(response.data['message']);
-        return ApiResult.failure(
-          ServerFailure.fromResponse(
-            response.statusCode,
-            response.data['message'],
-          ),
-        );
-      }
-    } catch (e) {
-      rethrow;
+    final response = await _dioFactory.get(endPoint: EndPoints.startRealExam);
+    if (response!.statusCode == 200) {
+      final model = StartRealExamModel.fromJson(response.data);
+      return ApiResult.success(model);
+    } else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(
+        ServerFailure.fromResponse(
+          response.statusCode,
+          response.data['message'],
+        ),
+      );
     }
   }
 
@@ -35,24 +31,20 @@ class RealExamRepo {
     int qNo,
     int section,
   ) async {
-    try {
-      final response = await _dioFactory.get(
-        endPoint: '${EndPoints.getQuestion}$examId/$qNo/$section',
+    final response = await _dioFactory.get(
+      endPoint: '${EndPoints.getQuestion}$examId/$qNo/$section',
+    );
+    if (response!.statusCode == 200) {
+      final model = StartRealExamModel.fromJson(response.data);
+      return ApiResult.success(model);
+    } else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(
+        ServerFailure.fromResponse(
+          response.statusCode,
+          response.data['message'],
+        ),
       );
-      if (response!.statusCode == 200) {
-        final model = StartRealExamModel.fromJson(response.data);
-        return ApiResult.success(model);
-      } else {
-        debugPrintWidget(response.data['message']);
-        return ApiResult.failure(
-          ServerFailure.fromResponse(
-            response.statusCode,
-            response.data['message'],
-          ),
-        );
-      }
-    } catch (e) {
-      rethrow;
     }
   }
 
@@ -60,50 +52,42 @@ class RealExamRepo {
     String questionId,
     String answer,
   ) async {
-    try {
-      final response = await _dioFactory.post(
-        endPoint: EndPoints.answerQuestion,
-        data: {'question_id': questionId, 'answer': answer},
+    final response = await _dioFactory.post(
+      endPoint: EndPoints.answerQuestion,
+      data: {'question_id': questionId, 'answer': answer},
+    );
+    if (response!.statusCode == 200) {
+      final model = QuestionActionModel.fromJson(response.data);
+      return ApiResult.success(model);
+    } else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(
+        ServerFailure.fromResponse(
+          response.statusCode,
+          response.data['message'],
+        ),
       );
-      if (response!.statusCode == 200) {
-        final model = QuestionActionModel.fromJson(response.data);
-        return ApiResult.success(model);
-      } else {
-        debugPrintWidget(response.data['message']);
-        return ApiResult.failure(
-          ServerFailure.fromResponse(
-            response.statusCode,
-            response.data['message'],
-          ),
-        );
-      }
-    } catch (e) {
-      rethrow;
     }
   }
 
   Future<ApiResult<QuestionActionModel>> makeQuestionFlag(
     String questionId,
   ) async {
-    try {
-      final response = await _dioFactory.post(
-        endPoint: EndPoints.makeQuestionFlag,
-        data: {'question_id': questionId},
+    final response = await _dioFactory.post(
+      endPoint: EndPoints.makeQuestionFlag,
+      data: {'question_id': questionId},
+    );
+    if (response!.statusCode == 200) {
+      final model = QuestionActionModel.fromJson(response.data);
+      return ApiResult.success(model);
+    } else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(
+        ServerFailure.fromResponse(
+          response.statusCode,
+          response.data['message'],
+        ),
       );
-      if (response!.statusCode == 200) {
-        final model = QuestionActionModel.fromJson(response.data);
-        return ApiResult.success(model);
-      } else {
-        debugPrintWidget(response.data['message']);
-        return ApiResult.failure(
-          ServerFailure.fromResponse(
-            response.statusCode,
-            response.data['message'],
-          ),
-        );
-      }
-    } catch (e) {
-      rethrow;
     }
   }
 
@@ -111,47 +95,39 @@ class RealExamRepo {
     String questionId,
     String note,
   ) async {
-    try {
-      final response = await _dioFactory.post(
-        endPoint: EndPoints.addQuestionNote,
-        data: {'question_id': questionId, 'note': note},
+    final response = await _dioFactory.post(
+      endPoint: EndPoints.addQuestionNote,
+      data: {'question_id': questionId, 'note': note},
+    );
+    if (response!.statusCode == 200) {
+      final model = QuestionActionModel.fromJson(response.data);
+      return ApiResult.success(model);
+    } else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(
+        ServerFailure.fromResponse(
+          response.statusCode,
+          response.data['message'],
+        ),
       );
-      if (response!.statusCode == 200) {
-        final model = QuestionActionModel.fromJson(response.data);
-        return ApiResult.success(model);
-      } else {
-        debugPrintWidget(response.data['message']);
-        return ApiResult.failure(
-          ServerFailure.fromResponse(
-            response.statusCode,
-            response.data['message'],
-          ),
-        );
-      }
-    } catch (e) {
-      rethrow;
     }
   }
 
   Future<ApiResult<FinishAnalysisExamModel>> finishAnalysisExam() async {
-    try {
-      final response = await _dioFactory.get(
-        endPoint: EndPoints.finishAnalysisExam,
+    final response = await _dioFactory.get(
+      endPoint: EndPoints.finishAnalysisExam,
+    );
+    if (response!.statusCode == 200) {
+      final model = FinishAnalysisExamModel.fromJson(response.data);
+      return ApiResult.success(model);
+    } else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(
+        ServerFailure.fromResponse(
+          response.statusCode,
+          response.data['message'],
+        ),
       );
-      if (response!.statusCode == 200) {
-        final model = FinishAnalysisExamModel.fromJson(response.data);
-        return ApiResult.success(model);
-      } else {
-        debugPrintWidget(response.data['message']);
-        return ApiResult.failure(
-          ServerFailure.fromResponse(
-            response.statusCode,
-            response.data['message'],
-          ),
-        );
-      }
-    } catch (e) {
-      rethrow;
     }
   }
 }

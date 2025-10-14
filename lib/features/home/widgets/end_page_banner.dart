@@ -40,15 +40,15 @@ class EndPageBanner extends StatelessWidget {
                 ),
                 vertical: 24.h,
               ),
-              child: Text.rich(
+              child: Text.rich(textAlign: TextAlign.center,
                 TextSpan(
                   children: [
                     TextSpan(
                       text: '${'now'.tr(context)}\n',
                       style: interBold.copyWith(
                         fontSize: SizeConfig.responsiveValue(
-                          phone: 16.sp,
-                          tablet: 20.sp,
+                          phone: 18.sp,
+                          tablet: 24.sp,
                         ),
                       ),
                     ),
@@ -56,19 +56,22 @@ class EndPageBanner extends StatelessWidget {
                       text: "${'flashback_discount'.tr(context)}\n",
                       style: interMedium.copyWith(
                         fontSize: SizeConfig.responsiveValue(
-                          phone: 16.sp,
-                          tablet: 20.sp,
+                          phone: 15.sp,
+                          tablet: 19.sp,
                         ),
                       ),
                     ),
                     TextSpan(
-                      text: '             ${'discover_now'.tr(context)}',
+                      text: 'discover_now'.tr(context),
                       style: interRegular.copyWith(
+                        fontWeight: FontWeight.bold,
                         fontSize: SizeConfig.responsiveValue(
                           phone: 16.sp,
-                          tablet: 20.sp,
+                          tablet: 18.sp,
                         ),
-                        color: AppColors.secondaryColor,
+                        color: AppColors.offwhiteColor,
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppColors.offwhiteColor,
                       ),
                     ),
                   ],

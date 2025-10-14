@@ -41,8 +41,8 @@ class CategoryWidget extends StatelessWidget {
                 categoryName,
                 style: interRegular.copyWith(
                   fontSize: SizeConfig.responsiveValue(
-                    phone: 16.sp,
-                    tablet: 22.sp,
+                    phone: 15.sp,
+                    tablet: 21.sp,
                   ),
                   color: AppColors.greyColor,
                 ),

@@ -24,11 +24,9 @@ class UserImageNameWidget extends StatelessWidget {
             border: Border.all(color: AppColors.darkGreyColor, width: 1.r),
           ),
           child: CircleAvatar(
-            radius: SizeConfig.responsiveValue(phone: 40.r, tablet: 25.r),
+            radius: SizeConfig.responsiveValue(phone: 24.r, tablet: 20.r),
             backgroundColor: AppColors.greyColor,
-            child: Padding(
-              padding: EdgeInsets.only(top: 5.sp),
-              child: Image(
+            child: Image(
                 image: imagePath.contains('png')
                     ? AssetImage(imagePath)
                     : imagePath.isEmpty
@@ -37,7 +35,7 @@ class UserImageNameWidget extends StatelessWidget {
               ),
             ),
           ),
-        ),
+
         15.horizontalSpace,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +49,7 @@ class UserImageNameWidget extends StatelessWidget {
                     fontSize: SizeConfig.responsiveValue(
                       phone: 14.sp,
                       tablet: 18.sp,
-                    ),
+                    ), color: AppColors.primaryColor,
                   ),
                 ),
                 SizedBox(
@@ -78,8 +76,8 @@ class UserImageNameWidget extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: interRegular.copyWith(
                   fontSize: SizeConfig.responsiveValue(
-                    phone: 14.sp,
-                    tablet: 18.sp,
+                    phone: 12.sp,
+                    tablet: 16.sp,
                   ),
                   color: AppColors.darkGreyColor,
                 ),
@@ -89,8 +87,8 @@ class UserImageNameWidget extends StatelessWidget {
               '$points ${"points".tr(context)}',
               style: interBold.copyWith(
                 fontSize: SizeConfig.responsiveValue(
-                  phone: 16.sp,
-                  tablet: 20.sp,
+                  phone: 14.sp,
+                  tablet: 18.sp,
                 ),
                 color: AppColors.primaryColor,
               ),

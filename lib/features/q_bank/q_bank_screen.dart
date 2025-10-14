@@ -65,7 +65,13 @@ class _QBankScreenState extends State<QBankScreen> {
                         addCircledFun: () {
                           context.pushNamed(
                             Routes.playListScreen,
-                            arguments: cubit.qBankModel!.data![cubit.index].id,
+
+
+
+                            arguments:{
+                              'questionId':cubit.qBankModel!.data![cubit.index].id,
+                              'asAdd':false
+                            },
                           );
                         },
                         currentQuestion: '${cubit.index + 1}',

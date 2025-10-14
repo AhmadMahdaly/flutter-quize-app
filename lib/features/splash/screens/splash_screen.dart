@@ -36,8 +36,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _route() async {
+    //context.pushReplacementNamed(Routes.mainLayoutScreen);
+
     try {
       await PushNotificationService().initialize();
+      FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     } catch (_) {}
 
     final isOnboardingComplete =

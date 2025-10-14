@@ -21,8 +21,8 @@ import 'package:smle/features/notification/cubit/notification_cubit.dart';
 import 'package:smle/features/notification/notification_screen.dart';
 import 'package:smle/features/onboarding/onboarding_screen.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
-import 'package:smle/features/play_list/play_list_details_screen.dart';
 import 'package:smle/features/play_list/play_list_screen.dart';
+import 'package:smle/features/play_list/playlist_questions_screen.dart';
 import 'package:smle/features/profile/profile_screen.dart';
 import 'package:smle/features/q_bank/create_quiz_screen.dart';
 import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
@@ -36,7 +36,6 @@ import 'package:smle/features/revision/revision_screen.dart';
 import 'package:smle/features/revision/subCategories_screen.dart';
 import 'package:smle/features/splash/cubit/global_cubit/global_cubit.dart';
 import 'package:smle/features/splash/screens/splash_screen.dart';
-import 'package:smle/features/subscription/add_card_Screen.dart';
 import 'package:smle/features/subscription/apple_pay_screen.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
 import 'package:smle/features/subscription/payment_screen.dart';
@@ -119,14 +118,9 @@ class AppRouter {
         return transition(
           screen: const PaymentScreen(),
           cubit: SubscriptionCubit(getIt())
-            ..getCards()
-            ..getYourCheckout(packageId),
+
         );
-      case Routes.addCardScreen:
-        return transition(
-          screen: AddCardScreen(),
-          cubit: SubscriptionCubit(getIt()),
-        );
+
       case Routes.applePayScreen:
         final totalPayment = settings.arguments as String;
         return transition(
@@ -173,15 +167,28 @@ class AppRouter {
           cubit: RevisionCubit(getIt())..getSubCategories(categoryId),
         );
       case Routes.playListScreen:
-        final questionId = settings.arguments as int;
+        final args = settings.arguments as Map<String,dynamic>;
+        final questionId=args['questionId'] as int?;
+        final isAdd=args['asAdd'] as bool?;
         return transition(
-          screen: PlayListScreen(questionId: questionId),
-          cubit: PlayListCubit(getIt())..getPlayList(),
+          screen: PlayListScreen(questionId: questionId, isAdd: isAdd,),
+          cubit: getIt<PlayListCubit>()..getPlayList(),
         );
-      case Routes.playListDetailsScreen:
+
+      case Routes.playlistQuestionsScreen:
+        final args = settings.arguments as Map<String,dynamic>;
+        final playlistId = args['playlistId'] as int;
+        final totalQuestions=args['totalQuestions']as int;
+        final isAdd=args['asAdd'] as bool;
         return transition(
-          screen: const PlayListDetailsScreen(),
-          cubit: PlayListCubit(getIt())..getPlayList(),
+          screen: BlocProvider.value(
+            value: getIt<PlayListCubit>(), // استخدم PlayListCubit فقط، أزل QBankCubit
+            child: PlaylistQuestionsScreen(
+              playlistId: playlistId,
+              totalQuestions: totalQuestions,
+              isAdd: isAdd,),
+
+          ),cubit: getIt<PlayListCubit>(),
         );
       case Routes.mainLayoutScreen:
         return PageTransition(

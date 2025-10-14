@@ -25,6 +25,10 @@ class CreateQuizScreen extends StatefulWidget {
 
 class _CreateQuizScreenState extends State<CreateQuizScreen> {
   @override
+  void initState() {
+context.read<QBankCubit>().init();    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     final cubit = context.read<QBankCubit>();
 

@@ -18,7 +18,7 @@ class DrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: AppColors.thirdColor,
-      width: MediaQuery.of(context).size.width / 2,
+      width: MediaQuery.of(context).size.width / 1.2,
       child: ListView(
         children: [
           // Drawer Items
@@ -36,25 +36,28 @@ class DrawerWidget extends StatelessWidget {
               context.pushNamed(Routes.sCFHSScoreCalculatorScreen);
             },
           ),
-          // DrawerItemWidget(
-          //   iconAsset: Assets.trophyLight,
-          //   title: 'subscription'.tr(context),
-          //   onTap: () {
-          //     context.pushNamed(
-          //       Routes.subscriptionScreen,
-          //       arguments:
-          //           context
-          //               .read<MainLayoutCubit>()
-          //               .profileModel!
-          //               .data!
-          //               .offerId ??
-          //           -1,
-          //     );
-          //   },
-          // ),
-          // DrawerItemWidget(iconAsset: Assets.columUpLight,title:'analysis'.tr(context) ,onTap: (){
-          //   context.pushNamed(Routes.analysisScreen);
-          // },),
+          DrawerItemWidget(
+            iconAsset: Assets.trophyLight,
+            title: 'subscription'.tr(context),
+            onTap: () {
+              context.pushNamed(
+                Routes.subscriptionScreen,
+                arguments:
+                    context
+                        .read<MainLayoutCubit>()
+                        .profileModel!
+                        .data!
+                        .offerId ??
+                    -1,
+              );
+            },
+          ),
+          DrawerItemWidget(iconAsset: Assets.columUpLight,title:'analysis'.tr(context) ,onTap: (){
+            context.pushNamed(
+              Routes.analysisScreen,
+              arguments: false,
+            );
+          },),
           DrawerItemWidget(
             iconAsset: Assets.questionLight,
             title: 'support'.tr(context),
@@ -78,12 +81,8 @@ class DrawerWidget extends StatelessWidget {
                   title: 'log_out'.tr(context),
                   onTap: () {
                     context.read<LoginCubit>().logOut().then((value) {
-                      if (value == true) {
-                        CacheHelper.sharedPreferences.remove(
-                          CacheKeys.userToken,
-                        );
-                        context.pushReplacementNamed(Routes.loginScreen);
-                      }
+                      CacheHelper.sharedPreferences.remove(CacheKeys.userToken);
+                      context.pushReplacementNamed(Routes.loginScreen);
                     });
                   },
                 );

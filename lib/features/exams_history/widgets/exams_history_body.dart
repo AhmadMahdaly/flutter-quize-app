@@ -12,7 +12,7 @@ class ExamHistoryBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-      child: ExamsList(exams: cubit.allExams),
+      child: ExamsList(cubit: cubit),
     );
   }
 }
