@@ -15,6 +15,7 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/themes.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
+import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -34,10 +35,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {  SizeConfig.init(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
-      child:   BlocProvider(
-        create: (context) => CheckSubscriptionCubit(
-          getIt(),
-        ),
+      child:   MultiBlocProvider(
+  providers: [
+    BlocProvider(
+        create: (context) => CheckSubscriptionCubit(getIt()),
+),
+    BlocProvider(
+      create: (context) => getIt<PlayListCubit>(),
+    ),
+  ],
   child: MaterialApp(
             onGenerateRoute: AppRouter().generateRoute,
             initialRoute:

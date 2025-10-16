@@ -172,7 +172,6 @@ class AppRouter {
         final isAdd=args['asAdd'] as bool?;
         return transition(
           screen: PlayListScreen(questionId: questionId, isAdd: isAdd,),
-          cubit: getIt<PlayListCubit>()..getPlayList(),
         );
 
       case Routes.playlistQuestionsScreen:
@@ -181,14 +180,12 @@ class AppRouter {
         final totalQuestions=args['totalQuestions']as int;
         final isAdd=args['asAdd'] as bool;
         return transition(
-          screen: BlocProvider.value(
-            value: getIt<PlayListCubit>(), // استخدم PlayListCubit فقط، أزل QBankCubit
-            child: PlaylistQuestionsScreen(
+          screen:  PlaylistQuestionsScreen(
               playlistId: playlistId,
               totalQuestions: totalQuestions,
               isAdd: isAdd,),
 
-          ),cubit: getIt<PlayListCubit>(),
+
         );
       case Routes.mainLayoutScreen:
         return PageTransition(

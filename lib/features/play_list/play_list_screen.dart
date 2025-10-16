@@ -71,41 +71,141 @@ class _PlayListScreenState extends State<PlayListScreen> {
                   ):const SizedBox.shrink(),
                   30.verticalSpace,
                   if (cubit.playListModel != null && cubit.playListModel!.data != null)
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final playlist = cubit.playListModel!.data![index];
-                        final questionCount = '${playlist.questions?.length ?? 0}';
-                        return PlayListWidget(
-                          playListNameController: playListNameController,
-                          playListName: playlist.name ?? '',
-                          questionCount: questionCount,
-                          playListId: '${playlist.id}',
-                          onTap: () {
-                            if (widget.isAdd==false) {
-                              cubit.addToPlayList('${playlist.id}', widget.questionId.toString());
-                            } else {
-                              context.pushNamed(
-                                  Routes.playlistQuestionsScreen,
-                                  arguments: {
-                                    'playlistId': playlist.id,
-                                    'totalQuestions': playlist.questions?.length ?? 0,
-                                    'asAdd':true,
+                    if (cubit.playListModel!.data!.isEmpty)
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(20.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.playlist_add_outlined,
+                                size: 80,
+                                color: AppColors.greyColor,
+                              ),
+                              16.verticalSpace,
+                              Text(
+                                'No playlists yet',
+                                style: interBold.copyWith(
+                                  fontSize: 20.sp,
+                                  color: AppColors.primaryColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              8.verticalSpace,
+                              Text(
+                                widget.isAdd == true
+                                    ? 'Create a playlist to add this question.'
+                                    : 'Create your first playlist to get started.',
+                                style: interRegular.copyWith(
+                                  fontSize: 16.sp,
+                                  color: AppColors.darkGreyColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              24.verticalSpace,
+                              if (widget.isAdd == false)
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return BlocProvider.value(
+                                            value: cubit,
+                                            child: PlaylistAlertWidget(
+                                              playListNameController: playListNameController,
+                                              title: 'new_playlist'.tr(context),
+                                              isEdit: false,
+                                              questionId: widget.questionId,
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.secondaryColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30.r),
+                                      ),
+                                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                                    ),
+                                    child: Text(
+                                      'create_new_playlist'.tr(context),
+                                      style: interRegular.copyWith(
+                                        color: AppColors.thirdColor,
+                                        fontSize: SizeConfig.responsiveValue(
+                                          phone: 14.sp,
+                                          tablet: 18.sp,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              else
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return BlocProvider.value(
+                                            value: cubit,
+                                            child: PlaylistAlertWidget(
+                                              playListNameController: playListNameController,
+                                              title: 'new_playlist'.tr(context),
+                                              isEdit: false,
+                                              questionId: widget.questionId,
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Text('Create New Playlist'),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      )
+                    else
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          final playlist = cubit.playListModel!.data![index];
+                          final questionCount = '${playlist.questions?.length ?? 0}';
+                          return PlayListWidget(
+                            playListNameController: playListNameController,
+                            playListName: playlist.name ?? '',
+                            questionCount: questionCount,
+                            playListId: '${playlist.id}',
+                            onTap: () {
+                              if (widget.isAdd==false) {
+                                cubit.addToPlayList('${playlist.id}', widget.questionId.toString());
+                              } else {
+                                context.pushNamed(
+                                    Routes.playlistQuestionsScreen,
+                                    arguments: {
+                                      'playlistId': playlist.id,
+                                      'totalQuestions': playlist.questions?.length ?? 0,
+                                      'asAdd':true,
 
-                                  }
-                              );
-                            }
-                          },
-                        );
-                      },
-                      separatorBuilder: (context, index) => 12.verticalSpace,
-                      itemCount: cubit.playListModel!.data!.length,
-                    )
+                                    }
+                                );
+                              }
+                            },
+                          );
+                        },
+                        separatorBuilder: (context, index) => 12.verticalSpace,
+                        itemCount: cubit.playListModel!.data!.length,
+                      )
                   else if (state is GetPlayListFailedState)
                     const Center(child: Text('Error!')),
                   30.verticalSpace,
-                  widget.isAdd==true ?
+                  widget.isAdd==false ?
                   Center(
                     child: TextButton(
                       onPressed: () {

@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/core/helpers/safe_cubit.dart';
 import 'package:smle/features/play_list/data/model/play_list_model.dart';
 import 'package:smle/features/play_list/data/repo/play_list_repo.dart';
 import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
 
 part 'play_list_state.dart';
 
-class PlayListCubit extends Cubit<PlayListStates> {
+class PlayListCubit extends SafeCubit<PlayListStates> {
   PlayListCubit(this._playListRepository) : super(PlayListInitialState());
   final PlayListRepository _playListRepository;
 

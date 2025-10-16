@@ -1,7 +1,7 @@
 name: smle
 description: "A new Flutter project."
 publish_to: 'none' 
-version: 1.0.7+1
+version: 1.0.8+1
 
 environment:
   sdk: ^3.8.1
@@ -77,6 +77,7 @@ flutter:
     - assets/
     - assets/images/png/
     - assets/language/
+    - shorebird.yaml
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -97,3 +98,5 @@ flutter_launcher_icons:
     generate: true
     image_path: "assets/images/png/logo final.png"
 # flutter pub run flutter_launcher_icons
+#shorebird release ios
+#shorebird patch --platforms=ios --release-version=1.0.8+1
