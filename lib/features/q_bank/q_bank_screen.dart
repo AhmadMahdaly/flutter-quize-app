@@ -36,7 +36,7 @@ class _QBankScreenState extends State<QBankScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'q_bank'.tr(context)),
+      appBar: CustomAppBar(title: 'q_bank'.tr(context),canBack:false),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
 
@@ -172,14 +172,16 @@ class _QBankScreenState extends State<QBankScreen> {
                                   cubit.index <
                                       cubit.qBankModel!.data!.length - 1
                                   ? 'next'.tr(context)
-                                  : 'finish'.tr(context),
+                                  : 'Finish',
                             ),
                           ),
                         ],
                       ),
                       if (cubit.index > 0) ...[
                         20.verticalSpace,
-                        Center(
+                        cubit.index <
+                            cubit.qBankModel!.data!.length - 1
+                            ?     Center(
                           child: GestureDetector(
                             onTap: () {
                               context.pushNamedAndRemoveUntil(
@@ -191,7 +193,7 @@ class _QBankScreenState extends State<QBankScreen> {
                               text: 'quit'.tr(context),
                             ),
                           ),
-                        ),
+                        ):const SizedBox.shrink(),
                       ],
                     ],
                   )

@@ -57,6 +57,7 @@ class PlaylistAlertWidget extends StatelessWidget {
               fillColor: AppColors.greyColor, // Background color
               filled: true, // Enables the background color
               hintText: 'title'.tr(context),
+              hintStyle: TextStyle(color:AppColors.iconColorGray, fontSize: 12.sp),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(40.r)),
                 borderSide: const BorderSide(color: AppColors.greyColor),

@@ -35,9 +35,12 @@ Future<void>init()async{_qBankRepository.init();}
 
     final int limit = int.tryParse(numberOfQuestionsController.text) ?? 0;
 
+    final String month = isAllMonthsSelected ? 'all' : pickedDate.month.toString();
+    final String year = isAllYearsSelected ? 'all' : pickedDate.year.toString();
+
     final result = await _qBankRepository.startQuiz(
-      month: 'all',
-      year: isAllYearsSelected ? 'all' : pickedDate.year.toString(),
+      month: month,
+      year: year,
       subcategoryIds: selectedSubCategoryIds,
       unansweredOnly: unansweredOnly ? 1 : 0,
       limit: limit,
@@ -148,14 +151,20 @@ Future<void>init()async{_qBankRepository.init();}
   final TextEditingController numberOfQuestionsController =
       TextEditingController();
 
+
   void selectDate(DateTime selected) {
     pickedDate = selected;
+    if (!isAllMonthsSelected) {
+      // إذا لم يكن all، حدث الشهر
+    }
     updateAvailableQuestionsCount();
     emit(SelectDateState());
   }
-
   void toggleAllYears(bool selectAll) {
     isAllYearsSelected = selectAll;
+    if (selectAll) {
+      isAllMonthsSelected = true; // إذا all years، اجعل all months تلقائيًا
+    }
     updateAvailableQuestionsCount();
     emit(SelectDateState());
   }
@@ -175,9 +184,12 @@ Future<void>init()async{_qBankRepository.init();}
 
     emit(GetQuestionsCountLoadingState());
 
+    final String month = isAllMonthsSelected ? 'all' : pickedDate.month.toString();
+    final String year = isAllYearsSelected ? 'all' : pickedDate.year.toString();
+
     final result = await _qBankRepository.getQuestionsCount(
-      month: 'all',
-      year: isAllYearsSelected ? 'all' : pickedDate.year.toString(),
+      month: month,
+      year: year,
       subcategoryIds: selectedSubCategoryIds,
       unansweredOnly: unansweredOnly ? 1 : 0,
     );
@@ -198,6 +210,14 @@ Future<void>init()async{_qBankRepository.init();}
       },
     );
   }
+  bool isAllMonthsSelected = true; // افتراضي all months
+
+  void toggleAllMonths(bool selectAll) {
+    isAllMonthsSelected = selectAll;
+    updateAvailableQuestionsCount();
+    emit(SelectDateState());
+  }
+
 
   List<int> selectedCategoryIds = [];
   List<String> selectedCategoryNames = [];

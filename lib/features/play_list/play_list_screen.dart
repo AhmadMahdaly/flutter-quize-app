@@ -78,7 +78,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.playlist_add_outlined,
                                 size: 80,
                                 color: AppColors.greyColor,
@@ -204,46 +204,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                       )
                   else if (state is GetPlayListFailedState)
                     const Center(child: Text('Error!')),
-                  30.verticalSpace,
-                  widget.isAdd==false ?
-                  Center(
-                    child: TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return BlocProvider.value(
-                              value: cubit,
-                              child: PlaylistAlertWidget(
-                                playListNameController: playListNameController,
-                                title: 'new_playlist'.tr(context),
-                                isEdit: false,
-                                questionId: widget.questionId,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(AppColors.secondaryColor),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        minimumSize: WidgetStateProperty.all(Size(double.infinity, 52.h)),
-                        shape: WidgetStateProperty.all(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
-                        ),
-                      ),
-                      child: Text(
-                        'create_new_playlist'.tr(context),
-                        style: interRegular.copyWith(
-                          color: AppColors.thirdColor,
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 18.sp,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ):const SizedBox.shrink(),
+
                 ],
               ),
             );

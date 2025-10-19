@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _route() async {
-    //context.pushReplacementNamed(Routes.mainLayoutScreen);
+    // context.pushReplacementNamed(Routes.mainLayoutScreen);
 
     try {
       await PushNotificationService().initialize();

@@ -14,6 +14,7 @@ class YearPickerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<QBankCubit, QBankStates>(
       builder: (context, state) {
+        final cubit=context.read<QBankCubit>();
         return GestureDetector(
           onTap: () async {
             final newDate = await showMonthYearPicker(
@@ -38,9 +39,10 @@ class YearPickerWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  DateFormat.yMMM().format(
-                    context.read<QBankCubit>().pickedDate,
-                  ),
+
+                  cubit.isAllMonthsSelected && cubit.isAllYearsSelected
+                      ? 'All Time'
+                      : DateFormat.yMMM().format(cubit.pickedDate),
                   style: interRegular.copyWith(
                     color: AppColors.darkGreyColor,
                     fontSize: SizeConfig.responsiveValue(

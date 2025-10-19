@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
@@ -56,9 +57,9 @@ context.read<QBankCubit>().init();    super.initState();
                   (int.tryParse(cubit.numberOfQuestionsController.text) ?? 0) <=
                       cubit.questionsCount;
 
-              final bool canStartQuiz =
-                  cubit.selectedSubCategoryIds.isNotEmpty &&
-                  isQuestionCountValid;
+              final bool canStartQuiz = cubit.selectedSubCategoryIds.isNotEmpty &&
+                  isQuestionCountValid &&
+                  (!cubit.isAllMonthsSelected || !cubit.isAllYearsSelected || cubit.selectedSubCategoryIds.isNotEmpty); // مثال validation
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +68,7 @@ context.read<QBankCubit>().init();    super.initState();
                   Row(
                     children: [
                       Text(
-                        'year'.tr(context),
+                        'Year',
                         style: interMedium.copyWith(fontSize: 16.sp),
                       ),
                       const Spacer(),
@@ -84,14 +85,30 @@ context.read<QBankCubit>().init();    super.initState();
                       ),
                     ],
                   ),
+                  Row(
+                    children: [
+                      Text('Month', style: interMedium.copyWith(fontSize: 16.sp)), // ترجم إذا لزم
+                      const Spacer(),
+                      Text('All Months', style: interRegular.copyWith(fontSize: 14.sp)),
+                      Checkbox(
+                        value: cubit.isAllMonthsSelected,
+                        onChanged: (value) {
+                          cubit.toggleAllMonths(value ?? false);
+                        },
+                        activeColor: AppColors.primaryColor,
+                      ),
+                    ],
+                  ),
                   10.verticalSpace,
                   Opacity(
-                    opacity: cubit.isAllYearsSelected ? 0.5 : 1.0,
+                    opacity: cubit.isAllMonthsSelected ? 0.5 : 1.0,
                     child: AbsorbPointer(
-                      absorbing: cubit.isAllYearsSelected,
-                      child: const YearPickerWidget(),
+                      absorbing: cubit.isAllMonthsSelected,
+                      child: const YearPickerWidget(), // يختار شهر وسنة
                     ),
                   ),
+
+
                   20.verticalSpace,
                   _buildSectionHeader(
                     context,
@@ -250,6 +267,10 @@ context.read<QBankCubit>().init();    super.initState();
       ),
       child: Column(
         children: [
+          Text(
+            'Selected: ${cubit.isAllMonthsSelected ? 'All Months' : DateFormat.MMMM().format(cubit.pickedDate)} ${cubit.isAllYearsSelected ? 'All Years' : cubit.pickedDate.year}',
+            style: interMedium.copyWith(fontSize: 15.sp),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -291,7 +312,8 @@ context.read<QBankCubit>().init();    super.initState();
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
               labelText: 'Number of questions',
-              hintText: '${'max'.tr(context)}: ${cubit.questionsCount}',
+              hintText: '${'Max'}: ${cubit.questionsCount}',
+              hintStyle: TextStyle(color:AppColors.secondaryColor, fontSize: 12.sp),
               border: const OutlineInputBorder(),
               errorText:
                   (cubit.numberOfQuestionsController.text.isNotEmpty &&

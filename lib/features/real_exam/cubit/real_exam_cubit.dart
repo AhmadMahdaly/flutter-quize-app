@@ -117,7 +117,7 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
   }
 
   void goToNext()async {
-  await Future.delayed(const Duration(milliseconds: 1000));
+  await Future.delayed(const Duration(milliseconds: 300));
     if (state.examModel?.data?.questionNo != null) {
       final currentQuestionNo = state.examModel!.data!.questionNo!;
       final totalQuestions = state.examModel!.questionsCount!;

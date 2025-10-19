@@ -145,9 +145,9 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     onTimerFinish: () {
                       // This will be called when the timer hits zero.
                       // You can show a dialog or automatically end the section.
-                      showCustomPrimaryDialog(
+                      showCustomPrimaryDialog(canPop:false,
                         context,
-                        widget: Column(
+                        widget: Column(mainAxisSize: MainAxisSize.min,
                           children: [
                             const Text("Time's Up!"),
                             Text('The time for section $section has ended.'),
