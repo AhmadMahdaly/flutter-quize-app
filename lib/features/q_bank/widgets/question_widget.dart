@@ -169,7 +169,7 @@ class QuestionWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    showDuration: const Duration(milliseconds: 5000),
+                    showDuration: const Duration(minutes: 10),
                     richMessage: TextSpan(
                       children: [
                         TextSpan(

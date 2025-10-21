@@ -186,21 +186,21 @@ class TrialHeaderCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Row(
-                children: [
+              // Row(
+              //   children: [
+              //     Text(
+              //       'Test:',
+              //       style: interRegular.copyWith(
+              //         fontSize: SizeConfig.responsiveValue(
+              //           phone: 14.sp,
+              //           tablet: 18.sp,
+              //         ),
+              //         color: AppColors.thirdColor,
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              //     ),
                   Text(
-                    'Test:',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 18.sp,
-                      ),
-                      color: AppColors.thirdColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Saudi SLE License Examination',
+                    'Test your knowledge with Smle Gate app',
                     style: interRegular.copyWith(
                       fontSize: SizeConfig.responsiveValue(
                         phone: 14.sp,
@@ -211,46 +211,46 @@ class TrialHeaderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Text(
-                    'Candidate:',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 18.sp,
-                      ),
-                      color: AppColors.thirdColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Saudi-Bot.com',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 18.sp,
-                      ),
-                      color: AppColors.thirdColor,
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    'Free Trial',
-                    style: interBold.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
-                        tablet: 20.sp,
-                      ),
-                      color: AppColors.offwhiteColor,
-                      fontWeight: FontWeight.w700,
-                      height: 1.50.h,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+              // Row(
+              //   children: [
+              //     Text(
+              //       'Candidate:',
+              //       style: interRegular.copyWith(
+              //         fontSize: SizeConfig.responsiveValue(
+              //           phone: 14.sp,
+              //           tablet: 18.sp,
+              //         ),
+              //         color: AppColors.thirdColor,
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              //     ),
+              //     Text(
+              //       'Saudi-Bot.com',
+              //       style: interRegular.copyWith(
+              //         fontSize: SizeConfig.responsiveValue(
+              //           phone: 14.sp,
+              //           tablet: 18.sp,
+              //         ),
+              //         color: AppColors.thirdColor,
+              //       ),
+              //     ),
+              //     const Spacer(),
+              //     Text(
+              //       'Free Trial',
+              //       style: interBold.copyWith(
+              //         fontSize: SizeConfig.responsiveValue(
+              //           phone: 16.sp,
+              //           tablet: 20.sp,
+              //         ),
+              //         color: AppColors.offwhiteColor,
+              //         fontWeight: FontWeight.w700,
+              //         height: 1.50.h,
+              //       ),
+              //     ),
+              //   ],
+              // ),
+            // ],
+          // ),
         ),
       ],
     );

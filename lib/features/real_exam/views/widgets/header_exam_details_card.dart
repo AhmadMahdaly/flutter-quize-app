@@ -227,69 +227,69 @@ class HeaderExamDetailsCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Text(
-                    'Test:',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 20.sp,
-                      ),
-                      color: AppColors.thirdColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Saudi SLE License Examination',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 20.sp,
-                      ),
-                      color: AppColors.thirdColor,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Candidate:',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 20.sp,
-                      ),
-                      color: AppColors.thirdColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Saudi-Bot.com',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 20.sp,
-                      ),
-                      color: AppColors.thirdColor,
-                    ),
-                  ),
-                  const Spacer(),
+              // Row(
+              //   children: [
                   // Text(
-                  //   'Free Trial',
-                  //   style: interBold.copyWith(
+                  //   'Test:',
+                  //   style: interRegular.copyWith(
                   //     fontSize: SizeConfig.responsiveValue(
-                  //       phone: 18.sp,
-                  //       tablet: 22.sp,
+                  //       phone: 14.sp,
+                  //       tablet: 20.sp,
                   //     ),
-                  //     color: AppColors.offwhiteColor,
-                  //     fontWeight: FontWeight.w700,
-                  //     height: 1.50.h,
+                  //     color: AppColors.thirdColor,
+                  //     fontWeight: FontWeight.bold,
                   //   ),
                   // ),
-                ],
-              ),
+                  Text(
+                    'Test your knowledge with Smle Gate app',
+                    style: interRegular.copyWith(
+                      fontSize: SizeConfig.responsiveValue(
+                        phone: 14.sp,
+                        tablet: 20.sp,
+                      ),
+                      color: AppColors.thirdColor,
+                    ),
+                  ),
+              //   ],
+              // ),
+              // Row(
+              //   children: [
+              //     Text(
+              //       'Candidate:',
+              //       style: interRegular.copyWith(
+              //         fontSize: SizeConfig.responsiveValue(
+              //           phone: 14.sp,
+              //           tablet: 20.sp,
+              //         ),
+              //         color: AppColors.thirdColor,
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              //     ),
+              //     Text(
+              //       'Saudi-Bot.com',
+              //       style: interRegular.copyWith(
+              //         fontSize: SizeConfig.responsiveValue(
+              //           phone: 14.sp,
+              //           tablet: 20.sp,
+              //         ),
+              //         color: AppColors.thirdColor,
+              //       ),
+              //     ),
+              //     const Spacer(),
+              //     // Text(
+              //     //   'Free Trial',
+              //     //   style: interBold.copyWith(
+              //     //     fontSize: SizeConfig.responsiveValue(
+              //     //       phone: 18.sp,
+              //     //       tablet: 22.sp,
+              //     //     ),
+              //     //     color: AppColors.offwhiteColor,
+              //     //     fontWeight: FontWeight.w700,
+              //     //     height: 1.50.h,
+              //     //   ),
+              //     // ),
+              //   ],
+              // ),
             ],
           ),
         ),
