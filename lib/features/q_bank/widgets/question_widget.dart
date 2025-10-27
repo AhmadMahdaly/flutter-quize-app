@@ -92,7 +92,7 @@ class QuestionWidget extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: newsExplain == 'null'||newsExplain == 'NULL'||newsExplain == null ? '' : newsExplain,
+                          text: newsExplain == 'null'||newsExplain == 'NULL' ? '' : newsExplain,
                           style: interRegular.copyWith(
                             fontSize: 16.sp,
                             color: AppColors.forthColor,
@@ -133,7 +133,7 @@ class QuestionWidget extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: lightBulbExplain == 'null'||lightBulbExplain==null||lightBulbExplain=='NULL'
+                          text: lightBulbExplain == 'null'||lightBulbExplain=='NULL'
                               ? ''
                               : lightBulbExplain,
                           style: interRegular.copyWith(
@@ -147,7 +147,7 @@ class QuestionWidget extends StatelessWidget {
                       ],
                     ),
                     child: Icon(
-                      lightBulbExplain == 'null'||lightBulbExplain==null||lightBulbExplain=='NULL'?  CupertinoIcons.lightbulb_slash:
+                      lightBulbExplain == 'null'||lightBulbExplain=='NULL'?  CupertinoIcons.lightbulb_slash:
                       CupertinoIcons.lightbulb_fill,
                       size: SizeConfig.responsiveValue(
                         phone: 20.sp,

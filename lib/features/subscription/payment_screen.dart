@@ -1,19 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
-import 'package:smle/core/helpers/extensions.dart';
-import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
-import 'package:smle/core/theme/assets.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
-import 'package:smle/features/subscription/widgets/cards_widget.dart';
 import 'package:smle/features/subscription/widgets/pay_done_dialog.dart';
-import 'package:smle/features/subscription/widgets/payment_details_widget.dart';
 
 class PaymentScreen extends StatelessWidget {
   const PaymentScreen({super.key});
@@ -29,9 +21,9 @@ class PaymentScreen extends StatelessWidget {
           );
         } else if (state is PurchaseFailedState) {
           // فشلت عملية الشراء، اظهر رسالة خطأ
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
@@ -39,7 +31,9 @@ class PaymentScreen extends StatelessWidget {
 
         if (cubit.storeProducts.isEmpty) {
           // جاري التحميل أو لم يتم العثور على منتجات
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
 
         return Scaffold(
@@ -72,12 +66,20 @@ class PaymentScreen extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(product.title, style: interBold), // اسم المنتج من Apple
-                                Text(product.description), // وصف المنتج من Apple
+                                Text(
+                                  product.title,
+                                  style: interBold,
+                                ), // اسم المنتج من Apple
+                                Text(
+                                  product.description,
+                                ), // وصف المنتج من Apple
                                 // ... عرض الميزات من الـ packagesModel
                               ],
                             ),
-                            Text(product.price, style: interBold), // السعر من Apple (جاهز بالعملة المحلية)
+                            Text(
+                              product.price,
+                              style: interBold,
+                            ), // السعر من Apple (جاهز بالعملة المحلية)
                           ],
                         ),
                       ),

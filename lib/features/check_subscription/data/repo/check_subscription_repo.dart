@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
 import 'package:smle/features/check_subscription/data/models/check_subscription_model.dart';

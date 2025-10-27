@@ -6,7 +6,6 @@ import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
-import 'package:smle/features/exams_history/data/models/exams_history_model.dart';
 import 'package:smle/features/exams_history/widgets/exam_score_card.dart';
 
 class ExamsList extends StatelessWidget {

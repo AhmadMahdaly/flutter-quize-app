@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -31,7 +30,7 @@ void main() async {
   try {
     await Firebase.initializeApp();
     await PushNotificationService().initialize();
-    FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+    // FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
   } catch (e) {
     debugPrint('Firebase Initialization Failed: $e');
   }

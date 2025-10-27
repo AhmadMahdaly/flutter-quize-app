@@ -283,7 +283,7 @@ context.read<QBankCubit>().init();    super.initState();
                 onChanged: (value) {
                   cubit.toggleUnansweredOnly(value);
                 },
-                activeColor: AppColors.primaryColor,
+                activeThumbColor: AppColors.primaryColor,
               ),
             ],
           ),

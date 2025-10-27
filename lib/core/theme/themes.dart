@@ -7,7 +7,7 @@ import 'package:smle/core/theme/text_styles.dart';
 final ThemeData lightTheme = ThemeData(
   appBarTheme: AppBarTheme(
     centerTitle: true,
-    color: Colors.white,
+    backgroundColor: Colors.white,
     systemOverlayStyle: SystemUiOverlayStyle.light,
 
     scrolledUnderElevation: 0,

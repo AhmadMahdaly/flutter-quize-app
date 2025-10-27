@@ -1,4 +1,5 @@
-import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
@@ -33,20 +34,20 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         appBar: isGuest
             ? AppBar(
-          leading: IconButton(
-            onPressed: () {
-              context.pushReplacementNamed(Routes.loginScreen);
-            },
-            icon: const RotatedBox(
-              quarterTurns: 2,
-              child: Icon(Icons.logout_outlined),
-            ),
-          ),
-          iconTheme: IconThemeData(
-            color: AppColors.iconColorBlack,
-            size: SizeConfig.responsiveValue(phone: 24.sp, tablet: 28.sp),
-          ),
-        )
+                leading: IconButton(
+                  onPressed: () {
+                    context.pushReplacementNamed(Routes.loginScreen);
+                  },
+                  icon: const RotatedBox(
+                    quarterTurns: 2,
+                    child: Icon(Icons.logout_outlined),
+                  ),
+                ),
+                iconTheme: IconThemeData(
+                  color: AppColors.iconColorBlack,
+                  size: SizeConfig.responsiveValue(phone: 24.sp, tablet: 28.sp),
+                ),
+              )
             : const HomeAppBarWidget(),
         drawer: isGuest ? null : const DrawerWidget(),
         body: BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
@@ -61,41 +62,47 @@ class HomeScreen extends StatelessWidget {
               // 👇 الحالة unsubscribed أو data == null
               final isSubscribed = sub.isSubscribed ?? false;
               final hasQBank = sub.qBank ?? false;
-              final availableExam = sub.availableRealExam ?? "0";
+              final availableExam = sub.availableRealExam ?? '0';
 
               return SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 15.w,
+                    vertical: 15.h,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // ==== Header ====
                       isGuest
                           ? Text(
-                        '${'welcome'.tr(context)} Guest',
-                        style: interBold.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 18.sp,
-                            tablet: 24.sp,
-                          ),
-                        ),
-                      )
+                              '${'welcome'.tr(context)} Guest',
+                              style: interBold.copyWith(
+                                fontSize: SizeConfig.responsiveValue(
+                                  phone: 18.sp,
+                                  tablet: 24.sp,
+                                ),
+                              ),
+                            )
                           : UserImageNameWidget(
-                        name: context
-                            .watch<MainLayoutCubit>()
-                            .profileModel
-                            ?.data
-                            ?.name ??
-                            'User',
-                        email: context
-                            .read<MainLayoutCubit>()
-                            .profileModel
-                            ?.data
-                            ?.email ??
-                            '',
-                        imagePath: Assets.logoCircle,
-                        points: '${context.read<MainLayoutCubit>().profileModel?.data?.points ?? ''}',
-                      ),
+                              name:
+                                  context
+                                      .watch<MainLayoutCubit>()
+                                      .profileModel
+                                      ?.data
+                                      ?.name ??
+                                  'User',
+                              email:
+                                  context
+                                      .read<MainLayoutCubit>()
+                                      .profileModel
+                                      ?.data
+                                      ?.email ??
+                                  '',
+                              imagePath: Assets.logoCircle,
+                              points:
+                                  '${context.read<MainLayoutCubit>().profileModel?.data?.points ?? ''}',
+                            ),
 
                       32.verticalSpace,
                       const TopBannerWidget(),
@@ -136,16 +143,17 @@ class HomeScreen extends StatelessWidget {
                                     widget: CustomPrimaryDialog(
                                       title: 'Subscription Required',
                                       description:
-                                      'You cannot access the Question bank. Renew your subscription to enjoy the benefits.',
+                                          'You cannot access the Question bank. Renew your subscription to enjoy the benefits.',
                                       confirmText: 'Subscribe Now',
                                       onConfirm: () {
                                         context.pushNamed(
                                           Routes.subscriptionScreen,
-                                          arguments: context
-                                              .read<MainLayoutCubit>()
-                                              .profileModel!
-                                              .data!
-                                              .offerId ??
+                                          arguments:
+                                              context
+                                                  .read<MainLayoutCubit>()
+                                                  .profileModel!
+                                                  .data!
+                                                  .offerId ??
                                               -1,
                                         );
                                       },
@@ -187,16 +195,17 @@ class HomeScreen extends StatelessWidget {
                                     widget: CustomPrimaryDialog(
                                       title: 'Subscription Required',
                                       description:
-                                      'Subscribe to access the real exams.',
+                                          'Subscribe to access the real exams.',
                                       confirmText: 'Subscribe Now',
                                       onConfirm: () {
                                         context.pushNamed(
                                           Routes.subscriptionScreen,
-                                          arguments: context
-                                              .read<MainLayoutCubit>()
-                                              .profileModel!
-                                              .data!
-                                              .offerId ??
+                                          arguments:
+                                              context
+                                                  .read<MainLayoutCubit>()
+                                                  .profileModel!
+                                                  .data!
+                                                  .offerId ??
                                               -1,
                                         );
                                       },
@@ -208,10 +217,11 @@ class HomeScreen extends StatelessWidget {
                                 // ✅ حالة الامتحانات
                                 if (availableExam == 'Unlimited' ||
                                     (int.tryParse(availableExam) ?? 0) > 0) {
-                                  final examState = getIt<RealExamCubit>().state;
+                                  final examState =
+                                      getIt<RealExamCubit>().state;
                                   final bool isExamInProgress =
                                       examState.status == ExamStatus.success ||
-                                          examState.status == ExamStatus.onBreak;
+                                      examState.status == ExamStatus.onBreak;
 
                                   if (isExamInProgress) {
                                     context.pushNamed(Routes.realExamScreen);
@@ -219,7 +229,7 @@ class HomeScreen extends StatelessWidget {
                                     showCustomPrimaryDialog(
                                       context,
                                       widget:
-                                      const ConfirmAccessToRealExamDialogWidget(),
+                                          const ConfirmAccessToRealExamDialogWidget(),
                                     );
                                   }
                                 } else {
@@ -228,16 +238,17 @@ class HomeScreen extends StatelessWidget {
                                     widget: CustomPrimaryDialog(
                                       title: 'Your Attempts Have Ended',
                                       description:
-                                      'You’ve used all the real exams available to you. Please renew your subscription to continue.',
+                                          'You’ve used all the real exams available to you. Please renew your subscription to continue.',
                                       confirmText: 'Subscribe Now',
                                       onConfirm: () {
                                         context.pushNamed(
                                           Routes.subscriptionScreen,
-                                          arguments: context
-                                              .read<MainLayoutCubit>()
-                                              .profileModel!
-                                              .data!
-                                              .offerId ??
+                                          arguments:
+                                              context
+                                                  .read<MainLayoutCubit>()
+                                                  .profileModel!
+                                                  .data!
+                                                  .offerId ??
                                               -1,
                                         );
                                       },
@@ -258,26 +269,28 @@ class HomeScreen extends StatelessWidget {
                                     widget: const GuestLoginDialog(),
                                   );
                                 } else if (!isSubscribed) {
-    showCustomPrimaryDialog(
-    context,
-    widget: CustomPrimaryDialog(
-    title: 'Subscription Required',
-    description:
-    'Subscribe to access the analysis.',
-    confirmText: 'Subscribe Now',
-    onConfirm: () {
-    context.pushNamed(
-    Routes.subscriptionScreen,
-    arguments: context
-        .read<MainLayoutCubit>()
-        .profileModel!
-        .data!
-        .offerId ??
-    -1,
-    );
-    },
-    ),
-    );}else{
+                                  showCustomPrimaryDialog(
+                                    context,
+                                    widget: CustomPrimaryDialog(
+                                      title: 'Subscription Required',
+                                      description:
+                                          'Subscribe to access the analysis.',
+                                      confirmText: 'Subscribe Now',
+                                      onConfirm: () {
+                                        context.pushNamed(
+                                          Routes.subscriptionScreen,
+                                          arguments:
+                                              context
+                                                  .read<MainLayoutCubit>()
+                                                  .profileModel!
+                                                  .data!
+                                                  .offerId ??
+                                              -1,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                } else {
                                   context.pushNamed(
                                     Routes.analysisScreen,
                                     arguments: false,
@@ -292,7 +305,7 @@ class HomeScreen extends StatelessWidget {
                       ),
 
                       30.verticalSpace,
-                      if (!isGuest) const EndPageBanner(),
+                      if ((!isGuest && Platform.isIOS)) const EndPageBanner(),
                       60.verticalSpace,
                     ],
                   ),

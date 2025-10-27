@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
@@ -36,28 +38,32 @@ class DrawerWidget extends StatelessWidget {
               context.pushNamed(Routes.sCFHSScoreCalculatorScreen);
             },
           ),
+          if (Platform.isIOS)
+            DrawerItemWidget(
+              iconAsset: Assets.trophyLight,
+              title: 'subscription'.tr(context),
+              onTap: () {
+                context.pushNamed(
+                  Routes.subscriptionScreen,
+                  arguments:
+                      context
+                          .read<MainLayoutCubit>()
+                          .profileModel!
+                          .data!
+                          .offerId ??
+                      -1,
+                );
+              },
+            )
+          else
+            const SizedBox.shrink(),
           DrawerItemWidget(
-            iconAsset: Assets.trophyLight,
-            title: 'subscription'.tr(context),
+            iconAsset: Assets.columUpLight,
+            title: 'analysis'.tr(context),
             onTap: () {
-              context.pushNamed(
-                Routes.subscriptionScreen,
-                arguments:
-                    context
-                        .read<MainLayoutCubit>()
-                        .profileModel!
-                        .data!
-                        .offerId ??
-                    -1,
-              );
+              context.pushNamed(Routes.analysisScreen, arguments: false);
             },
           ),
-          DrawerItemWidget(iconAsset: Assets.columUpLight,title:'analysis'.tr(context) ,onTap: (){
-            context.pushNamed(
-              Routes.analysisScreen,
-              arguments: false,
-            );
-          },),
           DrawerItemWidget(
             iconAsset: Assets.questionLight,
             title: 'support'.tr(context),

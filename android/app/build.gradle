@@ -41,8 +41,8 @@ android {
     }
     defaultConfig {
         applicationId = "com.sit.smle"
-        minSdkVersion flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdkVersion 24
+        targetSdk = 36
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
         multiDexEnabled true

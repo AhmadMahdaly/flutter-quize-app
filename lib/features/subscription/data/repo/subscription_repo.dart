@@ -2,9 +2,6 @@ import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
 import 'package:smle/core/network/failures.dart';
-import 'package:smle/core/shared_widgets/debug_print_widget.dart';
-import 'package:smle/features/subscription/data/model/cards_model.dart';
-import 'package:smle/features/subscription/data/model/checkout_model.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
 
 class SubscriptionRepository {
@@ -26,14 +23,16 @@ class SubscriptionRepository {
       );
     }
   }
+
   Future<ApiResult<bool>> verifyPurchaseWithBackend(
-      String source, // 'apple' or 'google'
-      String verificationData, // The receipt data
-      String productId,
-      ) async {
+    String source, // 'apple' or 'google'
+    String verificationData, // The receipt data
+    String productId,
+  ) async {
     try {
       final response = await _dioFactory.post(
-        endPoint: EndPoints.verifyPurchase, //  Endpoint جديد يجب إنشاؤه في الباك-اند
+        endPoint:
+            EndPoints.verifyPurchase, //  Endpoint جديد يجب إنشاؤه في الباك-اند
         data: {
           'source': source,
           'receipt_data': verificationData,
@@ -44,13 +43,18 @@ class SubscriptionRepository {
         // إذا قام السيرفر بالتحقق بنجاح وأرجع true
         return const ApiResult.success(true);
       } else {
-        return ApiResult.failure(ServerFailure.fromResponse(
-            response.statusCode, response.data['message']));
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
       }
     } catch (e) {
       return ApiResult.failure(ServerFailure.fromResponse(500, e.toString()));
     }
   }
+
   //
   // Future<ApiResult<CheckoutModel>> getYourCheckout(
   //   String? offerId,

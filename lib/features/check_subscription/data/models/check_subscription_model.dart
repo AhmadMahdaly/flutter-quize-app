@@ -1,8 +1,4 @@
 class CheckSubscriptionModel {
-  final bool? isSubscribed;
-  final bool? qBank;
-  final String? availableRealExam;
-  final String? expireDate;
 
   CheckSubscriptionModel({
     this.isSubscribed,
@@ -21,4 +17,8 @@ class CheckSubscriptionModel {
       expireDate: json['expire_date'] as String?,
     );
   }
+  final bool? isSubscribed;
+  final bool? qBank;
+  final String? availableRealExam;
+  final String? expireDate;
 }

@@ -12,7 +12,7 @@ import 'package:smle/features/play_list/widgets/play_list_widget.dart';
 import 'package:smle/features/play_list/widgets/playlist_alert_widget.dart';
 
 class PlayListScreen extends StatefulWidget {
-  const PlayListScreen({super.key, this.questionId, this.isAdd=false});
+  const PlayListScreen({super.key, this.questionId, this.isAdd = false});
   final int? questionId;
   final bool? isAdd;
   @override
@@ -32,14 +32,13 @@ class _PlayListScreenState extends State<PlayListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isAddMode = widget.questionId != null;
+    // final bool isAddMode = widget.questionId != null;
     return Scaffold(
-      appBar: CustomAppBar(
-        title:  'playlists'.tr(context),
-      ),
+      appBar: CustomAppBar(title: 'playlists'.tr(context)),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-        child: BlocConsumer<PlayListCubit, PlayListStates>(  // غير إلى BlocConsumer
+        child: BlocConsumer<PlayListCubit, PlayListStates>(
+          // غير إلى BlocConsumer
           listener: (context, state) {
             if (state is AddToPlayListSuccessState) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -59,18 +58,23 @@ class _PlayListScreenState extends State<PlayListScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  widget.isAdd==true ?  24.verticalSpace:const SizedBox.shrink(),
-                  widget.isAdd==true ?  Text(
-                    'recently_added'.tr(context),
-                    style: interBold.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 16.sp,
-                        tablet: 20.sp,
-                      ),
-                    ),
-                  ):const SizedBox.shrink(),
+                  widget.isAdd == true
+                      ? 24.verticalSpace
+                      : const SizedBox.shrink(),
+                  widget.isAdd == true
+                      ? Text(
+                          'recently_added'.tr(context),
+                          style: interBold.copyWith(
+                            fontSize: SizeConfig.responsiveValue(
+                              phone: 16.sp,
+                              tablet: 20.sp,
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
                   30.verticalSpace,
-                  if (cubit.playListModel != null && cubit.playListModel!.data != null)
+                  if (cubit.playListModel != null &&
+                      cubit.playListModel!.data != null)
                     if (cubit.playListModel!.data!.isEmpty)
                       Center(
                         child: Padding(
@@ -115,7 +119,8 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                           return BlocProvider.value(
                                             value: cubit,
                                             child: PlaylistAlertWidget(
-                                              playListNameController: playListNameController,
+                                              playListNameController:
+                                                  playListNameController,
                                               title: 'new_playlist'.tr(context),
                                               isEdit: false,
                                               questionId: widget.questionId,
@@ -127,9 +132,13 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColors.secondaryColor,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30.r),
+                                        borderRadius: BorderRadius.circular(
+                                          30.r,
+                                        ),
                                       ),
-                                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 16.h,
+                                      ),
                                     ),
                                     child: Text(
                                       'create_new_playlist'.tr(context),
@@ -154,7 +163,8 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                           return BlocProvider.value(
                                             value: cubit,
                                             child: PlaylistAlertWidget(
-                                              playListNameController: playListNameController,
+                                              playListNameController:
+                                                  playListNameController,
                                               title: 'new_playlist'.tr(context),
                                               isEdit: false,
                                               questionId: widget.questionId,
@@ -163,7 +173,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                         },
                                       );
                                     },
-                                    child: Text('Create New Playlist'),
+                                    child: const Text('Create New Playlist'),
                                   ),
                                 ),
                             ],
@@ -176,24 +186,28 @@ class _PlayListScreenState extends State<PlayListScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           final playlist = cubit.playListModel!.data![index];
-                          final questionCount = '${playlist.questions?.length ?? 0}';
+                          final questionCount =
+                              '${playlist.questions?.length ?? 0}';
                           return PlayListWidget(
                             playListNameController: playListNameController,
                             playListName: playlist.name ?? '',
                             questionCount: questionCount,
                             playListId: '${playlist.id}',
                             onTap: () {
-                              if (widget.isAdd==false) {
-                                cubit.addToPlayList('${playlist.id}', widget.questionId.toString());
+                              if (widget.isAdd == false) {
+                                cubit.addToPlayList(
+                                  '${playlist.id}',
+                                  widget.questionId.toString(),
+                                );
                               } else {
                                 context.pushNamed(
-                                    Routes.playlistQuestionsScreen,
-                                    arguments: {
-                                      'playlistId': playlist.id,
-                                      'totalQuestions': playlist.questions?.length ?? 0,
-                                      'asAdd':true,
-
-                                    }
+                                  Routes.playlistQuestionsScreen,
+                                  arguments: {
+                                    'playlistId': playlist.id,
+                                    'totalQuestions':
+                                        playlist.questions?.length ?? 0,
+                                    'asAdd': true,
+                                  },
                                 );
                               }
                             },
@@ -204,7 +218,6 @@ class _PlayListScreenState extends State<PlayListScreen> {
                       )
                   else if (state is GetPlayListFailedState)
                     const Center(child: Text('Error!')),
-
                 ],
               ),
             );

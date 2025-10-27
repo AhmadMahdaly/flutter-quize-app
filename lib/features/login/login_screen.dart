@@ -60,7 +60,8 @@ class LoginScreen extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                       10.verticalSpace,
-                      Text(textAlign: TextAlign.center,
+                      Text(
+                        textAlign: TextAlign.center,
                         "${'welcome_to'.tr(context)}\n(${'smle_gate'.tr(context)})",
                         style: interExtraBold.copyWith(
                           fontSize: SizeConfig.responsiveValue(
@@ -75,7 +76,8 @@ class LoginScreen extends StatelessWidget {
                           fontSize: SizeConfig.responsiveValue(
                             phone: 18.sp,
                             tablet: 20.sp,
-                          ),fontWeight: FontWeight.w500
+                          ),
+                          fontWeight: FontWeight.w500,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -114,74 +116,77 @@ class LoginScreen extends StatelessWidget {
                         },
                       ),
                       8.verticalSpace,
-                      TextButton(
-                        onPressed: () {
-                          context.pushReplacementNamed(Routes.guestScreen);
-                        },
-                        child: Text(
-                          'Continue As Guest',
-                          style: interBold.copyWith(
-                            color: AppColors.secondaryColor,
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 14.sp,
-                              tablet: 18.sp,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // TextButton(
+                      //   onPressed: () {
+                      //     context.pushReplacementNamed(Routes.guestScreen);
+                      //   },
+                      //   child: Text(
+                      //     'Continue As Guest',
+                      //     style: interBold.copyWith(
+                      //       color: AppColors.secondaryColor,
+                      //       fontSize: SizeConfig.responsiveValue(
+                      //         phone: 14.sp,
+                      //         tablet: 18.sp,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
 
                   Column(
                     children: [
-      
-                  FittedBox(
-                    child: Row(
-                      children: [
-                        Text('by_the'.tr(context),
-                          style: interRegular.copyWith(
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 14.sp,
-                              tablet: 18.sp,
-                            ),)), Text('${'register'.tr(context)} ',
-                          style: interRegular.copyWith(
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 14.sp,
-                              tablet: 18.sp,
-                            ),
+                      FittedBox(
+                        child: Row(
+                          children: [
+                            Text(
+                              'by_the'.tr(context),
+                              style: interRegular.copyWith(
+                                fontSize: SizeConfig.responsiveValue(
+                                  phone: 14.sp,
+                                  tablet: 18.sp,
                                 ),
                               ),
-                          
-                   
-                          Text(
-                            'confirm_agreement'.tr(context),
-
-                            style: interRegular.copyWith(
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 12.sp,
-                                tablet: 18.sp,
+                            ),
+                            Text(
+                              '${'register'.tr(context)} ',
+                              style: interRegular.copyWith(
+                                fontSize: SizeConfig.responsiveValue(
+                                  phone: 14.sp,
+                                  tablet: 18.sp,
+                                ),
                               ),
                             ),
-                          ),
-                          InkWell(
-                            onTap: () =>
-                                context.pushNamed(Routes.privacyPolicyScreen),
-                            child: Text(
-                              'privacy_policy'.tr(context),
+
+                            Text(
+                              'confirm_agreement'.tr(context),
 
                               style: interRegular.copyWith(
-                                color: AppColors.secondaryColor,
                                 fontSize: SizeConfig.responsiveValue(
                                   phone: 12.sp,
                                   tablet: 18.sp,
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                  )  ],
+                            InkWell(
+                              onTap: () =>
+                                  context.pushNamed(Routes.privacyPolicyScreen),
+                              child: Text(
+                                'privacy_policy'.tr(context),
 
+                                style: interRegular.copyWith(
+                                  color: AppColors.secondaryColor,
+                                  fontSize: SizeConfig.responsiveValue(
+                                    phone: 12.sp,
+                                    tablet: 18.sp,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
