@@ -1,5 +1,5 @@
 class EndPoints {
-  static const String baseUrl = 'https://smle.alsaif.online/api/';
+  static const String baseUrl = 'https://smlegate.com/api/';
 
   // ? auth
   static const String googleLogin = 'gmail/login';
