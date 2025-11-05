@@ -181,7 +181,7 @@ class PerformanceChart extends StatelessWidget {
                       }
                       final label = data[index].category;
                       return SideTitleWidget(
-                        axisSide: meta.axisSide,
+                        meta: meta,
                         space: 8.0,
                         child: Text(
                           label!.length > 14

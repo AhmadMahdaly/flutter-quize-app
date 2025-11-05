@@ -9,7 +9,6 @@ import 'package:smle/app.dart';
 // import 'package:smle/core/bloc_observer.dart'; // Keep if you use it
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/di.dart';
-import 'package:smle/core/fcm.dart';
 import 'package:smle/core/network/dio_factory.dart';
 
 void main() async {
@@ -29,8 +28,33 @@ void main() async {
   // 2. Initialize Firebase
   try {
     await Firebase.initializeApp();
-    await PushNotificationService().initialize();
+    // await PushNotificationService().initialize();
     // FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+    // PaymobPayment.instance.initialize(
+    //   apiKey:
+    //       'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TVRJNE9UVXNJbTVoYldVaU9pSXhOell5TXpNNU1Ea3hMakEwTkRjM05DSjkudDd0X2swWW11d3ZBWjdCWlNQeEItZDBiQ1F2QlBCbHU0Y1ZLMUFNZUN4eXZ4WTBCOVN4ZlVzZkNFdjh3TmJVNEdNQWJwUHVqZG83U1N5ZjN0OTk0YUE=',
+    //   iFrameID: 11205,
+    //   integrationID: 17875,
+    // );
+    // await FlutterPaymob.instance.initialize(
+    //   apiKey:
+    //       'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TVRJNE9UVXNJbTVoYldVaU9pSXhOell5TXpNNU1Ea3hMakEwTkRjM05DSjkudDd0X2swWW11d3ZBWjdCWlNQeEItZDBiQ1F2QlBCbHU0Y1ZLMUFNZUN4eXZ4WTBCOVN4ZlVzZkNFdjh3TmJVNEdNQWJwUHVqZG83U1N5ZjN0OTk0YUE=', // من لوحة تحكم PayMob -> Settings
+    //   iFrameID: 11205, // من Developers -> iframes
+    //   integrationID: 17875, // من Developers -> Payment Integrations
+    //   walletIntegrationId: 17816, // من Developers -> Payment Integrations
+    // userData: UserData(
+    //   email: 'user@example.com',
+    //   phone: '+201234567890',
+    //   name: 'User Name',
+    // ),
+
+    // style: Style(
+    //   primaryColor: AppColors.secondaryColor,
+    //   circleProgressColor: AppColors.primaryColor,
+    //   appBarBackgroundColor: AppColors.primaryColor,
+    //   appBarForegroundColor: AppColors.secondaryColor,
+    // ),
+    // );
   } catch (e) {
     debugPrint('Firebase Initialization Failed: $e');
   }
@@ -50,7 +74,7 @@ void main() async {
 
   try {
     HydratedBloc.storage = await HydratedStorage.build(
-      storageDirectory: storageDirectory,
+      storageDirectory: HydratedStorageDirectory(storageDirectory.path),
     );
   } catch (e) {
     debugPrint('HydratedStorage Build Failed: $e');

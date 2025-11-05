@@ -1,7 +1,7 @@
 name: smle
 description: "A new Flutter project."
 publish_to: 'none' 
-version: 1.0.9+8
+version: 1.0.11+11
 
 environment:
   sdk: ^3.8.1
@@ -13,7 +13,7 @@ dependencies:
   # Save Local Data & secure it
   shared_preferences: ^2.2.2
 #  flutter_secure_storage: ^9.2.2
-  flutter_bloc: ^8.1.3
+  flutter_bloc: ^9.1.1
   equatable: ^2.0.5
   # Loading Widget
   flutter_easyloading: ^3.0.5
@@ -32,15 +32,15 @@ dependencies:
   # Navigation
   page_transition: ^2.1.0
   # Api Calling
-  freezed_annotation: ^2.4.4
+  freezed_annotation: ^3.1.0
   dio: ^5.3.3
   pretty_dio_logger: ^1.3.1
-  get_it: ^7.6.7
+  get_it: ^8.2.0
   # Firebase
   firebase_core: ^4.0.0
   firebase_messaging: ^16.0.0
   # Handle Notifications
-  flutter_local_notifications: ^17.2.1+1
+  flutter_local_notifications: ^19.5.0
   url_launcher: ^6.3.1
   flutter_phone_direct_caller: ^2.2.0
   flutter_widget_from_html_core: ^0.17.0
@@ -55,20 +55,22 @@ dependencies:
   multiselect: ^0.1.1
   flutter_localizations:
     sdk: flutter
-  syncfusion_flutter_pdfviewer: ^30.1.42
+  syncfusion_flutter_pdfviewer: ^31.2.4
   video_player: ^2.10.0
   chewie: ^1.12.1
-  fl_chart: ^0.63.0
-  hydrated_bloc: ^9.1.5
+  fl_chart: ^1.1.1
+  hydrated_bloc: ^10.1.1
   flutter_launcher_icons: ^0.14.4
   path_provider: ^2.1.1
   in_app_purchase: ^3.2.3
-#  mobile_scanner: ^7.0.1
+  webview_flutter: ^4.13.0
+  flutter_paymob: ^1.0.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true

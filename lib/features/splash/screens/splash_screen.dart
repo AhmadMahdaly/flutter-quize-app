@@ -1,11 +1,8 @@
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
-import 'package:smle/core/constants.dart';
-import 'package:smle/core/fcm.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
@@ -36,33 +33,31 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _route() async {
-    // context.pushReplacementNamed(Routes.mainLayoutScreen);
+    context.pushReplacementNamed(Routes.mainLayoutScreen);
 
-    try {
-      await PushNotificationService().initialize();
-      FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
-    } catch (_) {}
+    // try {
+    //   await PushNotificationService().initialize();
+    //   FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+    // } catch (_) {}
 
-    final isOnboardingComplete =
-        await CacheHelper.getData(key: firstTimeRun) as bool? ?? false;
-    if (await isLoggedIn()) {
-      context.pushReplacementNamed(Routes.mainLayoutScreen);
-    } else {
-      if (!isOnboardingComplete) {
-        context.pushReplacementNamed(Routes.onBoardingScreen);
-      } else {
-        context.pushReplacementNamed(Routes.loginScreen);
-      }
-    }
+    // final isOnboardingComplete =
+    //     await CacheHelper.getData(key: firstTimeRun) as bool? ?? false;
+    // if (await isLoggedIn()) {
+    //   context.pushReplacementNamed(Routes.mainLayoutScreen);
+    // } else {
+    //   if (!isOnboardingComplete) {
+    //     context.pushReplacementNamed(Routes.onBoardingScreen);
+    //   } else {
+    //     context.pushReplacementNamed(Routes.loginScreen);
+    //   }
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
-      body: Center(
-        child: Image.asset(Assets.logoGif), // Add your GIF to assets.
-      ),
+      body: Center(child: Image.asset(Assets.logoGif)),
     );
   }
 }

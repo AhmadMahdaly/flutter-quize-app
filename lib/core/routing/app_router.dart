@@ -37,7 +37,6 @@ import 'package:smle/features/splash/cubit/global_cubit/global_cubit.dart';
 import 'package:smle/features/splash/screens/splash_screen.dart';
 import 'package:smle/features/subscription/apple_pay_screen.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
-import 'package:smle/features/subscription/payment_screen.dart';
 import 'package:smle/features/subscription/subscription_screen.dart';
 import 'package:smle/features/support_privacy_policy/cubit/privacy_policy_cubit.dart';
 import 'package:smle/features/support_privacy_policy/privacy_policy_screen.dart';
@@ -112,12 +111,12 @@ class AppRouter {
           screen: SubscriptionScreen(offerId: offerId),
           cubit: SubscriptionCubit(getIt())..getPackages(),
         );
-      case Routes.paymentScreen:
-        // final packageId = settings.arguments as String;
-        return transition(
-          screen: const PaymentScreen(),
-          cubit: SubscriptionCubit(getIt()),
-        );
+      // case Routes.paymentScreen:
+      //   // final packageId = settings.arguments as String;
+      //   return transition(
+      //     screen: const PaymentScreen(),
+      //     cubit: SubscriptionCubit(getIt()),
+      //   );
 
       case Routes.applePayScreen:
         final totalPayment = settings.arguments as String;
