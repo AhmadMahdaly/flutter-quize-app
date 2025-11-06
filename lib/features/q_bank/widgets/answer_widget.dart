@@ -18,7 +18,7 @@ class AnswerWidget extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 8.h),
       decoration: BoxDecoration(
         color: isSelected
-            ? AppColors.primaryColor.withOpacity(0.7)
+            ? AppColors.primaryColor.withAlpha(170)
             : AppColors.secondaryColor,
         border: Border.all(color: AppColors.primaryColor),
         borderRadius: BorderRadius.circular(40.r),

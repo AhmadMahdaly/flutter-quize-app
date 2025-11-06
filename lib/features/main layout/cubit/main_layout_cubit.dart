@@ -1,15 +1,18 @@
+// ignore_for_file: strict_top_level_inference
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
+import 'package:smle/core/constants.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/features/main%20layout/data/model/gifts_model.dart';
 import 'package:smle/features/main%20layout/data/model/profile_model.dart';
-import 'package:smle/core/constants.dart';
 import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
+
 part 'main_layout_state.dart';
 
 class MainLayoutCubit extends Cubit<MainLayoutState> {
@@ -21,49 +24,61 @@ class MainLayoutCubit extends Cubit<MainLayoutState> {
     mainLayoutInitialScreenIndex = index;
     emit(AppBottomNavState(mainLayoutInitialScreenIndex));
   }
+
   /// Get Profile
   ProfileModel? profileModel;
   Future getProfile() async {
     showLoading();
     emit(GetProfileLoadingState());
     final result = await _mainLayoutRepository.getProfile();
-    result.when(success: (success) {
-      profileModel = success;
-      hideLoading();
-      emit(GetProfileSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(GetProfileFailedState());
-    });
+    result.when(
+      success: (success) {
+        profileModel = success;
+        hideLoading();
+        emit(GetProfileSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetProfileFailedState());
+      },
+    );
   }
+
   /// Get Gifts
   GiftsModel? giftsModel;
   Future getGifts() async {
     showLoading();
     emit(GetGiftsLoadingState());
     final result = await _mainLayoutRepository.getGifts();
-    result.when(success: (success) {
-      giftsModel = success;
-      hideLoading();
-      emit(GetGiftsSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(GetGiftsFailedState());
-    });
+    result.when(
+      success: (success) {
+        giftsModel = success;
+        hideLoading();
+        emit(GetGiftsSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetGiftsFailedState());
+      },
+    );
   }
+
   /// Delete Account
   Future deleteAccount(BuildContext context) async {
     showLoading();
     emit(DeleteAccountLoadingState());
     final result = await _mainLayoutRepository.deleteAccount();
-    result.when(success: (success) {
-      CacheHelper.sharedPreferences.remove(CacheKeys.userToken);
-      context.pushReplacementNamed(Routes.loginScreen);
-      hideLoading();
-      emit(DeleteAccountSuccessState());
-    }, failure: (error) {
-      hideLoading();
-      emit(DeleteAccountFailedState());
-    });
+    result.when(
+      success: (success) {
+        CacheHelper.sharedPreferences.remove(CacheKeys.userToken);
+        context.pushReplacementNamed(Routes.loginScreen);
+        hideLoading();
+        emit(DeleteAccountSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(DeleteAccountFailedState());
+      },
+    );
   }
 }

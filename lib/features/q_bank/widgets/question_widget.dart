@@ -14,7 +14,8 @@ class QuestionWidget extends StatelessWidget {
     this.addCircledFun,
     required this.newsExplain,
     required this.lightBulbExplain,
-    required this.questionCircleExplain,  this.isAdd=false,
+    required this.questionCircleExplain,
+    this.isAdd = false,
   });
   final String currentQuestion, question;
   final bool isFav;
@@ -45,10 +46,12 @@ class QuestionWidget extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: addCircledFun,
-                    child: ExcludeSemantics( // أضف هذا لتقليل semantics tree
+                    child: ExcludeSemantics(
                       child: Icon(
-                        isAdd?CupertinoIcons.delete:   CupertinoIcons.add_circled,
-                        color: AppColors.forthColor.withOpacity(0.7),
+                        isAdd
+                            ? CupertinoIcons.delete
+                            : CupertinoIcons.add_circled,
+                        color: AppColors.forthColor.withAlpha(170),
                         size: SizeConfig.responsiveValue(
                           phone: 20.sp,
                           tablet: 40.sp,
@@ -61,7 +64,7 @@ class QuestionWidget extends StatelessWidget {
                     isFav ? CupertinoIcons.star_fill : CupertinoIcons.star,
                     color: isFav
                         ? Colors.amber
-                        : AppColors.forthColor.withOpacity(0.7),
+                        : AppColors.forthColor.withAlpha(170),
                     size: SizeConfig.responsiveValue(
                       phone: 20.sp,
                       tablet: 40.sp,
@@ -92,7 +95,9 @@ class QuestionWidget extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: newsExplain == 'null'||newsExplain == 'NULL' ? '' : newsExplain,
+                          text: newsExplain == 'null' || newsExplain == 'NULL'
+                              ? ''
+                              : newsExplain,
                           style: interRegular.copyWith(
                             fontSize: 16.sp,
                             color: AppColors.forthColor,
@@ -133,7 +138,9 @@ class QuestionWidget extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: lightBulbExplain == 'null'||lightBulbExplain=='NULL'
+                          text:
+                              lightBulbExplain == 'null' ||
+                                  lightBulbExplain == 'NULL'
                               ? ''
                               : lightBulbExplain,
                           style: interRegular.copyWith(
@@ -147,8 +154,9 @@ class QuestionWidget extends StatelessWidget {
                       ],
                     ),
                     child: Icon(
-                      lightBulbExplain == 'null'||lightBulbExplain=='NULL'?  CupertinoIcons.lightbulb_slash:
-                      CupertinoIcons.lightbulb_fill,
+                      lightBulbExplain == 'null' || lightBulbExplain == 'NULL'
+                          ? CupertinoIcons.lightbulb_slash
+                          : CupertinoIcons.lightbulb_fill,
                       size: SizeConfig.responsiveValue(
                         phone: 20.sp,
                         tablet: 40.sp,

@@ -8,6 +8,9 @@ class DioFactory {
   static Future<void> init() {
     final BaseOptions baseOptions = BaseOptions(
       baseUrl: EndPoints.baseUrl,
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      sendTimeout: const Duration(seconds: 30),
       receiveDataWhenStatusError: true,
       validateStatus: (status) => true,
     );

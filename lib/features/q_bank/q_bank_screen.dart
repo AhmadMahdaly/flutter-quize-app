@@ -7,7 +7,7 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/no_data_widget.dart';
 import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
-import 'package:smle/features/q_bank/data/model/startQuizModel.dart';
+import 'package:smle/features/q_bank/data/model/start_quiz_model.dart';
 import 'package:smle/features/q_bank/widgets/answer_widget.dart';
 import 'package:smle/features/q_bank/widgets/q_bank_progress_widget.dart';
 import 'package:smle/features/q_bank/widgets/question_button_widget.dart';

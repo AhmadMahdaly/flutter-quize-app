@@ -25,7 +25,7 @@ import 'package:smle/features/play_list/playlist_questions_screen.dart';
 import 'package:smle/features/profile/profile_screen.dart';
 import 'package:smle/features/q_bank/create_quiz_screen.dart';
 import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
-import 'package:smle/features/q_bank/data/model/startQuizModel.dart';
+import 'package:smle/features/q_bank/data/model/start_quiz_model.dart';
 import 'package:smle/features/q_bank/q_bank_screen.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/views/exam_page.dart';

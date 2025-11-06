@@ -147,7 +147,7 @@ class SubscriptionScreen extends StatelessWidget {
 
               if (state is PurchaseLoadingState)
                 Container(
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withAlpha(120),
                   child: const Center(child: CircularProgressIndicator()),
                 ),
             ],

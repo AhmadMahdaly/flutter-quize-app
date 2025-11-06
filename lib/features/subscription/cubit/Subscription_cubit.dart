@@ -1,7 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/functions/debug_print_extension.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
 import 'package:smle/features/subscription/data/repo/subscription_repo.dart';
@@ -87,6 +90,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
               if (uri.queryParameters['success'] == 'true') {
                 if (!isClosed) emit(PurchaseSuccessState());
               } else {
+                uri.queryParameters.dPrint();
                 final message =
                     uri.queryParameters['message'] ??
                     uri.queryParameters['error'] ??
@@ -103,6 +107,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
               if (request.url.contains('success')) {
                 if (!isClosed) emit(PurchaseSuccessState());
               } else {
+                '${uri.queryParameters}  fail'.dPrint();
                 if (!isClosed) emit(PurchaseFailedState('فشل الدفع'));
               }
               return NavigationDecision.prevent;
@@ -111,13 +116,13 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
             return NavigationDecision.navigate;
           },
           onPageStarted: (String url) {
-            print('🔄 Page started: $url');
+            '🔄 Page started: $url'.dPrint();
           },
           onPageFinished: (String url) {
-            print('✅ Page loaded: $url');
+            '✅ Page loaded: $url'.dPrint();
           },
           onWebResourceError: (WebResourceError error) {
-            print('❌ Error: ${error.description}');
+            '❌ Error: ${error.description}'.dPrint();
           },
         ),
       )
@@ -135,7 +140,6 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
         child: Dialog.fullscreen(
           child: Scaffold(
             appBar: AppBar(
-              title: const Text('إتمام الدفع'),
               leading: IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: () {

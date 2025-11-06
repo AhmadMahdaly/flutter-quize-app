@@ -32,80 +32,74 @@ class MyApp extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {  SizeConfig.init(context);
+  Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
-      child:   MultiBlocProvider(
-  providers: [
-    BlocProvider(
-        create: (context) => CheckSubscriptionCubit(getIt()),
-),
-    BlocProvider(
-      create: (context) => getIt<PlayListCubit>(),
-    ),
-  ],
-  child: MaterialApp(
-            onGenerateRoute: AppRouter().generateRoute,
-            initialRoute:
-                CacheHelper.getData(key: CacheKeys.isFirstOpen) == true
-                ? Routes.mainLayoutScreen
-                : Routes.splashScreen,
-            theme: lightTheme,
-            navigatorKey: navigatorKey,
-            darkTheme: lightTheme,
-            themeMode: ThemeMode.light,
-            title: 'SMLE',
-            debugShowCheckedModeBanner: false,
-            localeResolutionCallback: (deviceLocale, supportedLocales) {
-              for (var locale in supportedLocales) {
-                if (deviceLocale != null &&
-                    deviceLocale.languageCode == locale.languageCode) {
-                  return deviceLocale;
-                }
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => CheckSubscriptionCubit(getIt())),
+          BlocProvider(create: (context) => getIt<PlayListCubit>()),
+        ],
+        child: MaterialApp(
+          onGenerateRoute: AppRouter().generateRoute,
+          initialRoute: CacheHelper.getData(key: CacheKeys.isFirstOpen) == true
+              ? Routes.mainLayoutScreen
+              : Routes.splashScreen,
+          theme: lightTheme,
+          navigatorKey: navigatorKey,
+          darkTheme: lightTheme,
+          themeMode: ThemeMode.light,
+          title: 'SMLE',
+          debugShowCheckedModeBanner: false,
+          localeResolutionCallback: (deviceLocale, supportedLocales) {
+            for (var locale in supportedLocales) {
+              if (deviceLocale != null &&
+                  deviceLocale.languageCode == locale.languageCode) {
+                return deviceLocale;
               }
-              return supportedLocales.first;
-            },
-            supportedLocales: const [Locale('en'), Locale('ar')],
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              MonthYearPickerLocalizations
-                  .delegate, // ← Required for month_year_picker
-            ],
-            builder: (context, myWidget) {
-              myWidget = EasyLoading.init()(context, myWidget);
-              configLoading(context);
-              SystemChrome.setSystemUIOverlayStyle(
-                SystemUiOverlayStyle(
-                  statusBarColor: Theme.of(context).scaffoldBackgroundColor,
-                  systemNavigationBarColor: Theme.of(
-                    context,
-                  ).scaffoldBackgroundColor,
-                  systemNavigationBarDividerColor: Theme.of(
-                    context,
-                  ).scaffoldBackgroundColor,
-                  systemNavigationBarContrastEnforced: true,
-                  systemStatusBarContrastEnforced: true,
-                  systemNavigationBarIconBrightness: Brightness.dark,
-                  statusBarBrightness: Brightness.light,
-                  statusBarIconBrightness: Brightness.dark,
-                ),
-              );
-              myWidget = MediaQuery(
-                data: MediaQuery.of(
+            }
+            return supportedLocales.first;
+          },
+          supportedLocales: const [Locale('en'), Locale('ar')],
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            MonthYearPickerLocalizations.delegate,
+          ],
+          builder: (context, myWidget) {
+            myWidget = EasyLoading.init()(context, myWidget);
+            configLoading(context);
+            SystemChrome.setSystemUIOverlayStyle(
+              SystemUiOverlayStyle(
+                statusBarColor: Theme.of(context).scaffoldBackgroundColor,
+                systemNavigationBarColor: Theme.of(
                   context,
-                ).copyWith(textScaler: const TextScaler.linear(1.0)),
-                child: Material(
-                  child: Material(child: Stack(children: [myWidget])),
-                ),
-              );
-              return myWidget;
-            },
-
+                ).scaffoldBackgroundColor,
+                systemNavigationBarDividerColor: Theme.of(
+                  context,
+                ).scaffoldBackgroundColor,
+                systemNavigationBarContrastEnforced: true,
+                systemStatusBarContrastEnforced: true,
+                systemNavigationBarIconBrightness: Brightness.dark,
+                statusBarBrightness: Brightness.light,
+                statusBarIconBrightness: Brightness.dark,
+              ),
+            );
+            myWidget = MediaQuery(
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: const TextScaler.linear(1.0)),
+              child: Material(
+                child: Material(child: Stack(children: [myWidget])),
+              ),
+            );
+            return myWidget;
+          },
+        ),
       ),
-),
     );
   }
 }

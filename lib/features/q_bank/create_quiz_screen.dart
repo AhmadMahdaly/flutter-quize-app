@@ -10,7 +10,7 @@ import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
-import 'package:smle/features/q_bank/data/model/startQuizModel.dart';
+import 'package:smle/features/q_bank/data/model/start_quiz_model.dart';
 import 'package:smle/features/q_bank/widgets/create_quiz_widgets/selected_items.dart';
 import 'package:smle/features/q_bank/widgets/create_quiz_widgets/specialty_list.dart';
 import 'package:smle/features/q_bank/widgets/create_quiz_widgets/sub_specialty_list.dart';

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:smle/core/functions/debug_print_extension.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/network/failures.dart';
 import 'package:smle/features/free_trial/data/models/trial_exam_model.dart';
@@ -12,7 +13,7 @@ class TrialExamCubit extends Cubit<TrialExamState> {
   final TrialExamRepository _repository;
 
   Future<void> fetchTrialExam() async {
-    print('fetchTrialExam called'); // للتصحيح: تحقق في console
+    'fetchTrialExam called'.dPrint();
     showLoading();
 
     emit(state.copyWith(status: FetchStatus.loading));
@@ -31,7 +32,7 @@ class TrialExamCubit extends Cubit<TrialExamState> {
             errorMessage: null, // مسح أي خطأ سابق
           ),
         );
-        print('fetchTrialExam success: ${questions.length} questions loaded'); // للتصحيح
+        'fetchTrialExam success: ${questions.length} questions loaded'.dPrint();
       },
       failure: (ServerFailure errorHandler) {
         hideLoading();
@@ -42,17 +43,14 @@ class TrialExamCubit extends Cubit<TrialExamState> {
             errorMessage: 'Failed to load questions.',
           ),
         );
-        print('fetchTrialExam failure: ${errorHandler.errMessage}'); // للتصحيح
+        'fetchTrialExam failure: ${errorHandler.errMessage}'.dPrint();
       },
     );
   }
 
-  // دالة جديدة لإعادة تعيين الاختبار بالكامل
   Future<void> resetExam() async {
-    print('resetExam called'); // للتصحيح
-    // إعادة تعيين الحالة إلى الأولية أولاً لإعادة بناء الشاشة
+    'resetExam called'.dPrint();
     emit(const TrialExamState());
-    // ثم تحميل الاختبار الجديد
     await fetchTrialExam();
   }
 

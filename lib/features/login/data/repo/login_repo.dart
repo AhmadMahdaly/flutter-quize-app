@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
+import 'package:smle/core/functions/debug_print_extension.dart';
 import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
@@ -45,14 +46,12 @@ class LoginRepository {
         response: response,
       );
     } on DioException catch (e) {
-      // --- Handle the specific "email taken" error ---
       if (e.response?.statusCode == 422 &&
           (e.response?.data['message'] as String?)?.contains(
                 'The email has already been taken',
               ) ==
               true) {
-        // --- Attempt 2: The email exists, so try to log in instead ---
-        print('Email already taken. Retrying as a login attempt...');
+      'Email already taken. Retrying as a login attempt...'.dPrint();
         final Map<String, dynamic> loginData = {
           idKey: id,
           if (fcmToken != null) 'fcm_token': fcmToken,

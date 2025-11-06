@@ -256,7 +256,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withOpacity(0.7),
+                      Colors.black.withAlpha(170),
                     ],
                   ),
                 ),

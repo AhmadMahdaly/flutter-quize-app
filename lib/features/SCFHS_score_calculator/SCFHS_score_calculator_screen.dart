@@ -54,10 +54,8 @@ class _ScfhsScoreCalculatorScreenState
                             color: AppColors.darkGreyColor,
                           ),
                           decoration: InputDecoration(
-                            fillColor: AppColors.greyColor.withOpacity(
-                              0.3,
-                            ), // Background color
-                            filled: true, // Enables the background color
+                            fillColor: AppColors.greyColor.withAlpha(55),
+                            filled: true,
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(40.r),

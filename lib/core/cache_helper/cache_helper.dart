@@ -3,6 +3,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:smle/core/cache_helper/cache_values.dart';
+import 'package:smle/core/functions/debug_print_extension.dart';
 
 class CacheHelper {
   static late SharedPreferences sharedPreferences;
@@ -11,13 +12,13 @@ class CacheHelper {
     try {
       sharedPreferences = await SharedPreferences.getInstance();
     } catch (e) {
-      print('sharedPreferences error $e');
+     'sharedPreferences error $e'.dPrint();
     }
   }
   static dynamic getData({
     required String key,
   }) {try{
-    return sharedPreferences.get(key);}catch(e){print('sharedPreferences error $e');}
+    return sharedPreferences.get(key);}catch(e){'sharedPreferences error $e'.dPrint();}
   }
 
   static bool isEnglish() => getCurrentLanguage() == 'en';

@@ -11,9 +11,12 @@ import 'package:smle/features/revision/data/model/subcategories_model.dart';
 class QBankRepository {
   QBankRepository(this._dioFactory);
   final DioFactory _dioFactory;
-Future<void> init()async{try{
-  await _dioFactory.get(endPoint: EndPoints.createQBank);}catch(e){}
-}
+  Future<void> init() async {
+    try {
+      await _dioFactory.get(endPoint: EndPoints.createQBank);
+    } catch (_) {}
+  }
+
   Future<ApiResult<QBankModel>> startQuiz({
     required String month,
     required String year,
@@ -44,19 +47,17 @@ Future<void> init()async{try{
       );
     }
   }
-// دالة جديدة لجلب أسئلة الـ playlist مع pagination
+
+  // دالة جديدة لجلب أسئلة الـ playlist مع pagination
   Future<ApiResult<QBankModel>> getPlaylistQuestions({
     required int playlistId,
     required int limit,
     required int offset,
   }) async {
     final response = await _dioFactory.get(
-      endPoint: EndPoints.getPlaylistQuestions, // افتراض: EndPoints.getPlaylistQuestions = '/playlists/{id}/questions'
-      data: {
-        'playlist_id': playlistId,
-        'limit': limit,
-        'offset': offset,
-      },
+      endPoint: EndPoints
+          .getPlaylistQuestions, // افتراض: EndPoints.getPlaylistQuestions = '/playlists/{id}/questions'
+      data: {'playlist_id': playlistId, 'limit': limit, 'offset': offset},
     );
     if (response!.statusCode == 200) {
       final QBankModel model = QBankModel.fromJson(response.data);
@@ -71,6 +72,7 @@ Future<void> init()async{try{
       );
     }
   }
+
   Future<ApiResult<QuestionCountModel>?> getQuestionsCount({
     required String month,
     required String year,

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 part 'global_state.dart';
 
 class GlobalCubit extends Cubit<GlobalStates> {
   GlobalCubit() : super(const GlobalStates(locale: Locale('en')));
 
-// static LocalizationCubit get(context)=>BlocProvider.of(context);
+  // static LocalizationCubit get(context)=>BlocProvider.of(context);
   /// Set onBoarding Index
   int onBoardingIndex = 0;
-  void setOnBoardingIndex(i) {
+  void setOnBoardingIndex(int i) {
     onBoardingIndex = i;
     emit(SetOnBoardingIndexState(onBoardingIndex));
   }
+
   // /// Change Language
   // Future<void> changeLanguage(String languageCode, BuildContext context) async {
   //   await CacheHelper().cacheLanguageCode(languageCode);
@@ -134,4 +136,3 @@ class GlobalCubit extends Cubit<GlobalStates> {
   //           ));
   // }
 }
-

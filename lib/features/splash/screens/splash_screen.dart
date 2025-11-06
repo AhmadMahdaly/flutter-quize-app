@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
+import 'package:smle/core/functions/debug_print_extension.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
-import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 
@@ -28,17 +28,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<bool> isLoggedIn() async {
     final String? token = await CacheHelper.getData(key: CacheKeys.userToken);
-    debugPrintWidget(token);
+    token?.dPrint();
     return token != null ? true : false;
   }
 
   Future<void> _route() async {
     context.pushReplacementNamed(Routes.mainLayoutScreen);
-
-    // try {
-    //   await PushNotificationService().initialize();
-    //   FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
-    // } catch (_) {}
 
     // final isOnboardingComplete =
     //     await CacheHelper.getData(key: firstTimeRun) as bool? ?? false;
