@@ -23,11 +23,11 @@ void main() async {
 
   await setupGetIt();
   await DioFactory.init();
-  try {
-    await Firebase.initializeApp();
-  } catch (e) {
-    debugPrint('Firebase Initialization Failed: $e');
-  }
+  // try {
+  //   await Firebase.initializeApp();
+  // } catch (e) {
+  //   debugPrint('Firebase Initialization Failed: $e');
+  // }
 
   Directory storageDirectory;
   try {

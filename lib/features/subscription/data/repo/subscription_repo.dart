@@ -75,7 +75,7 @@ class SubscriptionRepository {
       if (authRes.statusCode != 201) {
         '❌ Auth failed with status: ${authRes.statusCode}'.dPrint();
 
-        return ApiResult.failure(ServerFailure('فشل في الحصول على Auth Token'));
+        return ApiResult.failure(ServerFailure('Failed to get Auth Token'));
       }
 
       final String authToken = authRes.data['token'];
@@ -98,7 +98,7 @@ class SubscriptionRepository {
       if (orderRes.statusCode != 201) {
         '❌ Order creation failed with status: ${orderRes.statusCode}'.dPrint();
 
-        return ApiResult.failure(ServerFailure('فشل في إنشاء الطلب'));
+        return ApiResult.failure(ServerFailure('Failed to create order'));
       }
 
       final int orderId = orderRes.data['id'];
@@ -139,7 +139,7 @@ class SubscriptionRepository {
         '❌ Payment Key failed with status: ${keyRes.statusCode}'.dPrint();
 
         return ApiResult.failure(
-          ServerFailure('فشل في الحصول على Payment Key'),
+          ServerFailure('Failed to get Payment Key'),
         );
       }
 
@@ -152,23 +152,23 @@ class SubscriptionRepository {
       '❌ Dio Exception: ${e.type}'.dPrint();
       'Response: ${e.response?.data}'.dPrint();
 
-      String errorMessage = 'حدث خطأ في الدفع';
+      String errorMessage = 'An error occurred during payment';
 
       if (e.response != null) {
         errorMessage =
             e.response?.data['message'] ??
             e.response?.data['detail'] ??
-            'خطأ في الاتصال بخدمة الدفع';
+            'Error connecting to payment service';
       } else if (e.type == DioExceptionType.connectionTimeout) {
-        errorMessage = 'انتهت مهلة الاتصال';
+        errorMessage = 'Connection timeout';
       } else if (e.type == DioExceptionType.receiveTimeout) {
-        errorMessage = 'انتهت مهلة استقبال البيانات';
+        errorMessage = 'Receive timeout';
       }
 
       return ApiResult.failure(ServerFailure(errorMessage));
     } catch (e) {
       '❌ Unexpected Error: $e'.dPrint();
-      return ApiResult.failure(ServerFailure('خطأ غير متوقع: ${e.toString()}'));
+      return ApiResult.failure(ServerFailure('Unexpected error: ${e.toString()}'));
     }
   }
 
@@ -186,7 +186,7 @@ class SubscriptionRepository {
       );
 
       if (authRes.statusCode != 201) {
-        return ApiResult.failure(ServerFailure('فشل في المصادقة'));
+        return ApiResult.failure(ServerFailure('Authentication failed'));
       }
 
       final String authToken = authRes.data['token'];
@@ -208,7 +208,7 @@ class SubscriptionRepository {
         final String message =
             data['data']?['message'] ??
             data['rejection_reason'] ??
-            (isSuccess ? 'تم الدفع بنجاح' : 'فشل الدفع');
+            (isSuccess ? 'Payment successful' : 'Payment failed');
 
         return ApiResult.success({
           'success': isSuccess && !hasError,
@@ -220,10 +220,10 @@ class SubscriptionRepository {
         });
       }
 
-      return ApiResult.failure(ServerFailure('فشل التحقق من الدفع'));
+      return ApiResult.failure(ServerFailure('Payment verification failed'));
     } catch (e) {
       '❌ Verification Error: $e'.dPrint();
-      return ApiResult.failure(ServerFailure('خطأ في التحقق: ${e.toString()}'));
+      return ApiResult.failure(ServerFailure('Verification error: ${e.toString()}'));
     }
   }
 }

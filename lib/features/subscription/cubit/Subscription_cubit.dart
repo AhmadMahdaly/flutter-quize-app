@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/debug_print_extension.dart';
 import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
 import 'package:smle/features/subscription/data/repo/subscription_repo.dart';
 import 'package:webview_flutter/webview_flutter.dart' as webview_flutter;
@@ -94,7 +95,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
                 final message =
                     uri.queryParameters['message'] ??
                     uri.queryParameters['error'] ??
-                    'فشل الدفع';
+                    'Payment failed';
                 if (!isClosed) emit(PurchaseFailedState(message));
               }
               return NavigationDecision.prevent;
@@ -108,7 +109,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
                 if (!isClosed) emit(PurchaseSuccessState());
               } else {
                 '${uri.queryParameters}  fail'.dPrint();
-                if (!isClosed) emit(PurchaseFailedState('فشل الدفع'));
+                if (!isClosed) emit(PurchaseFailedState('Payment failed'));
               }
               return NavigationDecision.prevent;
             }
@@ -134,16 +135,16 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       builder: (_) => WillPopScope(
         onWillPop: () async {
           // عند الضغط على زر الرجوع
-          if (!isClosed) emit(PurchaseFailedState('تم إلغاء الدفع'));
+          if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
           return true;
         },
         child: Dialog.fullscreen(
           child: Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                icon: const Icon(Icons.close),
+                icon: const Icon(Icons.close, color: AppColors.secondaryColor,),
                 onPressed: () {
-                  if (!isClosed) emit(PurchaseFailedState('تم إلغاء الدفع'));
+                  if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
                   Navigator.pop(context);
                 },
               ),
