@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
-import 'package:smle/core/constants.dart';
 import 'package:smle/core/functions/debug_print_extension.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
@@ -34,14 +33,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _route() async {
-    context.pushReplacementNamed(Routes.mainLayoutScreen);
-/// Without Onboard
-    // if (await isLoggedIn()) {
-    //   context.pushReplacementNamed(Routes.mainLayoutScreen);
-    // } else {
-    //     context.pushReplacementNamed(Routes.loginScreen);
-    // }
-
+    // context.pushReplacementNamed(Routes.mainLayoutScreen);
+    /// Without Onboard
+    if (await isLoggedIn()) {
+      context.pushReplacementNamed(Routes.mainLayoutScreen);
+    } else {
+      context.pushReplacementNamed(Routes.loginScreen);
+    }
 
     /// With Onboard
     // final isOnboardingComplete =
@@ -49,11 +47,11 @@ class _SplashScreenState extends State<SplashScreen> {
     // if (await isLoggedIn()) {
     //   context.pushReplacementNamed(Routes.mainLayoutScreen);
     // } else {
-      // if (!isOnboardingComplete) {
-      //   context.pushReplacementNamed(Routes.onBoardingScreen);
-      // } else {
-      // context.pushReplacementNamed(Routes.loginScreen);
-      // }
+    // if (!isOnboardingComplete) {
+    //   context.pushReplacementNamed(Routes.onBoardingScreen);
+    // } else {
+    // context.pushReplacementNamed(Routes.loginScreen);
+    // }
     // }
   }
 

@@ -6,8 +6,10 @@ import 'package:smle/core/di.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/home/widgets/drawer_item_widget.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
@@ -53,13 +55,47 @@ class DrawerWidget extends StatelessWidget {
               );
             },
           ),
-          // else
-          //   const SizedBox.shrink(),
-          DrawerItemWidget(
-            iconAsset: Assets.columUpLight,
-            title: 'analysis'.tr(context),
-            onTap: () {
-              context.pushNamed(Routes.analysisScreen, arguments: false);
+
+          BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
+            builder: (context, state) {
+              if (state is SubscriptionLoaded) {
+                final sub = state.subscription;
+
+                final isSubscribed = sub.isSubscribed ?? false;
+
+                return DrawerItemWidget(
+                  iconAsset: Assets.columUpLight,
+                  title: 'analysis'.tr(context),
+                  onTap: !isSubscribed
+                      ? () => showCustomPrimaryDialog(
+                          context,
+                          widget: CustomPrimaryDialog(
+                            title: 'Subscription Required',
+                            description: 'Subscribe to access.',
+                            confirmText: 'Subscribe Now',
+                            onConfirm: () {
+                              context.pushNamed(
+                                Routes.subscriptionScreen,
+                                arguments:
+                                    context
+                                        .read<MainLayoutCubit>()
+                                        .profileModel!
+                                        .data!
+                                        .offerId ??
+                                    -1,
+                              );
+                            },
+                          ),
+                        )
+                      : () {
+                          context.pushNamed(
+                            Routes.analysisScreen,
+                            arguments: false,
+                          );
+                        },
+                );
+              }
+              return const SizedBox.shrink();
             },
           ),
           DrawerItemWidget(

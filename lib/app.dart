@@ -40,6 +40,10 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => CheckSubscriptionCubit(getIt())),
           BlocProvider(create: (context) => getIt<PlayListCubit>()),
+          BlocProvider(
+            create: (context) =>
+                CheckSubscriptionCubit(getIt())..loadSubscription(),
+          ),
         ],
         child: MaterialApp(
           onGenerateRoute: AppRouter().generateRoute,

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
-import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
-import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/views/widgets/break_time_dailog.dart';
 import 'package:smle/features/real_exam/views/widgets/real_exam_body.dart';
@@ -23,7 +20,8 @@ class RealExamPage extends StatelessWidget {
         body: BlocConsumer<RealExamCubit, RealExamState>(
           bloc: getIt<RealExamCubit>(),
           listener: (context, state) {
-            if (state.status == ExamStatus.finished && state.examResult != null) {
+            if (state.status == ExamStatus.finished &&
+                state.examResult != null) {
               context.pushReplacementNamed(
                 Routes.analysisScreen,
                 arguments: true,

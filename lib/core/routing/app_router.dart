@@ -233,8 +233,8 @@ class AppRouter {
 
   List<Widget> screen = [
     const TrialExamScreen(),
-    const HomeScreen(isGuest: false),
+    const HomeScreen(),
     const ProfileScreen(),
   ];
-  List<Widget> guestScreen = [const HomeScreen(isGuest: true)];
+  List<Widget> guestScreen = [const HomeScreen()];
 }
