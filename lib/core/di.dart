@@ -14,6 +14,7 @@ import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 import 'package:smle/features/play_list/data/repo/play_list_repo.dart';
+import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
 import 'package:smle/features/q_bank/data/repo/q_bank_repo.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/data/repo/real_exam_repo.dart';
@@ -27,31 +28,31 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<DioFactory>(() => DioFactory());
   getIt.registerFactory<MainLayoutCubit>(() => MainLayoutCubit(getIt()));
   getIt.registerFactory<NotificationCubit>(() => NotificationCubit());
-  getIt.registerFactory<AnalysisRepository>(() => AnalysisRepository(getIt()));
+  getIt.registerLazySingleton<AnalysisRepository>(() => AnalysisRepository(getIt()));
   getIt.registerFactory<AnalysisCubit>(() => AnalysisCubit(getIt()));
-  getIt.registerFactory<ExamsHistoryRepository>(
+  getIt.registerLazySingleton<ExamsHistoryRepository>(
     () => ExamsHistoryRepository(getIt()),
   );
 
   getIt.registerFactory<ExamsHistoryCubit>(() => ExamsHistoryCubit(getIt()));
-  getIt.registerFactory<MainLayoutRepository>(
+  getIt.registerLazySingleton<MainLayoutRepository>(
     () => MainLayoutRepository(getIt()),
   );
-  getIt.registerFactory<LoginRepository>(() => LoginRepository(getIt()));
+  getIt.registerLazySingleton<LoginRepository>(() => LoginRepository(getIt()));
 
-  getIt.registerFactory<SubscriptionRepository>(
+  getIt.registerLazySingleton<SubscriptionRepository>(
     () => SubscriptionRepository(getIt()),
   );
-  getIt.registerFactory<RevisionRepository>(() => RevisionRepository(getIt()));
-  getIt.registerFactory<PrivacySupportRepository>(
+  getIt.registerLazySingleton<RevisionRepository>(() => RevisionRepository(getIt()));
+  getIt.registerLazySingleton<PrivacySupportRepository>(
     () => PrivacySupportRepository(getIt()),
   );
-  getIt.registerFactory<CalculatorRepository>(
+  getIt.registerLazySingleton<CalculatorRepository>(
     () => CalculatorRepository(getIt()),
   );
-  getIt.registerFactory<QBankRepository>(() => QBankRepository(getIt()));
-  getIt.registerFactory<PlayListRepository>(() => PlayListRepository(getIt()));
-  getIt.registerFactory<RealExamRepo>(() => RealExamRepo(getIt()));
+  getIt.registerLazySingleton<QBankRepository>(() => QBankRepository(getIt()));
+  getIt.registerLazySingleton<PlayListRepository>(() => PlayListRepository(getIt()));
+  getIt.registerLazySingleton<RealExamRepo>(() => RealExamRepo(getIt()));
   getIt.registerLazySingleton<RealExamCubit>(()=>RealExamCubit(getIt()));
   getIt.registerLazySingleton<PlayListCubit>(()=>PlayListCubit(getIt()));
 
@@ -59,6 +60,8 @@ Future<void> setupGetIt() async {
     () => TrialExamRepository(getIt()),
   );
   getIt.registerFactory<TrialExamCubit>(() => TrialExamCubit(getIt()));
-  getIt.registerFactory<CheckSubscriptionRepository>(() => CheckSubscriptionRepository(getIt()));
+  getIt.registerFactory<QBankCubit>(() => QBankCubit(getIt()));
+
+  getIt.registerLazySingleton<CheckSubscriptionRepository>(() => CheckSubscriptionRepository(getIt()));
 
 }

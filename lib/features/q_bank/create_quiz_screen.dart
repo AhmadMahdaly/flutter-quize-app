@@ -125,16 +125,16 @@ context.read<QBankCubit>().init();    super.initState();
                   else
                     const Center(child: CircularProgressIndicator()),
                   20.verticalSpace,
-                  _buildSectionHeader(
-                    context,
-                    title: 'sub_specialty'.tr(context),
-                    isAllSelected: areAllSubCategoriesSelected,
-                    isEnabled: cubit.aggregatedSubcategories.isNotEmpty,
-                    onSelectAllChanged: (value) {
-                      cubit.selectAllSubCategories(value ?? false);
-                    },
-                  ),
-                  10.verticalSpace,
+                  // _buildSectionHeader(
+                  //   context,
+                  //   title: 'sub_specialty'.tr(context),
+                  //   isAllSelected: areAllSubCategoriesSelected,
+                  //   isEnabled: cubit.aggregatedSubcategories.isNotEmpty,
+                  //   onSelectAllChanged: (value) {
+                  //     cubit.selectAllSubCategories(value ?? false);
+                  //   },
+                  // ),
+                  // 10.verticalSpace,
                   if (state is GetSubCategoriesLoadingState)
                     const Center(child: CircularProgressIndicator())
                   else if (cubit.selectedCategoryIds.isNotEmpty &&
@@ -152,7 +152,43 @@ context.read<QBankCubit>().init();    super.initState();
                       ),
                     )
                   else
-                    SubSpecialtyList(cubit: cubit),
+                    ExpansionTile(
+                      collapsedIconColor: AppColors.forthColor,
+                      iconColor: AppColors.forthColor,
+                      title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'sub_specialty'.tr(context),
+                            style: interMedium.copyWith(
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 16.sp,
+                                tablet: 20.sp,
+                              ),
+                            ),
+                          ), Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'select_all'.tr(context),
+                                style: interRegular.copyWith(
+                                  fontSize: SizeConfig.responsiveValue(
+                                    phone: 14.sp,
+                                    tablet: 16.sp,
+                                  ),
+                                ),
+                              ),
+                              Checkbox(
+                                value: areAllSubCategoriesSelected,
+                                onChanged: cubit.aggregatedSubcategories.isNotEmpty ?(value)=> cubit.selectAllSubCategories(value ?? false) : null,
+                                activeColor: AppColors.primaryColor,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      children: [SubSpecialtyList(cubit: cubit)],
+                    ),
                   20.verticalSpace,
                   _buildAdvancedFilters(context, cubit, state),
                   20.verticalSpace,

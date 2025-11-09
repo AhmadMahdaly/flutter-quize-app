@@ -1,6 +1,6 @@
 class Routes {
   static const String splashScreen = '/splashscreen';
-  static const String onBoardingScreen = '/onBoardingScreen';
+  // static const String onBoardingScreen = '/onBoardingScreen';
   static const String loginScreen = '/loginScreen';
   static const String profileScreen = '/profileScreen';
   static const String giftsScreen = '/giftsScreen';

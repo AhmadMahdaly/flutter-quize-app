@@ -36,7 +36,7 @@ class TopBannerWidget extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '400 ',
+                      text: '1000 ',
                       style: interBold.copyWith(
                         fontSize: SizeConfig.responsiveValue(
                           phone: 15.sp,

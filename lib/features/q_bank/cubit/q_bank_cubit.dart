@@ -66,7 +66,7 @@ Future<void>init()async{_qBankRepository.init();}
     if (isNext) {
       if (index < (qBankModel?.data?.length ?? 1) - 1) {
         index++;
-        isAnswered = false;
+        // isAnswered = false;
       }
     } else {
       if (index > 0) {
@@ -288,7 +288,7 @@ Future<void>init()async{_qBankRepository.init();}
   void selectAnswer(String key, int questionId) {
     // selectedAnswer = key;
     qBankModel!.data![index].selectedAnswer = key;
-    isAnswered = true; // أضف هذا لتحديث isAnswered فوراً
+    // isAnswered = true;
     markQuestionAsAnswered(questionId);
     emit(SelectAnswerState());
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
@@ -16,42 +17,43 @@ class RealExamPage extends StatelessWidget {
   Widget build(BuildContext context) {
     getIt<RealExamCubit>().startOrResumeExam();
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar(canBack: false, title: 'real_exam'.tr(context)),
-      body: BlocConsumer<RealExamCubit, RealExamState>(
-        bloc: getIt<RealExamCubit>(),
-        listener: (context, state) {
-          if (state.status == ExamStatus.finished && state.examResult != null) {
-            context.pushReplacementNamed(
-              Routes.analysisScreen,
-              arguments: true,
-            );
-          }
-        },
-        builder: (context, state) {
-          switch (state.status) {
-            case ExamStatus.loading:
-            case ExamStatus.initial:
-              return const SizedBox.shrink();
-            case ExamStatus.success:
-              return RealExamBody(
-                examModel: state.examModel!,
-                bookmarkedStatuses: state.bookmarkedStatuses,
-                noteStatuses: state.noteStatuses,
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: BlocConsumer<RealExamCubit, RealExamState>(
+          bloc: getIt<RealExamCubit>(),
+          listener: (context, state) {
+            if (state.status == ExamStatus.finished && state.examResult != null) {
+              context.pushReplacementNamed(
+                Routes.analysisScreen,
+                arguments: true,
               );
-            case ExamStatus.onBreak:
-              return Center(
-                child: BreakTimeDialog(breakEndTime: state.breakEndTime!),
-              );
-            case ExamStatus.error:
-              return Center(
-                child: Text(state.errorMessage ?? 'An error occurred'),
-              );
-            case ExamStatus.finished:
-              return const Center(child: Text('Exam Finished!'));
-          }
-        },
+            }
+          },
+          builder: (context, state) {
+            switch (state.status) {
+              case ExamStatus.loading:
+              case ExamStatus.initial:
+                return const SizedBox.shrink();
+              case ExamStatus.success:
+                return RealExamBody(
+                  examModel: state.examModel!,
+                  bookmarkedStatuses: state.bookmarkedStatuses,
+                  noteStatuses: state.noteStatuses,
+                );
+              case ExamStatus.onBreak:
+                return Center(
+                  child: BreakTimeDialog(breakEndTime: state.breakEndTime!),
+                );
+              case ExamStatus.error:
+                return Center(
+                  child: Text(state.errorMessage ?? 'An error occurred'),
+                );
+              case ExamStatus.finished:
+                return const Center(child: Text('Exam Finished!'));
+            }
+          },
+        ),
       ),
     );
   }

@@ -57,4 +57,6 @@ class EndPoints {
   static const String getExamHistory = 'exam/history';
   static const String verifyPurchase='verifyPurchase';
   static const String checkSubscribe='check/subscribed';
+  static const String addQBankNote='add/q/bank/note';
+
 }

@@ -72,7 +72,29 @@ class QBankRepository {
       );
     }
   }
-
+  /// TODO
+  Future<ApiResult<QBankModel>> addQBankNote({
+    required int questionId,
+    required String note,
+  }) async {
+    final response = await _dioFactory.get(
+      endPoint: EndPoints
+          .addQBankNote,
+      data: {'question_id': questionId, 'note': note},
+    );
+    if (response!.statusCode == 200) {
+      final QBankModel model = QBankModel.fromJson(response.data);
+      return ApiResult.success(model);
+    } else {
+      debugPrintWidget(response.data['message']);
+      return ApiResult.failure(
+        ServerFailure.fromResponse(
+          response.statusCode,
+          response.data['message'],
+        ),
+      );
+    }
+  }
   Future<ApiResult<QuestionCountModel>?> getQuestionsCount({
     required String month,
     required String year,

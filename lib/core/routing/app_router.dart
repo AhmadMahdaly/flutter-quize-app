@@ -67,8 +67,8 @@ class AppRouter {
     switch (settings.name) {
       case Routes.splashScreen:
         return transition(screen: const SplashScreen());
-      case Routes.onBoardingScreen:
-        return transition(screen: OnBoardingScreen(), cubit: GlobalCubit());
+      // case Routes.onBoardingScreen:
+      //   return transition(screen: OnBoardingScreen(), cubit: GlobalCubit());
       case Routes.loginScreen:
         return transition(
           screen: const LoginScreen(),
@@ -139,7 +139,7 @@ class AppRouter {
         final startQuizModel = settings.arguments as StartQuizModel;
         return transition(
           screen: QBankScreen(startQuizModel: startQuizModel),
-          cubit: QBankCubit(getIt()),
+          cubit: getIt<QBankCubit>(),
         );
       case Routes.examsHistoryScreen:
         return transition(
