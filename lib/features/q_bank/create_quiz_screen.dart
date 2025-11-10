@@ -56,11 +56,10 @@ context.read<QBankCubit>().init();    super.initState();
                       0 &&
                   (int.tryParse(cubit.numberOfQuestionsController.text) ?? 0) <=
                       cubit.questionsCount;
-
+              final bool isMonthValid = cubit.isAllYearsSelected || cubit.isAllMonthsSelected || cubit.selectedMonths.isNotEmpty;
               final bool canStartQuiz = cubit.selectedSubCategoryIds.isNotEmpty &&
                   isQuestionCountValid &&
-                  (!cubit.isAllMonthsSelected || !cubit.isAllYearsSelected || cubit.selectedSubCategoryIds.isNotEmpty); // مثال validation
-
+                  isMonthValid;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -84,32 +83,37 @@ context.read<QBankCubit>().init();    super.initState();
                         activeColor: AppColors.primaryColor,
                       ),
                     ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Month', style: interMedium.copyWith(fontSize: 16.sp)), // ترجم إذا لزم
-                      const Spacer(),
-                      Text('All Months', style: interRegular.copyWith(fontSize: 14.sp)),
-                      Checkbox(
-                        value: cubit.isAllMonthsSelected,
-                        onChanged: (value) {
-                          cubit.toggleAllMonths(value ?? false);
-                        },
-                        activeColor: AppColors.primaryColor,
-                      ),
-                    ],
-                  ),
-                  10.verticalSpace,
-                  Opacity(
-                    opacity: cubit.isAllMonthsSelected ? 0.5 : 1.0,
-                    child: AbsorbPointer(
-                      absorbing: cubit.isAllMonthsSelected,
-                      child: const YearPickerWidget(), // يختار شهر وسنة
+                  ), const YearPickerWidget(),  10.verticalSpace,
+                  if (!cubit.isAllYearsSelected) ...[
+                    // --- صف "All Months" ---
+                    Row(
+                      children: [
+                        Text('Month', style: interMedium.copyWith(fontSize: 16.sp)),
+                        const Spacer(),
+                        Text('All Months', style: interRegular.copyWith(fontSize: 14.sp)),
+                        Checkbox(
+                          value: cubit.isAllMonthsSelected,
+                          onChanged: (value) {
+                            cubit.toggleAllMonths(value ?? false);
+                          },
+                          activeColor: AppColors.primaryColor,
+                        ),
+                      ],
                     ),
-                  ),
+
+                    if (!cubit.isAllMonthsSelected) ...[
+                      15.verticalSpace,
+                      Text(
+                        'Select Months:', // (يمكنك ترجمتها)
+                        style: interMedium.copyWith(fontSize: 16.sp),
+                      ),
+                      10.verticalSpace,
+                      const MultiMonthSelector(), // (الـ Widget من الرد السابق)
+                    ],
+                  ],
 
 
-                  20.verticalSpace,
+                  12.verticalSpace,
                   _buildSectionHeader(
                     context,
                     title: 'specialty'.tr(context),
@@ -305,7 +309,9 @@ context.read<QBankCubit>().init();    super.initState();
       child: Column(crossAxisAlignment :CrossAxisAlignment.start,
         children: [
           Text(
-            'Selected: ${cubit.isAllMonthsSelected ? 'All Months' : DateFormat.MMMM().format(cubit.pickedDate)} ${cubit.isAllYearsSelected ? 'All Years' : cubit.pickedDate.year}',
+            cubit.isAllYearsSelected
+                ? 'Selected: All Time' // حالة "كل السنوات"
+                : 'Selected: ${cubit.isAllMonthsSelected ? 'All Months' : 'Months: ${cubit.selectedMonths.join(', ')}'} / Year: ${cubit.selectedYearDate.year}',
             style: interMedium.copyWith(fontSize: 14.sp, color: AppColors.secondaryColor),
             textAlign: TextAlign.start,
           ),
@@ -353,10 +359,12 @@ context.read<QBankCubit>().init();    super.initState();
               onEditingComplete: () => FocusScope.of(context).unfocus(),
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(
-                labelText: 'Number of questions',
+                labelText: 'Enter Number of questions',
+                labelStyle: TextStyle(color: AppColors.primaryColor),
                 hintText: '${'Max'}: ${cubit.questionsCount}',
                 hintStyle: TextStyle(color:AppColors.secondaryColor, fontSize: 12.sp),
-                border: const OutlineInputBorder(),
+                border:  OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(12.r))),
                 errorText:
                     (cubit.numberOfQuestionsController.text.isNotEmpty &&
                         (int.tryParse(cubit.numberOfQuestionsController.text) ??

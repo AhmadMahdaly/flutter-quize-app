@@ -9,7 +9,7 @@ class QuestionButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 200.w,
+        width: 120.w,
         height: 56.h,
         decoration: BoxDecoration(
           color: AppColors.primaryColor,

@@ -15,24 +15,38 @@ class QBankRepository {
     try {
       await _dioFactory.get(endPoint: EndPoints.createQBank);
     } catch (_) {}
-  }
-
-  Future<ApiResult<QBankModel>> startQuiz({
-    required String month,
-    required String year,
+  }Future<ApiResult<QBankModel>> startQuiz({
+    // --- بارامترات معدلة لتقبل الحالتين ---
+    required dynamic year, // يمكن أن يكون 'all' أو int (مثل 2024)
+    required dynamic month, // يمكن أن يكون 'all' أو List<int> (مثل [1, 2])
+    required int all_months, // 0 أو 1 (يُستخدم فقط إذا لم يكن 'all')
+    // ---
     required List<int> subcategoryIds,
     required int unansweredOnly,
     required int limit,
   }) async {
+    final Map<String, dynamic> data = {
+      'year': year,
+      'subcategory_id': subcategoryIds,
+      'unanswered_only': unansweredOnly,
+      'limit': limit,
+    };
+
+    if (year == 'all') {
+      // إذا كان "كل السنوات"، نفترض أن الـ API يتوقع 'all' للشهور أيضاً
+      data['month'] = 'all';
+    } else {
+      // إذا كانت سنة محددة
+      data['all_months'] = all_months;
+      if (all_months == 0) {
+        // إذا لم يكن "كل الشهور"، أرسل قائمة الشهور المحددة
+        data['month'] = month; // (هذه List<int>)
+      }
+    }
+
     final response = await _dioFactory.post(
       endPoint: EndPoints.startQBank,
-      data: {
-        'month': month,
-        'year': year,
-        'subcategory_id': subcategoryIds,
-        'unanswered_only': unansweredOnly,
-        'limit': limit,
-      },
+      data: data,
     );
     if (response!.statusCode == 200) {
       final QBankModel model = QBankModel.fromJson(response.data);
@@ -94,22 +108,34 @@ class QBankRepository {
         ),
       );
     }
-  }
-  Future<ApiResult<QuestionCountModel>?> getQuestionsCount({
-    required String month,
-    required String year,
+  }Future<ApiResult<QuestionCountModel>?> getQuestionsCount({
+    // --- بارامترات معدلة لتقبل الحالتين ---
+    required dynamic year, // 'all' or int
+    required dynamic month, // 'all' or List<int>
+    required int all_months, // 0 or 1
+    // ---
     required List<int> subcategoryIds,
     required int unansweredOnly,
   }) async {
     try {
+      final Map<String, dynamic> data = {
+        'year': year,
+        'subcategory_id': subcategoryIds,
+        'unanswered_only': unansweredOnly,
+      };
+
+      if (year == 'all') {
+        data['month'] = 'all';
+      } else {
+        data['all_months'] = all_months;
+        if (all_months == 0) {
+          data['month'] = month; // (هذه List<int>)
+        }else{ data['month'] = [1,2,3,4,5.6,7,8,9,10,11,12];}
+      }
+
       final response = await _dioFactory.post(
         endPoint: EndPoints.getQBankCount,
-        data: {
-          'month': month,
-          'year': year,
-          'subcategory_id': subcategoryIds,
-          'unanswered_only': unansweredOnly,
-        },
+        data: data,
       );
       if (response!.statusCode == 200) {
         final QuestionCountModel model = QuestionCountModel.fromJson(
@@ -119,18 +145,10 @@ class QBankRepository {
       } else {
         debugPrintWidget(response.data['message'] ?? 'Unknown error');
         return null;
-        //  ApiResult.failure(
-        //   ServerFailure.fromResponse(
-        //     response.statusCode,
-        //     response.data['message'],
-        //   ),
-        // );
       }
     } catch (e) {
       debugPrintWidget(e.toString());
       return null;
-
-      // return ApiResult.failure(ServerFailure.fromResponse(500, e.toString()));
     }
   }
 

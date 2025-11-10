@@ -19,13 +19,23 @@ class QBankCubit extends Cubit<QBankStates> {
     return super.close();
   }
 
+  // --- تم تطبيق التصحيح هنا ---
+  DateTime selectedYearDate = DateTime(2024);
+  // -----------------------------
+
+  bool isAllMonthsSelected = true;
+  List<int> selectedMonths = [];
+  bool isAllYearsSelected = false;
   QBankModel? qBankModel;
-Future<void>init()async{_qBankRepository.init();}
+
+  Future<void> init() async {
+    _qBankRepository.init();
+  }
+
   void setQuizModel(QBankModel model) {
     qBankModel = model;
     index = 0;
     isAnswered = false;
-
     emit(QuizModelSetState());
   }
 
@@ -35,12 +45,30 @@ Future<void>init()async{_qBankRepository.init();}
 
     final int limit = int.tryParse(numberOfQuestionsController.text) ?? 0;
 
-    final String month = isAllMonthsSelected ? 'all' : pickedDate.month.toString();
-    final String year = isAllYearsSelected ? 'all' : pickedDate.year.toString();
+    // --- المنطق المدمج الجديد (سليم) ---
+    dynamic apiYear;
+    dynamic apiMonth;
+    int apiAllMonths = 0;
+
+    if (isAllYearsSelected) {
+      apiYear = 'all';
+      apiMonth = 'all'; // الـ Repository سيتعامل مع هذا
+    } else {
+      apiYear = selectedYearDate.year; // int
+      if (isAllMonthsSelected) {
+        apiAllMonths = 1;
+        apiMonth = []; // غير مستخدم في هذه الحالة
+      } else {
+        apiAllMonths = 0;
+        apiMonth = selectedMonths; // List<int>
+      }
+    }
+    // --- نهاية المنطق المدمج ---
 
     final result = await _qBankRepository.startQuiz(
-      month: month,
-      year: year,
+      year: apiYear,
+      month: apiMonth,
+      all_months: apiAllMonths,
       subcategoryIds: selectedSubCategoryIds,
       unansweredOnly: unansweredOnly ? 1 : 0,
       limit: limit,
@@ -59,6 +87,28 @@ Future<void>init()async{_qBankRepository.init();}
         emit(StartQuizFailedState());
       },
     );
+  }
+
+  void toggleAllMonths(bool selectAll) {
+    isAllMonthsSelected = selectAll;
+    if (selectAll) {
+      selectedMonths.clear();
+    } else {
+      // عند إلغاء "كل الشهور"، نختار الشهر الحالي من الـ picker كافتراضي
+      selectedMonths = [selectedYearDate.month];
+    }
+    updateAvailableQuestionsCount();
+    emit(SelectDateState());
+  }
+
+  void toggleAllYears(bool selectAll) {
+    isAllYearsSelected = selectAll;
+    if (selectAll) {
+      isAllMonthsSelected = true; // كما كان في الكود الأصلي
+      selectedMonths.clear();
+    }
+    updateAvailableQuestionsCount();
+    emit(SelectDateState());
   }
 
   int index = 0;
@@ -83,6 +133,7 @@ Future<void>init()async{_qBankRepository.init();}
     result.when(
       success: (success) {
         categoriesModel = success;
+
         emit(GetCategoriesSuccessState());
       },
       failure: (error) {
@@ -144,27 +195,25 @@ Future<void>init()async{_qBankRepository.init();}
     }
   }
 
-  DateTime pickedDate = DateTime(2024);
-  bool isAllYearsSelected = false;
-  bool unansweredOnly = false;
   int questionsCount = 0;
   final TextEditingController numberOfQuestionsController =
-      TextEditingController();
-
-
-  void selectDate(DateTime selected) {
-    pickedDate = selected;
-    if (!isAllMonthsSelected) {
-      // إذا لم يكن all، حدث الشهر
-    }
+  TextEditingController();
+  bool unansweredOnly = false;
+  void selectYear(DateTime selected) {
+    selectedYearDate = selected;
     updateAvailableQuestionsCount();
     emit(SelectDateState());
   }
-  void toggleAllYears(bool selectAll) {
-    isAllYearsSelected = selectAll;
-    if (selectAll) {
-      isAllMonthsSelected = true; // إذا all years، اجعل all months تلقائيًا
+
+  void toggleMonthSelection(int month) {
+    if (isAllMonthsSelected) return; // لا تفعل شيئاً إذا كان "كل الشهور" مفعل
+
+    if (selectedMonths.contains(month)) {
+      selectedMonths.remove(month);
+    } else {
+      selectedMonths.add(month);
     }
+    selectedMonths = selectedMonths.toSet().toList(); // منع التكرار
     updateAvailableQuestionsCount();
     emit(SelectDateState());
   }
@@ -183,13 +232,27 @@ Future<void>init()async{_qBankRepository.init();}
     }
 
     emit(GetQuestionsCountLoadingState());
+    dynamic apiYear;
+    dynamic apiMonth;
+    int apiAllMonths = 0;
 
-    final String month = isAllMonthsSelected ? 'all' : pickedDate.month.toString();
-    final String year = isAllYearsSelected ? 'all' : pickedDate.year.toString();
-
+    if (isAllYearsSelected) {
+      apiYear = 'all';
+      apiMonth = 'all';
+    } else {
+      apiYear = selectedYearDate.year; // int
+      if (isAllMonthsSelected) {
+        apiAllMonths = 1;
+        apiMonth = [];
+      } else {
+        apiAllMonths = 0;
+        apiMonth = selectedMonths; // List<int>
+      }
+    }
     final result = await _qBankRepository.getQuestionsCount(
-      month: month,
-      year: year,
+      year: apiYear,
+      month: apiMonth,
+      all_months: apiAllMonths,
       subcategoryIds: selectedSubCategoryIds,
       unansweredOnly: unansweredOnly ? 1 : 0,
     );
@@ -210,14 +273,6 @@ Future<void>init()async{_qBankRepository.init();}
       },
     );
   }
-  bool isAllMonthsSelected = true; // افتراضي all months
-
-  void toggleAllMonths(bool selectAll) {
-    isAllMonthsSelected = selectAll;
-    updateAvailableQuestionsCount();
-    emit(SelectDateState());
-  }
-
 
   List<int> selectedCategoryIds = [];
   List<String> selectedCategoryNames = [];
@@ -231,6 +286,7 @@ Future<void>init()async{_qBankRepository.init();}
       selectedCategoryNames.add(categoryName);
     }
     getSubCategoriesForSelected();
+    updateAvailableQuestionsCount();
     emit(SelectCategoryState());
   }
 
@@ -248,7 +304,7 @@ Future<void>init()async{_qBankRepository.init();}
       selectAllSubCategories(true);
     } else {
       selectAllSubCategories(false);
-    }
+    }    updateAvailableQuestionsCount();
     emit(SelectCategoryState());
   }
 
@@ -280,11 +336,6 @@ Future<void>init()async{_qBankRepository.init();}
     emit(SelectSubCategoryState());
   }
 
-  // void selectAnswer(String key, int questionId) {
-  //   qBankModel!.data![index].selectedAnswer = key;
-  //   markQuestionAsAnswered(questionId);
-  //   emit(SelectAnswerState());
-  // }
   void selectAnswer(String key, int questionId) {
     // selectedAnswer = key;
     qBankModel!.data![index].selectedAnswer = key;
@@ -292,6 +343,7 @@ Future<void>init()async{_qBankRepository.init();}
     markQuestionAsAnswered(questionId);
     emit(SelectAnswerState());
   }
+
   Future<void> markQuestionAsAnswered(int questionId) async {
     emit(MarkingAsAnsweredState());
     final result = await _qBankRepository.markQuestionAsAnswered(questionId);
