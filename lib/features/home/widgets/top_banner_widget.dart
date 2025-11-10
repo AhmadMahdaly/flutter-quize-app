@@ -25,18 +25,9 @@ class TopBannerWidget extends StatelessWidget {
                 maxLines:2,
                 TextSpan(
                   children: [
+
                     TextSpan(
-                      text: 'Over ',
-                      style: interBold.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 15.sp,
-                          tablet: 19.sp,
-                        ),
-                        color: AppColors.thirdColor,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '1000 ',
+                      text: '+10,000 ',
                       style: interBold.copyWith(
                         fontSize: SizeConfig.responsiveValue(
                           phone: 15.sp,

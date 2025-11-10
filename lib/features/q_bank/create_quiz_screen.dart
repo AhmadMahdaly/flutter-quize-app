@@ -33,7 +33,7 @@ context.read<QBankCubit>().init();    super.initState();
   Widget build(BuildContext context) {
     final cubit = context.read<QBankCubit>();
 
-    return Scaffold(
+    return Scaffold( resizeToAvoidBottomInset: true,
       appBar: CustomAppBar(title: 'create_quiz'.tr(context)),
       body: SingleChildScrollView(
         child: Padding(
@@ -153,6 +153,7 @@ context.read<QBankCubit>().init();    super.initState();
                     )
                   else
                     ExpansionTile(
+                      tilePadding:EdgeInsets.zero,
                       collapsedIconColor: AppColors.forthColor,
                       iconColor: AppColors.forthColor,
                       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,7 +207,7 @@ context.read<QBankCubit>().init();    super.initState();
                     ),
                     children: [SelectedItemsWidget(cubit: cubit)],
                   ),
-                  50.verticalSpace,
+                  16.verticalSpace,
                   Center(
                     child: GestureDetector(
                       onTap: canStartQuiz
@@ -234,14 +235,14 @@ context.read<QBankCubit>().init();    super.initState();
                             }
                           : null,
                       child: Opacity(
-                        opacity: canStartQuiz ? 1.0 : 0.5,
+                        opacity: canStartQuiz ? 1.0 : 0.2,
                         child: QuestionButtonWidget(
                           text: 'start_quiz'.tr(context),
                         ),
                       ),
                     ),
                   ),
-                ],
+               24.verticalSpace ],
               );
             },
           ),
@@ -301,11 +302,12 @@ context.read<QBankCubit>().init();    super.initState();
         border: Border.all(color: AppColors.greyColor),
         borderRadius: BorderRadius.circular(12.r),
       ),
-      child: Column(
+      child: Column(crossAxisAlignment :CrossAxisAlignment.start,
         children: [
           Text(
             'Selected: ${cubit.isAllMonthsSelected ? 'All Months' : DateFormat.MMMM().format(cubit.pickedDate)} ${cubit.isAllYearsSelected ? 'All Years' : cubit.pickedDate.year}',
-            style: interMedium.copyWith(fontSize: 15.sp),
+            style: interMedium.copyWith(fontSize: 14.sp, color: AppColors.secondaryColor),
+            textAlign: TextAlign.start,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -342,26 +344,31 @@ context.read<QBankCubit>().init();    super.initState();
             ],
           ),
           15.verticalSpace,
-          TextField(
-            controller: cubit.numberOfQuestionsController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: InputDecoration(
-              labelText: 'Number of questions',
-              hintText: '${'Max'}: ${cubit.questionsCount}',
-              hintStyle: TextStyle(color:AppColors.secondaryColor, fontSize: 12.sp),
-              border: const OutlineInputBorder(),
-              errorText:
-                  (cubit.numberOfQuestionsController.text.isNotEmpty &&
-                      (int.tryParse(cubit.numberOfQuestionsController.text) ??
-                              0) >
-                          cubit.questionsCount)
-                  ? 'error_max_questions'.tr(context)
-                  : null,
+          GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: TextField(
+              controller: cubit.numberOfQuestionsController,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              onEditingComplete: () => FocusScope.of(context).unfocus(),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: InputDecoration(
+                labelText: 'Number of questions',
+                hintText: '${'Max'}: ${cubit.questionsCount}',
+                hintStyle: TextStyle(color:AppColors.secondaryColor, fontSize: 12.sp),
+                border: const OutlineInputBorder(),
+                errorText:
+                    (cubit.numberOfQuestionsController.text.isNotEmpty &&
+                        (int.tryParse(cubit.numberOfQuestionsController.text) ??
+                                0) >
+                            cubit.questionsCount)
+                    ? 'error_max_questions'.tr(context)
+                    : null,
+              ),
+              onChanged: (value) {
+                setState(() {});
+              },
             ),
-            onChanged: (value) {
-              setState(() {});
-            },
           ),
         ],
       ),

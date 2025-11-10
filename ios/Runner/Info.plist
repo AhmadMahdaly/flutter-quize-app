@@ -46,8 +46,10 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
-<dict>
+    <dict>
     <key>NSAllowsArbitraryLoads</key>
+    <true/>
+    <key>CADisableMinimumFrameDurationOnPhone</key>
     <true/>
 </dict>
 </dict>

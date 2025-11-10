@@ -1,7 +1,7 @@
 name: smle
 description: "A new Flutter project."
 publish_to: 'none' 
-version: 1.0.12+12
+version: 1.0.13+13
 
 environment:
   sdk: ^3.8.1
@@ -10,37 +10,26 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  # Save Local Data & secure it
   shared_preferences: ^2.2.2
-#  flutter_secure_storage: ^9.2.2
   flutter_bloc: ^9.1.1
   equatable: ^2.0.5
-  # Loading Widget
   flutter_easyloading: ^3.0.5
-  # Toast Widget
   flutter_styled_toast: ^2.2.1
   fluttertoast:
-  top_snackbar_flutter: ^3.1.0
-  # Image view & pick
+#  top_snackbar_flutter: ^3.1.0
   flutter_svg: ^2.0.7
   image_picker: ^1.0.4
-  # Localization
   flutter_phoenix: ^1.1.1
   intl: ^0.20.0
-  # Text Font Style
   google_fonts: ^6.2.1
-  # Navigation
   page_transition: ^2.1.0
-  # Api Calling
   freezed_annotation: ^3.1.0
   dio: ^5.3.3
   pretty_dio_logger: ^1.3.1
   get_it: ^8.2.0
-  # Firebase
-  firebase_core: ^4.0.0
-  firebase_messaging: ^16.0.0
-  # Handle Notifications
-  flutter_local_notifications: ^19.5.0
+#  firebase_core: ^4.0.0
+#  firebase_messaging: ^16.0.0
+#  flutter_local_notifications: ^19.5.0
   url_launcher: ^6.3.1
   flutter_phone_direct_caller: ^2.2.0
   flutter_widget_from_html_core: ^0.17.0
@@ -48,9 +37,6 @@ dependencies:
   google_sign_in: ^6.2.2
   # Sign in with apple account
   sign_in_with_apple: ^7.0.1
-  # Scan Card
-#  card_scanner: ^1.0.2
-  # year picker
   month_year_picker: ^0.5.0+1
   multiselect: ^0.1.1
   flutter_localizations:
@@ -60,7 +46,6 @@ dependencies:
   chewie: ^1.12.1
   fl_chart: ^1.1.1
   hydrated_bloc: ^10.1.1
-  flutter_launcher_icons: ^0.14.4
   path_provider: ^2.1.1
   in_app_purchase: ^3.2.3
   webview_flutter: ^4.13.0
@@ -69,6 +54,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.4
 
   flutter_lints: ^6.0.0
 
