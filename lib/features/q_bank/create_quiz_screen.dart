@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
@@ -27,13 +26,16 @@ class CreateQuizScreen extends StatefulWidget {
 class _CreateQuizScreenState extends State<CreateQuizScreen> {
   @override
   void initState() {
-context.read<QBankCubit>().init();    super.initState();
+    context.read<QBankCubit>().init();
+    super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<QBankCubit>();
 
-    return Scaffold( resizeToAvoidBottomInset: true,
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: CustomAppBar(title: 'create_quiz'.tr(context)),
       body: SingleChildScrollView(
         child: Padding(
@@ -56,8 +58,12 @@ context.read<QBankCubit>().init();    super.initState();
                       0 &&
                   (int.tryParse(cubit.numberOfQuestionsController.text) ?? 0) <=
                       cubit.questionsCount;
-              final bool isMonthValid = cubit.isAllYearsSelected || cubit.isAllMonthsSelected || cubit.selectedMonths.isNotEmpty;
-              final bool canStartQuiz = cubit.selectedSubCategoryIds.isNotEmpty &&
+              final bool isMonthValid =
+                  cubit.isAllYearsSelected ||
+                  cubit.isAllMonthsSelected ||
+                  cubit.selectedMonths.isNotEmpty;
+              final bool canStartQuiz =
+                  cubit.selectedSubCategoryIds.isNotEmpty &&
                   isQuestionCountValid &&
                   isMonthValid;
               return Column(
@@ -83,14 +89,22 @@ context.read<QBankCubit>().init();    super.initState();
                         activeColor: AppColors.primaryColor,
                       ),
                     ],
-                  ), const YearPickerWidget(),  10.verticalSpace,
+                  ),
+                  if (!cubit.isAllYearsSelected) const YearPickerWidget(),
+                  10.verticalSpace,
                   if (!cubit.isAllYearsSelected) ...[
                     // --- صف "All Months" ---
                     Row(
                       children: [
-                        Text('Month', style: interMedium.copyWith(fontSize: 16.sp)),
+                        Text(
+                          'Month',
+                          style: interMedium.copyWith(fontSize: 16.sp),
+                        ),
                         const Spacer(),
-                        Text('All Months', style: interRegular.copyWith(fontSize: 14.sp)),
+                        Text(
+                          'All Months',
+                          style: interRegular.copyWith(fontSize: 14.sp),
+                        ),
                         Checkbox(
                           value: cubit.isAllMonthsSelected,
                           onChanged: (value) {
@@ -111,7 +125,6 @@ context.read<QBankCubit>().init();    super.initState();
                       const MultiMonthSelector(), // (الـ Widget من الرد السابق)
                     ],
                   ],
-
 
                   12.verticalSpace,
                   _buildSectionHeader(
@@ -157,10 +170,11 @@ context.read<QBankCubit>().init();    super.initState();
                     )
                   else
                     ExpansionTile(
-                      tilePadding:EdgeInsets.zero,
+                      tilePadding: EdgeInsets.zero,
                       collapsedIconColor: AppColors.forthColor,
                       iconColor: AppColors.forthColor,
-                      title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'sub_specialty'.tr(context),
@@ -170,7 +184,8 @@ context.read<QBankCubit>().init();    super.initState();
                                 tablet: 20.sp,
                               ),
                             ),
-                          ), Row(
+                          ),
+                          Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
@@ -184,9 +199,15 @@ context.read<QBankCubit>().init();    super.initState();
                               ),
                               Checkbox(
                                 value: areAllSubCategoriesSelected,
-                                onChanged: cubit.aggregatedSubcategories.isNotEmpty ?(value)=> cubit.selectAllSubCategories(value ?? false) : null,
+                                onChanged:
+                                    cubit.aggregatedSubcategories.isNotEmpty
+                                    ? (value) => cubit.selectAllSubCategories(
+                                        value ?? false,
+                                      )
+                                    : null,
                                 activeColor: AppColors.primaryColor,
-                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
                               ),
                             ],
                           ),
@@ -228,10 +249,8 @@ context.read<QBankCubit>().init();    super.initState();
                                   );
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        'no_questions_found'.tr(context),
-                                      ),
+                                    const SnackBar(
+                                      content: Text('No Questions Found'),
                                     ),
                                   );
                                 }
@@ -246,7 +265,8 @@ context.read<QBankCubit>().init();    super.initState();
                       ),
                     ),
                   ),
-               24.verticalSpace ],
+                  24.verticalSpace,
+                ],
               );
             },
           ),
@@ -306,13 +326,17 @@ context.read<QBankCubit>().init();    super.initState();
         border: Border.all(color: AppColors.greyColor),
         borderRadius: BorderRadius.circular(12.r),
       ),
-      child: Column(crossAxisAlignment :CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             cubit.isAllYearsSelected
                 ? 'Selected: All Time' // حالة "كل السنوات"
                 : 'Selected: ${cubit.isAllMonthsSelected ? 'All Months' : 'Months: ${cubit.selectedMonths.join(', ')}'} / Year: ${cubit.selectedYearDate.year}',
-            style: interMedium.copyWith(fontSize: 14.sp, color: AppColors.secondaryColor),
+            style: interMedium.copyWith(
+              fontSize: 14.sp,
+              color: AppColors.secondaryColor,
+            ),
             textAlign: TextAlign.start,
           ),
           Row(
@@ -360,11 +384,15 @@ context.read<QBankCubit>().init();    super.initState();
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(
                 labelText: 'Enter Number of questions',
-                labelStyle: TextStyle(color: AppColors.primaryColor),
+                labelStyle: const TextStyle(color: AppColors.primaryColor),
                 hintText: '${'Max'}: ${cubit.questionsCount}',
-                hintStyle: TextStyle(color:AppColors.secondaryColor, fontSize: 12.sp),
-                border:  OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(12.r))),
+                hintStyle: TextStyle(
+                  color: AppColors.secondaryColor,
+                  fontSize: 12.sp,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(12.r)),
+                ),
                 errorText:
                     (cubit.numberOfQuestionsController.text.isNotEmpty &&
                         (int.tryParse(cubit.numberOfQuestionsController.text) ??

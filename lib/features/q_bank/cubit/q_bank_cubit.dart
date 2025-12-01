@@ -44,31 +44,35 @@ class QBankCubit extends Cubit<QBankStates> {
     emit(StartQuizLoadingState());
 
     final int limit = int.tryParse(numberOfQuestionsController.text) ?? 0;
-
-    // --- المنطق المدمج الجديد (سليم) ---
     dynamic apiYear;
     dynamic apiMonth;
     int apiAllMonths = 0;
 
     if (isAllYearsSelected) {
-      apiYear = 'all';
-      apiMonth = 'all'; // الـ Repository سيتعامل مع هذا
+      apiYear = '2024, 2025';
+
+      // --- التعديل الأول: جعل allMonths يساوي 1 ---
+      apiAllMonths = 1;
+      // -------------------------------------------
+
+      // ونرسل أيضاً الشهور كما طلبت
+      apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     } else {
-      apiYear = selectedYearDate.year; // int
+      apiYear = selectedYearDate.year;
+
       if (isAllMonthsSelected) {
         apiAllMonths = 1;
-        apiMonth = []; // غير مستخدم في هذه الحالة
+        apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
       } else {
         apiAllMonths = 0;
-        apiMonth = selectedMonths; // List<int>
+        apiMonth = selectedMonths;
       }
     }
-    // --- نهاية المنطق المدمج ---
 
     final result = await _qBankRepository.startQuiz(
       year: apiYear,
       month: apiMonth,
-      all_months: apiAllMonths,
+      allMonths: apiAllMonths,
       subcategoryIds: selectedSubCategoryIds,
       unansweredOnly: unansweredOnly ? 1 : 0,
       limit: limit,
@@ -197,7 +201,7 @@ class QBankCubit extends Cubit<QBankStates> {
 
   int questionsCount = 0;
   final TextEditingController numberOfQuestionsController =
-  TextEditingController();
+      TextEditingController();
   bool unansweredOnly = false;
   void selectYear(DateTime selected) {
     selectedYearDate = selected;
@@ -237,22 +241,29 @@ class QBankCubit extends Cubit<QBankStates> {
     int apiAllMonths = 0;
 
     if (isAllYearsSelected) {
-      apiYear = 'all';
-      apiMonth = 'all';
+      apiYear = '2024, 2025';
+
+      // --- التعديل الأول: جعل allMonths يساوي 1 ---
+      apiAllMonths = 1;
+      // -------------------------------------------
+
+      // ونرسل أيضاً الشهور كما طلبت
+      apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     } else {
-      apiYear = selectedYearDate.year; // int
+      apiYear = selectedYearDate.year;
+
       if (isAllMonthsSelected) {
         apiAllMonths = 1;
-        apiMonth = [];
+        apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
       } else {
         apiAllMonths = 0;
-        apiMonth = selectedMonths; // List<int>
+        apiMonth = selectedMonths;
       }
     }
     final result = await _qBankRepository.getQuestionsCount(
       year: apiYear,
       month: apiMonth,
-      all_months: apiAllMonths,
+      allMonths: apiAllMonths,
       subcategoryIds: selectedSubCategoryIds,
       unansweredOnly: unansweredOnly ? 1 : 0,
     );
@@ -304,7 +315,8 @@ class QBankCubit extends Cubit<QBankStates> {
       selectAllSubCategories(true);
     } else {
       selectAllSubCategories(false);
-    }    updateAvailableQuestionsCount();
+    }
+    updateAvailableQuestionsCount();
     emit(SelectCategoryState());
   }
 
@@ -375,13 +387,11 @@ class QBankCubit extends Cubit<QBankStates> {
     );
     result.when(
       success: (success) {
-        // إذا كان data فارغ، انتهى الـ playlist
         if (success.data == null || success.data!.isEmpty) {
           hideLoading();
           emit(PlaylistQuestionsEndState());
           return;
         }
-        // أضف السؤال إلى النموذج أو استبدل (هنا نستبدل لسؤال واحد)
         qBankModel = QBankModel(
           status: success.status,
           message: success.message,
@@ -396,6 +406,29 @@ class QBankCubit extends Cubit<QBankStates> {
       failure: (error) {
         hideLoading();
         emit(GetPlaylistQuestionsFailedState());
+      },
+    );
+  }
+
+  Future<void> addQuestionNote(String note) async {
+    final currentQuestion = qBankModel!.data![index];
+    final questionId = currentQuestion.id ?? currentQuestion.questionbankId;
+
+    if (questionId == null) return;
+
+    emit(AddNoteLoadingState());
+
+    final result = await _qBankRepository.addQBankNote(
+      questionId: questionId,
+      note: note,
+    );
+
+    result.when(
+      success: (success) {
+        emit(AddNoteSuccessState('Note added successfully'));
+      },
+      failure: (error) {
+        emit(AddNoteFailureState(error.errMessage));
       },
     );
   }

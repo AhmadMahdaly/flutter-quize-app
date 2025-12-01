@@ -4,9 +4,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/debug_print_extension.dart';
+import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
+import 'package:smle/features/check_subscription/data/models/check_subscription_model.dart';
+import 'package:smle/features/main%20layout/data/model/profile_model.dart'
+    hide Data;
+import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
 import 'package:smle/features/subscription/data/repo/subscription_repo.dart';
 import 'package:webview_flutter/webview_flutter.dart' as webview_flutter;
@@ -15,11 +22,11 @@ import 'package:webview_flutter/webview_flutter.dart';
 part 'Subscription_state.dart';
 
 class SubscriptionCubit extends Cubit<SubscriptionStates> {
-  SubscriptionCubit(this._subscriptionRepository)
+  SubscriptionCubit(this._subscriptionRepository, this._mainLayoutRepository)
     : super(SubscriptionInitialState());
 
   final SubscriptionRepository _subscriptionRepository;
-
+  final MainLayoutRepository _mainLayoutRepository;
   PackagesModel? packagesModel;
   PackagesModel? extraPackagesModel;
 
@@ -50,7 +57,6 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
   }
 
   late webview_flutter.WebViewController webViewController;
-
   Future<void> startPayMobPayment(
     BuildContext context,
     Data packageData,
@@ -58,10 +64,19 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     if (state is PurchaseLoadingState) return;
     emit(PurchaseLoadingState());
     showLoading();
-
     final amountCents = (packageData.price ?? 0) * 100;
-    final result = await _subscriptionRepository.getPaymentKeyFromApp(
-      amountCents,
+    await getProfile();
+    final billingData = {
+      'first_name': profileModel?.data?.name ?? '',
+      'last_name': profileModel?.data?.id.toString() ?? '',
+      'email': profileModel?.data?.email ?? '',
+      'phone_number': '01000000000',
+    };
+
+    final result = await _subscriptionRepository.processPayment(
+      offerId: packageData.id ?? 0,
+      amountCents: amountCents,
+      billingData: billingData,
     );
 
     hideLoading();
@@ -86,8 +101,9 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
 
             // ✅ الكشف الصحيح عن نجاح/فشل الدفع من PayMob السعودية
             if (uri.queryParameters.containsKey('success')) {
-              Navigator.of(context).pop();
-
+              getIt<CheckSubscriptionCubit>().loadSubscription();
+              context.pop();
+              uri.queryParameters.dPrint();
               if (uri.queryParameters['success'] == 'true') {
                 if (!isClosed) emit(PurchaseSuccessState());
               } else {
@@ -96,6 +112,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
                     uri.queryParameters['message'] ??
                     uri.queryParameters['error'] ??
                     'Payment failed';
+                message.dPrint();
                 if (!isClosed) emit(PurchaseFailedState(message));
               }
               return NavigationDecision.prevent;
@@ -142,7 +159,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
           child: Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                icon: const Icon(Icons.close, color: AppColors.secondaryColor,),
+                icon: const Icon(Icons.close, color: AppColors.secondaryColor),
                 onPressed: () {
                   if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
                   Navigator.pop(context);
@@ -153,6 +170,23 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
           ),
         ),
       ),
+    );
+  }
+
+  /// Get Profile
+  ProfileModel? profileModel;
+  Future getProfile() async {
+    emit(GetProfileLoadingState());
+    final result = await _mainLayoutRepository.getProfile();
+    result.when(
+      success: (success) {
+        profileModel = success;
+        emit(GetProfileSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetProfileFailedState());
+      },
     );
   }
 }

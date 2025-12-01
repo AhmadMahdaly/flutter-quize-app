@@ -7,6 +7,7 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/assets.dart';
@@ -16,6 +17,8 @@ import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/profile/widgets/profile_button_widget.dart';
+// تأكد من استيراد ملف الديالوج الجديد هنا
+// import 'path/to/action_confirmation_dialog.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -47,7 +50,6 @@ class ProfileScreen extends StatelessWidget {
                   builder: (context, state) {
                     if (state is SubscriptionLoaded) {
                       final sub = state.subscription;
-
                       final isSubscribed = sub.isSubscribed ?? false;
 
                       return Scaffold(
@@ -90,22 +92,6 @@ class ProfileScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    // if (context
-                                    //         .read<MainLayoutCubit>()
-                                    //         .profileModel!
-                                    //         .data!
-                                    //         .offerName !=
-                                    //     null)
-                                    //   Text(
-                                    //     '${"package_subscribed".tr(context)} ${context.read<MainLayoutCubit>().profileModel!.data!.offerName}',
-                                    //     style: interMedium.copyWith(
-                                    //       color: AppColors.primaryColor,
-                                    //       fontSize: SizeConfig.responsiveValue(
-                                    //         phone: 14.sp,
-                                    //         tablet: 18.sp,
-                                    //       ),
-                                    //     ),
-                                    //   ),
                                     if (context
                                             .read<MainLayoutCubit>()
                                             .profileModel!
@@ -122,7 +108,6 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-
                                     if (context
                                             .read<MainLayoutCubit>()
                                             .profileModel!
@@ -142,7 +127,6 @@ class ProfileScreen extends StatelessWidget {
                                     40.verticalSpace,
                                   ],
                                 ),
-
                                 Column(
                                   spacing: 16.h,
                                   children: [
@@ -172,7 +156,6 @@ class ProfileScreen extends StatelessWidget {
                                               );
                                             },
                                     ),
-
                                     ProfileButtonWidget(
                                       text: 'exams_analysis'.tr(context),
                                       imagePath: Assets.lineUp,
@@ -192,39 +175,70 @@ class ProfileScreen extends StatelessWidget {
                                         context.pushNamed(Routes.giftsScreen);
                                       },
                                     ),
-                                    // 20.verticalSpace,
-                                    // ProfileButtonWidget(text: 'exam_grades'.tr(context),imagePath: Assets.bookCheck,),
+
                                     ProfileButtonWidget(
                                       text: 'delete_account'.tr(context),
                                       imagePath: Assets.tarsh,
                                       onPressed: () {
-                                        context
-                                            .read<MainLayoutCubit>()
-                                            .deleteAccount(context);
+                                        showDialog(
+                                          context: context,
+                                          builder: (dialogContext) =>
+                                              ActionConfirmationDialog(
+                                                title:
+                                                    'Are you sure you want to delete your account?',
+                                                onConfirm: () async {
+                                                  try {
+                                                    await context
+                                                        .read<MainLayoutCubit>()
+                                                        .deleteAccount();
+                                                  } catch (_) {}
+                                                  CacheHelper.sharedPreferences
+                                                      .remove(
+                                                        CacheKeys.userToken,
+                                                      );
+                                                  context.pushReplacementNamed(
+                                                    Routes.loginScreen,
+                                                  );
+                                                },
+                                              ),
+                                        );
                                       },
                                     ),
+
                                     ProfileButtonWidget(
                                       text: 'log_out'.tr(context),
                                       imagePath: Assets.logOut,
                                       onPressed: () {
-                                        context
-                                            .read<LoginCubit>()
-                                            .logOut()
-                                            .then((value) {
-                                              CacheHelper.sharedPreferences
-                                                  .remove(CacheKeys.userToken);
-                                              context.pushReplacementNamed(
-                                                Routes.loginScreen,
-                                              );
-                                            });
+                                        showDialog(
+                                          context: context,
+                                          builder: (dialogContext) =>
+                                              ActionConfirmationDialog(
+                                                title:
+                                                    'Are you sure you want to log out?',
+                                                onConfirm: () async {
+                                                  try {
+                                                    await context
+                                                        .read<LoginCubit>()
+                                                        .logOut();
+                                                  } catch (_) {}
+
+                                                  CacheHelper.sharedPreferences
+                                                      .remove(
+                                                        CacheKeys.userToken,
+                                                      );
+                                                  context.pushReplacementNamed(
+                                                    Routes.loginScreen,
+                                                  );
+                                                },
+                                              ),
+                                        );
                                       },
                                     ),
                                   ],
                                 ),
-
                                 SizeConfig.responsiveValue(
-                                  phone: 60.verticalSpace,
-                                  tablet: 60.verticalSpace,
+                                  phone: 16.verticalSpace,
+                                  tablet: 16.verticalSpace,
                                 ),
                               ],
                             ),

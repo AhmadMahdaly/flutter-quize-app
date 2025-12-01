@@ -64,10 +64,12 @@ class _TrialExamBodyState extends State<TrialExamBody> {
         if (state.status == FetchStatus.success &&
             state.questions.isNotEmpty &&
             state.currentQuestionIndex == state.questions.length - 1 &&
-            state.userAnswers.containsKey(state.questions[state.currentQuestionIndex].id)) {
+            state.userAnswers.containsKey(
+              state.questions[state.currentQuestionIndex].id,
+            )) {
           showDialog(
             context: context,
-            builder: (ctx) => ResultsDialog(state: state,cubit: cubit,),
+            builder: (ctx) => ResultsDialog(state: state, cubit: cubit),
           );
         }
       },
@@ -100,7 +102,7 @@ class _TrialExamBodyState extends State<TrialExamBody> {
 
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.all(8.r),
+                        padding: EdgeInsets.all(4.r),
                         child: TrialQuestionWidget(
                           key: ValueKey(currentQuestion.id),
                           question: currentQuestion,
@@ -118,7 +120,6 @@ class _TrialExamBodyState extends State<TrialExamBody> {
                 totalQuestions,
                 currentQuestion.id,
               ),
-              60.verticalSpace,
             ],
           );
         },
@@ -150,17 +151,17 @@ class _TrialExamBodyState extends State<TrialExamBody> {
   }
 
   Widget _buildBottomBar(
-      BuildContext context,
-      TrialExamCubit cubit,
-      int currentQuestionNo,
-      int totalQuestions,
-      int currentQuestionId,
-      ) {
+    BuildContext context,
+    TrialExamCubit cubit,
+    int currentQuestionNo,
+    int totalQuestions,
+    int currentQuestionId,
+  ) {
     final bool isFirst = currentQuestionNo == 1;
     final bool isLast = currentQuestionNo == totalQuestions;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
       decoration: BoxDecoration(
         color: AppColors.offwhiteColor,
         borderRadius: BorderRadius.only(
@@ -215,6 +216,7 @@ class _TrialExamBodyState extends State<TrialExamBody> {
       child: Text(
         text,
         style: interBold.copyWith(
+          height: 0,
           fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 20.sp),
         ),
       ),

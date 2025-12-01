@@ -52,7 +52,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
           builder: (context, state) {
             final cubit = context.read<PlayListCubit>();
             if (state is GetPlayListLoadingState) {
-              return const Center(child: CircularProgressIndicator());
+              return const SizedBox.shrink();
             }
             return SingleChildScrollView(
               child: Column(

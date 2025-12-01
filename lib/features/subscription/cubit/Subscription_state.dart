@@ -19,3 +19,27 @@ class PurchaseFailedState extends SubscriptionStates {
   PurchaseFailedState(this.message);
   final String message;
 }
+
+/// Get Profile
+class GetProfileLoadingState extends SubscriptionStates {}
+
+class GetProfileSuccessState extends SubscriptionStates {}
+
+class GetProfileFailedState extends SubscriptionStates {}
+
+///  Subscription States for CheckSubscriptionCubit
+class SubscriptionLoading extends SubscriptionStates {}
+
+class SubscriptionLoaded extends SubscriptionStates {
+  SubscriptionLoaded(this.subscription);
+  final CheckSubscriptionModel subscription;
+
+  List<Object?> get props => [subscription];
+}
+
+class SubscriptionError extends SubscriptionStates {
+  SubscriptionError(this.message);
+  final String message;
+
+  List<Object?> get props => [message];
+}

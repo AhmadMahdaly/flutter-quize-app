@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // <--- !! أضف هذا السطر
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:month_year_picker/month_year_picker.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -12,21 +11,29 @@ import 'package:smle/features/q_bank/widgets/create_quiz_widgets/compact_checkbo
 class YearPickerWidget extends StatelessWidget {
   const YearPickerWidget({super.key});
 
-  Future<void> pickYear(BuildContext context, Function(DateTime) onYearSelected) async {
-    final currentYear = DateTime(2024);
+  Future<void> pickYear(
+    BuildContext context,
+    Function(DateTime) onYearSelected,
+  ) async {
+    // 1. نأخذ السنة الحالية من الكيوبت لكي يفتح عليها الـ Picker
+    final cubit = context.read<QBankCubit>();
+
     final selectedYear = await showDialog<DateTime>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Select Year'),
           content: SizedBox(
-            // حجم مناسب لعرض السنوات
             width: 300,
             height: 300,
             child: YearPicker(
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2100),
-              selectedDate: currentYear,
+              // 2. هنا نحدد البداية والنهاية كما طلبت (2024 و 2025 فقط)
+              firstDate: DateTime(2024),
+              lastDate: DateTime(2025),
+
+              // جعل الـ Picker يفتح على السنة المختارة حالياً
+              selectedDate: cubit.selectedYearDate,
+
               onChanged: (DateTime dateTime) {
                 Navigator.pop(context, dateTime);
               },
@@ -40,6 +47,7 @@ class YearPickerWidget extends StatelessWidget {
       onYearSelected(selectedYear);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<QBankCubit, QBankStates>(
@@ -48,9 +56,10 @@ class YearPickerWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () async {
             await pickYear(context, (year) {
-              cubit.selectedYearDate = year;
+              // 3. (مهم جداً) نستخدم الدالة الموجودة في الكيوبت بدلاً من التساوي المباشر
+              // هذه الدالة تقوم بعمل emit وتحديث الواجهة
+              cubit.selectYear(year);
             });
-
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 7.h),
@@ -63,6 +72,7 @@ class YearPickerWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
+                  // عرض السنة المختارة
                   '${cubit.selectedYearDate.year}',
                   style: interRegular.copyWith(
                     color: AppColors.forthColor,
@@ -84,8 +94,7 @@ class YearPickerWidget extends StatelessWidget {
       },
     );
   }
-}// [ multi_month_selector.dart ] (ملف جديد)
-
+}
 
 class MultiMonthSelector extends StatelessWidget {
   const MultiMonthSelector({super.key});
@@ -112,7 +121,9 @@ class MultiMonthSelector extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           final monthNumber = index + 1;
-          final monthName = DateFormat.MMM('en').format(DateTime(2000, monthNumber));
+          final monthName = DateFormat.MMM(
+            'en',
+          ).format(DateTime(2000, monthNumber));
 
           return CompactCheckbox(
             title: monthName,

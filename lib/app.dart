@@ -38,11 +38,10 @@ class MyApp extends StatelessWidget {
       value: const SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => CheckSubscriptionCubit(getIt())),
           BlocProvider(create: (context) => getIt<PlayListCubit>()),
           BlocProvider(
             create: (context) =>
-                CheckSubscriptionCubit(getIt())..loadSubscription(),
+                getIt<CheckSubscriptionCubit>()..loadSubscription(),
           ),
         ],
         child: MaterialApp(

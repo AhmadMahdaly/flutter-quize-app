@@ -24,7 +24,6 @@ class TrialHeaderCard extends StatelessWidget {
     final progressValue = qNo / totalQuestions;
     return Column(
       children: [
-        8.verticalSpace,
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -57,7 +56,7 @@ class TrialHeaderCard extends StatelessWidget {
                     ),
                   ),
 
-                  4.verticalSpace,
+                  2.verticalSpace,
                   Column(
                     children: [
                       ClipRRect(
@@ -74,7 +73,7 @@ class TrialHeaderCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      4.verticalSpace,
+                      2.verticalSpace,
                       Text(
                         'Progress ${(progressValue * 100).toInt()}%',
                         style: interRegular.copyWith(
@@ -96,7 +95,7 @@ class TrialHeaderCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(Icons.alarm, color: AppColors.thirdColor),
-                      8.verticalSpace,
+                      4.verticalSpace,
                       Text(
                         'Test time remaining',
                         style: interRegular.copyWith(
@@ -109,7 +108,7 @@ class TrialHeaderCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  5.verticalSpace,
+                  2.verticalSpace,
                   CustomTimerWidget(
                     endTime: DateTime.now().add(const Duration(hours: 2)),
                     onTimerFinish: () {
@@ -130,7 +129,7 @@ class TrialHeaderCard extends StatelessWidget {
                       );
                     },
                   ),
-                  5.verticalSpace,
+                  2.verticalSpace,
 
                   InkWell(
                     onTap: () {
@@ -144,7 +143,7 @@ class TrialHeaderCard extends StatelessWidget {
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                        vertical: 5.h,
+                        vertical: 2.h,
                         horizontal: 10.w,
                       ),
                       decoration: BoxDecoration(
@@ -172,7 +171,7 @@ class TrialHeaderCard extends StatelessWidget {
 
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
           decoration: BoxDecoration(
             color: AppColors.successColor,
             borderRadius: BorderRadius.only(
@@ -199,57 +198,57 @@ class TrialHeaderCard extends StatelessWidget {
               //         fontWeight: FontWeight.bold,
               //       ),
               //     ),
-                  Text(
-                    'Test your knowledge with Smle Gate app',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 18.sp,
-                      ),
-                      color: AppColors.thirdColor,
-                    ),
+              Text(
+                'Test your knowledge with Smle Gate app',
+                style: interRegular.copyWith(
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 14.sp,
+                    tablet: 18.sp,
                   ),
-                ],
+                  color: AppColors.thirdColor,
+                ),
               ),
-              // Row(
-              //   children: [
-              //     Text(
-              //       'Candidate:',
-              //       style: interRegular.copyWith(
-              //         fontSize: SizeConfig.responsiveValue(
-              //           phone: 14.sp,
-              //           tablet: 18.sp,
-              //         ),
-              //         color: AppColors.thirdColor,
-              //         fontWeight: FontWeight.bold,
-              //       ),
-              //     ),
-              //     Text(
-              //       'Saudi-Bot.com',
-              //       style: interRegular.copyWith(
-              //         fontSize: SizeConfig.responsiveValue(
-              //           phone: 14.sp,
-              //           tablet: 18.sp,
-              //         ),
-              //         color: AppColors.thirdColor,
-              //       ),
-              //     ),
-              //     const Spacer(),
-              //     Text(
-              //       'Free Trial',
-              //       style: interBold.copyWith(
-              //         fontSize: SizeConfig.responsiveValue(
-              //           phone: 16.sp,
-              //           tablet: 20.sp,
-              //         ),
-              //         color: AppColors.offwhiteColor,
-              //         fontWeight: FontWeight.w700,
-              //         height: 1.50.h,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-            // ],
+            ],
+          ),
+          // Row(
+          //   children: [
+          //     Text(
+          //       'Candidate:',
+          //       style: interRegular.copyWith(
+          //         fontSize: SizeConfig.responsiveValue(
+          //           phone: 14.sp,
+          //           tablet: 18.sp,
+          //         ),
+          //         color: AppColors.thirdColor,
+          //         fontWeight: FontWeight.bold,
+          //       ),
+          //     ),
+          //     Text(
+          //       'Saudi-Bot.com',
+          //       style: interRegular.copyWith(
+          //         fontSize: SizeConfig.responsiveValue(
+          //           phone: 14.sp,
+          //           tablet: 18.sp,
+          //         ),
+          //         color: AppColors.thirdColor,
+          //       ),
+          //     ),
+          //     const Spacer(),
+          //     Text(
+          //       'Free Trial',
+          //       style: interBold.copyWith(
+          //         fontSize: SizeConfig.responsiveValue(
+          //           phone: 16.sp,
+          //           tablet: 20.sp,
+          //         ),
+          //         color: AppColors.offwhiteColor,
+          //         fontWeight: FontWeight.w700,
+          //         height: 1.50.h,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // ],
           // ),
         ),
       ],

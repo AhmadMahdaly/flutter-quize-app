@@ -33,20 +33,17 @@ class HomeScreen extends StatelessWidget {
           if (state is SubscriptionLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-    
+
           if (state is SubscriptionLoaded) {
             final sub = state.subscription;
-    
+
             final isSubscribed = sub.isSubscribed ?? false;
             final hasQBank = sub.qBank ?? false;
             final availableExam = sub.availableRealExam ?? '0';
-    
+
             return SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 15.w,
-                  vertical: 15.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -70,11 +67,11 @@ class HomeScreen extends StatelessWidget {
                       points:
                           '${context.read<MainLayoutCubit>().profileModel?.data?.points ?? ''}',
                     ),
-    
+
                     32.verticalSpace,
                     const TopBannerWidget(),
                     20.verticalSpace,
-    
+
                     // ==== Category Title ====
                     Text(
                       'top_category'.tr(context),
@@ -86,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     20.verticalSpace,
-    
+
                     // ==== Question Bank Category ====
                     Row(
                       spacing: 8.w,
@@ -119,7 +116,7 @@ class HomeScreen extends StatelessWidget {
                                 );
                                 return;
                               }
-    
+
                               context.pushNamed(Routes.createQuizScreen);
                             },
                             categoryName: 'question_bank'.tr(context),
@@ -128,9 +125,9 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-    
+
                     10.verticalSpace,
-    
+
                     // ==== Real Exam & Analysis ====
                     Row(
                       spacing: 8.w,
@@ -163,23 +160,33 @@ class HomeScreen extends StatelessWidget {
                                 );
                                 return;
                               }
-    
+
                               // ✅ حالة الامتحانات
                               if (availableExam == 'Unlimited' ||
                                   (int.tryParse(availableExam) ?? 0) > 0) {
-                                final examState =
-                                    getIt<RealExamCubit>().state;
+                                final examState = getIt<RealExamCubit>().state;
                                 final bool isExamInProgress =
                                     examState.status == ExamStatus.success ||
                                     examState.status == ExamStatus.onBreak;
-    
+
                                 if (isExamInProgress) {
                                   context.pushNamed(Routes.realExamScreen);
                                 } else {
-                                  showCustomPrimaryDialog(
-                                    context,
-                                    widget:
-                                        const ConfirmAccessToRealExamDialogWidget(),
+                                  context.pushNamed(
+                                    Routes.confirmAccessToRealExam,
+                                    arguments: {
+                                      'remainingAttempts':
+                                          availableExam == 'Unlimited'
+                                          ? 1000
+                                          : int.tryParse(availableExam) ?? 0,
+                                      'onStart': () {
+                                        showCustomPrimaryDialog(
+                                          context,
+                                          widget:
+                                              const ConfirmAccessToRealExamDialogWidget(),
+                                        );
+                                      },
+                                    },
                                   );
                                 }
                               } else {
@@ -248,16 +255,16 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-    
+
                     30.verticalSpace,
                     const EndPageBanner(),
-                    60.verticalSpace,
+                    30.verticalSpace,
                   ],
                 ),
               ),
             );
           }
-    
+
           return const SizedBox.shrink();
         },
       ),

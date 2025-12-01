@@ -30,4 +30,5 @@ class Routes {
   // static const String examResultsPage = '/examResultsPage';
   static const String trialExamScreen = '/trialExamScreen';
   static const String playlistQuestionsScreen = '/playlistQuestionsScreen';
+  static const String confirmAccessToRealExam = '/confirmAccessToRealExam';
 }

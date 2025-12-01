@@ -66,6 +66,7 @@ flutter:
     - assets/images/png/
     - assets/language/
     - shorebird.yaml
+    - assets/images/icons/
 
 flutter_launcher_icons:
   android: "launcher_icon"

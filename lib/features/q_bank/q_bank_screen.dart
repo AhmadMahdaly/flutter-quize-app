@@ -10,6 +10,7 @@ import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
 import 'package:smle/features/q_bank/data/model/start_quiz_model.dart';
 import 'package:smle/features/q_bank/widgets/answer_widget.dart';
 import 'package:smle/features/q_bank/widgets/q_bank_progress_widget.dart';
+import 'package:smle/features/q_bank/widgets/qbank_add_note_dialog.dart';
 import 'package:smle/features/q_bank/widgets/question_button_widget.dart';
 import 'package:smle/features/q_bank/widgets/question_widget.dart';
 
@@ -36,7 +37,7 @@ class _QBankScreenState extends State<QBankScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'q_bank'.tr(context),canBack:false),
+      appBar: CustomAppBar(title: 'q_bank'.tr(context), canBack: false),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
 
@@ -66,11 +67,10 @@ class _QBankScreenState extends State<QBankScreen> {
                           context.pushNamed(
                             Routes.playListScreen,
 
-
-
-                            arguments:{
-                              'questionId':cubit.qBankModel!.data![cubit.index].id,
-                              'asAdd':false
+                            arguments: {
+                              'questionId':
+                                  cubit.qBankModel!.data![cubit.index].id,
+                              'asAdd': false,
                             },
                           );
                         },
@@ -86,6 +86,13 @@ class _QBankScreenState extends State<QBankScreen> {
                             '${cubit.qBankModel!.data![cubit.index].explanation}',
                         lightBulbExplain:
                             '${cubit.qBankModel!.data![cubit.index].hint}',
+                        onNoteTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) =>
+                                QBankAddNoteDialog(cubit: cubit),
+                          );
+                        },
                       ),
                       20.verticalSpace,
                       ListView.separated(
@@ -179,21 +186,21 @@ class _QBankScreenState extends State<QBankScreen> {
                       ),
                       if (cubit.index > 0) ...[
                         20.verticalSpace,
-                        cubit.index <
-                            cubit.qBankModel!.data!.length - 1
-                            ?     Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              context.pushNamedAndRemoveUntil(
-                                Routes.mainLayoutScreen,
-                                (route) => false,
-                              );
-                            },
-                            child: QuestionButtonWidget(
-                              text: 'quit'.tr(context),
-                            ),
-                          ),
-                        ):const SizedBox.shrink(),
+                        cubit.index < cubit.qBankModel!.data!.length - 1
+                            ? Center(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    context.pushNamedAndRemoveUntil(
+                                      Routes.mainLayoutScreen,
+                                      (route) => false,
+                                    );
+                                  },
+                                  child: QuestionButtonWidget(
+                                    text: 'quit'.tr(context),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
                       ],
                     ],
                   )

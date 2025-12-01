@@ -49,6 +49,7 @@ class MarkAsAnsweredSuccessState extends QBankStates {}
 class MarkAsAnsweredFailedState extends QBankStates {}
 
 class SetIsAnsweredState extends QBankStates {}
+
 class GetPlaylistQuestionsLoadingState extends QBankStates {}
 
 class GetPlaylistQuestionsSuccessState extends QBankStates {}
@@ -56,3 +57,15 @@ class GetPlaylistQuestionsSuccessState extends QBankStates {}
 class GetPlaylistQuestionsFailedState extends QBankStates {}
 
 class PlaylistQuestionsEndState extends QBankStates {}
+
+class AddNoteLoadingState extends QBankStates {}
+
+class AddNoteSuccessState extends QBankStates {
+  AddNoteSuccessState(this.message);
+  final String message;
+}
+
+class AddNoteFailureState extends QBankStates {
+  AddNoteFailureState(this.error);
+  final String error;
+}

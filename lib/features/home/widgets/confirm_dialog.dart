@@ -35,7 +35,7 @@ class ConfirmAccessToRealExamDialogWidget extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 8.r, horizontal: 16.w),
                 decoration: BoxDecoration(
-                  color: AppColors.greenColor,
+                  color: AppColors.successColor,
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Text(
@@ -54,7 +54,7 @@ class ConfirmAccessToRealExamDialogWidget extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(8.r),
                 decoration: BoxDecoration(
-                  color: AppColors.errorColor,
+                  color: AppColors.errorColor.withAlpha(200),
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Text(

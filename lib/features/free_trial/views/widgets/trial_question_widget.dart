@@ -36,7 +36,7 @@ class TrialQuestionWidget extends StatelessWidget {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.all(8.sp),
+                padding: EdgeInsets.all(4.sp),
                 child: Column(
                   children: [
                     Text(
@@ -51,14 +51,14 @@ class TrialQuestionWidget extends StatelessWidget {
                     ),
                     if (question.photo != null && question.photo!.isNotEmpty)
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        padding: EdgeInsets.symmetric(vertical: 5.h),
                         child: Image.network(
                           question.photo!,
                           errorBuilder: (context, error, stackTrace) =>
                               const SizedBox.shrink(),
                         ),
                       ),
-                    16.verticalSpace,
+                    10.verticalSpace,
                     _buildOption(
                       'a',
                       question.a,

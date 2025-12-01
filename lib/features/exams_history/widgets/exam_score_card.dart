@@ -12,29 +12,37 @@ class ExamScoreCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int score = exam.score ?? 0;
+    final num score = exam.score ?? 0.0;
     final Color progressColor = _getProgressColor(score);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '${'exam'.tr(context)} ${exam.examNo}',
-          style: interBold.copyWith(
-            fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
-          ),
-        ),
-        10.verticalSpace,
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            '$score ${'marks'.tr(context)}',
-            style: interMedium.copyWith(
-              fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
-              color: AppColors.forthColor,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '${'exam'.tr(context)} ${exam.examNo}',
+              style: interBold.copyWith(
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 16.sp,
+                  tablet: 20.sp,
+                ),
+              ),
             ),
-          ),
+            Text(
+              '$score ${'marks'.tr(context)}',
+              style: interMedium.copyWith(
+                fontSize: SizeConfig.responsiveValue(
+                  phone: 16.sp,
+                  tablet: 20.sp,
+                ),
+                color: AppColors.forthColor,
+              ),
+            ),
+          ],
         ),
+
         10.verticalSpace,
         ClipRRect(
           borderRadius: BorderRadius.circular(30.r),
@@ -73,7 +81,7 @@ class ExamScoreCard extends StatelessWidget {
     );
   }
 
-  Color _getProgressColor(int score) {
+  Color _getProgressColor(num score) {
     if (score >= 60) {
       return AppColors.greenColor;
     } else if (score < 40) {

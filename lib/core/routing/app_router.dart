@@ -19,7 +19,6 @@ import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/main_layout.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';
 import 'package:smle/features/notification/notification_screen.dart';
-import 'package:smle/features/onboarding/onboarding_screen.dart';
 import 'package:smle/features/play_list/play_list_screen.dart';
 import 'package:smle/features/play_list/playlist_questions_screen.dart';
 import 'package:smle/features/profile/profile_screen.dart';
@@ -29,11 +28,11 @@ import 'package:smle/features/q_bank/data/model/start_quiz_model.dart';
 import 'package:smle/features/q_bank/q_bank_screen.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/views/exam_page.dart';
+import 'package:smle/features/real_exam/views/widgets/confirm_access_to_real_exam.dart';
 import 'package:smle/features/revision/categories_screen.dart';
 import 'package:smle/features/revision/cubit/revision_cubit.dart';
 import 'package:smle/features/revision/revision_screen.dart';
 import 'package:smle/features/revision/subCategories_screen.dart';
-import 'package:smle/features/splash/cubit/global_cubit/global_cubit.dart';
 import 'package:smle/features/splash/screens/splash_screen.dart';
 import 'package:smle/features/subscription/apple_pay_screen.dart';
 import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
@@ -109,7 +108,7 @@ class AppRouter {
         final offerId = settings.arguments as int;
         return transition(
           screen: SubscriptionScreen(offerId: offerId),
-          cubit: SubscriptionCubit(getIt())..getPackages(),
+          cubit: SubscriptionCubit(getIt(), getIt())..getPackages(),
         );
       // case Routes.paymentScreen:
       //   // final packageId = settings.arguments as String;
@@ -122,7 +121,7 @@ class AppRouter {
         final totalPayment = settings.arguments as String;
         return transition(
           screen: ApplePayScreen(total: totalPayment),
-          cubit: SubscriptionCubit(getIt()),
+          cubit: SubscriptionCubit(getIt(), getIt()),
         );
       case Routes.analysisScreen:
         final isExam = settings.arguments as bool;
@@ -200,6 +199,17 @@ class AppRouter {
           builder: (_) => BlocProvider.value(
             value: getIt<RealExamCubit>(),
             child: const RealExamPage(),
+          ),
+        );
+
+      case Routes.confirmAccessToRealExam:
+        final args = settings.arguments as Map<String, dynamic>?;
+        final remainingAttempts = args?['remainingAttempts'] as int;
+        final onStart = args?['onStart'] as VoidCallback;
+        return MaterialPageRoute(
+          builder: (_) => ConfirmAccessToRealExam(
+            remainingAttempts: remainingAttempts,
+            onStart: onStart,
           ),
         );
       // case Routes.examResultsPage:

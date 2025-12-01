@@ -1,25 +1,18 @@
 // ignore_for_file: strict_top_level_inference
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smle/core/cache_helper/cache_helper.dart';
-import 'package:smle/core/cache_helper/cache_values.dart';
-import 'package:smle/core/constants.dart';
-import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/helpers/loading.dart';
-import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/helpers/safe_cubit.dart';
 import 'package:smle/features/main%20layout/data/model/gifts_model.dart';
 import 'package:smle/features/main%20layout/data/model/profile_model.dart';
 import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 
 part 'main_layout_state.dart';
 
-class MainLayoutCubit extends Cubit<MainLayoutState> {
+class MainLayoutCubit extends SafeCubit<MainLayoutState> {
   MainLayoutCubit(this._mainLayoutRepository) : super(MainLayoutInitial());
-  static MainLayoutCubit get(context) => BlocProvider.of(context);
   final MainLayoutRepository _mainLayoutRepository;
-
+  int mainLayoutInitialScreenIndex = 1;
   void changeBottomNavBar(index) {
     mainLayoutInitialScreenIndex = index;
     emit(AppBottomNavState(mainLayoutInitialScreenIndex));
@@ -64,14 +57,13 @@ class MainLayoutCubit extends Cubit<MainLayoutState> {
   }
 
   /// Delete Account
-  Future deleteAccount(BuildContext context) async {
+  Future deleteAccount() async {
     showLoading();
     emit(DeleteAccountLoadingState());
     final result = await _mainLayoutRepository.deleteAccount();
     result.when(
       success: (success) {
-        CacheHelper.sharedPreferences.remove(CacheKeys.userToken);
-        context.pushReplacementNamed(Routes.loginScreen);
+        changeBottomNavBar(1);
         hideLoading();
         emit(DeleteAccountSuccessState());
       },

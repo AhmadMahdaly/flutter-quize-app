@@ -26,5 +26,5 @@ class Exam {
   }
   int? id;
   int? examNo;
-  int? score;
+  num? score;
 }

@@ -41,15 +41,14 @@ class SubscriptionScreen extends StatelessWidget {
 
         final allBackendPackages =
             (cubit.packagesModel?.data ?? []) +
-                (cubit.extraPackagesModel?.data ?? []);
+            (cubit.extraPackagesModel?.data ?? []);
 
-// ✅ ترتيب الباقات من الأصغر إلى الأكبر حسب السعر
+        // ✅ ترتيب الباقات من الأصغر إلى الأكبر حسب السعر
         allBackendPackages.sort((a, b) {
           final priceA = a.price ?? 0;
           final priceB = b.price ?? 0;
           return priceA.compareTo(priceB);
         });
-
 
         if (allBackendPackages.isEmpty && state is! GetPackagesLoadingState) {
           return Scaffold(

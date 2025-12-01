@@ -15,62 +15,95 @@ class QBankRepository {
     try {
       await _dioFactory.get(endPoint: EndPoints.createQBank);
     } catch (_) {}
-  }Future<ApiResult<QBankModel>> startQuiz({
-    // --- بارامترات معدلة لتقبل الحالتين ---
-    required dynamic year, // يمكن أن يكون 'all' أو int (مثل 2024)
-    required dynamic month, // يمكن أن يكون 'all' أو List<int> (مثل [1, 2])
-    required int all_months, // 0 أو 1 (يُستخدم فقط إذا لم يكن 'all')
-    // ---
+  }
+
+  Future<ApiResult<QBankModel>> startQuiz({
+    required dynamic year,
+    required dynamic month,
+    required int allMonths,
     required List<int> subcategoryIds,
     required int unansweredOnly,
     required int limit,
   }) async {
+    // نقوم ببناء الداتا بشكل مباشر
     final Map<String, dynamic> data = {
       'year': year,
       'subcategory_id': subcategoryIds,
       'unanswered_only': unansweredOnly,
       'limit': limit,
+      'month': month, // نرسل الشهور دائماً
+      'allMonths': allMonths, // نرسل allMonths دائماً (سواء كان 0 أو 1)
     };
 
-    if (year == 'all') {
-      // إذا كان "كل السنوات"، نفترض أن الـ API يتوقع 'all' للشهور أيضاً
-      data['month'] = 'all';
-    } else {
-      // إذا كانت سنة محددة
-      data['all_months'] = all_months;
-      if (all_months == 0) {
-        // إذا لم يكن "كل الشهور"، أرسل قائمة الشهور المحددة
-        data['month'] = month; // (هذه List<int>)
-      }
-    }
+    // --- تم حذف جملة if (year == '2024, 2025') التي كانت تمنع إرسال allMonths ---
 
-    final response = await _dioFactory.post(
-      endPoint: EndPoints.startQBank,
-      data: data,
-    );
-    if (response!.statusCode == 200) {
-      final QBankModel model = QBankModel.fromJson(response.data);
-      return ApiResult.success(model);
-    } else {
-      debugPrintWidget(response.data['message']);
-      return ApiResult.failure(
-        ServerFailure.fromResponse(
-          response.statusCode,
-          response.data['message'],
-        ),
+    try {
+      final response = await _dioFactory.post(
+        endPoint: EndPoints.startQBank,
+        data: data,
       );
+      // ... بقية كود الـ Response كما هو ...
+      if (response!.statusCode == 200) {
+        if (response.data is Map<String, dynamic>) {
+          return ApiResult.success(QBankModel.fromJson(response.data));
+        } else if (response.data is List) {
+          return ApiResult.success(
+            QBankModel(status: 404, message: 'No data', data: []),
+          );
+        }
+        return ApiResult.failure(ServerFailure('Invalid format'));
+      } else {
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data.toString(),
+          ),
+        );
+      }
+    } catch (e) {
+      return ApiResult.failure(ServerFailure(e.toString()));
     }
   }
 
-  // دالة جديدة لجلب أسئلة الـ playlist مع pagination
+  Future<ApiResult<QuestionCountModel>?> getQuestionsCount({
+    required dynamic year,
+    required dynamic month,
+    required int allMonths,
+    required List<int> subcategoryIds,
+    required int unansweredOnly,
+  }) async {
+    try {
+      final Map<String, dynamic> data = {
+        'year': year,
+        'subcategory_id': subcategoryIds,
+        'unanswered_only': unansweredOnly,
+        'month': month,
+        'allMonths': allMonths, // نرسلها دائماً
+      };
+
+      final response = await _dioFactory.post(
+        endPoint: EndPoints.getQBankCount,
+        data: data,
+      );
+
+      if (response!.statusCode == 200) {
+        return ApiResult.success(QuestionCountModel.fromJson(response.data));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      debugPrintWidget(e.toString());
+      return null;
+    }
+  }
+
   Future<ApiResult<QBankModel>> getPlaylistQuestions({
     required int playlistId,
     required int limit,
     required int offset,
   }) async {
     final response = await _dioFactory.get(
-      endPoint: EndPoints
-          .getPlaylistQuestions, // افتراض: EndPoints.getPlaylistQuestions = '/playlists/{id}/questions'
+      endPoint: EndPoints.getPlaylistQuestions,
       data: {'playlist_id': playlistId, 'limit': limit, 'offset': offset},
     );
     if (response!.statusCode == 200) {
@@ -86,14 +119,14 @@ class QBankRepository {
       );
     }
   }
+
   /// TODO
   Future<ApiResult<QBankModel>> addQBankNote({
     required int questionId,
     required String note,
   }) async {
-    final response = await _dioFactory.get(
-      endPoint: EndPoints
-          .addQBankNote,
+    final response = await _dioFactory.post(
+      endPoint: EndPoints.addQBankNote,
       data: {'question_id': questionId, 'note': note},
     );
     if (response!.statusCode == 200) {
@@ -107,48 +140,6 @@ class QBankRepository {
           response.data['message'],
         ),
       );
-    }
-  }Future<ApiResult<QuestionCountModel>?> getQuestionsCount({
-    // --- بارامترات معدلة لتقبل الحالتين ---
-    required dynamic year, // 'all' or int
-    required dynamic month, // 'all' or List<int>
-    required int all_months, // 0 or 1
-    // ---
-    required List<int> subcategoryIds,
-    required int unansweredOnly,
-  }) async {
-    try {
-      final Map<String, dynamic> data = {
-        'year': year,
-        'subcategory_id': subcategoryIds,
-        'unanswered_only': unansweredOnly,
-      };
-
-      if (year == 'all') {
-        data['month'] = 'all';
-      } else {
-        data['all_months'] = all_months;
-        if (all_months == 0) {
-          data['month'] = month; // (هذه List<int>)
-        }else{ data['month'] = [1,2,3,4,5.6,7,8,9,10,11,12];}
-      }
-
-      final response = await _dioFactory.post(
-        endPoint: EndPoints.getQBankCount,
-        data: data,
-      );
-      if (response!.statusCode == 200) {
-        final QuestionCountModel model = QuestionCountModel.fromJson(
-          response.data,
-        );
-        return ApiResult.success(model);
-      } else {
-        debugPrintWidget(response.data['message'] ?? 'Unknown error');
-        return null;
-      }
-    } catch (e) {
-      debugPrintWidget(e.toString());
-      return null;
     }
   }
 

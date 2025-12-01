@@ -16,7 +16,9 @@ class QuestionWidget extends StatelessWidget {
     required this.lightBulbExplain,
     required this.questionCircleExplain,
     this.isAdd = false,
+    this.onNoteTap,
   });
+  final VoidCallback? onNoteTap;
   final String currentQuestion, question;
   final bool isFav;
   final GestureTapCallback? addCircledFun;
@@ -71,42 +73,12 @@ class QuestionWidget extends StatelessWidget {
                     ),
                   ),
                   10.horizontalSpace,
-                  Tooltip(
-                    triggerMode: TooltipTriggerMode.tap,
-                    decoration: BoxDecoration(
-                      color: AppColors.thirdColor,
-                      borderRadius: BorderRadius.all(Radius.circular(30.r)),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: AppColors.darkGreyColor,
-                          blurRadius: 5,
-                        ),
-                      ],
-                    ),
-                    showDuration: const Duration(milliseconds: 5000),
-                    richMessage: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '${'note'.tr(context)}\n',
-                          style: interBold.copyWith(
-                            fontSize: 16.sp,
-                            color: AppColors.forthColor,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                        TextSpan(
-                          text: newsExplain == 'null' || newsExplain == 'NULL'
-                              ? ''
-                              : newsExplain,
-                          style: interRegular.copyWith(
-                            fontSize: 16.sp,
-                            color: AppColors.forthColor,
-                          ),
-                        ),
-                      ],
-                    ),
+                  GestureDetector(
+                    // نستخدم GestureDetector بدلاً من Tooltip لفتح الديالوج
+                    onTap: onNoteTap, // استدعاء الدالة عند الضغط
                     child: Icon(
                       CupertinoIcons.news,
+                      color: AppColors.forthColor, // لون الأيقونة
                       size: SizeConfig.responsiveValue(
                         phone: 20.sp,
                         tablet: 40.sp,
