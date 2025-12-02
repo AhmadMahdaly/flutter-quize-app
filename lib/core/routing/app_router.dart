@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/routing/routes.dart';
-import 'package:smle/features/SCFHS_score_calculator/SCFHS_score_calculator_screen.dart';
+import 'package:smle/features/SCFHS_score_calculator/scfhs_score_calculator_screen.dart';
 import 'package:smle/features/analysis/analysis_screen.dart';
 import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
