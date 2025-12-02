@@ -1,7 +1,7 @@
 name: smle
 description: "A new Flutter project."
 publish_to: 'none' 
-version: 1.0.14+14
+version: 1.0.15+16
 
 environment:
   sdk: ^3.8.1
@@ -50,6 +50,7 @@ dependencies:
   in_app_purchase: ^3.2.3
   webview_flutter: ^4.13.0
   flutter_paymob: ^1.0.8
+  animate_do: ^4.2.0
 
 dev_dependencies:
   flutter_test:

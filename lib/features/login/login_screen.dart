@@ -26,12 +26,12 @@ class LoginScreen extends StatelessWidget {
               context.pushReplacementNamed(Routes.mainLayoutScreen);
             } else if (state is LogInFailedState) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
+               const SnackBar(
+                  content: Text('Login Failed'),
                   backgroundColor: Colors.red,
                 ),
               );
-              debugPrintWidget('Sign in with Google failed: ${state.message}');
+              debugPrintWidget('Sign in failed: ${state.message}');
             }
           },
           child: Container(
@@ -50,26 +50,41 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Column(
                     spacing: 16.h,
-                    children: [
-                      Image.asset(
-                        Assets.logoCircle,
-                        height: SizeConfig.responsiveValue(
-                          phone: null,
-                          tablet: 75.h,
+                    children: [20.verticalSpace,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(320),
+                        child: Image.asset(
+                          'assets/images/png/logo final.png',
+                          height: SizeConfig.responsiveValue(
+                            phone: 100.h,
+                            tablet: 75.h,
+                          ),
+                          fit: BoxFit.cover,
                         ),
-                        fit: BoxFit.cover,
                       ),
-                      10.verticalSpace,
+
+                          Text(
+                            textAlign: TextAlign.center,
+                            'welcome_to'.tr(context),
+                            style: interExtraBold.copyWith(
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 24.sp,
+                                tablet: 28.sp,
+                              ),
+                            ),
+                          ),
                       Text(
                         textAlign: TextAlign.center,
-                        "${'welcome_to'.tr(context)}\n(${'smle_gate'.tr(context)})",
+                        'smle_gate'.tr(context),
                         style: interExtraBold.copyWith(
+                          color: AppColors.secondaryColor,
                           fontSize: SizeConfig.responsiveValue(
-                            phone: 24.sp,
+                            phone: 34.sp,
                             tablet: 28.sp,
                           ),
                         ),
                       ),
+
                       Text(
                         'trusted_partner'.tr(context),
                         style: interBold.copyWith(

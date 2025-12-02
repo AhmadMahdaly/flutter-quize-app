@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:smle/core/animation_helper/animation_do.dart';
+import 'package:smle/core/functions/responsive_config.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
 import 'package:flutter/material.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
@@ -20,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(milliseconds: 3460), () {
+    Future.delayed(const Duration(milliseconds: 3000), () {
       _route();
     });
   }
@@ -59,7 +62,29 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
-      body: Center(child: Image.asset('assets/images/png/logo final.png')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/png/logo-animation.gif'),
+            CustomFadeInUp(
+              duration: 1000,
+              child: Text(
+                textAlign: TextAlign.center,
+                'SMLE Gate',
+                style: interExtraBold.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.offwhiteColor,
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 34.sp,
+                    tablet: 36.sp,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
