@@ -7,7 +7,6 @@ import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
-import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
@@ -26,7 +25,7 @@ class LoginScreen extends StatelessWidget {
               context.pushReplacementNamed(Routes.mainLayoutScreen);
             } else if (state is LogInFailedState) {
               ScaffoldMessenger.of(context).showSnackBar(
-               const SnackBar(
+                const SnackBar(
                   content: Text('Login Failed'),
                   backgroundColor: Colors.red,
                 ),
@@ -50,7 +49,8 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Column(
                     spacing: 16.h,
-                    children: [20.verticalSpace,
+                    children: [
+                      20.verticalSpace,
                       ClipRRect(
                         borderRadius: BorderRadius.circular(320),
                         child: Image.asset(
@@ -63,16 +63,16 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
 
-                          Text(
-                            textAlign: TextAlign.center,
-                            'welcome_to'.tr(context),
-                            style: interExtraBold.copyWith(
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 24.sp,
-                                tablet: 28.sp,
-                              ),
-                            ),
+                      Text(
+                        textAlign: TextAlign.center,
+                        'welcome_to'.tr(context),
+                        style: interExtraBold.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 24.sp,
+                            tablet: 28.sp,
                           ),
+                        ),
+                      ),
                       Text(
                         textAlign: TextAlign.center,
                         'smle_gate'.tr(context),

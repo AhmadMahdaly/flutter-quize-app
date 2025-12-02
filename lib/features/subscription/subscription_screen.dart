@@ -5,7 +5,7 @@ import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import 'package:smle/features/subscription/cubit/Subscription_cubit.dart';
+import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
 import 'package:smle/features/subscription/widgets/pay_done_dialog.dart';
 
 class SubscriptionScreen extends StatelessWidget {

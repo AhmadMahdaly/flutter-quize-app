@@ -19,7 +19,7 @@ import 'package:smle/features/subscription/data/repo/subscription_repo.dart';
 import 'package:webview_flutter/webview_flutter.dart' as webview_flutter;
 import 'package:webview_flutter/webview_flutter.dart';
 
-part 'Subscription_state.dart';
+part 'subscription_state.dart';
 
 class SubscriptionCubit extends Cubit<SubscriptionStates> {
   SubscriptionCubit(this._subscriptionRepository, this._mainLayoutRepository)

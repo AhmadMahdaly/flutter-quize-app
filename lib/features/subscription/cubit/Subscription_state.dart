@@ -1,4 +1,4 @@
-part of 'Subscription_cubit.dart';
+part of 'subscription_cubit.dart';
 
 @immutable
 abstract class SubscriptionStates {}

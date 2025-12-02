@@ -6,9 +6,9 @@ import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import 'package:smle/features/SCFHS_score_calculator/cubit/SCFHS_score_calculator_cubit.dart';
 import 'package:smle/features/SCFHS_score_calculator/widgets/calculate_result_dialog.dart';
 import 'package:smle/features/SCFHS_score_calculator/widgets/text_row_widget.dart';
+import 'package:smle/features/scfhs_score_calculator/cubit/scfhs_score_calculator_cubit_cubit.dart';
 
 class ScfhsScoreCalculatorScreen extends StatefulWidget {
   const ScfhsScoreCalculatorScreen({super.key});
@@ -26,7 +26,7 @@ class _ScfhsScoreCalculatorScreenState
     return Scaffold(
       appBar: CustomAppBar(title: 'SCFHS_score_calculator'.tr(context)),
       body: SingleChildScrollView(
-        child: BlocBuilder<ScfhsScoreCalculatorCubit, SCFHSScoreCalculatorStates>(
+        child: BlocBuilder<ScfhsScoreCalculatorCubit, ScfhsScoreCalculatorStates>(
           builder: (context, state) {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
