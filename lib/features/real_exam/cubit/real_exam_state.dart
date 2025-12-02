@@ -8,6 +8,7 @@ class RealExamState {
     this.examModel,
     this.bookmarkedStatuses = const {},
     this.noteStatuses = const {},
+    this.answersStatus = const {},
     this.breakEndTime,
     this.errorMessage,
     this.examResult,
@@ -16,6 +17,11 @@ class RealExamState {
 
   factory RealExamState.fromJson(Map<String, dynamic> json) {
     return RealExamState(
+      answersStatus:
+          (json['answersStatus'] as Map<String, dynamic>?)?.map(
+            (key, value) => MapEntry(int.parse(key), value as String),
+          ) ??
+          const {},
       sectionEndTimes: Map<String, String>.from(
         json['sectionEndTimes'] ?? {},
       ).map((key, value) => MapEntry(int.parse(key), value)),
@@ -49,12 +55,13 @@ class RealExamState {
   final String? errorMessage;
   final FinishAnalysisExamModel? examResult;
   final Map<int, String> sectionEndTimes;
-
+final Map<int, String> answersStatus;
   RealExamState copyWith({
     ExamStatus? status,
     StartRealExamModel? examModel,
     Map<int, bool>? bookmarkedStatuses,
     Map<int, bool>? noteStatuses,
+    Map<int, String>? answersStatus,
     DateTime? breakEndTime,
     String? errorMessage,
     bool clearBreakTime = false,
@@ -70,11 +77,15 @@ class RealExamState {
       errorMessage: errorMessage ?? this.errorMessage,
       examResult: examResult ?? this.examResult,
       sectionEndTimes: sectionEndTimes ?? this.sectionEndTimes,
+      answersStatus: answersStatus ?? this.answersStatus,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'answersStatus': answersStatus.map(
+        (key, value) => MapEntry(key.toString(), value),
+      ),
       'sectionEndTimes': sectionEndTimes.map(
         (key, value) => MapEntry(key.toString(), value),
       ),

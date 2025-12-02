@@ -43,7 +43,7 @@ class SubscriptionScreen extends StatelessWidget {
             (cubit.packagesModel?.data ?? []) +
             (cubit.extraPackagesModel?.data ?? []);
 
-        // ✅ ترتيب الباقات من الأصغر إلى الأكبر حسب السعر
+        // ترتيب الباقات من الأصغر إلى الأكبر حسب السعر
         allBackendPackages.sort((a, b) {
           final priceA = a.price ?? 0;
           final priceB = b.price ?? 0;

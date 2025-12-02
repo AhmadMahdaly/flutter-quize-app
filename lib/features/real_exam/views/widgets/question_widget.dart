@@ -11,6 +11,7 @@ class QuestionWidget extends StatefulWidget {
     required this.onNext,
     required this.onPrevious,
     required this.data,
+    this.savedAnswer,
     super.key,
     this.isFirst = false,
     this.isLast = false,
@@ -20,6 +21,7 @@ class QuestionWidget extends StatefulWidget {
   final bool isFirst;
   final bool isLast;
   final Question data;
+  final String? savedAnswer;
 
   @override
   State<QuestionWidget> createState() => _QuestionWidgetState();
@@ -27,6 +29,19 @@ class QuestionWidget extends StatefulWidget {
 
 class _QuestionWidgetState extends State<QuestionWidget> {
   String? selectedAnswer;
+  @override
+  void initState() {
+    super.initState();
+    selectedAnswer = widget.savedAnswer;
+  }
+
+  @override
+  void didUpdateWidget(covariant QuestionWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.savedAnswer != oldWidget.savedAnswer) {
+      selectedAnswer = widget.savedAnswer;
+    }
+  }
 
   void selectAnswer(String answer) {
     setState(() {
@@ -43,11 +58,14 @@ class _QuestionWidgetState extends State<QuestionWidget> {
 
         await context.read<RealExamCubit>().answerQuestion(
           widget.data.id.toString(),
+          widget.data.questionNo!,
           optionLetter,
         );
         context.read<RealExamCubit>().goToNext();
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.linear,
         width: double.infinity,
         margin: EdgeInsets.symmetric(vertical: 4.h),
         padding: EdgeInsets.symmetric(
@@ -60,7 +78,11 @@ class _QuestionWidgetState extends State<QuestionWidget> {
               ? AppColors.successColor
               : AppColors.thirdColor, //AppColors.greenColor
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: AppColors.darkGreyColor),
+          border: Border.all(
+            color: isSelected
+                ? AppColors.successColor
+                : AppColors.darkGreyColor,
+          ),
         ),
         child: Text(
           text,

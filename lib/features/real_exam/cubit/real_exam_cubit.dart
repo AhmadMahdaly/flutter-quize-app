@@ -34,7 +34,8 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
       success: (successData) {
         final newBookmarks = <int, bool>{};
         final newNotes = <int, bool>{};
-        _updateStatuses(successData.data, newBookmarks, newNotes);
+        final newAnswers = <int, String>{};
+        _updateStatuses(successData.data, newBookmarks, newNotes, newAnswers);
         final newEndTimes = Map<int, String>.from(state.sectionEndTimes);
 
         if (!newEndTimes.containsKey(1)) {
@@ -49,6 +50,7 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
             sectionEndTimes: newEndTimes,
             bookmarkedStatuses: newBookmarks,
             noteStatuses: newNotes,
+            answersStatus: newAnswers,
           ),
         );
       },
@@ -75,7 +77,13 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
       success: (newQuestionModel) {
         final currentBookmarks = Map<int, bool>.from(state.bookmarkedStatuses);
         final currentNotes = Map<int, bool>.from(state.noteStatuses);
-        _updateStatuses(newQuestionModel.data, currentBookmarks, currentNotes);
+        final currentAnswers = Map<int, String>.from(state.answersStatus);
+        _updateStatuses(
+          newQuestionModel.data,
+          currentBookmarks,
+          currentNotes,
+          currentAnswers,
+        );
 
         final mergedModel = StartRealExamModel(
           status: newQuestionModel.status,
@@ -90,6 +98,7 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
             examModel: mergedModel,
             bookmarkedStatuses: currentBookmarks,
             noteStatuses: currentNotes,
+            answersStatus: currentAnswers,
           ),
         );
       },
@@ -108,16 +117,20 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
     Question? question,
     Map<int, bool> bookmarks,
     Map<int, bool> notes,
+    Map<int, String> answers,
   ) {
     if (question == null || question.questionNo == null) return;
     if (question.isBookmarked != null) {
       bookmarks[question.questionNo!] = question.isBookmarked!;
     }
     notes[question.questionNo!] = (question.notes ?? '').isNotEmpty;
+    if (question.userAnswer != null && question.userAnswer!.isNotEmpty) {
+      answers[question.questionNo!] = question.userAnswer!;
+    }
   }
 
-  void goToNext()async {
-  await Future.delayed(const Duration(milliseconds: 300));
+  void goToNext() async {
+    // await Future.delayed(const Duration(milliseconds: 300));
     if (state.examModel?.data?.questionNo != null) {
       final currentQuestionNo = state.examModel!.data!.questionNo!;
       final totalQuestions = state.examModel!.questionsCount!;
@@ -176,19 +189,33 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
         status: ExamStatus.loading,
         clearBreakTime: true,
         sectionEndTimes: newEndTimes,
+        answersStatus: {},
+        bookmarkedStatuses: {},
+        noteStatuses: {},
       ),
     );
     getQuestion(state.examModel!.examId!, 1, 2);
   }
 
   QuestionActionModel? questionActionModel;
-  Future answerQuestion(String questionId, String answer) async {
+  Future answerQuestion(
+    String questionId,
+    int questionNo,
+    String answer,
+  ) async {
+    final updatedAnswers = Map<int, String>.from(state.answersStatus);
+    updatedAnswers[questionNo] = answer;
+
+    emit(state.copyWith(answersStatus: updatedAnswers));
+
     final result = await repo.answerQuestion(questionId, answer);
     result.when(
       success: (success) {
         questionActionModel = success;
       },
-      failure: (error) {},
+      failure: (error) {
+        hideLoading();
+      },
     );
   }
 
@@ -255,12 +282,14 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
           state.copyWith(
             status: ExamStatus.finished,
             examResult: examResultData,
+            answersStatus: {},
           ),
         );
       },
       failure: (error) {
         emit(
           state.copyWith(
+            answersStatus: {},
             status: ExamStatus.success,
             errorMessage: 'Failed to load results. Please try again.',
           ),

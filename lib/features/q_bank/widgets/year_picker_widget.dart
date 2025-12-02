@@ -11,87 +11,56 @@ import 'package:smle/features/q_bank/widgets/create_quiz_widgets/compact_checkbo
 class YearPickerWidget extends StatelessWidget {
   const YearPickerWidget({super.key});
 
-  Future<void> pickYear(
-    BuildContext context,
-    Function(DateTime) onYearSelected,
-  ) async {
-    // 1. نأخذ السنة الحالية من الكيوبت لكي يفتح عليها الـ Picker
-    final cubit = context.read<QBankCubit>();
-
-    final selectedYear = await showDialog<DateTime>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Select Year'),
-          content: SizedBox(
-            width: 300,
-            height: 300,
-            child: YearPicker(
-              // 2. هنا نحدد البداية والنهاية كما طلبت (2024 و 2025 فقط)
-              firstDate: DateTime(2024),
-              lastDate: DateTime(2025),
-
-              // جعل الـ Picker يفتح على السنة المختارة حالياً
-              selectedDate: cubit.selectedYearDate,
-
-              onChanged: (DateTime dateTime) {
-                Navigator.pop(context, dateTime);
-              },
-            ),
-          ),
-        );
-      },
-    );
-
-    if (selectedYear != null) {
-      onYearSelected(selectedYear);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QBankCubit, QBankStates>(
-      builder: (context, state) {
-        final cubit = context.read<QBankCubit>();
-        return GestureDetector(
-          onTap: () async {
-            await pickYear(context, (year) {
-              // 3. (مهم جداً) نستخدم الدالة الموجودة في الكيوبت بدلاً من التساوي المباشر
-              // هذه الدالة تقوم بعمل emit وتحديث الواجهة
-              cubit.selectYear(year);
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 7.h),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(12.r)),
-              border: Border.all(color: AppColors.greyColor, width: 2.w),
-              color: AppColors.thirdColor,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  // عرض السنة المختارة
-                  '${cubit.selectedYearDate.year}',
-                  style: interRegular.copyWith(
-                    color: AppColors.forthColor,
-                    fontSize: SizeConfig.responsiveValue(
-                      phone: 14.sp,
-                      tablet: 18.sp,
-                    ),
+    final cubit = context.watch<QBankCubit>();
+    final List<int> allowedYears = [2024, 2025];
+
+    int dropdownValue = cubit.selectedYearDate.year;
+    if (!allowedYears.contains(dropdownValue)) {
+      dropdownValue = 2024;
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(12.r)),
+        border: Border.all(color: AppColors.greyColor, width: 2.w),
+        color: AppColors.thirdColor,
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<int>(
+          value: dropdownValue,
+          isExpanded: true,
+          icon: Icon(
+            CupertinoIcons.chevron_down,
+            size: SizeConfig.responsiveValue(phone: 20.r, tablet: 24.r),
+            color: AppColors.darkGreyColor,
+          ),
+          dropdownColor: AppColors.thirdColor,
+          borderRadius: BorderRadius.circular(12.r),
+          items: allowedYears.map((int year) {
+            return DropdownMenuItem<int>(
+              value: year,
+              child: Text(
+                year.toString(),
+                style: interRegular.copyWith(
+                  color: AppColors.forthColor,
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 14.sp,
+                    tablet: 18.sp,
                   ),
                 ),
-                Icon(
-                  CupertinoIcons.calendar,
-                  size: SizeConfig.responsiveValue(phone: 30.r, tablet: 24.r),
-                  color: AppColors.darkGreyColor,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+              ),
+            );
+          }).toList(),
+          onChanged: (int? newYear) {
+            if (newYear != null) {
+              cubit.selectYear(DateTime(newYear));
+            }
+          },
+        ),
+      ),
     );
   }
 }
@@ -101,7 +70,6 @@ class MultiMonthSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // نستخدم watch ليعاد بناء هذه الـ widget عند تغيير الشهور
     final cubit = context.watch<QBankCubit>();
 
     return Container(

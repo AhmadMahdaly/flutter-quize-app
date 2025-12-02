@@ -72,7 +72,7 @@ class _RealExamBodyState extends State<RealExamBody> {
       final targetOffset = _itemHeight * currentQuestionIndex;
       _scrollController.animateTo(
         targetOffset,
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 100),
         curve: Curves.easeInOut,
       );
     }
@@ -158,6 +158,7 @@ class _RealExamBodyState extends State<RealExamBody> {
                   child: QuestionWidget(
                     key: ValueKey(currentQuestion.id),
                     data: currentQuestion,
+                    savedAnswer: cubit.state.answersStatus[currentQuestionNo],
                     onNext: cubit.goToNext,
                     onPrevious: cubit.goToPrevious,
                     isFirst: currentQuestionNo == 1,

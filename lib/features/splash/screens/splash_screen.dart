@@ -1,15 +1,15 @@
 import 'dart:async';
-import 'package:smle/core/animation_helper/animation_do.dart';
-import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/theme/text_styles.dart';
 
 import 'package:flutter/material.dart';
+import 'package:smle/core/animation_helper/animation_do.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/functions/debug_print_extension.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(milliseconds: 3000), () {
+    Future.delayed(const Duration(milliseconds: 4000), () {
       _route();
     });
   }
@@ -35,14 +35,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _route() async {
-    // context.pushReplacementNamed(Routes.mainLayoutScreen);
+    context.pushReplacementNamed(Routes.mainLayoutScreen);
 
     /// Without Onboard
-    if (await isLoggedIn()) {
-      context.pushReplacementNamed(Routes.mainLayoutScreen);
-    } else {
-      context.pushReplacementNamed(Routes.loginScreen);
-    }
+    // if (await isLoggedIn()) {
+    //   context.pushReplacementNamed(Routes.mainLayoutScreen);
+    // } else {
+    //   context.pushReplacementNamed(Routes.loginScreen);
+    // }
 
     /// With Onboard
     // final isOnboardingComplete =
@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Image.asset('assets/images/png/logo-animation.gif'),
             CustomFadeInUp(
-              duration: 1000,
+              duration: 1500,
               child: Text(
                 textAlign: TextAlign.center,
                 'SMLE Gate',
