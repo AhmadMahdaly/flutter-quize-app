@@ -36,11 +36,13 @@ class ConfirmAccessToRealExam extends StatelessWidget {
                   12.horizontalSpace,
                   Expanded(
                     child: Text(
-                      'Remaining Attempts: ${'$remainingAttempts' == '1000' ? 'Unlimited' : '$remainingAttempts'}',
+                      '$remainingAttempts' == '1000'
+                          ? 'You have Unlimited attempts'
+                          : 'Remaining Attempts: $remainingAttempts',
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.greenColor,
+                        color: AppColors.greenColor.withAlpha(200),
                       ),
                     ),
                   ),

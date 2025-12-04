@@ -72,15 +72,9 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   10.verticalSpace,
                   Row(
                     children: [
-                      Text(
-                        'Year',
-                        style: interMedium.copyWith(fontSize: 16.sp),
-                      ),
+                      Text('Year', style: AppTextStyle.style16W700),
                       const Spacer(),
-                      Text(
-                        'All Years',
-                        style: interRegular.copyWith(fontSize: 14.sp),
-                      ),
+                      Text('All Years', style: AppTextStyle.style14W500),
                       Checkbox(
                         value: cubit.isAllYearsSelected,
                         onChanged: (value) {
@@ -96,15 +90,9 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                     // --- صف "All Months" ---
                     Row(
                       children: [
-                        Text(
-                          'Month',
-                          style: interMedium.copyWith(fontSize: 16.sp),
-                        ),
+                        Text('Month', style: AppTextStyle.style16W700),
                         const Spacer(),
-                        Text(
-                          'All Months',
-                          style: interRegular.copyWith(fontSize: 14.sp),
-                        ),
+                        Text('All Months', style: AppTextStyle.style14W500),
                         Checkbox(
                           value: cubit.isAllMonthsSelected,
                           onChanged: (value) {
@@ -119,7 +107,9 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                       15.verticalSpace,
                       Text(
                         'Select Months:', // (يمكنك ترجمتها)
-                        style: interMedium.copyWith(fontSize: 16.sp),
+                        style: AppTextStyle.style14W700.copyWith(
+                          fontSize: 16.sp,
+                        ),
                       ),
                       10.verticalSpace,
                       const MultiMonthSelector(), // (الـ Widget من الرد السابق)
@@ -159,11 +149,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                     Center(
                       child: Text(
                         'not_found_sub_specialty'.tr(context),
-                        style: interRegular.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 18.sp,
-                          ),
+                        style: AppTextStyle.style14W500.copyWith(
                           color: AppColors.darkGreyColor,
                         ),
                       ),
@@ -178,24 +164,14 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                         children: [
                           Text(
                             'sub_specialty'.tr(context),
-                            style: interMedium.copyWith(
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 16.sp,
-                                tablet: 20.sp,
-                              ),
-                            ),
+                            style: AppTextStyle.style16W700.copyWith(),
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 'select_all'.tr(context),
-                                style: interRegular.copyWith(
-                                  fontSize: SizeConfig.responsiveValue(
-                                    phone: 14.sp,
-                                    tablet: 16.sp,
-                                  ),
-                                ),
+                                style: AppTextStyle.style14W500.copyWith(),
                               ),
                               Checkbox(
                                 value: areAllSubCategoriesSelected,
@@ -223,7 +199,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                     iconColor: AppColors.forthColor,
                     title: Text(
                       'selected_items'.tr(context),
-                      style: interMedium.copyWith(
+                      style: AppTextStyle.style14W700.copyWith(
                         fontSize: SizeConfig.responsiveValue(
                           phone: 16.sp,
                           tablet: 20.sp,
@@ -242,7 +218,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                                     (cubit.qBankModel?.data?.isNotEmpty ??
                                         false)) {
                                   context.pushReplacementNamed(
-                                    Routes.qBankScreen,
+                                    AppRoutes.qBankScreen,
                                     arguments: StartQuizModel(
                                       qBankModel: cubit.qBankModel,
                                     ),
@@ -287,7 +263,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
       children: [
         Text(
           title,
-          style: interMedium.copyWith(
+          style: AppTextStyle.style14W700.copyWith(
             fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
           ),
         ),
@@ -296,12 +272,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
           children: [
             Text(
               'select_all'.tr(context),
-              style: interRegular.copyWith(
-                fontSize: SizeConfig.responsiveValue(
-                  phone: 14.sp,
-                  tablet: 16.sp,
-                ),
-              ),
+              style: AppTextStyle.style14W500.copyWith(),
             ),
             Checkbox(
               value: isAllSelected,
@@ -333,7 +304,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
             cubit.isAllYearsSelected
                 ? 'Selected: All Time' // حالة "كل السنوات"
                 : 'Selected: ${cubit.isAllMonthsSelected ? 'All Months' : 'Months: ${cubit.selectedMonths.join(', ')}'} / Year: ${cubit.selectedYearDate.year}',
-            style: interMedium.copyWith(
+            style: AppTextStyle.style14W700.copyWith(
               fontSize: 14.sp,
               color: AppColors.secondaryColor,
             ),
@@ -344,7 +315,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
             children: [
               Text(
                 'Unanswered Questions Only',
-                style: interMedium.copyWith(fontSize: 15.sp),
+                style: AppTextStyle.style14W700.copyWith(fontSize: 15.sp),
               ),
               Switch(
                 value: cubit.unansweredOnly,
@@ -362,7 +333,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
               Expanded(
                 child: Text(
                   '${'Available'}: ${cubit.questionsCount}',
-                  style: interMedium.copyWith(fontSize: 15.sp),
+                  style: AppTextStyle.style14W700.copyWith(fontSize: 15.sp),
                 ),
               ),
               if (state is GetQuestionsCountLoadingState)

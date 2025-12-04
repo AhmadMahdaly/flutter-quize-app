@@ -10,15 +10,12 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
-import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/profile/widgets/profile_button_widget.dart';
-// تأكد من استيراد ملف الديالوج الجديد هنا
-// import 'path/to/action_confirmation_dialog.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -51,7 +48,10 @@ class ProfileScreen extends StatelessWidget {
                     if (state is SubscriptionLoaded) {
                       final sub = state.subscription;
                       final isSubscribed = sub.isSubscribed ?? false;
-
+                      final data = context
+                          .read<MainLayoutCubit>()
+                          .profileModel!
+                          .data!;
                       return Scaffold(
                         appBar: CustomAppBar(
                           title: 'profile'.tr(context),
@@ -60,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
                         body: Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: 15.w,
-                            vertical: 15.h,
+                            // vertical: 15.h,
                           ),
                           child: SingleChildScrollView(
                             child: Column(
@@ -68,45 +68,27 @@ class ProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizeConfig.responsiveValue(
-                                      phone: 40.verticalSpace,
-                                      tablet: 50.verticalSpace,
+                                    10.verticalSpace,
+                                    Text(
+                                      '${data.name}',
+                                      style: AppTextStyle.style18Bold
+                                          .copyWith(),
                                     ),
                                     Text(
-                                      '${context.read<MainLayoutCubit>().profileModel!.data!.name}',
-                                      style: interBold.copyWith(
-                                        fontSize: SizeConfig.responsiveValue(
-                                          phone: 18.sp,
-                                          tablet: 22.sp,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      '${context.read<MainLayoutCubit>().profileModel!.data!.email}',
-                                      style: interRegular.copyWith(
+                                      '${data.email}',
+                                      style: AppTextStyle.style14W500.copyWith(
                                         color: AppColors.darkGreyColor,
-                                        fontSize: SizeConfig.responsiveValue(
-                                          phone: 14.sp,
-                                          tablet: 18.sp,
-                                        ),
                                       ),
                                     ),
-                                    if (context
-                                            .read<MainLayoutCubit>()
-                                            .profileModel!
-                                            .data!
-                                            .remainingRealExams !=
-                                        null)
+                                    if (data.remainingRealExams != null)
                                       Text(
-                                        '${"remaining_real_exams".tr(context)} ${context.read<MainLayoutCubit>().profileModel!.data!.remainingRealExams} ${"exams".tr(context)}',
-                                        style: interMedium.copyWith(
-                                          color: AppColors.primaryColor,
-                                          fontSize: SizeConfig.responsiveValue(
-                                            phone: 14.sp,
-                                            tablet: 18.sp,
-                                          ),
-                                        ),
+                                        '${"remaining_real_exams".tr(context)} ${data.remainingRealExams} ${"exams".tr(context)}',
+                                        style: AppTextStyle.style14W700
+                                            .copyWith(
+                                              color: AppColors.primaryColor,
+                                            ),
                                       ),
                                     if (context
                                             .read<MainLayoutCubit>()
@@ -115,29 +97,27 @@ class ProfileScreen extends StatelessWidget {
                                             .packageExpireAt !=
                                         null)
                                       Text(
-                                        '${"expire_date".tr(context)} ${context.read<MainLayoutCubit>().profileModel!.data!.packageExpireAt}',
-                                        style: interMedium.copyWith(
-                                          color: AppColors.primaryColor,
-                                          fontSize: SizeConfig.responsiveValue(
-                                            phone: 14.sp,
-                                            tablet: 18.sp,
-                                          ),
-                                        ),
+                                        '${"expire_date".tr(context)} ${data.packageExpireAt}',
+                                        style: AppTextStyle.style14W700
+                                            .copyWith(
+                                              color: AppColors.primaryColor,
+                                            ),
                                       ),
-                                    40.verticalSpace,
+                                    16.verticalSpace,
                                   ],
                                 ),
                                 Column(
-                                  spacing: 16.h,
+                                  spacing: 8.h,
                                   children: [
                                     ProfileButtonWidget(
                                       text: 'Playlist',
-                                      imagePath: Assets.questionLight,
+                                      imagePath: Icons
+                                          .playlist_add_check_circle_outlined,
                                       onPressed: !isSubscribed
                                           ? () => subscripeDialog(context)
                                           : () {
                                               context.pushNamed(
-                                                Routes.playListScreen,
+                                                AppRoutes.playListScreen,
                                                 arguments: {
                                                   'questionId': 0,
                                                   'isAdd': true,
@@ -146,39 +126,86 @@ class ProfileScreen extends StatelessWidget {
                                             },
                                     ),
                                     ProfileButtonWidget(
+                                      text: 'SCFHS Score Calculator',
+                                      imagePath: Icons.calculate_outlined,
+                                      onPressed: () {
+                                        context.pushNamed(
+                                          AppRoutes.sCFHSScoreCalculatorScreen,
+                                        );
+                                      },
+                                    ),
+                                    ProfileButtonWidget(
                                       text: 'exams_history'.tr(context),
-                                      imagePath: Assets.history,
+                                      imagePath: Icons.history,
                                       onPressed: !isSubscribed
                                           ? () => subscripeDialog(context)
                                           : () {
                                               context.pushNamed(
-                                                Routes.examsHistoryScreen,
+                                                AppRoutes.examsHistoryScreen,
                                               );
                                             },
                                     ),
                                     ProfileButtonWidget(
                                       text: 'exams_analysis'.tr(context),
-                                      imagePath: Assets.lineUp,
+                                      imagePath: Icons.line_axis_outlined,
                                       onPressed: !isSubscribed
                                           ? () => subscripeDialog(context)
                                           : () {
                                               context.pushNamed(
-                                                Routes.analysisScreen,
+                                                AppRoutes.analysisScreen,
                                                 arguments: false,
                                               );
                                             },
                                     ),
                                     ProfileButtonWidget(
-                                      text: 'gifts'.tr(context),
-                                      imagePath: Assets.gift,
+                                      text: 'subscription'.tr(context),
+                                      imagePath: Icons.payment,
                                       onPressed: () {
-                                        context.pushNamed(Routes.giftsScreen);
+                                        context.pushNamed(
+                                          AppRoutes.subscriptionScreen,
+                                          arguments:
+                                              context
+                                                  .read<MainLayoutCubit>()
+                                                  .profileModel!
+                                                  .data!
+                                                  .offerId ??
+                                              -1,
+                                        );
+                                      },
+                                    ),
+                                    ProfileButtonWidget(
+                                      text: 'gifts'.tr(context),
+                                      imagePath: Icons.card_giftcard_rounded,
+                                      onPressed: () {
+                                        context.pushNamed(
+                                          AppRoutes.giftsScreen,
+                                        );
                                       },
                                     ),
 
                                     ProfileButtonWidget(
+                                      text: 'support'.tr(context),
+                                      color: AppColors.primaryColor,
+                                      imagePath: Icons.quiz_outlined,
+                                      onPressed: () {
+                                        context.pushNamed(
+                                          AppRoutes.supportScreen,
+                                        );
+                                      },
+                                    ),
+                                    ProfileButtonWidget(
+                                      text: 'privacy_policy'.tr(context),
+                                      color: AppColors.primaryColor,
+                                      imagePath: Icons.lock_outlined,
+                                      onPressed: () {
+                                        context.pushNamed(
+                                          AppRoutes.privacyPolicyScreen,
+                                        );
+                                      },
+                                    ),
+                                    ProfileButtonWidget(
                                       text: 'delete_account'.tr(context),
-                                      imagePath: Assets.tarsh,
+                                      imagePath: Icons.delete_outline_rounded,
                                       onPressed: () {
                                         showDialog(
                                           context: context,
@@ -197,7 +224,7 @@ class ProfileScreen extends StatelessWidget {
                                                         CacheKeys.userToken,
                                                       );
                                                   context.pushReplacementNamed(
-                                                    Routes.loginScreen,
+                                                    AppRoutes.loginScreen,
                                                   );
                                                 },
                                               ),
@@ -207,7 +234,7 @@ class ProfileScreen extends StatelessWidget {
 
                                     ProfileButtonWidget(
                                       text: 'log_out'.tr(context),
-                                      imagePath: Assets.logOut,
+                                      imagePath: Icons.logout,
                                       onPressed: () {
                                         showDialog(
                                           context: context,
@@ -227,7 +254,7 @@ class ProfileScreen extends StatelessWidget {
                                                         CacheKeys.userToken,
                                                       );
                                                   context.pushReplacementNamed(
-                                                    Routes.loginScreen,
+                                                    AppRoutes.loginScreen,
                                                   );
                                                 },
                                               ),
@@ -235,10 +262,6 @@ class ProfileScreen extends StatelessWidget {
                                       },
                                     ),
                                   ],
-                                ),
-                                SizeConfig.responsiveValue(
-                                  phone: 16.verticalSpace,
-                                  tablet: 16.verticalSpace,
                                 ),
                               ],
                             ),
@@ -263,7 +286,7 @@ class ProfileScreen extends StatelessWidget {
         confirmText: 'Subscribe Now',
         onConfirm: () {
           context.pushNamed(
-            Routes.subscriptionScreen,
+            AppRoutes.subscriptionScreen,
             arguments:
                 context.read<MainLayoutCubit>().profileModel!.data!.offerId ??
                 -1,

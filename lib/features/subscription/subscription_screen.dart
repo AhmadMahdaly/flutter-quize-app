@@ -69,7 +69,7 @@ class SubscriptionScreen extends StatelessWidget {
                     24.verticalSpace,
                     Text(
                       'choose_your_plan'.tr(context),
-                      style: interBold.copyWith(
+                      style: AppTextStyle.style16Bold.copyWith(
                         fontSize: SizeConfig.responsiveValue(
                           phone: 14.sp,
                           tablet: 20.sp,
@@ -111,10 +111,11 @@ class SubscriptionScreen extends StatelessWidget {
                                       children: [
                                         Text(
                                           backendPackage.name ?? 'Package',
-                                          style: interBold.copyWith(
-                                            color: Colors.white,
-                                            fontSize: 18.sp,
-                                          ),
+                                          style: AppTextStyle.style16Bold
+                                              .copyWith(
+                                                color: Colors.white,
+                                                fontSize: 18.sp,
+                                              ),
                                         ),
                                         16.verticalSpace,
                                         ...?backendPackage.features?.map(
@@ -124,10 +125,11 @@ class SubscriptionScreen extends StatelessWidget {
                                             ),
                                             child: Text(
                                               '* ${feature.name}',
-                                              style: interRegular.copyWith(
-                                                fontSize: 14.sp,
-                                                color: AppColors.thirdColor,
-                                              ),
+                                              style: AppTextStyle.style14W500
+                                                  .copyWith(
+                                                    fontSize: 14.sp,
+                                                    color: AppColors.thirdColor,
+                                                  ),
                                             ),
                                           ),
                                         ),
@@ -136,7 +138,7 @@ class SubscriptionScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     '$priceInSAR ${'sar'.tr(context)}',
-                                    style: interBold.copyWith(
+                                    style: AppTextStyle.style16Bold.copyWith(
                                       color: AppColors.thirdColor,
                                       fontSize: 20.sp,
                                     ),

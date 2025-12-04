@@ -20,18 +20,18 @@ class GuestLoginDialog extends StatelessWidget {
         Text(
           textAlign: TextAlign.center,
           "Don't Miss Out!",
-          style: interBold.copyWith(fontSize: 20.sp),
+          style: AppTextStyle.style20Bold,
         ),
         Text(
           textAlign: TextAlign.center,
           'Sign in to explore our exclusive offers and enjoy the full experience.',
-          style: interBold.copyWith(fontSize: 16.sp),
+          style: AppTextStyle.style16Bold,
         ),
         8.verticalSpace,
         InkWell(
           onTap: () async {
             context.pop();
-            context.pushReplacementNamed(Routes.loginScreen);
+            context.pushReplacementNamed(AppRoutes.loginScreen);
           },
           child: Container(
             width: 230.w,
@@ -43,8 +43,7 @@ class GuestLoginDialog extends StatelessWidget {
             child: Text(
               'Sign In / Register',
               textAlign: TextAlign.center,
-              style: interBold.copyWith(
-                fontSize: 16.sp,
+              style: AppTextStyle.style16Bold.copyWith(
                 color: AppColors.offwhiteColor,
               ),
             ),
@@ -53,7 +52,7 @@ class GuestLoginDialog extends StatelessWidget {
         InkWell(
           onTap: () {
             context.pop();
-            context.pushReplacementNamed(Routes.subscriptionScreen);
+            context.pushReplacementNamed(AppRoutes.subscriptionScreen);
           },
           child: Container(
             width: 230.w,
@@ -65,8 +64,7 @@ class GuestLoginDialog extends StatelessWidget {
             child: Text(
               'Preview Offers',
               textAlign: TextAlign.center,
-              style: interBold.copyWith(
-                fontSize: 16.sp,
+              style: AppTextStyle.style16Bold.copyWith(
                 color: AppColors.offwhiteColor,
               ),
             ),

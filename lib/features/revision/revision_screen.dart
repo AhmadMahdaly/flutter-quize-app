@@ -48,7 +48,7 @@ class RevisionScreen extends StatelessWidget {
                             padding: EdgeInsets.symmetric(vertical: 30.h),
                             child: Text(
                               '${context.read<RevisionCubit>().subCategoriesModel!.data!.name}',
-                              style: interBold.copyWith(
+                              style: AppTextStyle.style16Bold.copyWith(
                                 fontSize: SizeConfig.responsiveValue(
                                   phone: 16.sp,
                                   tablet: 20.sp,
@@ -76,7 +76,7 @@ class RevisionScreen extends StatelessWidget {
                             alignment: Alignment.topLeft,
                             child: Text(
                               '${context.read<RevisionCubit>().subCategoriesModel!.data!.chapters![index].name}',
-                              style: interBold.copyWith(
+                              style: AppTextStyle.style16Bold.copyWith(
                                 fontSize: SizeConfig.responsiveValue(
                                   phone: 16.sp,
                                   tablet: 20.sp,
@@ -115,7 +115,7 @@ class RevisionScreen extends StatelessWidget {
                                   GestureDetector(
                                     onTap: () {
                                       context.pushNamed(
-                                        Routes.pdfViewerFromUrlScreen,
+                                        AppRoutes.pdfViewerFromUrlScreen,
                                         arguments: context
                                             .read<RevisionCubit>()
                                             .subCategoriesModel!
@@ -139,7 +139,7 @@ class RevisionScreen extends StatelessWidget {
                                   GestureDetector(
                                     onTap: () {
                                       context.pushNamed(
-                                        Routes.videoPlayerScreen,
+                                        AppRoutes.videoPlayerScreen,
                                         arguments: context
                                             .read<RevisionCubit>()
                                             .subCategoriesModel!

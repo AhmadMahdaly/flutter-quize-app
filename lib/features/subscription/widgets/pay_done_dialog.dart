@@ -21,7 +21,8 @@ class PayDoneDialog extends StatelessWidget {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
-                  Assets.calculatorPopupBackground), // Your image path
+                Assets.calculatorPopupBackground,
+              ), // Your image path
               fit: BoxFit.cover, // Fit the image
             ),
           ),
@@ -35,17 +36,18 @@ class PayDoneDialog extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Align(
-                      alignment: Alignment.topRight,
-                      child: Icon(
-                        CupertinoIcons.xmark_circle,
-                        color: AppColors.secondaryColor,
-                        size: 30.sp,
-                      )),
+                    alignment: Alignment.topRight,
+                    child: Icon(
+                      CupertinoIcons.xmark_circle,
+                      color: AppColors.secondaryColor,
+                      size: 30.sp,
+                    ),
+                  ),
                 ),
                 60.verticalSpace,
                 Text(
                   'done'.tr(context),
-                  style: interExtraBold.copyWith(
+                  style: AppTextStyle.style16Bold.copyWith(
                     fontSize: 24.sp,
                     color: AppColors.secondaryColor, // Text color
                   ),

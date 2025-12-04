@@ -23,7 +23,7 @@ class RealExamPage extends StatelessWidget {
             if (state.status == ExamStatus.finished &&
                 state.examResult != null) {
               context.pushReplacementNamed(
-                Routes.analysisScreen,
+                AppRoutes.analysisScreen,
                 arguments: true,
               );
             }
@@ -38,6 +38,7 @@ class RealExamPage extends StatelessWidget {
                   examModel: state.examModel!,
                   bookmarkedStatuses: state.bookmarkedStatuses,
                   noteStatuses: state.noteStatuses,
+                  answersStatus: state.answersStatus,
                 );
               case ExamStatus.onBreak:
                 return Center(

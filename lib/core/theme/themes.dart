@@ -12,7 +12,9 @@ final ThemeData lightTheme = ThemeData(
 
     scrolledUnderElevation: 0,
 
-    titleTextStyle: interRegular.copyWith(color: AppColors.primaryColor),
+    titleTextStyle: AppTextStyle.style12W500.copyWith(
+      color: AppColors.primaryColor,
+    ),
 
     iconTheme: IconThemeData(
       color: AppColors.primaryColor,

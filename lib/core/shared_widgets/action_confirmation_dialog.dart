@@ -10,7 +10,7 @@ class ActionConfirmationDialog extends StatelessWidget {
     required this.title,
     required this.onConfirm,
     this.confirmText = 'Yes',
-    this.cancelText = 'Not now',
+    this.cancelText = 'No',
   });
 
   final String title;
@@ -30,58 +30,81 @@ class ActionConfirmationDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            6.verticalSpace,
+            12.verticalSpace,
+            Container(
+              padding: EdgeInsets.all(14.r),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(360.r),
+                border: Border.all(color: AppColors.primaryColor),
+              ),
+              child: Icon(
+                Icons.warning_amber_rounded,
+                color: AppColors.errorColor.withAlpha(200),
+                size: 56.r,
+              ),
+            ),
+            12.verticalSpace,
             Text(
               title,
               textAlign: TextAlign.center,
-              style: interBold.copyWith(fontSize: 20.sp),
+              style: AppTextStyle.style20Bold,
             ),
-            12.verticalSpace,
+            10.verticalSpace,
             Row(
               spacing: 12.w,
               mainAxisSize: MainAxisSize.min,
               children: [
                 // زر التأكيد (Yes)
-                TextButton(
-                  onPressed: () {
-                    context.pop(); // نغلق الديالوج أولاً
-                    onConfirm(); // ثم ننفذ الدالة
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 8.r,
-                      horizontal: 16.w,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors
-                          .successColor, // يمكنك تغيير اللون للأحمر عند الحذف إذا أردت
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    child: Text(
-                      confirmText,
-                      style: interBold.copyWith(
-                        fontSize: 16.sp,
-                        color: AppColors.offwhiteColor,
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      context.pop(); // نغلق الديالوج أولاً
+                      onConfirm(); // ثم ننفذ الدالة
+                    },
+                    child: Container(
+                      height: 40.h,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 8.r,
+                        horizontal: 16.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors
+                            .successColor, // يمكنك تغيير اللون للأحمر عند الحذف إذا أردت
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      child: FittedBox(
+                        child: Text(
+                          confirmText,
+                          style: AppTextStyle.style16Bold.copyWith(
+                            color: AppColors.offwhiteColor,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 // زر الإلغاء (Not now)
-                TextButton(
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8.r),
-                    decoration: BoxDecoration(
-                      color: AppColors.errorColor.withAlpha(200),
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    child: Text(
-                      cancelText,
-                      style: interBold.copyWith(
-                        fontSize: 16.sp,
-                        color: AppColors.offwhiteColor,
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      context.pop();
+                    },
+                    child: Container(
+                      height: 40.h,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(8.r),
+                      decoration: BoxDecoration(
+                        color: AppColors.errorColor.withAlpha(200),
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      child: FittedBox(
+                        child: Text(
+                          cancelText,
+                          style: AppTextStyle.style16Bold.copyWith(
+                            color: AppColors.offwhiteColor,
+                          ),
+                        ),
                       ),
                     ),
                   ),

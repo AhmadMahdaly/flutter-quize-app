@@ -39,7 +39,7 @@ class CategoryWidget extends StatelessWidget {
             FittedBox(
               child: Text(
                 categoryName,
-                style: interRegular.copyWith(
+                style: AppTextStyle.style16W500.copyWith(
                   fontSize: SizeConfig.responsiveValue(
                     phone: 15.sp,
                     tablet: 21.sp,

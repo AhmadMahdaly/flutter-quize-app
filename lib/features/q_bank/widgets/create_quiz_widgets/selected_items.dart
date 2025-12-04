@@ -28,12 +28,7 @@ class SelectedItemsWidget extends StatelessWidget {
                     (name) => Chip(
                       label: Text(
                         name,
-                        style: interRegular.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 18.sp,
-                          ),
-                        ),
+                        style: AppTextStyle.style14W500.copyWith(),
                       ),
                       onDeleted: () {
                         final subCategory = cubit.aggregatedSubcategories
@@ -50,11 +45,7 @@ class SelectedItemsWidget extends StatelessWidget {
           : Center(
               child: Text(
                 'no_items_selected'.tr(context),
-                style: interRegular.copyWith(
-                  fontSize: SizeConfig.responsiveValue(
-                    phone: 14.sp,
-                    tablet: 18.sp,
-                  ),
+                style: AppTextStyle.style14W500.copyWith(
                   color: AppColors.darkGreyColor,
                 ),
               ),

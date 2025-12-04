@@ -20,9 +20,8 @@ class QBankProgressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final double progressValue = (endValue == 0)
         ? 0.0
-        : currentValue / endValue;  // الحساب يبقى من 0 للدقة النسبية
+        : currentValue / endValue;
 
-    // للعرض: ابدأ من 1
     final int displayCurrent = currentValue + 1;
 
     return Container(
@@ -54,9 +53,8 @@ class QBankProgressWidget extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.only(right: 8.w),
                         child: Text(
-                          '$displayCurrent/$endValue',  // هنا التعديل: +1 للعرض فقط
-                          style: interBold.copyWith(
-                            fontSize: 14.sp,
+                          '$displayCurrent/$endValue',
+                          style: AppTextStyle.style14Bold.copyWith(
                             color: AppColors.secondaryColor,
                           ),
                         ),

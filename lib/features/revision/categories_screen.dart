@@ -4,10 +4,10 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
-import 'package:smle/core/shared_widgets/category_widget.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/home/widgets/category/base_category_widget.dart';
 import 'package:smle/features/revision/cubit/revision_cubit.dart';
 
 class CategoriesScreen extends StatelessWidget {
@@ -28,7 +28,7 @@ class CategoriesScreen extends StatelessWidget {
                   24.verticalSpace,
                   Text(
                     'specialty'.tr(context),
-                    style: interBold.copyWith(
+                    style: AppTextStyle.style16Bold.copyWith(
                       fontSize: SizeConfig.responsiveValue(
                         phone: 16.sp,
                         tablet: 26.sp,
@@ -56,7 +56,7 @@ class CategoriesScreen extends StatelessWidget {
                         return CategoryWidget(
                           onTap: () {
                             context.pushNamed(
-                              Routes.revisionScreen,
+                              AppRoutes.revisionScreen,
                               arguments:
                                   '${context.read<RevisionCubit>().categoriesModel!.data![index].id}',
                             );

@@ -58,22 +58,14 @@ class HeaderExamDetailsCard extends StatelessWidget {
                 children: [
                   Text(
                     'Question: $qNo / $totalQuestions',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 20.sp,
-                      ),
+                    style: AppTextStyle.style14W500.copyWith(
                       color: AppColors.thirdColor,
                     ),
                   ),
                   4.verticalSpace,
                   Text(
                     'Section: $section',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 20.sp,
-                      ),
+                    style: AppTextStyle.style14W500.copyWith(
                       color: AppColors.thirdColor,
                     ),
                   ),
@@ -100,11 +92,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       4.verticalSpace,
                       Text(
                         'Progress ${(progressValue * 100).toInt()}%',
-                        style: interRegular.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 20.sp,
-                          ),
+                        style: AppTextStyle.style14W500.copyWith(
                           color: AppColors.thirdColor,
                         ),
                       ),
@@ -129,11 +117,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       4.horizontalSpace,
                       Text(
                         'Section time remaining',
-                        style: interRegular.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 20.sp,
-                          ),
+                        style: AppTextStyle.style14W500.copyWith(
                           color: AppColors.thirdColor,
                         ),
                       ),
@@ -145,9 +129,11 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     onTimerFinish: () {
                       // This will be called when the timer hits zero.
                       // You can show a dialog or automatically end the section.
-                      showCustomPrimaryDialog(canPop:false,
+                      showCustomPrimaryDialog(
+                        canPop: false,
                         context,
-                        widget: Column(mainAxisSize: MainAxisSize.min,
+                        widget: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             const Text("Time's Up!"),
                             Text('The time for section $section has ended.'),
@@ -195,11 +181,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       ),
                       child: Text(
                         'Finish section',
-                        style: interBold.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 16.sp,
-                            tablet: 24.sp,
-                          ),
+                        style: AppTextStyle.style16Bold.copyWith(
                           color: AppColors.forthColor,
                         ),
                       ),
@@ -229,27 +211,23 @@ class HeaderExamDetailsCard extends StatelessWidget {
             children: [
               // Row(
               //   children: [
-                  // Text(
-                  //   'Test:',
-                  //   style: interRegular.copyWith(
-                  //     fontSize: SizeConfig.responsiveValue(
-                  //       phone: 14.sp,
-                  //       tablet: 20.sp,
-                  //     ),
-                  //     color: AppColors.thirdColor,
-                  //     fontWeight: FontWeight.bold,
-                  //   ),
-                  // ),
-                  Text(
-                    'Test your knowledge with Smle Gate app',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 20.sp,
-                      ),
-                      color: AppColors.thirdColor,
-                    ),
-                  ),
+              // Text(
+              //   'Test:',
+              //   style: interRegular.copyWith(
+              //     fontSize: SizeConfig.responsiveValue(
+              //       phone: 14.sp,
+              //       tablet: 20.sp,
+              //     ),
+              //     color: AppColors.thirdColor,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
+              Text(
+                'Test your knowledge with Smle Gate app',
+                style: AppTextStyle.style14W500.copyWith(
+                  color: AppColors.thirdColor,
+                ),
+              ),
               //   ],
               // ),
               // Row(

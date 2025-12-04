@@ -213,13 +213,7 @@ class _TrialExamBodyState extends State<TrialExamBody> {
           vertical: SizeConfig.responsiveValue(phone: 8.h, tablet: 8.h),
         ),
       ),
-      child: Text(
-        text,
-        style: interBold.copyWith(
-          height: 0,
-          fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 20.sp),
-        ),
-      ),
+      child: Text(text, style: AppTextStyle.style14Bold.copyWith(height: 0)),
     );
   }
 }
@@ -311,18 +305,14 @@ class ResultsDialog extends StatelessWidget {
       title: Text(
         'Test Finished!',
         textAlign: TextAlign.center,
-        style: interRegular.copyWith(
-          fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
-        ),
+        style: AppTextStyle.style16W500,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             'Your Score: ${score.toStringAsFixed(1)}%',
-            style: interBold.copyWith(
-              fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
-
+            style: AppTextStyle.style16Bold.copyWith(
               color: score >= 50
                   ? AppColors.successColor
                   : AppColors.errorColor,
@@ -356,13 +346,11 @@ class ResultsDialog extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(
             'Close',
-            style: interRegular.copyWith(
-              fontSize: SizeConfig.responsiveValue(phone: 12.sp, tablet: 16.sp),
+            style: AppTextStyle.style12W500.copyWith(
               color: AppColors.iconColorBlack,
             ),
           ),
         ),
-        // استخدام cubit المُمرر مباشرة بدلاً من context.read
         ElevatedButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -372,12 +360,7 @@ class ResultsDialog extends StatelessWidget {
             backgroundColor: AppColors.successColor,
             foregroundColor: AppColors.offwhiteColor,
           ),
-          child: Text(
-            'Start New Test',
-            style: interRegular.copyWith(
-              fontSize: SizeConfig.responsiveValue(phone: 12.sp, tablet: 16.sp),
-            ),
-          ),
+          child: Text('Start New Test', style: AppTextStyle.style12W500),
         ),
       ],
     );
@@ -400,19 +383,8 @@ class ResultRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: interRegular.copyWith(
-              fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
-            ),
-          ),
-          Text(
-            value,
-            style: interBold.copyWith(
-              fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
-              color: color,
-            ),
-          ),
+          Text(title, style: AppTextStyle.style14W500),
+          Text(value, style: AppTextStyle.style14Bold.copyWith(color: color)),
         ],
       ),
     );

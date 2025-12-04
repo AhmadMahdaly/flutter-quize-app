@@ -14,15 +14,11 @@ class ExamsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log(cubit.state.toString());
-    if (cubit.allExams.isEmpty && cubit.state is! ExamsHistoryLoading
-       ) {
+    if (cubit.allExams.isEmpty && cubit.state is! ExamsHistoryLoading) {
       return Center(
         child: Text(
           'no_exams_found'.tr(context),
-          style: interBold.copyWith(
-            fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
-            color: AppColors.forthColor,
-          ),
+          style: AppTextStyle.style16Bold.copyWith(color: AppColors.forthColor),
         ),
       );
     }

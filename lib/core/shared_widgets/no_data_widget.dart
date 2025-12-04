@@ -4,7 +4,11 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class NoDataWidget extends StatelessWidget {
-  const NoDataWidget({super.key, required this.noDataImage, required this.noDataText});
+  const NoDataWidget({
+    super.key,
+    required this.noDataImage,
+    required this.noDataText,
+  });
   final String noDataImage;
   final String noDataText;
 
@@ -14,10 +18,14 @@ class NoDataWidget extends StatelessWidget {
       child: Column(
         children: [
           110.verticalSpace,
-          if(noDataImage!='')
-          Image(image: AssetImage(noDataImage)),
+          if (noDataImage != '') Image(image: AssetImage(noDataImage)),
           40.verticalSpace,
-          Text(noDataText,style: interBold.copyWith(fontSize: 20.sp,color: AppColors.forthColor),)
+          Text(
+            noDataText,
+            style: AppTextStyle.style20Bold.copyWith(
+              color: AppColors.forthColor,
+            ),
+          ),
         ],
       ),
     );
@@ -30,13 +38,17 @@ class LoadingDataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          backgroundColor: AppColors.forthColor,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,))
-            ],
+      backgroundColor: AppColors.forthColor,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ),
           ),
-        );
+        ],
+      ),
+    );
   }
 }

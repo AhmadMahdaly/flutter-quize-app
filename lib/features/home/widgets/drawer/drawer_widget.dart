@@ -6,11 +6,12 @@ import 'package:smle/core/di.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
-import 'package:smle/features/home/widgets/drawer_item_widget.dart';
+import 'package:smle/features/home/widgets/drawer/drawer_item_widget.dart';
 import 'package:smle/features/login/cubit/login_cubit.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 
@@ -35,7 +36,7 @@ class DrawerWidget extends StatelessWidget {
             iconAsset: Assets.mortarboardLight,
             title: 'SCFHS_score_calculator'.tr(context),
             onTap: () {
-              context.pushNamed(Routes.sCFHSScoreCalculatorScreen);
+              context.pushNamed(AppRoutes.sCFHSScoreCalculatorScreen);
             },
           ),
           // if (Platform.isIOS)
@@ -44,7 +45,7 @@ class DrawerWidget extends StatelessWidget {
             title: 'subscription'.tr(context),
             onTap: () {
               context.pushNamed(
-                Routes.subscriptionScreen,
+                AppRoutes.subscriptionScreen,
                 arguments:
                     context
                         .read<MainLayoutCubit>()
@@ -75,7 +76,7 @@ class DrawerWidget extends StatelessWidget {
                             confirmText: 'Subscribe Now',
                             onConfirm: () {
                               context.pushNamed(
-                                Routes.subscriptionScreen,
+                                AppRoutes.subscriptionScreen,
                                 arguments:
                                     context
                                         .read<MainLayoutCubit>()
@@ -89,7 +90,7 @@ class DrawerWidget extends StatelessWidget {
                         )
                       : () {
                           context.pushNamed(
-                            Routes.analysisScreen,
+                            AppRoutes.analysisScreen,
                             arguments: false,
                           );
                         },
@@ -102,14 +103,14 @@ class DrawerWidget extends StatelessWidget {
             iconAsset: Assets.questionLight,
             title: 'support'.tr(context),
             onTap: () {
-              context.pushNamed(Routes.supportScreen);
+              context.pushNamed(AppRoutes.supportScreen);
             },
           ),
           DrawerItemWidget(
             iconAsset: Assets.privacyPolicy,
             title: 'privacy_policy'.tr(context),
             onTap: () {
-              context.pushNamed(Routes.privacyPolicyScreen);
+              context.pushNamed(AppRoutes.privacyPolicyScreen);
             },
           ),
           BlocProvider(
@@ -120,10 +121,22 @@ class DrawerWidget extends StatelessWidget {
                   iconAsset: Assets.logOut,
                   title: 'log_out'.tr(context),
                   onTap: () {
-                    context.read<LoginCubit>().logOut().then((value) {
-                      CacheHelper.sharedPreferences.remove(CacheKeys.userToken);
-                      context.pushReplacementNamed(Routes.loginScreen);
-                    });
+                    showDialog(
+                      context: context,
+                      builder: (dialogContext) => ActionConfirmationDialog(
+                        title: 'Are you sure you want to log out?',
+                        onConfirm: () async {
+                          try {
+                            await context.read<LoginCubit>().logOut();
+                          } catch (_) {}
+
+                          CacheHelper.sharedPreferences.remove(
+                            CacheKeys.userToken,
+                          );
+                          context.pushReplacementNamed(AppRoutes.loginScreen);
+                        },
+                      ),
+                    );
                   },
                 );
               },

@@ -64,12 +64,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                   widget.isAdd == true
                       ? Text(
                           'recently_added'.tr(context),
-                          style: interBold.copyWith(
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 16.sp,
-                              tablet: 20.sp,
-                            ),
-                          ),
+                          style: AppTextStyle.style16Bold,
                         )
                       : const SizedBox.shrink(),
                   30.verticalSpace,
@@ -90,8 +85,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                               16.verticalSpace,
                               Text(
                                 'No playlists yet',
-                                style: interBold.copyWith(
-                                  fontSize: 20.sp,
+                                style: AppTextStyle.style20Bold.copyWith(
                                   color: AppColors.primaryColor,
                                 ),
                                 textAlign: TextAlign.center,
@@ -101,8 +95,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                 widget.isAdd == true
                                     ? 'Create a playlist to add this question.'
                                     : 'Create your first playlist to get started.',
-                                style: interRegular.copyWith(
-                                  fontSize: 16.sp,
+                                style: AppTextStyle.style16W500.copyWith(
                                   color: AppColors.darkGreyColor,
                                 ),
                                 textAlign: TextAlign.center,
@@ -142,12 +135,8 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                     ),
                                     child: Text(
                                       'create_new_playlist'.tr(context),
-                                      style: interRegular.copyWith(
+                                      style: AppTextStyle.style14W500.copyWith(
                                         color: AppColors.thirdColor,
-                                        fontSize: SizeConfig.responsiveValue(
-                                          phone: 14.sp,
-                                          tablet: 18.sp,
-                                        ),
                                       ),
                                     ),
                                   ),
@@ -201,7 +190,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                 );
                               } else {
                                 context.pushNamed(
-                                  Routes.playlistQuestionsScreen,
+                                  AppRoutes.playlistQuestionsScreen,
                                   arguments: {
                                     'playlistId': playlist.id,
                                     'totalQuestions':

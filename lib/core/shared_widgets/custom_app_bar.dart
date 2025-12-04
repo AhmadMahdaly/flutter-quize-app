@@ -8,13 +8,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.title = '',
     this.canBack = true,
-    this.iconAction, this.leading,
+    this.iconAction,
+    this.leading,
   });
 
   final String title;
   final bool canBack;
   final IconData? iconAction;
-final Widget? leading;
+  final Widget? leading;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -34,7 +35,7 @@ final Widget? leading;
       title: Text(
         title,
         textAlign: TextAlign.center,
-        style: interBold.copyWith(
+        style: AppTextStyle.style20Bold.copyWith(
           color: AppColors.secondaryColor,
           fontSize: SizeConfig.responsiveValue(phone: 20.sp, tablet: 24.sp),
           // decoration: TextDecoration.underline,

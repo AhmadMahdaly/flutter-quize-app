@@ -23,18 +23,19 @@ class UserImageNameWidget extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(color: AppColors.darkGreyColor, width: 1.r),
           ),
+          clipBehavior: Clip.hardEdge,
           child: CircleAvatar(
             radius: SizeConfig.responsiveValue(phone: 24.r, tablet: 20.r),
             backgroundColor: AppColors.greyColor,
             child: Image(
-                image: imagePath.contains('png')
-                    ? AssetImage(imagePath)
-                    : imagePath.isEmpty
-                    ? const AssetImage(Assets.user)
-                    : NetworkImage(imagePath) as ImageProvider,
-              ),
+              image: imagePath.contains('png')
+                  ? AssetImage(imagePath)
+                  : imagePath.isEmpty
+                  ? const AssetImage(Assets.user)
+                  : NetworkImage(imagePath) as ImageProvider,
             ),
           ),
+        ),
 
         15.horizontalSpace,
         Column(
@@ -45,22 +46,16 @@ class UserImageNameWidget extends StatelessWidget {
               children: [
                 Text(
                   'welcome'.tr(context),
-                  style: interBold.copyWith(
-                    fontSize: SizeConfig.responsiveValue(
-                      phone: 14.sp,
-                      tablet: 18.sp,
-                    ), color: AppColors.primaryColor,
+                  style: AppTextStyle.style14Bold.copyWith(
+                    color: AppColors.secondaryColor,
                   ),
                 ),
                 SizedBox(
                   width: MediaQuery.sizeOf(context).width - 240.w,
                   child: Text(
                     name,
-                    style: interBold.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 15.sp,
-                        tablet: 19.sp,
-                      ),
+                    style: AppTextStyle.style16Bold.copyWith(
+                      // color: AppColors.darkGreyColor,
                     ),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
@@ -74,24 +69,26 @@ class UserImageNameWidget extends StatelessWidget {
                 email,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: interRegular.copyWith(
-                  fontSize: SizeConfig.responsiveValue(
-                    phone: 12.sp,
-                    tablet: 16.sp,
-                  ),
-                  color: AppColors.darkGreyColor,
+                style: AppTextStyle.style12W500.copyWith(
+                  color: AppColors.secondaryColor,
                 ),
               ),
             ),
-            Text(
-              '$points ${"points".tr(context)}',
-              style: interBold.copyWith(
-                fontSize: SizeConfig.responsiveValue(
-                  phone: 14.sp,
-                  tablet: 18.sp,
+            Row(
+              children: [
+                Text(
+                  '$points ',
+                  style: AppTextStyle.style14Bold.copyWith(
+                    color: AppColors.primaryColor,
+                  ),
                 ),
-                color: AppColors.primaryColor,
-              ),
+                Text(
+                  'points'.tr(context),
+                  style: AppTextStyle.style12Bold.copyWith(
+                    color: AppColors.secondaryColor,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

@@ -36,14 +36,9 @@ class QuestionWidget extends StatelessWidget {
             children: [
               Text(
                 "${'question'.tr(context)} $currentQuestion",
-                style: interBold.copyWith(
-                  fontSize: SizeConfig.responsiveValue(
-                    phone: 16.sp,
-                    tablet: 20.sp,
-                  ),
-                ),
+                style: AppTextStyle.style16Bold,
               ),
-              SizedBox(height: 10.h),
+              10.verticalSpace,
               Row(
                 children: [
                   GestureDetector(
@@ -74,11 +69,10 @@ class QuestionWidget extends StatelessWidget {
                   ),
                   10.horizontalSpace,
                   GestureDetector(
-                    // نستخدم GestureDetector بدلاً من Tooltip لفتح الديالوج
-                    onTap: onNoteTap, // استدعاء الدالة عند الضغط
+                    onTap: onNoteTap,
                     child: Icon(
                       CupertinoIcons.news,
-                      color: AppColors.forthColor, // لون الأيقونة
+                      color: AppColors.forthColor,
                       size: SizeConfig.responsiveValue(
                         phone: 20.sp,
                         tablet: 40.sp,
@@ -103,8 +97,7 @@ class QuestionWidget extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: '${'hint'.tr(context)}\n',
-                          style: interBold.copyWith(
-                            fontSize: 16.sp,
+                          style: AppTextStyle.style16Bold.copyWith(
                             color: AppColors.forthColor,
                             decoration: TextDecoration.underline,
                           ),
@@ -115,11 +108,7 @@ class QuestionWidget extends StatelessWidget {
                                   lightBulbExplain == 'NULL'
                               ? ''
                               : lightBulbExplain,
-                          style: interRegular.copyWith(
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 16.sp,
-                              tablet: 20.sp,
-                            ),
+                          style: AppTextStyle.style16W500.copyWith(
                             color: AppColors.forthColor,
                           ),
                         ),
@@ -154,8 +143,7 @@ class QuestionWidget extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: '${'explanation'.tr(context)}\n',
-                          style: interBold.copyWith(
-                            fontSize: 16.sp,
+                          style: AppTextStyle.style16Bold.copyWith(
                             color: AppColors.forthColor,
                             decoration: TextDecoration.underline,
                           ),
@@ -164,11 +152,7 @@ class QuestionWidget extends StatelessWidget {
                           text: questionCircleExplain == 'null'
                               ? ''
                               : questionCircleExplain,
-                          style: interRegular.copyWith(
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 16.sp,
-                              tablet: 20.sp,
-                            ),
+                          style: AppTextStyle.style16W500.copyWith(
                             color: AppColors.forthColor,
                           ),
                         ),
@@ -187,12 +171,7 @@ class QuestionWidget extends StatelessWidget {
             ],
           ),
           15.verticalSpace,
-          Text(
-            question,
-            style: interRegular.copyWith(
-              fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 20.sp),
-            ),
-          ),
+          Text(question, style: AppTextStyle.style14W500),
         ],
       ),
     );

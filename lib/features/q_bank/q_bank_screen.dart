@@ -65,7 +65,7 @@ class _QBankScreenState extends State<QBankScreen> {
                       QuestionWidget(
                         addCircledFun: () {
                           context.pushNamed(
-                            Routes.playListScreen,
+                            AppRoutes.playListScreen,
 
                             arguments: {
                               'questionId':
@@ -154,7 +154,7 @@ class _QBankScreenState extends State<QBankScreen> {
                             GestureDetector(
                               onTap: () {
                                 context.pushNamedAndRemoveUntil(
-                                  Routes.mainLayoutScreen,
+                                  AppRoutes.mainLayoutScreen,
                                   (route) => false,
                                 );
                               },
@@ -169,7 +169,7 @@ class _QBankScreenState extends State<QBankScreen> {
                                 cubit.setIndexQBank(true);
                               } else {
                                 context.pushNamedAndRemoveUntil(
-                                  Routes.mainLayoutScreen,
+                                  AppRoutes.mainLayoutScreen,
                                   (route) => false,
                                 );
                               }
@@ -191,7 +191,7 @@ class _QBankScreenState extends State<QBankScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     context.pushNamedAndRemoveUntil(
-                                      Routes.mainLayoutScreen,
+                                      AppRoutes.mainLayoutScreen,
                                       (route) => false,
                                     );
                                   },

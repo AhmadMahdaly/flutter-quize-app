@@ -18,13 +18,14 @@ class RealExamBody extends StatefulWidget {
     required this.examModel,
     required this.bookmarkedStatuses,
     required this.noteStatuses,
+    required this.answersStatus,
     super.key,
   });
 
   final StartRealExamModel examModel;
   final Map<int, bool> bookmarkedStatuses;
   final Map<int, bool> noteStatuses;
-
+  final Map<int, String> answersStatus;
   @override
   State<RealExamBody> createState() => _RealExamBodyState();
 }
@@ -92,11 +93,11 @@ class _RealExamBodyState extends State<RealExamBody> {
           widget.bookmarkedStatuses[questionNumber] ?? false;
       final hasNoteForThisItem = widget.noteStatuses[questionNumber] ?? false;
       final isCurrent = questionNumber == currentQuestionNo;
-
+      final isAnswered = widget.answersStatus.containsKey(questionNumber);
       TimelineStatus status;
       if (isCurrent) {
         status = TimelineStatus.current;
-      } else if (questionNumber < currentQuestionNo) {
+      } else if (isAnswered || (isCurrent && isAnswered)) {
         status = TimelineStatus.completed;
       } else {
         status = TimelineStatus.upcoming;
@@ -211,11 +212,7 @@ class _RealExamBodyState extends State<RealExamBody> {
                           Text(
                             '<Back',
                             textAlign: TextAlign.justify,
-                            style: interRegular.copyWith(
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 14.sp,
-                                tablet: 20.sp,
-                              ),
+                            style: AppTextStyle.style14W500.copyWith(
                               color: AppColors.thirdColor,
                               fontWeight: FontWeight.w500,
                               height: 1.h,
@@ -247,11 +244,7 @@ class _RealExamBodyState extends State<RealExamBody> {
                           Text(
                             'Next>',
                             textAlign: TextAlign.justify,
-                            style: interRegular.copyWith(
-                              fontSize: SizeConfig.responsiveValue(
-                                phone: 14.sp,
-                                tablet: 20.sp,
-                              ),
+                            style: AppTextStyle.style14W500.copyWith(
                               color: AppColors.thirdColor,
                               fontWeight: FontWeight.w500,
                               height: 1.h,

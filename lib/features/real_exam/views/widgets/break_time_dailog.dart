@@ -13,13 +13,14 @@ class BreakTimeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisSize: MainAxisSize.min,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           'Break Time',
-          style: interBold.copyWith(
+          style: AppTextStyle.style20Bold.copyWith(
             fontSize: SizeConfig.responsiveValue(phone: 22.sp, tablet: 26.sp),
             color: AppColors.iconColorGray,
           ),
@@ -34,8 +35,7 @@ class BreakTimeDialog extends StatelessWidget {
         12.verticalSpace,
         Text(
           "You're now on a 30-minute break",
-          style: interRegular.copyWith(
-            fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
+          style: AppTextStyle.style14Bold.copyWith(
             color: AppColors.iconColorGray,
           ),
         ),
@@ -45,19 +45,19 @@ class BreakTimeDialog extends StatelessWidget {
             getIt<RealExamCubit>().startNextSection();
           },
           child: Container(
+            width: 250.w,
+            alignment: Alignment.center,
             padding: EdgeInsets.symmetric(vertical: 12.r, horizontal: 16.w),
             decoration: BoxDecoration(
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(24.r),
             ),
-            child: Text(
-              'End Break Early',
-              style: interBold.copyWith(
-                fontSize: SizeConfig.responsiveValue(
-                  phone: 14.sp,
-                  tablet: 18.sp,
+            child: FittedBox(
+              child: Text(
+                'End Break Early',
+                style: AppTextStyle.style14Bold.copyWith(
+                  color: AppColors.iconColorBlack,
                 ),
-                color: AppColors.iconColorBlack,
               ),
             ),
           ),
@@ -127,7 +127,7 @@ class _BreakTimerWidgetState extends State<BreakTimerWidget> {
   Widget build(BuildContext context) {
     return Text(
       _formatTime(_timeLeft),
-      style: interBold.copyWith(
+      style: AppTextStyle.style16Bold.copyWith(
         fontSize: SizeConfig.responsiveValue(phone: 52.sp, tablet: 56.sp),
         color: AppColors.forthColor,
       ),

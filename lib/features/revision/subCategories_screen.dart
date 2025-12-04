@@ -4,10 +4,10 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
-import 'package:smle/core/shared_widgets/category_widget.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/home/widgets/category/base_category_widget.dart';
 import 'package:smle/features/revision/cubit/revision_cubit.dart';
 
 class SubcategoriesScreen extends StatelessWidget {
@@ -28,7 +28,7 @@ class SubcategoriesScreen extends StatelessWidget {
                   50.verticalSpace,
                   Text(
                     'specialty'.tr(context),
-                    style: interBold.copyWith(
+                    style: AppTextStyle.style16Bold.copyWith(
                       fontSize: 16.sp,
                       decoration: TextDecoration.underline,
                     ),
@@ -54,7 +54,7 @@ class SubcategoriesScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return CategoryWidget(
                           onTap: () {
-                            context.pushNamed(Routes.revisionScreen);
+                            context.pushNamed(AppRoutes.revisionScreen);
                           },
                           categoryName:
                               '${context.read<RevisionCubit>().subCategoriesModel!.data!.subcategories![index].name}',

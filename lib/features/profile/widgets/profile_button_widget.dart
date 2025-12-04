@@ -9,41 +9,43 @@ class ProfileButtonWidget extends StatelessWidget {
     required this.imagePath,
     required this.text,
     this.onPressed,
+    this.color = AppColors.secondaryColor,
   });
-  final String imagePath, text;
+  final dynamic imagePath;
+  final String text;
   final VoidCallback? onPressed;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: TextButton(
-        onPressed: onPressed,
-        style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(AppColors.secondaryColor),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          minimumSize: WidgetStateProperty.all(Size(double.infinity, 52.h)),
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
+      child: InkWell(
+        onTap: onPressed,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          height: 40.h,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.r),
+            color: color,
           ),
-        ),
-        child: Row(
-          children: [
-            ImageIcon(
-              AssetImage(imagePath),
-              color: AppColors.greyColor,
-              size: 30.sp,
-            ),
-            5.horizontalSpace,
-            Text(
-              text,
-              style: interBold.copyWith(
-                color: AppColors.greyColor,
-                fontSize: SizeConfig.responsiveValue(
-                  phone: 14.sp,
-                  tablet: 18.sp,
+          child: Row(
+            children: [
+              imagePath.runtimeType != IconData
+                  ? ImageIcon(
+                      AssetImage(imagePath),
+                      color: AppColors.greyColor,
+                      size: 30.r,
+                    )
+                  : Icon(imagePath, color: AppColors.greyColor, size: 24.r),
+              10.horizontalSpace,
+              Text(
+                text,
+                style: AppTextStyle.style16Bold.copyWith(
+                  color: AppColors.thirdColor,
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -44,7 +44,7 @@ class AppRightIconTextButton extends StatelessWidget {
         child: FittedBox(
           child: Text(
             title,
-            style: interRegular.copyWith(
+            style: AppTextStyle.style14W500.copyWith(
               color: titleColor ?? AppColors.forthColor,
               fontSize:
                   fontSize ??

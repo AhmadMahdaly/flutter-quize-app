@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -29,7 +28,6 @@ void showCustomPrimaryDialog(
 }
 
 class CustomPrimaryDialog extends StatelessWidget {
-
   const CustomPrimaryDialog({
     super.key,
     required this.title,
@@ -52,83 +50,73 @@ class CustomPrimaryDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-        padding: EdgeInsets.all(20.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(
-                icon,
-                size: 48.sp,
-                color: iconColor ?? AppColors.primaryColor,
-              ),
-              12.verticalSpace,
-            ],
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: interBold.copyWith(
-                fontSize: SizeConfig.responsiveValue(phone: 18.sp, tablet: 22.sp),
-                color: AppColors.forthColor,
-              ),
-            ),
+    return Padding(
+      padding: EdgeInsets.all(20.w),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 48.sp, color: iconColor ?? AppColors.primaryColor),
             12.verticalSpace,
-            Text(
-              description,
-              textAlign: TextAlign.center,
-              style: interRegular.copyWith(
-                fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 16.sp),
-                color: AppColors.darkGreyColor,
-              ),
+          ],
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: AppTextStyle.style16Bold.copyWith(
+              fontSize: SizeConfig.responsiveValue(phone: 18.sp, tablet: 22.sp),
+              color: AppColors.forthColor,
             ),
-            24.verticalSpace,
-            Row(   mainAxisSize: MainAxisSize.min,
-              children: [
-                if (cancelText != null)
-                  Expanded(
-                    child: TextButton(
-                      onPressed: onCancel ?? () => Navigator.pop(context),
-                      style: TextButton.styleFrom(
-                        foregroundColor: AppColors.darkGreyColor,
-                        padding: EdgeInsets.symmetric(vertical: 12.h),
-                      ),
-                      child: Text(
-                        cancelText!,
-                        style: interMedium.copyWith(
-                          fontSize: 14.sp,
-                        ),
-                      ),
+          ),
+          12.verticalSpace,
+          Text(
+            description,
+            textAlign: TextAlign.center,
+            style: AppTextStyle.style14W500.copyWith(
+              fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 16.sp),
+              color: AppColors.darkGreyColor,
+            ),
+          ),
+          24.verticalSpace,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (cancelText != null)
+                Expanded(
+                  child: TextButton(
+                    onPressed: onCancel ?? () => Navigator.pop(context),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.darkGreyColor,
+                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                    ),
+                    child: Text(cancelText!, style: AppTextStyle.style14W600),
+                  ),
+                ),
+              if (cancelText != null) 12.horizontalSpace,
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    onConfirm();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
-                if (cancelText != null) 12.horizontalSpace,
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      onConfirm();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryColor,
-                      padding: EdgeInsets.symmetric(vertical: 12.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                    ),
-                    child: Text(
-                      confirmText,
-                      style: interBold.copyWith(
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                      ),
+                  child: Text(
+                    confirmText,
+                    style: AppTextStyle.style14Bold.copyWith(
+                      color: Colors.white,
                     ),
                   ),
                 ),
-              ],
-            ),
-          ],
-        ),
-
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

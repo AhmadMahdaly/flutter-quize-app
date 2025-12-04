@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -21,7 +21,8 @@ class PlaylistQuestionsScreen extends StatefulWidget {
   final int totalQuestions;
   final bool isAdd;
   @override
-  State<PlaylistQuestionsScreen> createState() => _PlaylistQuestionsScreenState();
+  State<PlaylistQuestionsScreen> createState() =>
+      _PlaylistQuestionsScreenState();
 }
 
 class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
@@ -60,9 +61,9 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
             });
           } else if (state is GetPlayListDetailsFailedState) {
             SchedulerBinding.instance.addPostFrameCallback((_) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Error!')),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Error!')));
             });
           } else if (state is RemoveFromPlayListSuccessState) {
             SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -72,9 +73,9 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                   localSelectedAnswer = null;
                   localIsAnswered = false;
                 });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Removed')),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('Removed')));
                 context.read<PlayListCubit>().getPlayListDetails(
                   playlistId: widget.playlistId.toString(),
                   limit: 1,
@@ -82,21 +83,19 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                 );
               }
             });
-
-
           } else if (state is RemoveFromPlayListFailedState) {
             SchedulerBinding.instance.addPostFrameCallback((_) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Error!')),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Error!')));
             });
           }
-
         },
         builder: (context, state) {
           final cubit = context.read<PlayListCubit>();
 
-          if (state is GetPlayListDetailsLoadingState && cubit.playListQuestionsModel == null) {
+          if (state is GetPlayListDetailsLoadingState &&
+              cubit.playListQuestionsModel == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -118,8 +117,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                       16.verticalSpace,
                       Text(
                         'This playlist is empty',
-                        style: interBold.copyWith(
-                          fontSize: 20.sp,
+                        style: AppTextStyle.style20Bold.copyWith(
                           color: AppColors.primaryColor,
                         ),
                         textAlign: TextAlign.center,
@@ -127,8 +125,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                       8.verticalSpace,
                       Text(
                         'Add questions to get started and begin your review session.',
-                        style: interRegular.copyWith(
-                          fontSize: 16.sp,
+                        style: AppTextStyle.style16W500.copyWith(
                           color: AppColors.darkGreyColor,
                         ),
                         textAlign: TextAlign.center,
@@ -148,7 +145,8 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
 
           final currentQuestion = cubit.playListQuestionsModel!.data![0];
           final bool isAnswered = localIsAnswered;
-          final currentQuestionNumber = '${currentOffset + 1} / $currentTotalQuestions';
+          final currentQuestionNumber =
+              '${currentOffset + 1} / $currentTotalQuestions';
           final playlistId = widget.playlistId.toString();
 
           return SingleChildScrollView(
@@ -156,7 +154,12 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 16.verticalSpace,
-                _buildQuestionWithImage(currentQuestion, currentQuestionNumber, cubit, playlistId),
+                _buildQuestionWithImage(
+                  currentQuestion,
+                  currentQuestionNumber,
+                  cubit,
+                  playlistId,
+                ),
 
                 20.verticalSpace,
                 Padding(
@@ -165,32 +168,36 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, optionIndex) {
-                      final currentOption = currentQuestion.options[optionIndex];
-                      final bool isCorrectAnswer = currentQuestion.answer == currentOption.key;
-                      final bool isSelected = localSelectedAnswer == currentOption.key;
+                      final currentOption =
+                          currentQuestion.options[optionIndex];
+                      final bool isCorrectAnswer =
+                          currentQuestion.answer == currentOption.key;
+                      final bool isSelected =
+                          localSelectedAnswer == currentOption.key;
 
                       return GestureDetector(
                         onTap: isAnswered
                             ? null
                             : () {
-                          if (mounted) {
-                            setState(() {
-                              localSelectedAnswer = currentOption.key;
-                              localIsAnswered = true;
-                              currentQuestion.selectedAnswer = currentOption.key;
-                            });
-                          }
-                        },
+                                if (mounted) {
+                                  setState(() {
+                                    localSelectedAnswer = currentOption.key;
+                                    localIsAnswered = true;
+                                    currentQuestion.selectedAnswer =
+                                        currentOption.key;
+                                  });
+                                }
+                              },
                         child: isAnswered
                             ? AnsweredWidget(
-                          answerText: currentOption.value!,
-                          isTrue: isCorrectAnswer,
-                          isSelected: isSelected,
-                        )
+                                answerText: currentOption.value!,
+                                isTrue: isCorrectAnswer,
+                                isSelected: isSelected,
+                              )
                             : AnswerWidget(
-                          answerText: currentOption.value!,
-                          isSelected: isSelected,
-                        ),
+                                answerText: currentOption.value!,
+                                isSelected: isSelected,
+                              ),
                       );
                     },
                     separatorBuilder: (context, index) => 8.verticalSpace,
@@ -201,25 +208,27 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                   child: GestureDetector(
                     onTap: isAnswered
                         ? () {
-                      if (currentOffset + 1 < currentTotalQuestions) {
-                        currentOffset++;
-                        cubit.getPlayListDetails(
-                          playlistId: widget.playlistId.toString(),
-                          limit: 1,
-                          offset: currentOffset,
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Ended!')),
-                        );
-                        Navigator.pop(context);
-                      }
-                    }
+                            if (currentOffset + 1 < currentTotalQuestions) {
+                              currentOffset++;
+                              cubit.getPlayListDetails(
+                                playlistId: widget.playlistId.toString(),
+                                limit: 1,
+                                offset: currentOffset,
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Ended!')),
+                              );
+                              Navigator.pop(context);
+                            }
+                          }
                         : () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Select Answer first!')),
-                      );
-                    },
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Select Answer first!'),
+                              ),
+                            );
+                          },
                     child: QuestionButtonWidget(
                       text: isAnswered ? 'Next' : 'Answer to continue',
                     ),
@@ -234,11 +243,18 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
     );
   }
 
-  Widget _buildQuestionWithImage(dynamic question, String currentQuestionNumber, PlayListCubit cubit, String playlistId) {
+  Widget _buildQuestionWithImage(
+    dynamic question,
+    String currentQuestionNumber,
+    PlayListCubit cubit,
+    String playlistId,
+  ) {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
-        if (question.photo != null && question.photo != 'NULL' && question.photo!.isNotEmpty)
+        if (question.photo != null &&
+            question.photo != 'NULL' &&
+            question.photo!.isNotEmpty)
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -254,10 +270,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withAlpha(170),
-                    ],
+                    colors: [Colors.transparent, Colors.black.withAlpha(170)],
                   ),
                 ),
               ),
@@ -277,7 +290,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                     cubit.removeFromPlayList(
                       playlistId,
                       question.id.toString(),
-                      offset: currentOffset ,
+                      offset: currentOffset,
                     );
                   },
                   currentQuestion: currentQuestionNumber,

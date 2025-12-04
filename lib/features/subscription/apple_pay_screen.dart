@@ -14,9 +14,7 @@ class ApplePayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'pay_via_apple_pay'.tr(context),
-      ),
+      appBar: CustomAppBar(title: 'pay_via_apple_pay'.tr(context)),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
@@ -26,7 +24,7 @@ class ApplePayScreen extends StatelessWidget {
               30.verticalSpace,
               Text(
                 'apple_pay'.tr(context),
-                style: interBold.copyWith(
+                style: AppTextStyle.style16Bold.copyWith(
                   fontSize: 16.sp,
                   decoration: TextDecoration.underline,
                 ),
@@ -37,18 +35,14 @@ class ApplePayScreen extends StatelessWidget {
                   builder: (context, state) {
                     return Text(
                       "${'payment_summary'.tr(context)} $total ${"sar".tr(context)}",
-                      style: interBold.copyWith(
-                        fontSize: 16.sp,
-                      ),
+                      style: AppTextStyle.style16Bold.copyWith(fontSize: 16.sp),
                     );
                   },
                 ),
               15.verticalSpace,
               Text(
                 'subscribe_now'.tr(context),
-                style: interRegular.copyWith(
-                  fontSize: 14.sp,
-                ),
+                style: AppTextStyle.style14W500.copyWith(fontSize: 14.sp),
               ),
               160.verticalSpace,
               Center(
@@ -62,11 +56,13 @@ class ApplePayScreen extends StatelessWidget {
                     );
                   },
                   style: ButtonStyle(
-                    backgroundColor:
-                        WidgetStateProperty.all(AppColors.secondaryColor),
+                    backgroundColor: WidgetStateProperty.all(
+                      AppColors.secondaryColor,
+                    ),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     minimumSize: WidgetStateProperty.all(
-                        const Size(double.infinity, 52)),
+                      const Size(double.infinity, 52),
+                    ),
                     shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
@@ -84,7 +80,7 @@ class ApplePayScreen extends StatelessWidget {
                       5.horizontalSpace,
                       Text(
                         'pay'.tr(context),
-                        style: interBold.copyWith(
+                        style: AppTextStyle.style16Bold.copyWith(
                           color: AppColors.greyColor,
                           fontSize: 16.sp,
                         ),

@@ -28,7 +28,7 @@ class CustomPrimaryButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: interBold.copyWith(
+          style: AppTextStyle.style16Bold.copyWith(
             color: AppColors.thirdColor,
             fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
           ),

@@ -50,7 +50,7 @@ class _ScfhsScoreCalculatorScreenState
                           controller: context
                               .read<ScfhsScoreCalculatorCubit>()
                               .realExamController,
-                          style: interRegular.copyWith(
+                          style: AppTextStyle.style14W500.copyWith(
                             color: AppColors.darkGreyColor,
                           ),
                           decoration: InputDecoration(
@@ -84,7 +84,7 @@ class _ScfhsScoreCalculatorScreenState
                         ),
                         Text(
                           '${'maximum_score'.tr(context)} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.realExamScore!.maxScore}',
-                          style: interRegular.copyWith(
+                          style: AppTextStyle.style14W500.copyWith(
                             fontSize: SizeConfig.responsiveValue(
                               phone: 14.sp,
                               tablet: 18.sp,
@@ -103,7 +103,7 @@ class _ScfhsScoreCalculatorScreenState
                               .read<ScfhsScoreCalculatorCubit>()
                               .gpaController,
                           textAlign: TextAlign.center,
-                          style: interRegular.copyWith(
+                          style: AppTextStyle.style14W500.copyWith(
                             color: AppColors.darkGreyColor,
                           ),
                           decoration: InputDecoration(
@@ -137,7 +137,7 @@ class _ScfhsScoreCalculatorScreenState
                         ),
                         Text(
                           '${'maximum_score'.tr(context)} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.gPA!.maxScore}',
-                          style: interRegular.copyWith(
+                          style: AppTextStyle.style14W500.copyWith(
                             fontSize: SizeConfig.responsiveValue(
                               phone: 14.sp,
                               tablet: 18.sp,
@@ -200,7 +200,7 @@ class _ScfhsScoreCalculatorScreenState
                                 Flexible(
                                   child: Text(
                                     '${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.cVChecklist!.items![index].name}',
-                                    style: interRegular.copyWith(
+                                    style: AppTextStyle.style14W500.copyWith(
                                       fontSize: SizeConfig.responsiveValue(
                                         phone: 14.sp,
                                         tablet: 18.sp,
@@ -211,7 +211,7 @@ class _ScfhsScoreCalculatorScreenState
                                 5.horizontalSpace,
                                 Text(
                                   '(${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.cVChecklist!.items![index].maxScore} ${"points".tr(context)})',
-                                  style: interRegular.copyWith(
+                                  style: AppTextStyle.style14W500.copyWith(
                                     fontSize: SizeConfig.responsiveValue(
                                       phone: 14.sp,
                                       tablet: 18.sp,
@@ -277,7 +277,7 @@ class _ScfhsScoreCalculatorScreenState
                             ),
                             child: Text(
                               'calculate'.tr(context),
-                              style: interBold.copyWith(
+                              style: AppTextStyle.style16Bold.copyWith(
                                 color: AppColors.thirdColor,
                                 fontSize: SizeConfig.responsiveValue(
                                   phone: 14.sp,

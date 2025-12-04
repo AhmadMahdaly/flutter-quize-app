@@ -23,20 +23,11 @@ class ExamScoreCard extends StatelessWidget {
           children: [
             Text(
               '${'exam'.tr(context)} ${exam.examNo}',
-              style: interBold.copyWith(
-                fontSize: SizeConfig.responsiveValue(
-                  phone: 16.sp,
-                  tablet: 20.sp,
-                ),
-              ),
+              style: AppTextStyle.style16Bold,
             ),
             Text(
               '$score ${'marks'.tr(context)}',
-              style: interMedium.copyWith(
-                fontSize: SizeConfig.responsiveValue(
-                  phone: 16.sp,
-                  tablet: 20.sp,
-                ),
+              style: AppTextStyle.style16W700.copyWith(
                 color: AppColors.forthColor,
               ),
             ),
@@ -63,11 +54,7 @@ class ExamScoreCard extends StatelessWidget {
                     padding: EdgeInsets.only(right: 8.w),
                     child: Text(
                       '$score/100',
-                      style: interBold.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 14.sp,
-                          tablet: 18.sp,
-                        ),
+                      style: AppTextStyle.style14W900.copyWith(
                         color: AppColors.forthColor,
                       ),
                     ),

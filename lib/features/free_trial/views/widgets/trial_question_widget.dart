@@ -39,16 +39,7 @@ class TrialQuestionWidget extends StatelessWidget {
                 padding: EdgeInsets.all(4.sp),
                 child: Column(
                   children: [
-                    Text(
-                      question.question,
-
-                      style: interRegular.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 14.sp,
-                          tablet: 20.sp,
-                        ),
-                      ),
-                    ),
+                    Text(question.question, style: AppTextStyle.style14W500),
                     if (question.photo != null && question.photo!.isNotEmpty)
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 5.h),
@@ -139,8 +130,7 @@ class TrialQuestionWidget extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: interRegular.copyWith(
-            fontSize: SizeConfig.responsiveValue(phone: 12.sp, tablet: 18.sp),
+          style: AppTextStyle.style12W500.copyWith(
             fontWeight: hasAnswered && (isSelected || isCorrect)
                 ? FontWeight.bold
                 : FontWeight.normal,

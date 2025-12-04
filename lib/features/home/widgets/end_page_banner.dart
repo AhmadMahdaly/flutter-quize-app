@@ -24,13 +24,16 @@ class EndPageBanner extends StatelessWidget {
           ),
           child: GestureDetector(
             onTap: () {
-              context.pushNamed(Routes.subscriptionScreen ,arguments:
-                  context
-                  .read<MainLayoutCubit>()
-                  .profileModel!
-                  .data!
-                  .offerId ??
-                  -1,);
+              context.pushNamed(
+                AppRoutes.subscriptionScreen,
+                arguments:
+                    context
+                        .read<MainLayoutCubit>()
+                        .profileModel!
+                        .data!
+                        .offerId ??
+                    -1,
+              );
             },
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -40,36 +43,24 @@ class EndPageBanner extends StatelessWidget {
                 ),
                 vertical: 24.h,
               ),
-              child: Text.rich(textAlign: TextAlign.center,
+              child: Text.rich(
+                textAlign: TextAlign.center,
                 TextSpan(
                   children: [
                     TextSpan(
                       text: '${'now'.tr(context)}\n',
-                      style: interBold.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 18.sp,
-                          tablet: 24.sp,
-                        ),
-                      ),
+                      style: AppTextStyle.style18Bold,
                     ),
                     TextSpan(
                       text: "${'flashback_discount'.tr(context)}\n",
-                      style: interMedium.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 15.sp,
-                          tablet: 19.sp,
-                        ),
+                      style: AppTextStyle.style16W700.copyWith(
+                        color: AppColors.secondaryColor,
                       ),
                     ),
                     TextSpan(
                       text: 'discover_now'.tr(context),
-                      style: interRegular.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 16.sp,
-                          tablet: 18.sp,
-                        ),
-                        color: AppColors.offwhiteColor,
+                      style: AppTextStyle.style16Bold.copyWith(
+                        color: AppColors.thirdColor,
                         decoration: TextDecoration.underline,
                         decorationColor: AppColors.offwhiteColor,
                       ),

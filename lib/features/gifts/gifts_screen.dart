@@ -20,11 +20,9 @@ class GiftsScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
         child: BlocBuilder<MainLayoutCubit, MainLayoutState>(
           builder: (context, state) {
-            // نسهل الوصول للمودل
             final giftsModel = context.read<MainLayoutCubit>().giftsModel;
 
             if (giftsModel != null) {
-              // 1. إذا كانت الداتا موجودة اعرض الهدية
               if (giftsModel.data != null) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -48,16 +46,14 @@ class GiftsScreen extends StatelessWidget {
                           20.verticalSpace,
                           Text(
                             'in_your_wallet'.tr(context),
-                            style: interBold.copyWith(
-                              fontSize: 20.sp,
+                            style: AppTextStyle.style20Bold.copyWith(
                               color: AppColors.forthColor,
                             ),
                           ),
                           10.verticalSpace,
                           Text(
                             '${giftsModel.data!.points} ${"points".tr(context)}',
-                            style: interBold.copyWith(
-                              fontSize: 20.sp,
+                            style: AppTextStyle.style20Bold.copyWith(
                               color: AppColors.forthColor,
                             ),
                           ),
@@ -68,15 +64,13 @@ class GiftsScreen extends StatelessWidget {
                                 children: [
                                   TextSpan(
                                     text: '${"promo_code".tr(context)} ',
-                                    style: interBold.copyWith(
-                                      fontSize: 16.sp,
+                                    style: AppTextStyle.style16Bold.copyWith(
                                       color: AppColors.forthColor,
                                     ),
                                   ),
                                   TextSpan(
                                     text: giftsModel.data!.code ?? '',
-                                    style: interRegular.copyWith(
-                                      fontSize: 16.sp,
+                                    style: AppTextStyle.style16Bold.copyWith(
                                       color: AppColors.forthColor,
                                     ),
                                   ),
@@ -101,18 +95,18 @@ class GiftsScreen extends StatelessWidget {
                                     children: [
                                       Text(
                                         'gifts'.tr(context),
-                                        style: interBold.copyWith(
-                                          fontSize: 16.sp,
-                                          color: AppColors.forthColor,
-                                        ),
+                                        style: AppTextStyle.style16Bold
+                                            .copyWith(
+                                              color: AppColors.forthColor,
+                                            ),
                                       ),
                                       5.verticalSpace,
                                       Text(
                                         'sharing_with_friends'.tr(context),
-                                        style: interRegular.copyWith(
-                                          fontSize: 16.sp,
-                                          color: AppColors.primaryColor,
-                                        ),
+                                        style: AppTextStyle.style16W500
+                                            .copyWith(
+                                              color: AppColors.primaryColor,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -124,12 +118,9 @@ class GiftsScreen extends StatelessWidget {
                     ),
                   ],
                 );
-              }
-              // 2. إذا كانت الداتا null (الحالة الحالية)، اعرض الرسالة من الباك إند
-              else {
+              } else {
                 return NoDataWidget(
                   noDataImage: 'assets/images/png/present.png',
-                  // نعرض الرسالة القادمة من السيرفر، وإذا كانت فارغة نعرض النص الافتراضي
                   noDataText: giftsModel.message ?? 'no_data_found'.tr(context),
                 );
               }

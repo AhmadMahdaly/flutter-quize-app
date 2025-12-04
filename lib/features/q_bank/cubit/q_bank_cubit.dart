@@ -56,13 +56,39 @@ class QBankCubit extends Cubit<QBankStates> {
       // -------------------------------------------
 
       // ونرسل أيضاً الشهور كما طلبت
-      apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+      apiMonth = [
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+      ];
     } else {
       apiYear = selectedYearDate.year;
 
       if (isAllMonthsSelected) {
         apiAllMonths = 1;
-        apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        apiMonth = [
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+          '6',
+          '7',
+          '8',
+          '9',
+          '10',
+          '11',
+          '12',
+        ];
       } else {
         apiAllMonths = 0;
         apiMonth = selectedMonths;
@@ -98,7 +124,6 @@ class QBankCubit extends Cubit<QBankStates> {
     if (selectAll) {
       selectedMonths.clear();
     } else {
-      // عند إلغاء "كل الشهور"، نختار الشهر الحالي من الـ picker كافتراضي
       selectedMonths = [selectedYearDate.month];
     }
     updateAvailableQuestionsCount();
@@ -108,7 +133,7 @@ class QBankCubit extends Cubit<QBankStates> {
   void toggleAllYears(bool selectAll) {
     isAllYearsSelected = selectAll;
     if (selectAll) {
-      isAllMonthsSelected = true; // كما كان في الكود الأصلي
+      isAllMonthsSelected = true;
       selectedMonths.clear();
     }
     updateAvailableQuestionsCount();
@@ -210,14 +235,14 @@ class QBankCubit extends Cubit<QBankStates> {
   }
 
   void toggleMonthSelection(int month) {
-    if (isAllMonthsSelected) return; // لا تفعل شيئاً إذا كان "كل الشهور" مفعل
+    if (isAllMonthsSelected) return;
 
     if (selectedMonths.contains(month)) {
       selectedMonths.remove(month);
     } else {
       selectedMonths.add(month);
     }
-    selectedMonths = selectedMonths.toSet().toList(); // منع التكرار
+    selectedMonths = selectedMonths.toSet().toList();
     updateAvailableQuestionsCount();
     emit(SelectDateState());
   }
@@ -243,18 +268,41 @@ class QBankCubit extends Cubit<QBankStates> {
     if (isAllYearsSelected) {
       apiYear = '2024, 2025';
 
-      // --- التعديل الأول: جعل allMonths يساوي 1 ---
       apiAllMonths = 1;
-      // -------------------------------------------
 
-      // ونرسل أيضاً الشهور كما طلبت
-      apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+      apiMonth = [
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+      ];
     } else {
       apiYear = selectedYearDate.year;
 
       if (isAllMonthsSelected) {
         apiAllMonths = 1;
-        apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        apiMonth = [
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+          '6',
+          '7',
+          '8',
+          '9',
+          '10',
+          '11',
+          '12',
+        ];
       } else {
         apiAllMonths = 0;
         apiMonth = selectedMonths;

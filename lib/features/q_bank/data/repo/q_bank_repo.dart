@@ -25,24 +25,20 @@ class QBankRepository {
     required int unansweredOnly,
     required int limit,
   }) async {
-    // نقوم ببناء الداتا بشكل مباشر
     final Map<String, dynamic> data = {
       'year': year,
       'subcategory_id': subcategoryIds,
       'unanswered_only': unansweredOnly,
       'limit': limit,
-      'month': month, // نرسل الشهور دائماً
-      'allMonths': allMonths, // نرسل allMonths دائماً (سواء كان 0 أو 1)
+      'month': month,
+      'allMonths': allMonths,
     };
-
-    // --- تم حذف جملة if (year == '2024, 2025') التي كانت تمنع إرسال allMonths ---
 
     try {
       final response = await _dioFactory.post(
         endPoint: EndPoints.startQBank,
         data: data,
       );
-      // ... بقية كود الـ Response كما هو ...
       if (response!.statusCode == 200) {
         if (response.data is Map<String, dynamic>) {
           return ApiResult.success(QBankModel.fromJson(response.data));
@@ -78,7 +74,7 @@ class QBankRepository {
         'subcategory_id': subcategoryIds,
         'unanswered_only': unansweredOnly,
         'month': month,
-        'allMonths': allMonths, // نرسلها دائماً
+        'allMonths': allMonths,
       };
 
       final response = await _dioFactory.post(

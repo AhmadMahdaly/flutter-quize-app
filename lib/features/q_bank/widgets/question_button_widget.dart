@@ -9,24 +9,23 @@ class QuestionButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 120.w,
-        height: 56.h,
-        decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(40.r),
-        ),
-        alignment: Alignment.center,
-        child:FittedBox(
-    child:  Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
+      width: 120.w,
+      height: 56.h,
+      decoration: BoxDecoration(
+        color: AppColors.primaryColor,
+        borderRadius: BorderRadius.circular(40.r),
+      ),
+      alignment: Alignment.center,
+      child: FittedBox(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
             text,
-            style: interBold.copyWith(
+            style: AppTextStyle.style14Bold.copyWith(
               color: AppColors.thirdColor,
-              fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 16.sp),
             ),
           ),
-    ),
+        ),
       ),
     );
   }

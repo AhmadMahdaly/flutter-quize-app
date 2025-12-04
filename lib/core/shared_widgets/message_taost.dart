@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smle/core/functions/responsive_config.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 ToastFuture messageToast(BuildContext context, String message) {
@@ -23,10 +23,13 @@ ToastFuture messageToast(BuildContext context, String message) {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
               child: Center(
-                child: Text(message,
-                    textAlign: TextAlign.center,
-                    style: interRegular.copyWith(
-                        color: Theme.of(context).cardColor)),
+                child: Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.style14W500.copyWith(
+                    color: Theme.of(context).cardColor,
+                  ),
+                ),
               ),
             ),
           ],

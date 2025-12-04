@@ -16,7 +16,7 @@ class PlayListWidget extends StatelessWidget {
     required this.questionCount,
     required this.playListId,
     required this.playListNameController,
-    this.onTap, // callback للنقر
+    this.onTap,
   });
   final String playListName, questionCount, playListId;
   final TextEditingController playListNameController;
@@ -26,7 +26,7 @@ class PlayListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<PlayListCubit>();
     return GestureDetector(
-      onTap: onTap ?? () {}, // استخدم الـ callback
+      onTap: onTap ?? () {}, // استخدم الـ
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -41,18 +41,13 @@ class PlayListWidget extends StatelessWidget {
               children: [
                 Text(
                   playListName,
-                  style: interMedium.copyWith(
-                    fontSize: SizeConfig.responsiveValue(
-                      phone: 16.sp,
-                      tablet: 20.sp,
-                    ),
+                  style: AppTextStyle.style16W700.copyWith(
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Text(
                   '$questionCount ${'question'.tr(context)}',
-                  style: interRegular.copyWith(
-                    fontSize: 14.sp,
+                  style: AppTextStyle.style14W500.copyWith(
                     color: AppColors.darkGreyColor,
                   ),
                 ),
@@ -93,17 +88,15 @@ class PlayListWidget extends StatelessWidget {
                   children: [
                     Icon(
                       CupertinoIcons.delete_simple,
-                      size: SizeConfig.responsiveValue(phone: 20.r, tablet: 16.r),
+                      size: SizeConfig.responsiveValue(
+                        phone: 20.r,
+                        tablet: 16.r,
+                      ),
                     ),
                     6.horizontalSpace,
                     Text(
                       'delete_playlist'.tr(context),
-                      style: interRegular.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 14.sp,
-                          tablet: 16.sp,
-                        ),
-                      ),
+                      style: AppTextStyle.style14W500,
                     ),
                   ],
                 ),
@@ -114,18 +107,13 @@ class PlayListWidget extends StatelessWidget {
                   children: [
                     Icon(
                       CupertinoIcons.pencil,
-                      size: SizeConfig.responsiveValue(phone: 20.r, tablet: 16.r),
-                    ),
-                    6.horizontalSpace,
-                    Text(
-                      'edit'.tr(context),
-                      style: interRegular.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 14.sp,
-                          tablet: 16.sp,
-                        ),
+                      size: SizeConfig.responsiveValue(
+                        phone: 20.r,
+                        tablet: 16.r,
                       ),
                     ),
+                    6.horizontalSpace,
+                    Text('edit'.tr(context), style: AppTextStyle.style14W500),
                   ],
                 ),
               ),

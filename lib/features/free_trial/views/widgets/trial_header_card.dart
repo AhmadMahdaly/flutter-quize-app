@@ -47,11 +47,7 @@ class TrialHeaderCard extends StatelessWidget {
                 children: [
                   Text(
                     'Question: $qNo / $totalQuestions',
-                    style: interRegular.copyWith(
-                      fontSize: SizeConfig.responsiveValue(
-                        phone: 14.sp,
-                        tablet: 18.sp,
-                      ),
+                    style: AppTextStyle.style14W500.copyWith(
                       color: AppColors.thirdColor,
                     ),
                   ),
@@ -76,11 +72,7 @@ class TrialHeaderCard extends StatelessWidget {
                       2.verticalSpace,
                       Text(
                         'Progress ${(progressValue * 100).toInt()}%',
-                        style: interRegular.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 18.sp,
-                          ),
+                        style: AppTextStyle.style14W500.copyWith(
                           color: AppColors.thirdColor,
                         ),
                       ),
@@ -98,11 +90,7 @@ class TrialHeaderCard extends StatelessWidget {
                       4.verticalSpace,
                       Text(
                         'Test time remaining',
-                        style: interRegular.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 14.sp,
-                            tablet: 18.sp,
-                          ),
+                        style: AppTextStyle.style14W500.copyWith(
                           color: AppColors.thirdColor,
                         ),
                       ),
@@ -153,11 +141,7 @@ class TrialHeaderCard extends StatelessWidget {
                       ),
                       child: Text(
                         'Finish Exam',
-                        style: interBold.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 16.sp,
-                            tablet: 20.sp,
-                          ),
+                        style: AppTextStyle.style16Bold.copyWith(
                           color: AppColors.forthColor,
                         ),
                       ),
@@ -200,11 +184,7 @@ class TrialHeaderCard extends StatelessWidget {
               //     ),
               Text(
                 'Test your knowledge with Smle Gate app',
-                style: interRegular.copyWith(
-                  fontSize: SizeConfig.responsiveValue(
-                    phone: 14.sp,
-                    tablet: 18.sp,
-                  ),
+                style: AppTextStyle.style14W500.copyWith(
                   color: AppColors.thirdColor,
                 ),
               ),

@@ -51,7 +51,7 @@ class CalculateResultDialog extends StatelessWidget {
                 60.verticalSpace,
                 Text(
                   'your_score'.tr(context),
-                  style: interMedium.copyWith(
+                  style: AppTextStyle.style14W700.copyWith(
                     fontSize: SizeConfig.responsiveValue(
                       phone: 16.sp,
                       tablet: 20.sp,
@@ -62,7 +62,7 @@ class CalculateResultDialog extends StatelessWidget {
                 20.verticalSpace,
                 Text(
                   score,
-                  style: interBold.copyWith(
+                  style: AppTextStyle.style16Bold.copyWith(
                     fontSize: SizeConfig.responsiveValue(
                       phone: 20.sp,
                       tablet: 24.sp,
@@ -78,7 +78,7 @@ class CalculateResultDialog extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: 'more_info_calculate'.tr(context),
-                          style: interRegular.copyWith(
+                          style: AppTextStyle.style14W500.copyWith(
                             fontSize: SizeConfig.responsiveValue(
                               phone: 14.sp,
                               tablet: 18.sp,
@@ -87,7 +87,7 @@ class CalculateResultDialog extends StatelessWidget {
                         ),
                         TextSpan(
                           text: 'here'.tr(context),
-                          style: interRegular.copyWith(
+                          style: AppTextStyle.style14W500.copyWith(
                             color: AppColors.blueColor,
                             fontSize: SizeConfig.responsiveValue(
                               phone: 14.sp,

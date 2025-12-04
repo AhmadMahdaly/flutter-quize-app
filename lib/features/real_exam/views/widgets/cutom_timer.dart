@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
@@ -77,10 +76,7 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
   Widget build(BuildContext context) {
     return Text(
       _formatTime(_timeLeft),
-      style: interBold.copyWith(
-        fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
-        color: AppColors.thirdColor,
-      ),
+      style: AppTextStyle.style14Bold.copyWith(color: AppColors.thirdColor),
     );
   }
 }

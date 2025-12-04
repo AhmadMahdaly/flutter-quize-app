@@ -23,9 +23,8 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
         state.status == ExamStatus.onBreak) {
       return;
     }
-
-    emit(state.copyWith(status: ExamStatus.loading));
     showLoading();
+    emit(state.copyWith(status: ExamStatus.loading));
 
     final result = await repo.startRealExam();
     hideLoading();
@@ -167,17 +166,19 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
 
   void finishSection1AndStartBreak() {
     if (isClosed) return;
+    showLoading();
     emit(
       state.copyWith(
         status: ExamStatus.onBreak,
         breakEndTime: DateTime.now().add(const Duration(minutes: 30)),
       ),
     );
+    hideLoading();
   }
 
   void startNextSection() {
     if (isClosed || state.examModel == null) return;
-
+    showLoading();
     final newEndTimes = Map<int, String>.from(state.sectionEndTimes);
     if (!newEndTimes.containsKey(2)) {
       final endTime = DateTime.now().add(const Duration(minutes: 120));
@@ -194,6 +195,7 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
         noteStatuses: {},
       ),
     );
+    hideLoading();
     getQuestion(state.examModel!.examId!, 1, 2);
   }
 

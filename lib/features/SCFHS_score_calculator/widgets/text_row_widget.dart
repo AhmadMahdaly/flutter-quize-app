@@ -18,13 +18,13 @@ class TextRowWidget extends StatelessWidget {
       children: [
         Text(
           firstText,
-          style: interMedium.copyWith(
+          style: AppTextStyle.style14W700.copyWith(
             fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
           ),
         ),
         Text(
           secondText,
-          style: interMedium.copyWith(
+          style: AppTextStyle.style14W700.copyWith(
             fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
           ),
         ),

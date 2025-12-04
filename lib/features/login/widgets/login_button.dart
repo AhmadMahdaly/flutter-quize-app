@@ -34,9 +34,8 @@ class LoginButton extends StatelessWidget {
             Platform.isAndroid
                 ? 'continue_google'.tr(context)
                 : 'continue_apple'.tr(context),
-            style: interRegular.copyWith(
+            style: AppTextStyle.style14W500.copyWith(
               color: AppColors.forthColor,
-              fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
             ),
           ),
         ],

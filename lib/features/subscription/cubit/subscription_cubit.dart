@@ -151,7 +151,6 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       barrierDismissible: false,
       builder: (_) => WillPopScope(
         onWillPop: () async {
-          // عند الضغط على زر الرجوع
           if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
           return true;
         },

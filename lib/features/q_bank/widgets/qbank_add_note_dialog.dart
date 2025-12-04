@@ -53,21 +53,13 @@ class _QBankAddNoteDialogState extends State<QBankAddNoteDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'Add Note to Question',
-                  style: interBold.copyWith(fontSize: 16.sp),
-                ),
+                Text('Add Note to Question', style: AppTextStyle.style16Bold),
                 12.verticalSpace,
                 CustomPrimaryTextfield(
                   maxLines: 7,
                   controller: controller,
                   text: 'Type your note here...',
-                  style: interRegular.copyWith(
-                    fontSize: SizeConfig.responsiveValue(
-                      phone: 14.sp,
-                      tablet: 18.sp,
-                    ),
-                  ),
+                  style: AppTextStyle.style14W500,
                 ),
                 12.verticalSpace,
                 Row(
@@ -101,8 +93,7 @@ class _QBankAddNoteDialogState extends State<QBankAddNoteDialog> {
                               )
                             : Text(
                                 'Send note',
-                                style: interBold.copyWith(
-                                  fontSize: 14.sp,
+                                style: AppTextStyle.style14Bold.copyWith(
                                   color: AppColors.offwhiteColor,
                                 ),
                               ),
@@ -122,8 +113,7 @@ class _QBankAddNoteDialogState extends State<QBankAddNoteDialog> {
                         ),
                         child: Text(
                           'Cancel',
-                          style: interBold.copyWith(
-                            fontSize: 14.sp,
+                          style: AppTextStyle.style14Bold.copyWith(
                             color: AppColors.offwhiteColor,
                           ),
                         ),

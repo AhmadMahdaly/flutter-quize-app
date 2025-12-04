@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
         body: BlocListener<LoginCubit, LoginStates>(
           listener: (context, state) {
             if (state is LogInSuccessState) {
-              context.pushReplacementNamed(Routes.mainLayoutScreen);
+              context.pushReplacementNamed(AppRoutes.mainLayoutScreen);
             } else if (state is LogInFailedState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -66,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                       Text(
                         textAlign: TextAlign.center,
                         'welcome_to'.tr(context),
-                        style: interExtraBold.copyWith(
+                        style: AppTextStyle.style20Bold.copyWith(
                           fontSize: SizeConfig.responsiveValue(
                             phone: 24.sp,
                             tablet: 28.sp,
@@ -76,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                       Text(
                         textAlign: TextAlign.center,
                         'smle_gate'.tr(context),
-                        style: interExtraBold.copyWith(
+                        style: AppTextStyle.style20Bold.copyWith(
                           color: AppColors.secondaryColor,
                           fontSize: SizeConfig.responsiveValue(
                             phone: 34.sp,
@@ -87,13 +87,7 @@ class LoginScreen extends StatelessWidget {
 
                       Text(
                         'trusted_partner'.tr(context),
-                        style: interBold.copyWith(
-                          fontSize: SizeConfig.responsiveValue(
-                            phone: 18.sp,
-                            tablet: 20.sp,
-                          ),
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: AppTextStyle.style18W500,
                         textAlign: TextAlign.center,
                       ),
                       // Text(
@@ -156,45 +150,26 @@ class LoginScreen extends StatelessWidget {
                           children: [
                             Text(
                               'by_the'.tr(context),
-                              style: interRegular.copyWith(
-                                fontSize: SizeConfig.responsiveValue(
-                                  phone: 14.sp,
-                                  tablet: 18.sp,
-                                ),
-                              ),
+                              style: AppTextStyle.style14W500,
                             ),
                             Text(
                               '${'register'.tr(context)} ',
-                              style: interRegular.copyWith(
-                                fontSize: SizeConfig.responsiveValue(
-                                  phone: 14.sp,
-                                  tablet: 18.sp,
-                                ),
-                              ),
+                              style: AppTextStyle.style14W500,
                             ),
 
                             Text(
                               'confirm_agreement'.tr(context),
 
-                              style: interRegular.copyWith(
-                                fontSize: SizeConfig.responsiveValue(
-                                  phone: 12.sp,
-                                  tablet: 18.sp,
-                                ),
-                              ),
+                              style: AppTextStyle.style12W500,
                             ),
                             InkWell(
                               onTap: () =>
-                                  context.pushNamed(Routes.privacyPolicyScreen),
+                                  context.pushNamed(AppRoutes.privacyPolicyScreen),
                               child: Text(
                                 'privacy_policy'.tr(context),
 
-                                style: interRegular.copyWith(
+                                style: AppTextStyle.style12W500.copyWith(
                                   color: AppColors.secondaryColor,
-                                  fontSize: SizeConfig.responsiveValue(
-                                    phone: 12.sp,
-                                    tablet: 18.sp,
-                                  ),
                                 ),
                               ),
                             ),

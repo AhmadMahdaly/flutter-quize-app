@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
@@ -34,7 +33,7 @@ class _AddNoteDialogWidgetState extends State<AddNoteDialogWidget> {
         Text(
           textAlign: TextAlign.center,
           'Add Note to Question',
-          style: interBold.copyWith(fontSize: 20.sp),
+          style: AppTextStyle.style16Bold.copyWith(fontSize: 20.sp),
         ),
         6.verticalSpace,
         CustomPrimaryTextfield(
@@ -60,8 +59,7 @@ class _AddNoteDialogWidgetState extends State<AddNoteDialogWidget> {
                 ),
                 child: Text(
                   'Save note',
-                  style: interBold.copyWith(
-                    fontSize: 16.sp,
+                  style: AppTextStyle.style16Bold.copyWith(
                     color: AppColors.offwhiteColor,
                   ),
                 ),
@@ -79,8 +77,7 @@ class _AddNoteDialogWidgetState extends State<AddNoteDialogWidget> {
                 ),
                 child: Text(
                   'Cancel',
-                  style: interBold.copyWith(
-                    fontSize: 16.sp,
+                  style: AppTextStyle.style16Bold.copyWith(
                     color: AppColors.offwhiteColor,
                   ),
                 ),

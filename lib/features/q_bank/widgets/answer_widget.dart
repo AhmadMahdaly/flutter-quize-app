@@ -27,9 +27,8 @@ class AnswerWidget extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         answerText,
-        style: interBold.copyWith(
+        style: AppTextStyle.style14Bold.copyWith(
           color: isSelected ? AppColors.secondaryColor : AppColors.thirdColor,
-          fontSize: 14.sp,
         ),
       ),
     );
@@ -86,7 +85,7 @@ class AnsweredWidget extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         answerText,
-        style: interBold.copyWith(color: getTextColor(), fontSize: 14.sp),
+        style: AppTextStyle.style14Bold.copyWith(color: getTextColor()),
       ),
     );
   }

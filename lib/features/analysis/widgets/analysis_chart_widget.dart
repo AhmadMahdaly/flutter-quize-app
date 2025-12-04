@@ -23,7 +23,7 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
           DataColumn(
             label: Text(
               'Category',
-              style: interMedium.copyWith(
+              style: AppTextStyle.style14W700.copyWith(
                 color: AppColors.forthColor,
                 fontSize: SizeConfig.responsiveValue(
                   phone: 14.sp,
@@ -35,7 +35,7 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
           DataColumn(
             label: Text(
               'Your %',
-              style: interMedium.copyWith(
+              style: AppTextStyle.style14W700.copyWith(
                 color: AppColors.forthColor,
                 fontSize: SizeConfig.responsiveValue(
                   phone: 14.sp,
@@ -48,7 +48,7 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
           DataColumn(
             label: Text(
               'Average %',
-              style: interMedium.copyWith(
+              style: AppTextStyle.style14W700.copyWith(
                 color: AppColors.forthColor,
                 fontSize: SizeConfig.responsiveValue(
                   phone: 14.sp,
@@ -65,7 +65,7 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
               DataCell(
                 Text(
                   item.category!,
-                  style: interRegular.copyWith(
+                  style: AppTextStyle.style14W500.copyWith(
                     color: AppColors.forthColor,
                     fontSize: SizeConfig.responsiveValue(
                       phone: 12.sp,
@@ -77,7 +77,7 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
               DataCell(
                 Text(
                   '${item.examPercentage!.toStringAsFixed(1)}%',
-                  style: interRegular.copyWith(
+                  style: AppTextStyle.style14W500.copyWith(
                     color: AppColors.forthColor,
                     fontSize: SizeConfig.responsiveValue(
                       phone: 12.sp,
@@ -89,7 +89,7 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
               DataCell(
                 Text(
                   '${item.averagePercentage!.toStringAsFixed(1)}%',
-                  style: interRegular.copyWith(
+                  style: AppTextStyle.style14W500.copyWith(
                     color: AppColors.forthColor,
                     fontSize: SizeConfig.responsiveValue(
                       phone: 12.sp,
@@ -187,7 +187,7 @@ class PerformanceChart extends StatelessWidget {
                           label!.length > 14
                               ? '${label.substring(0, 14)}...'
                               : label,
-                          style: interBold.copyWith(
+                          style: AppTextStyle.style16Bold.copyWith(
                             color: AppColors.forthColor,
                             fontSize: SizeConfig.responsiveValue(
                               phone: 10.sp,

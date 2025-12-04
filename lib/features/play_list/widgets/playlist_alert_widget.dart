@@ -44,7 +44,7 @@ class PlaylistAlertWidget extends StatelessWidget {
         backgroundColor: Colors.white,
         title: Text(
           title,
-          style: interBold.copyWith(
+          style: AppTextStyle.style18Bold.copyWith(
             fontSize: SizeConfig.responsiveValue(phone: 18.sp, tablet: 22.sp),
           ),
         ),
@@ -52,12 +52,17 @@ class PlaylistAlertWidget extends StatelessWidget {
           width: SizeConfig.screenWidth,
           child: TextFormField(
             controller: playListNameController,
-            style: interRegular.copyWith(color: AppColors.darkGreyColor),
+            style: AppTextStyle.style14W500.copyWith(
+              color: AppColors.darkGreyColor,
+            ),
             decoration: InputDecoration(
-              fillColor: AppColors.greyColor, // Background color
-              filled: true, // Enables the background color
+              fillColor: AppColors.greyColor,
+              filled: true,
               hintText: 'title'.tr(context),
-              hintStyle: TextStyle(color:AppColors.iconColorGray, fontSize: 12.sp),
+              hintStyle: TextStyle(
+                color: AppColors.iconColorGray,
+                fontSize: 12.sp,
+              ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(40.r)),
                 borderSide: const BorderSide(color: AppColors.greyColor),
@@ -78,17 +83,11 @@ class PlaylistAlertWidget extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'cansel'.tr(context),
-              style: interRegular.copyWith(
-                fontSize: SizeConfig.responsiveValue(
-                  phone: 14.sp,
-                  tablet: 16.sp,
-                ),
-              ),
+              style: AppTextStyle.style14W500.copyWith(),
             ),
           ),
           TextButton(
             onPressed: () {
-              // إصلاح منطق if/else
               if (isEdit) {
                 context.read<PlayListCubit>().editPlayList(
                   playListId!,
@@ -100,17 +99,10 @@ class PlaylistAlertWidget extends StatelessWidget {
                   questionId,
                 );
               }
-              // تم حذف هذا السطر لأنه سيتم التعامل مع الإغلاق من خلال BlocListener
-              // Navigator.pop(context);
             },
             child: Text(
               isEdit ? 'edit'.tr(context) : 'create'.tr(context),
-              style: interBold.copyWith(
-                fontSize: SizeConfig.responsiveValue(
-                  phone: 14.sp,
-                  tablet: 16.sp,
-                ),
-              ),
+              style: AppTextStyle.style14Bold,
             ),
           ),
         ],

@@ -15,15 +15,14 @@ class SkipButton extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
       child: GestureDetector(
         onTap: () {
-          context.pushReplacementNamed(Routes.loginScreen);
+          context.pushReplacementNamed(AppRoutes.loginScreen);
         },
         child: Align(
           alignment: Alignment.topRight,
           child: Text(
             'skip'.tr(context),
-            style: interRegular.copyWith(
+            style: AppTextStyle.style12W500.copyWith(
               color: AppColors.secondaryColor,
-              fontSize: SizeConfig.responsiveValue(phone: 12.sp, tablet: 16.sp),
             ),
           ),
         ),

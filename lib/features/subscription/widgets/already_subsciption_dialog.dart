@@ -49,7 +49,7 @@ class AlreadySubscriptionDialog extends StatelessWidget {
                 60.verticalSpace,
                 Text(
                   message,
-                  style: interExtraBold.copyWith(
+                  style: AppTextStyle.style16Bold.copyWith(
                     fontSize: 18.sp,
                     color: AppColors.secondaryColor, // Text color
                   ),

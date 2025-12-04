@@ -86,8 +86,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
         ),
         child: Text(
           text,
-          style: interRegular.copyWith(
-            fontSize: SizeConfig.responsiveValue(phone: 12.sp, tablet: 18.sp),
+          style: AppTextStyle.style12W500.copyWith(
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             color: isSelected ? AppColors.offwhiteColor : AppColors.forthColor,
           ),
@@ -137,11 +136,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                           children: [
                             Text(
                               q.questionText ?? '',
-                              style: interMedium.copyWith(
-                                fontSize: SizeConfig.responsiveValue(
-                                  phone: 14.sp,
-                                  tablet: 20.sp,
-                                ),
+                              style: AppTextStyle.style14W700.copyWith(
                                 color: AppColors.forthColor,
                               ),
                             ),

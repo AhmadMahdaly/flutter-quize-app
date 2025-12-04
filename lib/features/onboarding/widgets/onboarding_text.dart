@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -15,26 +14,19 @@ class OnBoardingText extends StatelessWidget {
       builder: (context, state) {
         return Align(
           alignment: Alignment.topLeft,
-          child: Text(textAlign: TextAlign.center,
+          child: Text(
+            textAlign: TextAlign.center,
             context.read<GlobalCubit>().onBoardingIndex == 0
                 ? 'onBoarding1'.tr(context)
                 : context.read<GlobalCubit>().onBoardingIndex == 1
                 ? 'onBoarding2'.tr(context)
                 : 'onBoarding3'.tr(context),
             style: context.read<GlobalCubit>().onBoardingIndex != 2
-                ? interBold.copyWith(
+                ? AppTextStyle.style20Bold.copyWith(
                     color: AppColors.secondaryColor,
-                    fontSize: SizeConfig.responsiveValue(
-                      phone: 20.sp,
-                      tablet: 24.sp,
-                    ),
                   )
-                : interRegular.copyWith(
+                : AppTextStyle.style16W500.copyWith(
                     color: AppColors.secondaryColor,
-                    fontSize: SizeConfig.responsiveValue(
-                      phone: 16.sp,
-                      tablet: 20.sp,
-                    ),
                   ),
           ),
         );

@@ -37,12 +37,7 @@ class CompactCheckbox extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: interRegular.copyWith(
-                fontSize: SizeConfig.responsiveValue(
-                  phone: 14.sp,
-                  tablet: 18.sp,
-                ),
-              ),
+              style: AppTextStyle.style14W500.copyWith(),
               overflow: TextOverflow.ellipsis,
             ),
           ),

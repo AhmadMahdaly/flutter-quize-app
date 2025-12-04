@@ -23,7 +23,8 @@ class OnBoardingScreen extends StatelessWidget {
     return BlocBuilder<GlobalCubit, GlobalStates>(
       builder: (context, state) {
         return SafeArea(
-          child: Scaffold(backgroundColor: AppColors.primaryColor,
+          child: Scaffold(
+            backgroundColor: AppColors.primaryColor,
             body: PageView.builder(
               itemCount: 3,
               controller: _pageController,
@@ -33,7 +34,8 @@ class OnBoardingScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        image: DecorationImage(filterQuality :FilterQuality.high,
+                        image: DecorationImage(
+                          filterQuality: FilterQuality.high,
                           image: AssetImage(
                             context.read<GlobalCubit>().onBoardingIndex == 0
                                 ? Assets.onBoarding1
@@ -59,12 +61,8 @@ class OnBoardingScreen extends StatelessWidget {
                                 alignment: Alignment.topLeft,
                                 child: Text(
                                   'sign_up'.tr(context),
-                                  style: interBold.copyWith(
+                                  style: AppTextStyle.style20Bold.copyWith(
                                     color: AppColors.secondaryColor,
-                                    fontSize: SizeConfig.responsiveValue(
-                                      phone: 20.sp,
-                                      tablet: 24.sp,
-                                    ),
                                   ),
                                 ),
                               ),
@@ -91,7 +89,7 @@ class OnBoardingScreen extends StatelessWidget {
                                     true,
                                   );
                                   context.pushReplacementNamed(
-                                    Routes.loginScreen,
+                                    AppRoutes.loginScreen,
                                   );
                                 } else if (context
                                         .read<GlobalCubit>()

@@ -47,8 +47,8 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           onGenerateRoute: AppRouter().generateRoute,
           initialRoute: CacheHelper.getData(key: CacheKeys.isFirstOpen) == true
-              ? Routes.mainLayoutScreen
-              : Routes.splashScreen,
+              ? AppRoutes.mainLayoutScreen
+              : AppRoutes.splashScreen,
           theme: lightTheme,
           navigatorKey: navigatorKey,
           darkTheme: lightTheme,

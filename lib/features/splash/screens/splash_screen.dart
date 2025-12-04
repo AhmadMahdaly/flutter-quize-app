@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(milliseconds: 4000), () {
+    Future.delayed(const Duration(milliseconds: 2500), () {
       _route();
     });
   }
@@ -35,25 +35,25 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _route() async {
-    // context.pushReplacementNamed(Routes.mainLayoutScreen);
+    context.pushReplacementNamed(AppRoutes.mainLayoutScreen);
 
     /// Without Onboard
-    if (await isLoggedIn()) {
-      context.pushReplacementNamed(Routes.mainLayoutScreen);
-    } else {
-      context.pushReplacementNamed(Routes.loginScreen);
-    }
+    // if (await isLoggedIn()) {
+    //   context.pushReplacementNamed(AppRoutes.mainLayoutScreen);
+    // } else {
+    //   context.pushReplacementNamed(AppRoutes.loginScreen);
+    // }
 
     /// With Onboard
     // final isOnboardingComplete =
     //     await CacheHelper.getData(key: firstTimeRun) as bool? ?? false;
     // if (await isLoggedIn()) {
-    //   context.pushReplacementNamed(Routes.mainLayoutScreen);
+    //   context.pushReplacementNamed(AppRoutes.mainLayoutScreen);
     // } else {
     // if (!isOnboardingComplete) {
-    //   context.pushReplacementNamed(Routes.onBoardingScreen);
+    //   context.pushReplacementNamed(AppRoutes.onBoardingScreen);
     // } else {
-    // context.pushReplacementNamed(Routes.loginScreen);
+    // context.pushReplacementNamed(AppRoutes.loginScreen);
     // }
     // }
   }
@@ -68,11 +68,11 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Image.asset('assets/images/png/logo-animation.gif'),
             CustomFadeInUp(
-              duration: 1500,
+              duration: 1000,
               child: Text(
                 textAlign: TextAlign.center,
                 'SMLE Gate',
-                style: interExtraBold.copyWith(
+                style: AppTextStyle.style16Bold.copyWith(
                   fontWeight: FontWeight.bold,
                   color: AppColors.offwhiteColor,
                   fontSize: SizeConfig.responsiveValue(

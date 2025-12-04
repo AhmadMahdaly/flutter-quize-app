@@ -15,51 +15,44 @@ class TopBannerWidget extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(100.r)),
       ),
       child: Padding(
-    padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
-    child:Stack(
-      clipBehavior: Clip.none,  children: [
-           SizedBox(
+        padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            SizedBox(
               width: SizeConfig.screenWidth / 2,
-              child:   FittedBox(
-                child:Text.rich(
-                maxLines:2,
-                TextSpan(
-                  children: [
-
-                    TextSpan(
-                      text: '+10,000 ',
-                      style: interBold.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 15.sp,
-                          tablet: 19.sp,
+              child: FittedBox(
+                child: Text.rich(
+                  maxLines: 2,
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '+10,000 ',
+                        style: AppTextStyle.style16Bold.copyWith(
+                          color: AppColors.secondaryColor,
                         ),
-                        color: AppColors.secondaryColor,
                       ),
-                    ),
-                    TextSpan(
-                      text: 'questions across\nall medical specialties',
-                      style: interBold.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 15.sp,
-                          tablet: 19.sp,
+                      TextSpan(
+                        text: 'Questions across\nall medical specialties',
+                        style: AppTextStyle.style16Bold.copyWith(
+                          color: AppColors.thirdColor,
                         ),
-                        color: AppColors.thirdColor,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),),
-        Positioned(
-          bottom: -5,
-          right: -20,
-          child:
-          Image.asset(
-              'assets/images/png/medical-check.png',
-              height: SizeConfig.responsiveValue(phone: 90.h, tablet: 70.h),
             ),
-        )
-     ],),
+            Positioned(
+              bottom: -5,
+              right: -20,
+              child: Image.asset(
+                'assets/images/png/medical-check.png',
+                height: SizeConfig.responsiveValue(phone: 90.h, tablet: 70.h),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
