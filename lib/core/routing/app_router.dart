@@ -6,6 +6,7 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/features/SCFHS_score_calculator/scfhs_score_calculator_screen.dart';
 import 'package:smle/features/analysis/analysis_screen.dart';
 import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
+import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/exams_history_screen.dart';
 import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
@@ -34,7 +35,6 @@ import 'package:smle/features/revision/revision_screen.dart';
 import 'package:smle/features/revision/subCategories_screen.dart';
 import 'package:smle/features/scfhs_score_calculator/cubit/scfhs_score_calculator_cubit_cubit.dart';
 import 'package:smle/features/splash/screens/splash_screen.dart';
-import 'package:smle/features/subscription/apple_pay_screen.dart';
 import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
 import 'package:smle/features/subscription/subscription_screen.dart';
 import 'package:smle/features/support_privacy_policy/cubit/privacy_policy_cubit.dart';
@@ -107,7 +107,10 @@ class AppRouter {
       case AppRoutes.subscriptionScreen:
         final offerId = settings.arguments as int;
         return transition(
-          screen: SubscriptionScreen(offerId: offerId),
+          screen: BlocProvider.value(
+            value: getIt<CheckSubscriptionCubit>()..loadSubscription(),
+            child: SubscriptionScreen(offerId: offerId),
+          ),
           cubit: SubscriptionCubit(getIt(), getIt())..getPackages(),
         );
       // case Routes.paymentScreen:
@@ -117,12 +120,12 @@ class AppRouter {
       //     cubit: SubscriptionCubit(getIt()),
       //   );
 
-      case AppRoutes.applePayScreen:
-        final totalPayment = settings.arguments as String;
-        return transition(
-          screen: ApplePayScreen(total: totalPayment),
-          cubit: SubscriptionCubit(getIt(), getIt()),
-        );
+      // case AppRoutes.applePayScreen:
+      //   final totalPayment = settings.arguments as String;
+      //   return transition(
+      //     screen: ApplePayScreen(total: totalPayment),
+      //     cubit: SubscriptionCubit(getIt(), getIt()),
+      //   );
       case AppRoutes.analysisScreen:
         final isExam = settings.arguments as bool;
         return transition(

@@ -20,10 +20,12 @@ class MainLayoutScreen extends StatelessWidget {
             body: AppRouter().screen[mainLayoutInitialScreenIndex],
             bottomNavigationBar: Container(
               height: SizeConfig.responsiveValue(phone: 80.h, tablet: 60.h),
-              margin: EdgeInsets.symmetric(horizontal: 0.w),
-              clipBehavior: Clip.hardEdge,
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
+              width: double.infinity,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(60.r)),
+                borderRadius: BorderRadius.all(Radius.circular(80.r)),
               ),
               child: BottomNavigationBar(
                 elevation: 0,

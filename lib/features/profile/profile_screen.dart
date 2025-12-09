@@ -114,9 +114,9 @@ class ProfileScreen extends StatelessWidget {
                                       imagePath: Icons
                                           .playlist_add_check_circle_outlined,
                                       onPressed: !isSubscribed
-                                          ? () => subscripeDialog(context)
-                                          : () {
-                                              context.pushNamed(
+                                          ? () async => subscripeDialog(context)
+                                          : () async {
+                                              await context.pushNamed(
                                                 AppRoutes.playListScreen,
                                                 arguments: {
                                                   'questionId': 0,
@@ -128,8 +128,8 @@ class ProfileScreen extends StatelessWidget {
                                     ProfileButtonWidget(
                                       text: 'SCFHS Score Calculator',
                                       imagePath: Icons.calculate_outlined,
-                                      onPressed: () {
-                                        context.pushNamed(
+                                      onPressed: () async {
+                                        await context.pushNamed(
                                           AppRoutes.sCFHSScoreCalculatorScreen,
                                         );
                                       },
@@ -138,9 +138,9 @@ class ProfileScreen extends StatelessWidget {
                                       text: 'exams_history'.tr(context),
                                       imagePath: Icons.history,
                                       onPressed: !isSubscribed
-                                          ? () => subscripeDialog(context)
-                                          : () {
-                                              context.pushNamed(
+                                          ? () async => subscripeDialog(context)
+                                          : () async {
+                                              await context.pushNamed(
                                                 AppRoutes.examsHistoryScreen,
                                               );
                                             },
@@ -149,9 +149,9 @@ class ProfileScreen extends StatelessWidget {
                                       text: 'exams_analysis'.tr(context),
                                       imagePath: Icons.line_axis_outlined,
                                       onPressed: !isSubscribed
-                                          ? () => subscripeDialog(context)
-                                          : () {
-                                              context.pushNamed(
+                                          ? () async => subscripeDialog(context)
+                                          : () async {
+                                              await context.pushNamed(
                                                 AppRoutes.analysisScreen,
                                                 arguments: false,
                                               );
@@ -160,8 +160,8 @@ class ProfileScreen extends StatelessWidget {
                                     ProfileButtonWidget(
                                       text: 'subscription'.tr(context),
                                       imagePath: Icons.payment,
-                                      onPressed: () {
-                                        context.pushNamed(
+                                      onPressed: () async {
+                                        await context.pushNamed(
                                           AppRoutes.subscriptionScreen,
                                           arguments:
                                               context
@@ -176,8 +176,8 @@ class ProfileScreen extends StatelessWidget {
                                     ProfileButtonWidget(
                                       text: 'gifts'.tr(context),
                                       imagePath: Icons.card_giftcard_rounded,
-                                      onPressed: () {
-                                        context.pushNamed(
+                                      onPressed: () async {
+                                        await context.pushNamed(
                                           AppRoutes.giftsScreen,
                                         );
                                       },
@@ -185,20 +185,18 @@ class ProfileScreen extends StatelessWidget {
 
                                     ProfileButtonWidget(
                                       text: 'support'.tr(context),
-                                      color: AppColors.primaryColor,
                                       imagePath: Icons.quiz_outlined,
-                                      onPressed: () {
-                                        context.pushNamed(
+                                      onPressed: () async {
+                                        await context.pushNamed(
                                           AppRoutes.supportScreen,
                                         );
                                       },
                                     ),
                                     ProfileButtonWidget(
                                       text: 'privacy_policy'.tr(context),
-                                      color: AppColors.primaryColor,
                                       imagePath: Icons.lock_outlined,
-                                      onPressed: () {
-                                        context.pushNamed(
+                                      onPressed: () async {
+                                        await context.pushNamed(
                                           AppRoutes.privacyPolicyScreen,
                                         );
                                       },
@@ -219,13 +217,13 @@ class ProfileScreen extends StatelessWidget {
                                                         .read<MainLayoutCubit>()
                                                         .deleteAccount();
                                                   } catch (_) {}
-                                                  CacheHelper.sharedPreferences
-                                                      .remove(
-                                                        CacheKeys.userToken,
-                                                      );
-                                                  context.pushReplacementNamed(
-                                                    AppRoutes.loginScreen,
+                                                  await CacheHelper.removeData(
+                                                    key: CacheKeys.userToken,
                                                   );
+                                                  await context
+                                                      .pushReplacementNamed(
+                                                        AppRoutes.loginScreen,
+                                                      );
                                                 },
                                               ),
                                         );
@@ -249,13 +247,15 @@ class ProfileScreen extends StatelessWidget {
                                                         .logOut();
                                                   } catch (_) {}
 
-                                                  CacheHelper.sharedPreferences
+                                                  await CacheHelper
+                                                      .sharedPreferences
                                                       .remove(
                                                         CacheKeys.userToken,
                                                       );
-                                                  context.pushReplacementNamed(
-                                                    AppRoutes.loginScreen,
-                                                  );
+                                                  await context
+                                                      .pushReplacementNamed(
+                                                        AppRoutes.loginScreen,
+                                                      );
                                                 },
                                               ),
                                         );

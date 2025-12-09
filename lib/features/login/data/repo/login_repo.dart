@@ -51,7 +51,7 @@ class LoginRepository {
                 'The email has already been taken',
               ) ==
               true) {
-      'Email already taken. Retrying as a login attempt...'.dPrint();
+        'Email already taken. Retrying as a login attempt...'.dPrint();
         final Map<String, dynamic> loginData = {
           idKey: id,
           if (fcmToken != null) 'fcm_token': fcmToken,
@@ -87,10 +87,14 @@ class LoginRepository {
     }
   }
 
-  ApiResult<LoginModel> _handleSuccess(Response response) {
+  Future<ApiResult<LoginModel>> _handleSuccess(Response response) async {
     final LoginModel model = LoginModel.fromJson(response.data);
     if (model.data?.token != null) {
-      CacheHelper.saveData(key: CacheKeys.userToken, value: model.data!.token!);
+      await CacheHelper.saveData(
+        key: CacheKeys.userToken,
+        value: model.data!.token!,
+      );
+      await CacheHelper.saveData(key: CacheKeys.userId, value: model.data!.id!);
     }
     return ApiResult.success(model);
   }

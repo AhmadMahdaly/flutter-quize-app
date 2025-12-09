@@ -8,28 +8,17 @@ import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/constants.dart';
 import 'package:smle/core/di.dart';
+import 'package:smle/core/functions/config_loading.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/routing/app_router.dart';
 import 'package:smle/core/routing/routes.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/themes.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  void configLoading(BuildContext context) {
-    EasyLoading.instance
-      ..loadingStyle = EasyLoadingStyle.custom
-      ..backgroundColor = AppColors.secondaryColor
-      ..indicatorColor = Theme.of(context).primaryColor
-      ..textColor = Theme.of(context).primaryColor
-      ..maskColor = AppColors.forthColor
-      ..dismissOnTap = false
-      ..maskType = EasyLoadingMaskType.black
-      ..userInteractions = false;
-  }
 
   @override
   Widget build(BuildContext context) {

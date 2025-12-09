@@ -5,7 +5,9 @@ import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
+import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
+import 'package:smle/features/subscription/cubit/subscription_cubit.dart'
+    hide SubscriptionLoading, SubscriptionLoaded;
 import 'package:smle/features/subscription/widgets/pay_done_dialog.dart';
 
 class SubscriptionScreen extends StatelessWidget {
@@ -43,7 +45,6 @@ class SubscriptionScreen extends StatelessWidget {
             (cubit.packagesModel?.data ?? []) +
             (cubit.extraPackagesModel?.data ?? []);
 
-        // ترتيب الباقات من الأصغر إلى الأكبر حسب السعر
         allBackendPackages.sort((a, b) {
           final priceA = a.price ?? 0;
           final priceB = b.price ?? 0;
@@ -61,97 +62,129 @@ class SubscriptionScreen extends StatelessWidget {
           appBar: CustomAppBar(title: 'subscription'.tr(context)),
           body: Stack(
             children: [
-              SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    24.verticalSpace,
-                    Text(
-                      'choose_your_plan'.tr(context),
-                      style: AppTextStyle.style16Bold.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 14.sp,
-                          tablet: 20.sp,
-                        ),
+              BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
+                builder: (context, state) {
+                  if (state is SubscriptionLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (state is SubscriptionLoaded) {
+                    final sub = state.subscription;
+
+                    final isSubscribed = sub.isSubscribed ?? false;
+
+                    final filteredPackages = isSubscribed
+                        ? allBackendPackages
+                              .where((p) => p.isExtra == true)
+                              .toList()
+                        : allBackendPackages;
+
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 15.w,
+                        vertical: 15.h,
                       ),
-                    ),
-                    24.verticalSpace,
-
-                    ...List.generate(allBackendPackages.length, (index) {
-                      final backendPackage = allBackendPackages[index];
-                      final int priceInSAR = backendPackage.price ?? 0;
-
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 16.h),
-                        child: GestureDetector(
-                          onTap: () {
-                            if (state is! PurchaseLoadingState) {
-                              cubit.startPayMobPayment(context, backendPackage);
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.r),
-                              color: AppColors.secondaryColor,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 24.h,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          24.verticalSpace,
+                          Text(
+                            'choose_your_plan'.tr(context),
+                            style: AppTextStyle.style16Bold.copyWith(
+                              fontSize: SizeConfig.responsiveValue(
+                                phone: 14.sp,
+                                tablet: 20.sp,
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                            ),
+                          ),
+                          24.verticalSpace,
+
+                          ...List.generate(filteredPackages.length, (index) {
+                            final backendPackage = filteredPackages[index];
+                            final int priceInSAR = backendPackage.price ?? 0;
+
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 16.h),
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (state is! PurchaseLoadingState) {
+                                    cubit.startPayMobPayment(
+                                      context,
+                                      backendPackage,
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.r),
+                                    color: AppColors.secondaryColor,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w,
+                                      vertical: 24.h,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                backendPackage.name ??
+                                                    'Package',
+                                                style: AppTextStyle.style16Bold
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                      fontSize: 18.sp,
+                                                    ),
+                                              ),
+                                              16.verticalSpace,
+                                              ...?backendPackage.features?.map(
+                                                (feature) => Padding(
+                                                  padding: EdgeInsets.only(
+                                                    bottom: 8.h,
+                                                  ),
+                                                  child: Text(
+                                                    '* ${feature.name}',
+                                                    style: AppTextStyle
+                                                        .style14W500
+                                                        .copyWith(
+                                                          fontSize: 14.sp,
+                                                          color: AppColors
+                                                              .thirdColor,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         Text(
-                                          backendPackage.name ?? 'Package',
+                                          '$priceInSAR ${'sar'.tr(context)}',
                                           style: AppTextStyle.style16Bold
                                               .copyWith(
-                                                color: Colors.white,
-                                                fontSize: 18.sp,
+                                                color: AppColors.thirdColor,
+                                                fontSize: 20.sp,
                                               ),
-                                        ),
-                                        16.verticalSpace,
-                                        ...?backendPackage.features?.map(
-                                          (feature) => Padding(
-                                            padding: EdgeInsets.only(
-                                              bottom: 8.h,
-                                            ),
-                                            child: Text(
-                                              '* ${feature.name}',
-                                              style: AppTextStyle.style14W500
-                                                  .copyWith(
-                                                    fontSize: 14.sp,
-                                                    color: AppColors.thirdColor,
-                                                  ),
-                                            ),
-                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Text(
-                                    '$priceInSAR ${'sar'.tr(context)}',
-                                    style: AppTextStyle.style16Bold.copyWith(
-                                      color: AppColors.thirdColor,
-                                      fontSize: 20.sp,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                  ],
-                ),
+                            );
+                          }),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                },
               ),
 
               if (state is PurchaseLoadingState)

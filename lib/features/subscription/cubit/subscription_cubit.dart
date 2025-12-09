@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,14 +97,16 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onNavigationRequest: (NavigationRequest request) {
+          onNavigationRequest: (NavigationRequest request) async {
             final uri = Uri.parse(request.url);
 
-            // ✅ الكشف الصحيح عن نجاح/فشل الدفع من PayMob السعودية
             if (uri.queryParameters.containsKey('success')) {
+              await _subscriptionRepository.processPaymentCallback(
+                billingData: uri.queryParameters,
+              );
+              log(uri.queryParameters.toString());
               getIt<CheckSubscriptionCubit>().loadSubscription();
               context.pop();
-              uri.queryParameters.dPrint();
               if (uri.queryParameters['success'] == 'true') {
                 if (!isClosed) emit(PurchaseSuccessState());
               } else {
@@ -117,8 +120,6 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
               }
               return NavigationDecision.prevent;
             }
-
-            // ✅ للتأكد من Callback URLs
             if (request.url.contains('your-callback-url')) {
               Navigator.of(context).pop();
 

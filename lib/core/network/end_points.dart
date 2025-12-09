@@ -59,4 +59,5 @@ class EndPoints {
   static const String checkSubscribe = 'check/subscribed';
   static const String addQBankNote = 'add/q/bank/note';
   static const String paymentProcess = 'payment/process';
+    static const String paymentCallback = 'payment/callback';
 }

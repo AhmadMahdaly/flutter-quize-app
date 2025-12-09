@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                         Expanded(
                           child: RealExamHomeWidget(
                             isSubscribed: isSubscribed,
-                            availableExam: availableExam,
+                            availableExam: availableExam.toString(),
                           ),
                         ),
                         Expanded(

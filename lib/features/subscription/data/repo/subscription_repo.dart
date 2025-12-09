@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:smle/core/cache_helper/cache_helper.dart';
+import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
 // تأكد من إضافة هذا المتغير في ملف EndPoints
@@ -5,6 +9,7 @@ import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
 import 'package:smle/core/network/failures.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
+import 'package:smle/features/subscription/data/model/payment_callback_model.dart';
 
 class SubscriptionRepository {
   SubscriptionRepository(this._dioFactory);
@@ -25,7 +30,6 @@ class SubscriptionRepository {
     }
   }
 
-  // --- التعديل الجذري هنا ---
   Future<ApiResult<String>> processPayment({
     required int offerId,
     required int amountCents,
@@ -33,7 +37,7 @@ class SubscriptionRepository {
   }) async {
     try {
       final response = await _dioFactory.post(
-        endPoint:  EndPoints.paymentProcess,
+        endPoint: EndPoints.paymentProcess,
         data: {
           'offer_id': offerId,
           'amount_cents': amountCents,
@@ -58,6 +62,39 @@ class SubscriptionRepository {
           ServerFailure.fromResponse(
             response.statusCode,
             response.data['message'],
+          ),
+        );
+      }
+    } catch (e) {
+      return ApiResult.failure(ServerFailure(e.toString()));
+    }
+  }
+
+  Future<ApiResult<String>> processPaymentCallback({
+    required Map<String, dynamic> billingData,
+  }) async {
+    try {
+      final userId = CacheHelper.getData(key: CacheKeys.userId);
+      log(userId.toString());
+      final model = PaymentCallbackModel.fromJson(billingData);
+      log(model.toString());
+      final response = await _dioFactory.get(
+        endPoint: EndPoints.paymentCallback,
+        data: {
+          'success': model.success,
+          'merchant_order_id': model.merchantOrderId,
+          'id': model.id,
+          'user_id': userId,
+        },
+      );
+
+      if (response!.statusCode == 200) {
+        final data = response.data['success'];
+        return ApiResult.success(data);
+      } else {
+        return ApiResult.failure(
+          ServerFailure(
+            response.data['message'] ?? 'Payment initialization failed',
           ),
         );
       }

@@ -22,7 +22,7 @@ class ProfileButtonWidget extends StatelessWidget {
         onTap: onPressed,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          height: 40.h,
+          height: 50.h,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.r),
@@ -40,7 +40,7 @@ class ProfileButtonWidget extends StatelessWidget {
               10.horizontalSpace,
               Text(
                 text,
-                style: AppTextStyle.style16Bold.copyWith(
+                style: AppTextStyle.style14W600.copyWith(
                   color: AppColors.thirdColor,
                 ),
               ),
