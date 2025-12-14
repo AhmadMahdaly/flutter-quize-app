@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
@@ -24,8 +25,10 @@ class ExamsHistoryRepository {
           ),
         );
       }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
     } catch (e) {
-      return ApiResult.failure(ServerFailure(e.toString()));
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 }

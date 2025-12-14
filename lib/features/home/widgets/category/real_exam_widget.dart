@@ -11,7 +11,6 @@ import 'package:smle/core/theme/assets.dart';
 import 'package:smle/features/home/widgets/category/base_category_widget.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
-import 'package:smle/features/real_exam/views/widgets/confirm_access_dialog.dart';
 
 class RealExamHomeWidget extends StatelessWidget {
   const RealExamHomeWidget({
@@ -60,22 +59,11 @@ class RealExamHomeWidget extends StatelessWidget {
               examState.status == ExamStatus.onBreak;
 
           if (isExamInProgress) {
-            context.pushNamed(AppRoutes.realExamScreen);
+            if (context.mounted) {
+              context.pushNamed(AppRoutes.realExamScreen);
+            }
           } else {
-            context.pushNamed(
-              AppRoutes.confirmAccessToRealExam,
-              arguments: {
-                'remainingAttempts': availableExam == 'Unlimited'
-                    ? 1000
-                    : int.tryParse(availableExam) ?? 0,
-                'onStart': () {
-                  showCustomPrimaryDialog(
-                    context,
-                    widget: const ConfirmAccessToRealExamDialogWidget(),
-                  );
-                },
-              },
-            );
+            context.pushNamed(AppRoutes.confirmAccessToRealExam);
           }
         } else {
           log(availableExam.toString());

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
+import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
@@ -19,7 +20,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: SizeConfig.responsiveValue(phone: 56.h, tablet: 100.h),
       elevation: 0,
       backgroundColor: AppColors.primaryColor,
       leading: canBack
@@ -29,7 +29,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Icons.arrow_back_ios_new,
                 color: AppColors.iconColorBlack,
               ),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => context.pop(),
             )
           : leading,
       title: Text(
@@ -37,10 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         textAlign: TextAlign.center,
         style: AppTextStyle.style20Bold.copyWith(
           color: AppColors.secondaryColor,
-          fontSize: SizeConfig.responsiveValue(phone: 20.sp, tablet: 24.sp),
-          // decoration: TextDecoration.underline,
-          // decorationColor: AppColors.secondaryColor,
-          // decorationStyle: TextDecorationStyle.solid,
+          fontSize: SizeConfig.responsiveValue(phone: 18.sp, tablet: 24.sp),
         ),
       ),
       shape: RoundedRectangleBorder(
@@ -62,5 +59,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize =>
-      Size.fromHeight(SizeConfig.responsiveValue(phone: 56.h, tablet: 100.h));
+      Size.fromHeight(SizeConfig.responsiveValue(phone: 50.h, tablet: 80.h));
 }

@@ -42,7 +42,7 @@ class CategoryWidget extends StatelessWidget {
                 style: AppTextStyle.style16W500.copyWith(
                   fontSize: SizeConfig.responsiveValue(
                     phone: 15.sp,
-                    tablet: 21.sp,
+                    tablet: 22.sp,
                   ),
                   color: AppColors.greyColor,
                 ),

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_button.dart';
+import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
+import 'package:smle/features/real_exam/views/widgets/confirm_access_dialog.dart';
 
 class ConfirmAccessToRealExam extends StatelessWidget {
-  const ConfirmAccessToRealExam({
-    super.key,
-    required this.remainingAttempts,
-    required this.onStart,
-  });
-  final int remainingAttempts;
-  final VoidCallback onStart;
+  const ConfirmAccessToRealExam({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +33,37 @@ class ConfirmAccessToRealExam extends StatelessWidget {
                   Icon(Icons.timer, color: AppColors.greenColor, size: 24.r),
                   12.horizontalSpace,
                   Expanded(
-                    child: Text(
-                      '$remainingAttempts' == '1000'
-                          ? 'You have Unlimited attempts'
-                          : 'Remaining Attempts: $remainingAttempts',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.greenColor.withAlpha(200),
-                      ),
-                    ),
+                    child:
+                        BlocBuilder<
+                          CheckSubscriptionCubit,
+                          CheckSubscriptionState
+                        >(
+                          builder: (context, state) {
+                            if (state is SubscriptionLoading) {
+                              return const Center(
+                                child: LinearProgressIndicator(),
+                              );
+                            }
+
+                            if (state is SubscriptionLoaded) {
+                              final sub = state.subscription;
+
+                              final availableExam =
+                                  sub.availableRealExam ?? '0';
+                              return Text(
+                                availableExam == '1000'
+                                    ? 'You have Unlimited attempts'
+                                    : 'Remaining Attempts: $availableExam',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.greenColor.withAlpha(200),
+                                ),
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          },
+                        ),
                   ),
                 ],
               ),
@@ -94,7 +113,15 @@ class ConfirmAccessToRealExam extends StatelessWidget {
             const Spacer(),
 
             // Start Button
-            CustomPrimaryButton(onPressed: onStart, text: 'Start Exam'),
+            CustomPrimaryButton(
+              onPressed: () => context.mounted
+                  ? showCustomPrimaryDialog(
+                      context,
+                      widget: const ConfirmAccessToRealExamDialogWidget(),
+                    )
+                  : null,
+              text: 'Start Exam',
+            ),
           ],
         ),
       ),

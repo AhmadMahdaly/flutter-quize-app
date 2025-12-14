@@ -26,7 +26,7 @@ class TrialHeaderCard extends StatelessWidget {
       children: [
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
           decoration: BoxDecoration(
             color: AppColors.secondaryColor,
             borderRadius: BorderRadius.only(
@@ -47,7 +47,7 @@ class TrialHeaderCard extends StatelessWidget {
                 children: [
                   Text(
                     'Question: $qNo / $totalQuestions',
-                    style: AppTextStyle.style14W500.copyWith(
+                    style: AppTextStyle.style12W500.copyWith(
                       color: AppColors.thirdColor,
                     ),
                   ),
@@ -72,7 +72,7 @@ class TrialHeaderCard extends StatelessWidget {
                       2.verticalSpace,
                       Text(
                         'Progress ${(progressValue * 100).toInt()}%',
-                        style: AppTextStyle.style14W500.copyWith(
+                        style: AppTextStyle.style12W500.copyWith(
                           color: AppColors.thirdColor,
                         ),
                       ),
@@ -86,11 +86,15 @@ class TrialHeaderCard extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.alarm, color: AppColors.thirdColor),
-                      4.verticalSpace,
+                      Icon(
+                        Icons.alarm,
+                        color: AppColors.thirdColor,
+                        size: 20.r,
+                      ),
+                      4.horizontalSpace,
                       Text(
                         'Test time remaining',
-                        style: AppTextStyle.style14W500.copyWith(
+                        style: AppTextStyle.style12W500.copyWith(
                           color: AppColors.thirdColor,
                         ),
                       ),
@@ -107,9 +111,7 @@ class TrialHeaderCard extends StatelessWidget {
                           content: const Text('The time for exam has ended.'),
                           actions: [
                             TextButton(
-                              onPressed: () {
-                                /// todo:
-                              },
+                              onPressed: () {},
                               child: const Text('OK'),
                             ),
                           ],
@@ -130,10 +132,7 @@ class TrialHeaderCard extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 2.h,
-                        horizontal: 10.w,
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
                       decoration: BoxDecoration(
                         color: AppColors.thirdColor,
                         border: Border.all(),
@@ -141,7 +140,7 @@ class TrialHeaderCard extends StatelessWidget {
                       ),
                       child: Text(
                         'Finish Exam',
-                        style: AppTextStyle.style16Bold.copyWith(
+                        style: AppTextStyle.style14Bold.copyWith(
                           color: AppColors.forthColor,
                         ),
                       ),
@@ -155,7 +154,7 @@ class TrialHeaderCard extends StatelessWidget {
 
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
           decoration: BoxDecoration(
             color: AppColors.successColor,
             borderRadius: BorderRadius.only(
@@ -169,67 +168,14 @@ class TrialHeaderCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Row(
-              //   children: [
-              //     Text(
-              //       'Test:',
-              //       style: interRegular.copyWith(
-              //         fontSize: SizeConfig.responsiveValue(
-              //           phone: 14.sp,
-              //           tablet: 18.sp,
-              //         ),
-              //         color: AppColors.thirdColor,
-              //         fontWeight: FontWeight.bold,
-              //       ),
-              //     ),
               Text(
                 'Test your knowledge with Smle Gate app',
-                style: AppTextStyle.style14W500.copyWith(
+                style: AppTextStyle.style12W500.copyWith(
                   color: AppColors.thirdColor,
                 ),
               ),
             ],
           ),
-          // Row(
-          //   children: [
-          //     Text(
-          //       'Candidate:',
-          //       style: interRegular.copyWith(
-          //         fontSize: SizeConfig.responsiveValue(
-          //           phone: 14.sp,
-          //           tablet: 18.sp,
-          //         ),
-          //         color: AppColors.thirdColor,
-          //         fontWeight: FontWeight.bold,
-          //       ),
-          //     ),
-          //     Text(
-          //       'Saudi-Bot.com',
-          //       style: interRegular.copyWith(
-          //         fontSize: SizeConfig.responsiveValue(
-          //           phone: 14.sp,
-          //           tablet: 18.sp,
-          //         ),
-          //         color: AppColors.thirdColor,
-          //       ),
-          //     ),
-          //     const Spacer(),
-          //     Text(
-          //       'Free Trial',
-          //       style: interBold.copyWith(
-          //         fontSize: SizeConfig.responsiveValue(
-          //           phone: 16.sp,
-          //           tablet: 20.sp,
-          //         ),
-          //         color: AppColors.offwhiteColor,
-          //         fontWeight: FontWeight.w700,
-          //         height: 1.50.h,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // ],
-          // ),
         ),
       ],
     );

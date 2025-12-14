@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
@@ -11,10 +12,15 @@ import 'package:smle/features/revision/data/model/subcategories_model.dart';
 class QBankRepository {
   QBankRepository(this._dioFactory);
   final DioFactory _dioFactory;
-  Future<void> init() async {
+  Future<ApiResult<void>> init() async {
     try {
       await _dioFactory.get(endPoint: EndPoints.createQBank);
-    } catch (_) {}
+      return const ApiResult.success(null);
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+    }
   }
 
   Future<ApiResult<QBankModel>> startQuiz({
@@ -56,8 +62,10 @@ class QBankRepository {
           ),
         );
       }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
     } catch (e) {
-      return ApiResult.failure(ServerFailure(e.toString()));
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
@@ -87,9 +95,10 @@ class QBankRepository {
       } else {
         return null;
       }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
     } catch (e) {
-      debugPrintWidget(e.toString());
-      return null;
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
@@ -98,21 +107,27 @@ class QBankRepository {
     required int limit,
     required int offset,
   }) async {
-    final response = await _dioFactory.get(
-      endPoint: EndPoints.getPlaylistQuestions,
-      data: {'playlist_id': playlistId, 'limit': limit, 'offset': offset},
-    );
-    if (response!.statusCode == 200) {
-      final QBankModel model = QBankModel.fromJson(response.data);
-      return ApiResult.success(model);
-    } else {
-      debugPrintWidget(response.data['message']);
-      return ApiResult.failure(
-        ServerFailure.fromResponse(
-          response.statusCode,
-          response.data['message'],
-        ),
+    try {
+      final response = await _dioFactory.get(
+        endPoint: EndPoints.getPlaylistQuestions,
+        data: {'playlist_id': playlistId, 'limit': limit, 'offset': offset},
       );
+      if (response!.statusCode == 200) {
+        final QBankModel model = QBankModel.fromJson(response.data);
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['message']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
@@ -120,21 +135,27 @@ class QBankRepository {
     required int questionId,
     required String note,
   }) async {
-    final response = await _dioFactory.post(
-      endPoint: EndPoints.addQBankNote,
-      data: {'question_id': questionId, 'note': note},
-    );
-    if (response!.statusCode == 200) {
-      final QBankModel model = QBankModel.fromJson(response.data);
-      return ApiResult.success(model);
-    } else {
-      debugPrintWidget(response.data['message']);
-      return ApiResult.failure(
-        ServerFailure.fromResponse(
-          response.statusCode,
-          response.data['message'],
-        ),
+    try {
+      final response = await _dioFactory.post(
+        endPoint: EndPoints.addQBankNote,
+        data: {'question_id': questionId, 'note': note},
       );
+      if (response!.statusCode == 200) {
+        final QBankModel model = QBankModel.fromJson(response.data);
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['message']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
@@ -142,7 +163,7 @@ class QBankRepository {
     try {
       final response = await _dioFactory.post(
         endPoint: EndPoints.markAsAnswered,
-        data: {'questionbank_id': questionId},
+        data: {'question_id': questionId},
       );
       if (response!.statusCode == 200) {
         return const ApiResult.success(true);
@@ -155,41 +176,60 @@ class QBankRepository {
           ),
         );
       }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
     } catch (e) {
-      debugPrintWidget(e.toString());
-      return ApiResult.failure(ServerFailure.fromResponse(500, e.toString()));
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
   Future<ApiResult<CategoriesModel>> getCategories() async {
-    final response = await _dioFactory.get(endPoint: EndPoints.getCategories);
-    if (response!.statusCode == 200) {
-      final CategoriesModel model = CategoriesModel.fromJson(response.data);
-      return ApiResult.success(model);
-    } else {
-      debugPrintWidget(response.data['error']);
-      return ApiResult.failure(
-        ServerFailure.fromResponse(response.statusCode, response.data['error']),
-      );
+    try {
+      final response = await _dioFactory.get(endPoint: EndPoints.getCategories);
+      if (response!.statusCode == 200) {
+        final CategoriesModel model = CategoriesModel.fromJson(response.data);
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['error']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['error'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
   Future<ApiResult<SubCategoriesModel>> getSubCategories(
     String? categoryId,
   ) async {
-    final response = await _dioFactory.get(
-      endPoint: '${EndPoints.getSubCategories}$categoryId',
-    );
-    if (response!.statusCode == 200) {
-      final SubCategoriesModel model = SubCategoriesModel.fromJson(
-        response.data,
+    try {
+      final response = await _dioFactory.get(
+        endPoint: '${EndPoints.getSubCategories}$categoryId',
       );
-      return ApiResult.success(model);
-    } else {
-      debugPrintWidget(response.data['error']);
-      return ApiResult.failure(
-        ServerFailure.fromResponse(response.statusCode, response.data['error']),
-      );
+      if (response!.statusCode == 200) {
+        final SubCategoriesModel model = SubCategoriesModel.fromJson(
+          response.data,
+        );
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['error']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['error'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 }

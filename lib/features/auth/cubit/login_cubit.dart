@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:smle/core/cache_helper/cache_helper.dart';
-import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/features/auth/data/login_api.dart';
 import 'package:smle/features/auth/data/repo/login_repo.dart';
 
@@ -78,8 +76,6 @@ class LoginCubit extends Cubit<LoginStates> {
     emit(LogOutLoadingState());
     try {
       await GoogleSignInApi.logOut();
-
-      await CacheHelper.removeData(key: CacheKeys.userToken);
 
       emit(LogOutSuccessState());
     } catch (error) {

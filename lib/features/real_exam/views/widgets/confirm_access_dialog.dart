@@ -30,11 +30,15 @@ class ConfirmAccessToRealExamDialogWidget extends StatelessWidget {
             Expanded(
               child: TextButton(
                 onPressed: () async {
-                  context.pop();
-                  context.pushNamed(AppRoutes.realExamScreen);
+                  if (context.mounted) {
+                    context.pop();
+                  }
+                  if (context.mounted) {
+                    context.pushNamed(AppRoutes.realExamScreen);
+                  }
                 },
                 child: Container(
-                  height: 40.h,
+                  height: 50.h,
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(
                     vertical: 8.r,
@@ -56,10 +60,12 @@ class ConfirmAccessToRealExamDialogWidget extends StatelessWidget {
             Expanded(
               child: TextButton(
                 onPressed: () {
-                  context.pop();
+                  if (context.mounted) {
+                    context.pop();
+                  }
                 },
                 child: Container(
-                  height: 40.h,
+                  height: 50.h,
 
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(8.r),

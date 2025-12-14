@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:smle/core/bloc_observer.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/debug_print_extension.dart';
@@ -52,7 +53,7 @@ Future<void> initApp() async {
   // } catch (e) {
   //   debugPrint('HttpOverrides setup failed: $e');
   // }
-
+  Bloc.observer = MyBlocObserver();
   await setLockedOrientation();
 }
 

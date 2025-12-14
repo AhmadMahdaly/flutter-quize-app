@@ -5,7 +5,10 @@ class QBankModel {
   QBankModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    questionsCount = json['questions_count'] ?? json['data']?.length ?? 0; // دعم للـ count إذا غير موجود
+    questionsCount =
+        json['questions_count'] ??
+        json['data']?.length ??
+        0; // دعم للـ count إذا غير موجود
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
@@ -48,7 +51,7 @@ class Data {
     this.hint,
     this.isFavorite,
     this.isAnswered,
-    this.questionbankId,
+    // this.questionbankId,
     this.categoryId,
     this.subcategoryId,
     this.isActive,
@@ -73,7 +76,7 @@ class Data {
     hint = json['hint'];
     isFavorite = json['is_favourite'] ?? json['is_favorite'];
     isAnswered = json['is_answered'] == 1;
-    questionbankId = json['questionbank_id'];
+    // questionbankId = json['questionbank_id'];
     categoryId = json['category_id'];
     subcategoryId = json['subcategory_id'];
     isActive = json['is_active'];
@@ -97,7 +100,7 @@ class Data {
   String? hint;
   bool? isFavorite;
   bool? isAnswered;
-  int? questionbankId;
+  // int? questionbankId;
   int? categoryId;
   int? subcategoryId;
   bool? isActive;
@@ -129,7 +132,7 @@ class Data {
     data['hint'] = hint;
     data['is_favourite'] = isFavorite;
     data['is_answered'] = isAnswered;
-    data['questionbank_id'] = questionbankId;
+    // data['question_id'] = questionbankId;
     data['category_id'] = categoryId;
     data['subcategory_id'] = subcategoryId;
     data['is_active'] = isActive;
@@ -145,5 +148,3 @@ class Options {
   String? key;
   String? value;
 }
-
-

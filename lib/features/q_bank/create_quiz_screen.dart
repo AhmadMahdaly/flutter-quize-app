@@ -332,17 +332,18 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Text(
-                  '${'Available'}: ${cubit.questionsCount}',
-                  style: AppTextStyle.style14W700.copyWith(fontSize: 15.sp),
-                ),
-              ),
               if (state is GetQuestionsCountLoadingState)
                 const SizedBox(
                   height: 20,
                   width: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else
+                Expanded(
+                  child: Text(
+                    '${'Available'}: ${cubit.questionsCount}',
+                    style: AppTextStyle.style14W700.copyWith(fontSize: 15.sp),
+                  ),
                 ),
             ],
           ),

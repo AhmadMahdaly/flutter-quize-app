@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/network/api_result.dart';
@@ -16,17 +17,23 @@ class SubscriptionRepository {
   final DioFactory _dioFactory;
 
   Future<ApiResult<PackagesModel>> getPackages() async {
-    final response = await _dioFactory.get(endPoint: EndPoints.getPackages);
-    if (response!.statusCode == 200) {
-      final PackagesModel model = PackagesModel.fromJson(response.data);
-      return ApiResult.success(model);
-    } else {
-      return ApiResult.failure(
-        ServerFailure.fromResponse(
-          response.statusCode,
-          response.data['message'],
-        ),
-      );
+    try {
+      final response = await _dioFactory.get(endPoint: EndPoints.getPackages);
+      if (response!.statusCode == 200) {
+        final PackagesModel model = PackagesModel.fromJson(response.data);
+        return ApiResult.success(model);
+      } else {
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
@@ -65,8 +72,10 @@ class SubscriptionRepository {
           ),
         );
       }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
     } catch (e) {
-      return ApiResult.failure(ServerFailure(e.toString()));
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
@@ -98,8 +107,10 @@ class SubscriptionRepository {
           ),
         );
       }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
     } catch (e) {
-      return ApiResult.failure(ServerFailure(e.toString()));
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 }

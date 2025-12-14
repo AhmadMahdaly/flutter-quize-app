@@ -76,7 +76,7 @@ class _CustomTimerWidgetState extends State<CustomTimerWidget> {
   Widget build(BuildContext context) {
     return Text(
       _formatTime(_timeLeft),
-      style: AppTextStyle.style14Bold.copyWith(color: AppColors.thirdColor),
+      style: AppTextStyle.style12Bold.copyWith(color: AppColors.thirdColor),
     );
   }
 }

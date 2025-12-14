@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
@@ -23,8 +24,10 @@ class TrialExamRepository {
           ),
         );
       }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
     } catch (e) {
-      rethrow;
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 }

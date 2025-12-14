@@ -12,11 +12,16 @@ class CheckSubscriptionCubit extends SafeCubit<CheckSubscriptionState> {
 
   Future<void> loadSubscription() async {
     if (!isClosed) emit(SubscriptionLoading());
-    try {
-      final subscription = await repository.fetchSubscription();
-      if (!isClosed) emit(SubscriptionLoaded(subscription));
-    } catch (e) {
-      if (!isClosed) emit(SubscriptionError(e.toString()));
-    }
+
+    final result = await repository.fetchSubscription();
+
+    result.when(
+      success: (data) {
+        if (!isClosed) emit(SubscriptionLoaded(data));
+      },
+      failure: (error) {
+        if (!isClosed) emit(SubscriptionError(error.errMessage));
+      },
+    );
   }
 }

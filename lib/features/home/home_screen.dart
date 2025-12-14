@@ -34,13 +34,12 @@ class HomeScreen extends StatelessWidget {
               final availableExam = sub.availableRealExam ?? '0';
 
               return SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      16.verticalSpace,
+                      32.verticalSpace,
                       const UserAndPointsHeaderWidget(),
                       32.verticalSpace,
                       const TopBannerWidget(),

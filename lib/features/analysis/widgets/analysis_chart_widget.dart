@@ -11,7 +11,6 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     clipBehavior: Clip.antiAlias,
     child: SingleChildScrollView(
-      // ✅ هذا يحل مشكلة overflow
       scrollDirection: Axis.horizontal,
       child: DataTable(
         headingRowColor: WidgetStateProperty.all(Colors.grey.shade200),
@@ -110,7 +109,6 @@ class PerformanceChart extends StatelessWidget {
   const PerformanceChart({super.key, required this.data});
   final List<Analysis> data;
 
-  // Ensure value is valid for plotting
   double _safeScore(double? value) {
     if (value == null || value.isNaN || value.isInfinite) return 0.0;
     return value;
@@ -212,22 +210,6 @@ class PerformanceChart extends StatelessWidget {
       ],
     );
   }
-
-  // Widget _legendItem(Color color, String text) {
-  //   return Row(
-  //     children: [
-  //       Container(width: 16.w, height: 16.h, color: color),
-  //       8.horizontalSpace,
-  //       Text(
-  //         text,
-  //         style: interRegular.copyWith(
-  //           color: AppColors.iconColorGray,
-  //           fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 18.sp),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   LineChartBarData _buildLine({
     required Color color,

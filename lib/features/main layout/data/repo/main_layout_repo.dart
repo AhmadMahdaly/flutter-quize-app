@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/network/api_result.dart';
@@ -13,52 +14,73 @@ class MainLayoutRepository {
   final DioFactory _dioFactory;
 
   Future<ApiResult<ProfileModel>> getProfile() async {
-    final response = await _dioFactory.get(endPoint: EndPoints.profile);
-    if (response!.statusCode == 200) {
-      final ProfileModel model = ProfileModel.fromJson(response.data);
-      await CacheHelper.saveData(key: CacheKeys.userId, value: model.data!.id!);
+    try {
+      final response = await _dioFactory.get(endPoint: EndPoints.profile);
+      if (response!.statusCode == 200) {
+        final ProfileModel model = ProfileModel.fromJson(response.data);
+        await CacheHelper.saveData(
+          key: CacheKeys.userId,
+          value: model.data!.id!,
+        );
 
-      return ApiResult.success(model);
-    } else {
-      debugPrintWidget(response.data['message']);
-      return ApiResult.failure(
-        ServerFailure.fromResponse(
-          response.statusCode,
-          response.data['message'],
-        ),
-      );
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['message']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
   Future<ApiResult<GiftsModel>> getGifts() async {
-    final response = await _dioFactory.get(endPoint: EndPoints.gifts);
-    if (response!.statusCode == 200) {
-      final GiftsModel model = GiftsModel.fromJson(response.data);
-      return ApiResult.success(model);
-    } else {
-      debugPrintWidget(response.data['message']);
-      return ApiResult.failure(
-        ServerFailure.fromResponse(
-          response.statusCode,
-          response.data['message'],
-        ),
-      );
+    try {
+      final response = await _dioFactory.get(endPoint: EndPoints.gifts);
+      if (response!.statusCode == 200) {
+        final GiftsModel model = GiftsModel.fromJson(response.data);
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['message']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
   /// Delete Account
   Future<ApiResult> deleteAccount() async {
-    final response = await _dioFactory.get(endPoint: EndPoints.deleteAccount);
-    if (response!.statusCode == 200) {
-      return ApiResult.success(response.data);
-    } else {
-      debugPrintWidget(response.data['message']);
-      return ApiResult.failure(
-        ServerFailure.fromResponse(
-          response.statusCode,
-          response.data['message'],
-        ),
-      );
+    try {
+      final response = await _dioFactory.get(endPoint: EndPoints.deleteAccount);
+      if (response!.statusCode == 200) {
+        return ApiResult.success(response.data);
+      } else {
+        debugPrintWidget(response.data['message']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 }

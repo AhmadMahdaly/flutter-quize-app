@@ -39,7 +39,9 @@ class AnalysisHomeWidget extends StatelessWidget {
             ),
           );
         } else {
-          context.pushNamed(AppRoutes.analysisScreen, arguments: false);
+          // context.pushNamed(AppRoutes.analysisScreen, arguments: false);
+
+          context.pushNamed(AppRoutes.analysisDashboardScreen);
         }
       },
       categoryName: 'analysis'.tr(context),

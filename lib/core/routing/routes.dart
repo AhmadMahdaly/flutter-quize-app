@@ -27,7 +27,9 @@ class AppRoutes {
   static const String guestScreen = '/GuestMainLayoutScreen';
   static const String pdfViewerFromUrlScreen = '/pdfViewerFromUrlScreen';
   static const String videoPlayerScreen = '/videoPlayerScreen';
-  // static const String examResultsPage = '/examResultsPage';
+  static const String analysisDashboardScreen = '/analysisDashboardScreen';
+  static const String examAnalysisScreen = '/examAnalysisScreen';
+
   static const String trialExamScreen = '/trialExamScreen';
   static const String playlistQuestionsScreen = '/playlistQuestionsScreen';
   static const String confirmAccessToRealExam = '/confirmAccessToRealExam';

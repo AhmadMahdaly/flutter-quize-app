@@ -111,7 +111,7 @@ class _QBankScreenState extends State<QBankScreen> {
                               if (currentQuestion.selectedAnswer == null) {
                                 cubit.selectAnswer(
                                   currentOption.key!,
-                                  currentQuestion.questionbankId!,
+                                  currentQuestion.id ?? 0,
                                 );
                               }
                             },

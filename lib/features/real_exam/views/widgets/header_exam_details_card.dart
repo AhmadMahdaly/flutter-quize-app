@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
+import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/data/model/get_real_exam_model.dart';
 import 'package:smle/features/real_exam/views/widgets/cutom_timer.dart';
@@ -33,12 +36,12 @@ class HeaderExamDetailsCard extends StatelessWidget {
 
     return Column(
       children: [
-        8.verticalSpace,
+        // 8.verticalSpace,
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(
             horizontal: 12.w,
-            vertical: SizeConfig.responsiveValue(phone: 8.h, tablet: 4.h),
+            vertical: SizeConfig.responsiveValue(phone: 4.h, tablet: 4.h),
           ),
           decoration: BoxDecoration(
             color: AppColors.secondaryColor,
@@ -60,22 +63,22 @@ class HeaderExamDetailsCard extends StatelessWidget {
                 children: [
                   Text(
                     'Question: $qNo / $totalQuestions',
-                    style: AppTextStyle.style14W500.copyWith(
+                    style: AppTextStyle.style12W500.copyWith(
                       color: AppColors.thirdColor,
                     ),
                   ),
                   SizeConfig.responsiveValue(
-                    phone: 4.verticalSpace,
+                    phone: 2.verticalSpace,
                     tablet: 2.verticalSpace,
                   ),
                   Text(
                     'Section: $section',
-                    style: AppTextStyle.style14W500.copyWith(
+                    style: AppTextStyle.style12W500.copyWith(
                       color: AppColors.thirdColor,
                     ),
                   ),
                   SizeConfig.responsiveValue(
-                    phone: 4.verticalSpace,
+                    phone: 2.verticalSpace,
                     tablet: 2.verticalSpace,
                   ),
                   Column(
@@ -89,7 +92,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                           ),
                           child: LinearProgressIndicator(
                             minHeight: SizeConfig.responsiveValue(
-                              phone: 20.h,
+                              phone: 15.h,
                               tablet: 10.h,
                             ),
                             value: progressValue,
@@ -103,7 +106,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       4.verticalSpace,
                       Text(
                         'Progress ${(progressValue * 100).toInt()}%',
-                        style: AppTextStyle.style14W500.copyWith(
+                        style: AppTextStyle.style12W500.copyWith(
                           color: AppColors.thirdColor,
                         ),
                       ),
@@ -125,20 +128,17 @@ class HeaderExamDetailsCard extends StatelessWidget {
                           tablet: 18.h,
                         ),
                       ),
-                      SizeConfig.responsiveValue(
-                        phone: 4.verticalSpace,
-                        tablet: 2.verticalSpace,
-                      ),
+                      5.horizontalSpace,
                       Text(
                         'Section time remaining',
-                        style: AppTextStyle.style14W500.copyWith(
+                        style: AppTextStyle.style12W500.copyWith(
                           color: AppColors.thirdColor,
                         ),
                       ),
                     ],
                   ),
                   SizeConfig.responsiveValue(
-                    phone: 5.verticalSpace,
+                    phone: 2.verticalSpace,
                     tablet: 2.verticalSpace,
                   ),
                   CustomTimerWidget(
@@ -154,14 +154,18 @@ class HeaderExamDetailsCard extends StatelessWidget {
                             Text('The time for section $section has ended.'),
 
                             TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
+                              onPressed: () async {
+                                if (context.mounted) {
+                                  context.pop();
 
-                                if (section == 1) {
-                                  cubit.finishSection1AndStartBreak();
-                                } else {
-                                  cubit.finishExam();
-                                  cubit.resetExam();
+                                  if (section == 1) {
+                                    cubit.finishSection1AndStartBreak();
+                                  } else {
+                                    await cubit.finishExam();
+                                    cubit.resetExam();
+                                    await getIt<CheckSubscriptionCubit>()
+                                        .loadSubscription();
+                                  }
                                 }
                               },
                               child: const Text('OK'),
@@ -172,13 +176,10 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     },
                   ),
                   SizeConfig.responsiveValue(
-                    phone: 4.verticalSpace,
+                    phone: 2.verticalSpace,
                     tablet: 2.verticalSpace,
                   ),
-                  SizeConfig.responsiveValue(
-                    phone: 4.verticalSpace,
-                    tablet: 0.verticalSpace,
-                  ),
+
                   InkWell(
                     onTap: () {
                       final cubit = context.read<RealExamCubit>();
@@ -193,7 +194,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(
                         vertical: SizeConfig.responsiveValue(
-                          phone: 4.h,
+                          phone: 2.h,
                           tablet: 2.h,
                         ),
                         horizontal: 10.w,
@@ -205,7 +206,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       ),
                       child: Text(
                         'Finish section',
-                        style: AppTextStyle.style16Bold.copyWith(
+                        style: AppTextStyle.style14Bold.copyWith(
                           color: AppColors.forthColor,
                         ),
                       ),
@@ -235,7 +236,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
             children: [
               Text(
                 'Test your knowledge with Smle Gate app',
-                style: AppTextStyle.style14W500.copyWith(
+                style: AppTextStyle.style12W500.copyWith(
                   color: AppColors.thirdColor,
                 ),
               ),

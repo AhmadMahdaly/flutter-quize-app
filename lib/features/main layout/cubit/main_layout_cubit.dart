@@ -1,6 +1,8 @@
 // ignore_for_file: strict_top_level_inference
 
 import 'package:equatable/equatable.dart';
+import 'package:smle/core/cache_helper/cache_helper.dart';
+import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/helpers/safe_cubit.dart';
 import 'package:smle/features/main%20layout/data/model/gifts_model.dart';
@@ -35,6 +37,16 @@ class MainLayoutCubit extends SafeCubit<MainLayoutState> {
         emit(GetProfileFailedState());
       },
     );
+  }
+
+  clearDataOnLogOut() async {
+    profileModel = null;
+    giftsModel = null;
+
+    mainLayoutInitialScreenIndex = 1;
+    await CacheHelper.sharedPreferences.remove(CacheKeys.userToken);
+
+    emit(MainLayoutInitial());
   }
 
   /// Get Gifts

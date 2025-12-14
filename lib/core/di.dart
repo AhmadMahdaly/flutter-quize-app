@@ -3,13 +3,14 @@ import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/features/SCFHS_score_calculator/data/repo/calculator_repo.dart';
 import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
 import 'package:smle/features/analysis/data/repo/analysis_repo.dart';
+import 'package:smle/features/auth/cubit/login_cubit.dart';
+import 'package:smle/features/auth/data/repo/login_repo.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/check_subscription/data/repo/check_subscription_repo.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/data/repo/exams_history_repository.dart';
 import 'package:smle/features/free_trial/cubit/free_trial_cubit.dart';
 import 'package:smle/features/free_trial/data/repo/free_trial_repo.dart';
-import 'package:smle/features/auth/data/repo/login_repo.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';
@@ -19,25 +20,41 @@ import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
 import 'package:smle/features/q_bank/data/repo/q_bank_repo.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/data/repo/real_exam_repo.dart';
+import 'package:smle/features/revision/cubit/revision_cubit.dart';
 import 'package:smle/features/revision/data/repo/revision_repo.dart';
+import 'package:smle/features/scfhs_score_calculator/cubit/scfhs_score_calculator_cubit_cubit.dart';
+import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
 import 'package:smle/features/subscription/data/repo/subscription_repo.dart';
+import 'package:smle/features/support_privacy_policy/cubit/privacy_policy_cubit.dart';
 import 'package:smle/features/support_privacy_policy/data/repo/privacy_support_repo.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setupGetIt() async {
   getIt.registerLazySingleton<DioFactory>(() => DioFactory());
+  getIt.registerLazySingleton<LoginCubit>(() => LoginCubit(getIt()));
   getIt.registerLazySingleton<MainLayoutCubit>(() => MainLayoutCubit(getIt()));
   getIt.registerFactory<NotificationCubit>(() => NotificationCubit());
+  getIt.registerFactory<PrivacyPolicySupportCubit>(
+    () => PrivacyPolicySupportCubit(getIt()),
+  );
+  getIt.registerFactory<ScfhsScoreCalculatorCubit>(
+    () => ScfhsScoreCalculatorCubit(getIt()),
+  );
+  getIt.registerFactory<SubscriptionCubit>(
+    () => SubscriptionCubit(getIt(), getIt()),
+  );
   getIt.registerLazySingleton<AnalysisRepository>(
     () => AnalysisRepository(getIt()),
   );
-  getIt.registerFactory<AnalysisCubit>(() => AnalysisCubit(getIt()));
+  getIt.registerLazySingleton<AnalysisCubit>(() => AnalysisCubit(getIt()));
   getIt.registerLazySingleton<ExamsHistoryRepository>(
     () => ExamsHistoryRepository(getIt()),
   );
 
   getIt.registerFactory<ExamsHistoryCubit>(() => ExamsHistoryCubit(getIt()));
+  getIt.registerFactory<RevisionCubit>(() => RevisionCubit(getIt()));
+
   getIt.registerLazySingleton<MainLayoutRepository>(
     () => MainLayoutRepository(getIt()),
   );

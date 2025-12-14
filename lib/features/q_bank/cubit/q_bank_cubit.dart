@@ -19,9 +19,9 @@ class QBankCubit extends SafeCubit<QBankStates> {
     return super.close();
   }
 
-  // --- تم تطبيق التصحيح هنا ---
+  bool isSubCategoriesLoading = false;
+
   DateTime selectedYearDate = DateTime(2024);
-  // -----------------------------
 
   bool isAllMonthsSelected = true;
   List<int> selectedMonths = [];
@@ -44,51 +44,22 @@ class QBankCubit extends SafeCubit<QBankStates> {
     emit(StartQuizLoadingState());
 
     final int limit = int.tryParse(numberOfQuestionsController.text) ?? 0;
-    dynamic apiYear;
-    dynamic apiMonth;
+    List apiYear;
+    List apiMonth;
     int apiAllMonths = 0;
 
     if (isAllYearsSelected) {
-      apiYear = '2024, 2025';
+      apiYear = [2024, 2025];
 
-      // --- التعديل الأول: جعل allMonths يساوي 1 ---
       apiAllMonths = 1;
-      // -------------------------------------------
 
-      // ونرسل أيضاً الشهور كما طلبت
-      apiMonth = [
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '10',
-        '11',
-        '12',
-      ];
+      apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     } else {
-      apiYear = selectedYearDate.year;
+      apiYear = [selectedYearDate.year];
 
       if (isAllMonthsSelected) {
         apiAllMonths = 1;
-        apiMonth = [
-          '1',
-          '2',
-          '3',
-          '4',
-          '5',
-          '6',
-          '7',
-          '8',
-          '9',
-          '10',
-          '11',
-          '12',
-        ];
+        apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
       } else {
         apiAllMonths = 0;
         apiMonth = selectedMonths;
@@ -175,21 +146,24 @@ class QBankCubit extends SafeCubit<QBankStates> {
 
   List<Subcategories> aggregatedSubcategories = [];
   Future getSubCategoriesForSelected() async {
+    isSubCategoriesLoading = true;
     emit(GetSubCategoriesLoadingState());
-    aggregatedSubcategories.clear();
 
     final previousSubCategoryIds = List<int>.from(selectedSubCategoryIds);
-    selectedSubCategoryIds.clear();
-    selectedSubCategoryNames.clear();
 
     if (selectedCategoryIds.isEmpty) {
+      aggregatedSubcategories.clear();
+      selectedSubCategoryIds.clear();
+      selectedSubCategoryNames.clear();
       await updateAvailableQuestionsCount();
+      isSubCategoriesLoading = false;
       emit(GetSubCategoriesSuccessState());
       return;
     }
 
     try {
       final List<Subcategories> allSubcategories = [];
+
       for (var categoryId in selectedCategoryIds) {
         final result = await _qBankRepository.getSubCategories('$categoryId');
         result.when(
@@ -198,30 +172,36 @@ class QBankCubit extends SafeCubit<QBankStates> {
               allSubcategories.addAll(success.data!.subcategories!);
             }
           },
-          failure: (error) {
-            debugPrintWidget(
-              'Failed to fetch subcategories for category $categoryId',
-            );
-          },
+          failure: (_) {},
         );
       }
 
-      final uniqueSubcategories = <int, Subcategories>{};
+      final unique = <int, Subcategories>{};
       for (var sub in allSubcategories) {
-        uniqueSubcategories[sub.id!] = sub;
+        unique[sub.id!] = sub;
       }
-      aggregatedSubcategories = uniqueSubcategories.values.toList();
 
-      for (var sub in aggregatedSubcategories) {
-        if (previousSubCategoryIds.contains(sub.id)) {
-          selectedSubCategoryIds.add(sub.id!);
-          selectedSubCategoryNames.add(sub.name!);
-        }
-      }
+      aggregatedSubcategories = unique.values.toList();
+
+      selectedSubCategoryIds
+        ..clear()
+        ..addAll(
+          aggregatedSubcategories
+              .where((e) => previousSubCategoryIds.contains(e.id))
+              .map((e) => e.id!),
+        );
+
+      selectedSubCategoryNames
+        ..clear()
+        ..addAll(
+          aggregatedSubcategories
+              .where((e) => previousSubCategoryIds.contains(e.id))
+              .map((e) => e.name!),
+        );
 
       await updateAvailableQuestionsCount();
       emit(GetSubCategoriesSuccessState());
-    } catch (e) {
+    } catch (_) {
       emit(GetSubCategoriesFailedState());
     }
   }
@@ -263,48 +243,22 @@ class QBankCubit extends SafeCubit<QBankStates> {
     }
 
     emit(GetQuestionsCountLoadingState());
-    dynamic apiYear;
-    dynamic apiMonth;
+    List apiYear;
+    List apiMonth;
     int apiAllMonths = 0;
 
     if (isAllYearsSelected) {
-      apiYear = '2024, 2025';
+      apiYear = [2024, 2025];
 
       apiAllMonths = 1;
 
-      apiMonth = [
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '10',
-        '11',
-        '12',
-      ];
+      apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     } else {
-      apiYear = selectedYearDate.year;
+      apiYear = [selectedYearDate.year];
 
       if (isAllMonthsSelected) {
         apiAllMonths = 1;
-        apiMonth = [
-          '1',
-          '2',
-          '3',
-          '4',
-          '5',
-          '6',
-          '7',
-          '8',
-          '9',
-          '10',
-          '11',
-          '12',
-        ];
+        apiMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
       } else {
         apiAllMonths = 0;
         apiMonth = selectedMonths;
@@ -432,7 +386,7 @@ class QBankCubit extends SafeCubit<QBankStates> {
     emit(GetPlaylistQuestionsLoadingState());
     final result = await _qBankRepository.getPlaylistQuestions(
       playlistId: playlistId,
-      limit: 1, // سؤال واحد فقط
+      limit: 1,
       offset: offset,
     );
     result.when(
@@ -447,7 +401,7 @@ class QBankCubit extends SafeCubit<QBankStates> {
           message: success.message,
           data: success.data,
         );
-        index = 0; // دائماً index=0 لأن limit=1
+        index = 0;
         isAnswered = false;
         // selectedAnswer = null;
         hideLoading();
@@ -462,7 +416,7 @@ class QBankCubit extends SafeCubit<QBankStates> {
 
   Future<void> addQuestionNote(String note) async {
     final currentQuestion = qBankModel!.data![index];
-    final questionId = currentQuestion.id ?? currentQuestion.questionbankId;
+    final questionId = currentQuestion.id ?? currentQuestion.id;
 
     if (questionId == null) return;
 

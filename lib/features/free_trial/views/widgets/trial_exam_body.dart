@@ -161,7 +161,7 @@ class _TrialExamBodyState extends State<TrialExamBody> {
     final bool isLast = currentQuestionNo == totalQuestions;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
       decoration: BoxDecoration(
         color: AppColors.offwhiteColor,
         borderRadius: BorderRadius.only(
@@ -210,7 +210,7 @@ class _TrialExamBodyState extends State<TrialExamBody> {
         ),
         padding: EdgeInsets.symmetric(
           horizontal: 24.w,
-          vertical: SizeConfig.responsiveValue(phone: 8.h, tablet: 8.h),
+          vertical: SizeConfig.responsiveValue(phone: 4.h, tablet: 8.h),
         ),
       ),
       child: Text(text, style: AppTextStyle.style14Bold.copyWith(height: 0)),

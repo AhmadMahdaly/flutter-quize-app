@@ -1,0 +1,189 @@
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/functions/responsive_config.dart';
+import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
+import 'package:smle/features/analysis/widgets/analysis_chart_widget.dart';
+import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
+import 'package:smle/features/exams_history/data/models/exams_history_model.dart';
+import 'package:smle/features/exams_history/widgets/exam_score_card.dart';
+
+class AnalysisDashboardScreen extends StatefulWidget {
+  const AnalysisDashboardScreen({super.key});
+
+  @override
+  State<AnalysisDashboardScreen> createState() =>
+      _AnalysisDashboardScreenState();
+}
+
+class _AnalysisDashboardScreenState extends State<AnalysisDashboardScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AnalysisCubit>().getAnalysis();
+    context.read<ExamsHistoryCubit>().fetchExamsHistory();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final examsCubit = context.watch<ExamsHistoryCubit>();
+
+    return Scaffold(
+      appBar: CustomAppBar(title: 'analysis'.tr(context)),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _OverallAnalysisSection(),
+
+            30.verticalSpace,
+
+            Text('Exams', style: AppTextStyle.style16Bold),
+            16.verticalSpace,
+
+            BlocBuilder<ExamsHistoryCubit, ExamsHistoryState>(
+              builder: (context, state) {
+                if (state is ExamsHistoryLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (state is ExamsHistorySuccess &&
+                    examsCubit.allExams.isEmpty) {
+                  return Center(child: Text('no_exams_found'.tr(context)));
+                }
+
+                if (state is ExamsHistorySuccess) {
+                  return Column(
+                    children: examsCubit.allExams
+                        .map(
+                          (exam) => Padding(
+                            padding: EdgeInsets.only(bottom: 16.h),
+                            child: GestureDetector(
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRoutes.examAnalysisScreen,
+                                  arguments: exam,
+                                );
+                              },
+                              child: ExamScoreCard(exam: exam),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                }
+
+                if (state is ExamsHistoryFailure) {
+                  return Center(child: Text(state.errorMessage));
+                }
+
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _OverallAnalysisSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final exams = context.watch<ExamsHistoryCubit>().allExams;
+
+    if (exams.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Overall Performance', style: AppTextStyle.style16Bold),
+        16.verticalSpace,
+        SizedBox(
+          height: 260.h,
+          child: LineChart(
+            LineChartData(
+              minY: 0,
+              maxY: 100,
+              lineBarsData: [
+                LineChartBarData(
+                  isCurved: true,
+                  barWidth: 3,
+                  spots: exams
+                      .asMap()
+                      .entries
+                      .map(
+                        (e) => FlSpot(
+                          e.key.toDouble(),
+                          (e.value.score ?? 0).toDouble(),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+enum AnalysisViewMode { overall, exam }
+
+class ExamAnalysisScreen extends StatelessWidget {
+  const ExamAnalysisScreen({super.key, required this.exam});
+
+  final Exam exam;
+
+  @override
+  Widget build(BuildContext context) {
+    final analysis = context.read<AnalysisCubit>().analysisModel;
+
+    return Scaffold(
+      appBar: CustomAppBar(title: 'Exam ${exam.examNo}'),
+      body: analysis == null || analysis.data == null
+          ? const SizedBox.shrink()
+          : SingleChildScrollView(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  15.verticalSpace,
+                  Center(
+                    child: Text(
+                      'Score: ${exam.score ?? 0} / 100',
+                      style: AppTextStyle.style20W600,
+                    ),
+                  ),
+                  30.verticalSpace,
+                  const Divider(color: AppColors.darkGreyColor),
+                  20.verticalSpace,
+                  Text(
+                    'This analysis reflects your latest exam only',
+                    style: AppTextStyle.style14W500.copyWith(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  30.verticalSpace,
+
+                  /// Chart
+                  PerformanceChart(data: analysis.data!),
+
+                  30.verticalSpace,
+
+                  /// Detailed Table
+                  buildDetailedTable(context, analysis.data!),
+                ],
+              ),
+            ),
+    );
+  }
+}

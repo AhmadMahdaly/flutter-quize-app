@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
@@ -10,28 +11,50 @@ class PrivacySupportRepository {
   final DioFactory _dioFactory;
 
   Future<ApiResult<PrivacySupportModel>> getSupport() async {
-    final response = await _dioFactory.get(endPoint: EndPoints.support);
-    if (response!.statusCode == 200) {
-      final PrivacySupportModel model =
-          PrivacySupportModel.fromJson(response.data);
-      return ApiResult.success(model);
-    } else {
-      debugPrintWidget(response.data['error']);
-      return ApiResult.failure(ServerFailure.fromResponse(
-          response.statusCode, response.data['error']));
+    try {
+      final response = await _dioFactory.get(endPoint: EndPoints.support);
+      if (response!.statusCode == 200) {
+        final PrivacySupportModel model = PrivacySupportModel.fromJson(
+          response.data,
+        );
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['error']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['error'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 
   Future<ApiResult<PrivacySupportModel>> getPrivacyPolicy() async {
-    final response = await _dioFactory.get(endPoint: EndPoints.privacyPolicy);
-    if (response!.statusCode == 200) {
-      final PrivacySupportModel model =
-          PrivacySupportModel.fromJson(response.data);
-      return ApiResult.success(model);
-    } else {
-      debugPrintWidget(response.data['error']);
-      return ApiResult.failure(ServerFailure.fromResponse(
-          response.statusCode, response.data['error']));
+    try {
+      final response = await _dioFactory.get(endPoint: EndPoints.privacyPolicy);
+      if (response!.statusCode == 200) {
+        final PrivacySupportModel model = PrivacySupportModel.fromJson(
+          response.data,
+        );
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['error']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['error'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
 }

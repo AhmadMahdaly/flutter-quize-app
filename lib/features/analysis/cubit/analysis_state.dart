@@ -13,3 +13,7 @@ class GetAnalysisFailedState extends AnalysisStates {
   GetAnalysisFailedState({required this.error});
   final String error;
 }
+
+class AnalysisModeChanged extends AnalysisStates {}
+
+enum AnalysisMode { overall, exam }

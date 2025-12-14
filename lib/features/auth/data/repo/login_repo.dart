@@ -88,14 +88,23 @@ class LoginRepository {
   }
 
   Future<ApiResult<LoginModel>> _handleSuccess(Response response) async {
-    final LoginModel model = LoginModel.fromJson(response.data);
-    if (model.data?.token != null) {
-      await CacheHelper.saveData(
-        key: CacheKeys.userToken,
-        value: model.data!.token!,
-      );
-      await CacheHelper.saveData(key: CacheKeys.userId, value: model.data!.id!);
+    try {
+      final LoginModel model = LoginModel.fromJson(response.data);
+      if (model.data?.token != null) {
+        await CacheHelper.saveData(
+          key: CacheKeys.userToken,
+          value: model.data!.token!,
+        );
+        await CacheHelper.saveData(
+          key: CacheKeys.userId,
+          value: model.data!.id!,
+        );
+      }
+      return ApiResult.success(model);
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
-    return ApiResult.success(model);
   }
 }

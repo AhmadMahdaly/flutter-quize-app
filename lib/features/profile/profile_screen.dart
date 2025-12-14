@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smle/core/cache_helper/cache_helper.dart';
-import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
@@ -12,8 +10,8 @@ import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/auth/cubit/login_cubit.dart';
+import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/profile/widgets/profile_button_widget.dart';
 
@@ -22,8 +20,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginCubit(getIt()),
+    return BlocProvider.value(
+      value: getIt<LoginCubit>(),
       child: BlocBuilder<MainLayoutCubit, MainLayoutState>(
         builder: (context, state) {
           return context.read<MainLayoutCubit>().profileModel == null
@@ -217,9 +215,11 @@ class ProfileScreen extends StatelessWidget {
                                                         .read<MainLayoutCubit>()
                                                         .deleteAccount();
                                                   } catch (_) {}
-                                                  await CacheHelper.removeData(
-                                                    key: CacheKeys.userToken,
-                                                  );
+                                                  if (context.mounted) {
+                                                    context
+                                                        .read<MainLayoutCubit>()
+                                                        .clearDataOnLogOut();
+                                                  }
                                                   await context
                                                       .pushReplacementNamed(
                                                         AppRoutes.loginScreen,
@@ -242,16 +242,17 @@ class ProfileScreen extends StatelessWidget {
                                                     'Are you sure you want to log out?',
                                                 onConfirm: () async {
                                                   try {
-                                                    await context
-                                                        .read<LoginCubit>()
-                                                        .logOut();
+                                                    if (context.mounted) {
+                                                      await context
+                                                          .read<LoginCubit>()
+                                                          .logOut();
+                                                    }
                                                   } catch (_) {}
-
-                                                  await CacheHelper
-                                                      .sharedPreferences
-                                                      .remove(
-                                                        CacheKeys.userToken,
-                                                      );
+                                                  if (context.mounted) {
+                                                    context
+                                                        .read<MainLayoutCubit>()
+                                                        .clearDataOnLogOut();
+                                                  }
                                                   await context
                                                       .pushReplacementNamed(
                                                         AppRoutes.loginScreen,
@@ -261,7 +262,7 @@ class ProfileScreen extends StatelessWidget {
                                         );
                                       },
                                     ),
-                                    30.verticalSpace,
+                                    8.verticalSpace,
                                   ],
                                 ),
                               ],

@@ -15,6 +15,7 @@ import 'package:smle/core/routing/app_router.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/themes.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
+import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 
 class MyApp extends StatelessWidget {
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 getIt<CheckSubscriptionCubit>()..loadSubscription(),
           ),
+          BlocProvider.value(value: getIt<MainLayoutCubit>()),
         ],
         child: MaterialApp(
           onGenerateRoute: AppRouter().generateRoute,

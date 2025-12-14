@@ -4,17 +4,19 @@ import 'package:page_transition/page_transition.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/features/SCFHS_score_calculator/scfhs_score_calculator_screen.dart';
+import 'package:smle/features/analysis/analysis_dashboard_screen.dart';
 import 'package:smle/features/analysis/analysis_screen.dart';
 import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
-import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
-import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
-import 'package:smle/features/exams_history/exams_history_screen.dart';
-import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
-import 'package:smle/features/gifts/gifts_screen.dart';
-import 'package:smle/features/guest/main_layout_page.dart';
-import 'package:smle/features/home/home_screen.dart';
 import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/auth/login_screen.dart';
+import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
+import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
+import 'package:smle/features/exams_history/data/models/exams_history_model.dart';
+import 'package:smle/features/exams_history/exams_history_screen.dart';
+import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
+import 'package:smle/features/free_trial/views/webview_trial.dart';
+import 'package:smle/features/gifts/gifts_screen.dart';
+import 'package:smle/features/home/home_screen.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/main_layout.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';
@@ -51,7 +53,7 @@ class AppRouter {
       Object? arguments,
     }) {
       final child = cubit != null
-          ? BlocProvider<T>(create: (context) => cubit, child: screen)
+          ? BlocProvider<T>.value(value: cubit, child: screen)
           : screen;
 
       return PageTransition(
@@ -71,38 +73,46 @@ class AppRouter {
       case AppRoutes.loginScreen:
         return transition(
           screen: const LoginScreen(),
-          cubit: LoginCubit(getIt()),
+          cubit: getIt<LoginCubit>(),
+        );
+      case AppRoutes.analysisDashboardScreen:
+        return transition(
+          screen: BlocProvider.value(
+            value: getIt<ExamsHistoryCubit>()..fetchExamsHistory(),
+            child: const AnalysisDashboardScreen(),
+          ),
+          cubit: getIt<AnalysisCubit>()..getAnalysis(),
+        );
+      case AppRoutes.examAnalysisScreen:
+        final exam = settings.arguments as Exam;
+        return transition(
+          screen: ExamAnalysisScreen(exam: exam),
+          cubit: getIt<AnalysisCubit>(),
         );
       case AppRoutes.profileScreen:
-        return transition(
-          screen: const ProfileScreen(),
-          cubit: MainLayoutCubit(getIt())..getProfile(),
-        );
+        return transition(screen: const ProfileScreen());
       case AppRoutes.giftsScreen:
-        return transition(
-          screen: const GiftsScreen(),
-          cubit: MainLayoutCubit(getIt())..getGifts(),
-        );
+        return transition(screen: const GiftsScreen());
 
       case AppRoutes.notificationScreen:
         return transition(
           screen: const NotificationScreen(),
-          cubit: NotificationCubit(),
+          cubit: getIt<NotificationCubit>(),
         );
       case AppRoutes.privacyPolicyScreen:
         return transition(
           screen: const PrivacyPolicyScreen(),
-          cubit: PrivacyPolicySupportCubit(getIt())..getPrivacyPolicy(),
+          cubit: getIt<PrivacyPolicySupportCubit>()..getPrivacyPolicy(),
         );
       case AppRoutes.supportScreen:
         return transition(
           screen: const SupportScreen(),
-          cubit: PrivacyPolicySupportCubit(getIt())..getSupport(),
+          cubit: getIt<PrivacyPolicySupportCubit>()..getSupport(),
         );
       case AppRoutes.sCFHSScoreCalculatorScreen:
         return transition(
           screen: const ScfhsScoreCalculatorScreen(),
-          cubit: ScfhsScoreCalculatorCubit(getIt())..getCalculatorInfo(),
+          cubit: getIt<ScfhsScoreCalculatorCubit>()..getCalculatorInfo(),
         );
       case AppRoutes.subscriptionScreen:
         final offerId = settings.arguments as int;
@@ -111,7 +121,7 @@ class AppRouter {
             value: getIt<CheckSubscriptionCubit>()..loadSubscription(),
             child: SubscriptionScreen(offerId: offerId),
           ),
-          cubit: SubscriptionCubit(getIt(), getIt())..getPackages(),
+          cubit: getIt<SubscriptionCubit>()..getPackages(),
         );
       // case Routes.paymentScreen:
       //   // final packageId = settings.arguments as String;
@@ -130,7 +140,7 @@ class AppRouter {
         final isExam = settings.arguments as bool;
         return transition(
           screen: AnalysisScreen(isExam: isExam),
-          cubit: AnalysisCubit(getIt())..getAnalysis(),
+          cubit: getIt<AnalysisCubit>()..getAnalysis(),
         );
       case AppRoutes.createQuizScreen:
         final istrial = settings.arguments as bool?;
@@ -149,24 +159,24 @@ class AppRouter {
       case AppRoutes.examsHistoryScreen:
         return transition(
           screen: const ExamsHistoryScreen(),
-          cubit: ExamsHistoryCubit(getIt())..fetchExamsHistory(),
+          cubit: getIt<ExamsHistoryCubit>()..fetchExamsHistory(),
         );
       case AppRoutes.revisionScreen:
         final categoryId = settings.arguments as String;
         return transition(
           screen: const RevisionScreen(),
-          cubit: RevisionCubit(getIt())..getSubCategories(categoryId),
+          cubit: getIt<RevisionCubit>()..getSubCategories(categoryId),
         );
       case AppRoutes.categoriesScreen:
         return transition(
           screen: const CategoriesScreen(),
-          cubit: RevisionCubit(getIt())..getCategories(),
+          cubit: getIt<RevisionCubit>()..getCategories(),
         );
       case AppRoutes.subcategoriesScreen:
         final categoryId = settings.arguments as String;
         return transition(
           screen: const SubcategoriesScreen(),
-          cubit: RevisionCubit(getIt())..getSubCategories(categoryId),
+          cubit: getIt<RevisionCubit>()..getSubCategories(categoryId),
         );
       case AppRoutes.playListScreen:
         final args = settings.arguments as Map<String, dynamic>;
@@ -190,8 +200,8 @@ class AppRouter {
         );
       case AppRoutes.mainLayoutScreen:
         return PageTransition(
-          child: BlocProvider(
-            create: (context) => getIt<MainLayoutCubit>()..getProfile(),
+          child: BlocProvider.value(
+            value: getIt<MainLayoutCubit>()..getProfile(),
             child: const MainLayoutScreen(),
           ),
           type: PageTransitionType.fade,
@@ -201,35 +211,29 @@ class AppRouter {
         );
 
       case AppRoutes.realExamScreen:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: getIt<RealExamCubit>(),
-            child: const RealExamPage(),
-          ),
+        return transition(
+          screen: const RealExamPage(),
+          cubit: getIt<RealExamCubit>(),
         );
 
       case AppRoutes.confirmAccessToRealExam:
-        final args = settings.arguments as Map<String, dynamic>?;
-        final remainingAttempts = args?['remainingAttempts'] as int;
-        final onStart = args?['onStart'] as VoidCallback;
-        return MaterialPageRoute(
-          builder: (_) => ConfirmAccessToRealExam(
-            remainingAttempts: remainingAttempts,
-            onStart: onStart,
-          ),
+        return transition(
+          screen: const ConfirmAccessToRealExam(),
+          cubit: getIt<CheckSubscriptionCubit>()..loadSubscription(),
         );
+
       // case Routes.examResultsPage:
       //   final results = settings.arguments as FinishAnalysisExamModel;
       //   return MaterialPageRoute(
       //     builder: (_) => ExamResultsPage(results: results),
       //   );
-      case AppRoutes.guestScreen:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<MainLayoutCubit>(),
-            child: const GuestMainLayoutScreen(),
-          ),
-        );
+      // case AppRoutes.guestScreen:
+      //   return MaterialPageRoute(
+      //     builder: (_) => BlocProvider(
+      //       create: (context) => getIt<MainLayoutCubit>(),
+      //       child: const GuestMainLayoutScreen(),
+      //     ),
+      //   );
       case AppRoutes.pdfViewerFromUrlScreen:
         final url = settings.arguments as String;
         return MaterialPageRoute(
@@ -248,10 +252,12 @@ class AppRouter {
   }
 
   List<Widget> screen = [
-    BlocProvider(
-      create: (context) => getIt<QBankCubit>()..getCategories(),
-      child: const CreateQuizScreen(istrial: true),
-    ),
+    // BlocProvider(
+    //   create: (context) => getIt<QBankCubit>()..getCategories(),
+    //   child: const CreateQuizScreen(istrial: true),
+    // ),
+    const WebViewScreen(),
+
     const HomeScreen(),
     const ProfileScreen(),
   ];
