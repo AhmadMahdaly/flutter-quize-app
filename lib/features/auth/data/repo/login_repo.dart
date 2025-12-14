@@ -8,7 +8,7 @@ import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
 import 'package:smle/core/network/failures.dart';
-import 'package:smle/features/login/data/model/login_model.dart';
+import 'package:smle/features/auth/data/model/login_model.dart';
 
 class LoginRepository {
   LoginRepository(this._dioFactory);

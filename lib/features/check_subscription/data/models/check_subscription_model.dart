@@ -12,22 +12,22 @@ class CheckSubscriptionModel {
     return CheckSubscriptionModel(
       isSubscribed: _toBool(json['is_subscribed']),
       qBank: _toBool(json['q_bank']),
-      availableRealExam: _toInt(json['available_real_exam']),
+      availableRealExam: json['available_real_exam']?.toString(),
       expireDate: json['expire_date'] as String?,
     );
   }
 
   final bool? isSubscribed;
   final bool? qBank;
-  final int? availableRealExam;
+  final String? availableRealExam;
   final String? expireDate;
 
   // -------- Helpers ----------
-  static int? _toInt(dynamic value) {
-    if (value == null) return null;
-    if (value is int) return value;
-    return int.tryParse(value.toString());
-  }
+  // static int? _toInt(dynamic value) {
+  //   if (value == null) return null;
+  //   if (value is int) return value;
+  //   return int.tryParse(value.toString());
+  // }
 
   static bool? _toBool(dynamic value) {
     if (value == null) return null;

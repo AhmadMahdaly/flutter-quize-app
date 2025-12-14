@@ -13,7 +13,7 @@ import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
-import 'package:smle/features/login/cubit/login_cubit.dart';
+import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/profile/widgets/profile_button_widget.dart';
 
@@ -261,6 +261,7 @@ class ProfileScreen extends StatelessWidget {
                                         );
                                       },
                                     ),
+                                    30.verticalSpace,
                                   ],
                                 ),
                               ],

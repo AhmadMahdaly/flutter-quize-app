@@ -1,4 +1,3 @@
-// MODELS
 class LoginModel {
   LoginModel({this.status, this.message, this.data});
 

@@ -21,25 +21,23 @@ class TopBannerWidget extends StatelessWidget {
           children: [
             SizedBox(
               width: SizeConfig.screenWidth / 2,
-              child: FittedBox(
-                child: Text.rich(
-                  maxLines: 2,
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '+10,000 ',
-                        style: AppTextStyle.style16Bold.copyWith(
-                          color: AppColors.secondaryColor,
-                        ),
+              child: Text.rich(
+                maxLines: 2,
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '+10,000 ',
+                      style: AppTextStyle.style16Bold.copyWith(
+                        color: AppColors.secondaryColor,
                       ),
-                      TextSpan(
-                        text: 'Questions across\nall medical specialties',
-                        style: AppTextStyle.style16Bold.copyWith(
-                          color: AppColors.thirdColor,
-                        ),
+                    ),
+                    TextSpan(
+                      text: 'Questions across\nall medical specialties',
+                      style: AppTextStyle.style16Bold.copyWith(
+                        color: AppColors.thirdColor,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -17,8 +17,8 @@ import 'package:smle/features/q_bank/widgets/question_button_widget.dart';
 import 'package:smle/features/q_bank/widgets/year_picker_widget.dart';
 
 class CreateQuizScreen extends StatefulWidget {
-  const CreateQuizScreen({super.key});
-
+  const CreateQuizScreen({super.key, this.istrial});
+  final bool? istrial;
   @override
   State<CreateQuizScreen> createState() => _CreateQuizScreenState();
 }
@@ -36,7 +36,9 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: CustomAppBar(title: 'create_quiz'.tr(context)),
+      appBar: widget.istrial ?? false
+          ? const CustomAppBar(title: 'Free Trial quiz', canBack: false)
+          : CustomAppBar(title: 'create_quiz'.tr(context)),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),

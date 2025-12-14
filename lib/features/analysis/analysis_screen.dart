@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
@@ -12,7 +11,6 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
 import 'package:smle/features/analysis/widgets/analysis_chart_widget.dart';
-import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 
 class AnalysisScreen extends StatelessWidget {
   const AnalysisScreen({super.key, required this.isExam});
@@ -30,7 +28,7 @@ class AnalysisScreen extends StatelessWidget {
             color: AppColors.iconColorBlack,
           ),
           onPressed: () {
-            getIt<RealExamCubit>().resetExam();
+            // getIt<RealExamCubit>().resetExam();
             context.pushReplacementNamed(AppRoutes.mainLayoutScreen);
           },
         ),
@@ -184,7 +182,7 @@ class AnalysisScreen extends StatelessWidget {
                       CustomPrimaryButton(
                         text: 'Back to Home',
                         onPressed: () {
-                          getIt<RealExamCubit>().resetExam();
+                          // getIt<RealExamCubit>().resetExam();
                           context.pushReplacementNamed(
                             AppRoutes.mainLayoutScreen,
                           );

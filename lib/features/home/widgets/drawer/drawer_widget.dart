@@ -12,7 +12,7 @@ import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/home/widgets/drawer/drawer_item_widget.dart';
-import 'package:smle/features/login/cubit/login_cubit.dart';
+import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 
 class DrawerWidget extends StatelessWidget {

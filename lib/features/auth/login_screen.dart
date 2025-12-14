@@ -9,8 +9,8 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import 'package:smle/features/login/cubit/login_cubit.dart';
-import 'package:smle/features/login/widgets/login_button.dart';
+import 'package:smle/features/auth/cubit/login_cubit.dart';
+import 'package:smle/features/auth/widgets/login_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -90,15 +90,7 @@ class LoginScreen extends StatelessWidget {
                         style: AppTextStyle.style18W500,
                         textAlign: TextAlign.center,
                       ),
-                      // Text(
-                      //   'log_in'.tr(context),
-                      //   style: interBold.copyWith(
-                      //     fontSize: SizeConfig.responsiveValue(
-                      //       phone: 18.sp,
-                      //       tablet: 22.sp,
-                      //     ),
-                      //   ),
-                      // ),
+
                       30.verticalSpace,
                       BlocBuilder<LoginCubit, LoginStates>(
                         builder: (context, state) {
@@ -111,35 +103,14 @@ class LoginScreen extends StatelessWidget {
                             onTap: () {
                               if (Platform.isAndroid) {
                                 context.read<LoginCubit>().logInWithGoogle();
-                                // context.pushReplacementNamed(
-                                //   Routes.mainLayoutScreen,
-                                // );
                               } else {
                                 context.read<LoginCubit>().logInWithApple();
-                                // context.pushReplacementNamed(
-                                //   Routes.mainLayoutScreen,
-                                // );
                               }
                             },
                           );
                         },
                       ),
                       8.verticalSpace,
-                      // TextButton(
-                      //   onPressed: () {
-                      //     context.pushReplacementNamed(Routes.guestScreen);
-                      //   },
-                      //   child: Text(
-                      //     'Continue As Guest',
-                      //     style: interBold.copyWith(
-                      //       color: AppColors.secondaryColor,
-                      //       fontSize: SizeConfig.responsiveValue(
-                      //         phone: 14.sp,
-                      //         tablet: 18.sp,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
 
@@ -163,8 +134,9 @@ class LoginScreen extends StatelessWidget {
                               style: AppTextStyle.style12W500,
                             ),
                             InkWell(
-                              onTap: () =>
-                                  context.pushNamed(AppRoutes.privacyPolicyScreen),
+                              onTap: () => context.pushNamed(
+                                AppRoutes.privacyPolicyScreen,
+                              ),
                               child: Text(
                                 'privacy_policy'.tr(context),
 

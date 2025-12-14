@@ -9,7 +9,7 @@ import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/data/repo/exams_history_repository.dart';
 import 'package:smle/features/free_trial/cubit/free_trial_cubit.dart';
 import 'package:smle/features/free_trial/data/repo/free_trial_repo.dart';
-import 'package:smle/features/login/data/repo/login_repo.dart';
+import 'package:smle/features/auth/data/repo/login_repo.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';

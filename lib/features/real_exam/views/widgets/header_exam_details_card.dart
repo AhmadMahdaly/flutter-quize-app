@@ -25,7 +25,6 @@ class HeaderExamDetailsCard extends StatelessWidget {
     final section = question.section;
     final progressValue = qNo! / totalQuestions;
 
-    // Get the timer state from the cubit
     final cubit = context.watch<RealExamCubit>();
     final sectionEndTimeString = cubit.state.sectionEndTimes[section];
     final endTime = sectionEndTimeString != null
@@ -37,7 +36,10 @@ class HeaderExamDetailsCard extends StatelessWidget {
         8.verticalSpace,
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.w,
+            vertical: SizeConfig.responsiveValue(phone: 8.h, tablet: 4.h),
+          ),
           decoration: BoxDecoration(
             color: AppColors.secondaryColor,
             borderRadius: BorderRadius.only(
@@ -62,14 +64,20 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       color: AppColors.thirdColor,
                     ),
                   ),
-                  4.verticalSpace,
+                  SizeConfig.responsiveValue(
+                    phone: 4.verticalSpace,
+                    tablet: 2.verticalSpace,
+                  ),
                   Text(
                     'Section: $section',
                     style: AppTextStyle.style14W500.copyWith(
                       color: AppColors.thirdColor,
                     ),
                   ),
-                  4.verticalSpace,
+                  SizeConfig.responsiveValue(
+                    phone: 4.verticalSpace,
+                    tablet: 2.verticalSpace,
+                  ),
                   Column(
                     children: [
                       ClipRRect(
@@ -80,7 +88,10 @@ class HeaderExamDetailsCard extends StatelessWidget {
                             tablet: 130.w,
                           ),
                           child: LinearProgressIndicator(
-                            minHeight: 20.h,
+                            minHeight: SizeConfig.responsiveValue(
+                              phone: 20.h,
+                              tablet: 10.h,
+                            ),
                             value: progressValue,
                             backgroundColor: AppColors.thirdColor,
                             valueColor: const AlwaysStoppedAnimation<Color>(
@@ -111,10 +122,13 @@ class HeaderExamDetailsCard extends StatelessWidget {
                         color: AppColors.thirdColor,
                         size: SizeConfig.responsiveValue(
                           phone: 20.h,
-                          tablet: 24.h,
+                          tablet: 18.h,
                         ),
                       ),
-                      4.horizontalSpace,
+                      SizeConfig.responsiveValue(
+                        phone: 4.verticalSpace,
+                        tablet: 2.verticalSpace,
+                      ),
                       Text(
                         'Section time remaining',
                         style: AppTextStyle.style14W500.copyWith(
@@ -123,12 +137,13 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  5.verticalSpace,
+                  SizeConfig.responsiveValue(
+                    phone: 5.verticalSpace,
+                    tablet: 2.verticalSpace,
+                  ),
                   CustomTimerWidget(
                     endTime: endTime,
                     onTimerFinish: () {
-                      // This will be called when the timer hits zero.
-                      // You can show a dialog or automatically end the section.
                       showCustomPrimaryDialog(
                         canPop: false,
                         context,
@@ -141,11 +156,12 @@ class HeaderExamDetailsCard extends StatelessWidget {
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
-                                // Logic to end the section
+
                                 if (section == 1) {
                                   cubit.finishSection1AndStartBreak();
                                 } else {
                                   cubit.finishExam();
+                                  cubit.resetExam();
                                 }
                               },
                               child: const Text('OK'),
@@ -155,9 +171,14 @@ class HeaderExamDetailsCard extends StatelessWidget {
                       );
                     },
                   ),
-                  5.verticalSpace,
-
-                  5.verticalSpace,
+                  SizeConfig.responsiveValue(
+                    phone: 4.verticalSpace,
+                    tablet: 2.verticalSpace,
+                  ),
+                  SizeConfig.responsiveValue(
+                    phone: 4.verticalSpace,
+                    tablet: 0.verticalSpace,
+                  ),
                   InkWell(
                     onTap: () {
                       final cubit = context.read<RealExamCubit>();
@@ -171,7 +192,10 @@ class HeaderExamDetailsCard extends StatelessWidget {
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                        vertical: 5.w,
+                        vertical: SizeConfig.responsiveValue(
+                          phone: 4.h,
+                          tablet: 2.h,
+                        ),
                         horizontal: 10.w,
                       ),
                       decoration: BoxDecoration(
@@ -195,7 +219,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
 
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
           decoration: BoxDecoration(
             color: AppColors.successColor,
             borderRadius: BorderRadius.only(
@@ -209,65 +233,12 @@ class HeaderExamDetailsCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Row(
-              //   children: [
-              // Text(
-              //   'Test:',
-              //   style: interRegular.copyWith(
-              //     fontSize: SizeConfig.responsiveValue(
-              //       phone: 14.sp,
-              //       tablet: 20.sp,
-              //     ),
-              //     color: AppColors.thirdColor,
-              //     fontWeight: FontWeight.bold,
-              //   ),
-              // ),
               Text(
                 'Test your knowledge with Smle Gate app',
                 style: AppTextStyle.style14W500.copyWith(
                   color: AppColors.thirdColor,
                 ),
               ),
-              //   ],
-              // ),
-              // Row(
-              //   children: [
-              //     Text(
-              //       'Candidate:',
-              //       style: interRegular.copyWith(
-              //         fontSize: SizeConfig.responsiveValue(
-              //           phone: 14.sp,
-              //           tablet: 20.sp,
-              //         ),
-              //         color: AppColors.thirdColor,
-              //         fontWeight: FontWeight.bold,
-              //       ),
-              //     ),
-              //     Text(
-              //       'Saudi-Bot.com',
-              //       style: interRegular.copyWith(
-              //         fontSize: SizeConfig.responsiveValue(
-              //           phone: 14.sp,
-              //           tablet: 20.sp,
-              //         ),
-              //         color: AppColors.thirdColor,
-              //       ),
-              //     ),
-              //     const Spacer(),
-              //     // Text(
-              //     //   'Free Trial',
-              //     //   style: interBold.copyWith(
-              //     //     fontSize: SizeConfig.responsiveValue(
-              //     //       phone: 18.sp,
-              //     //       tablet: 22.sp,
-              //     //     ),
-              //     //     color: AppColors.offwhiteColor,
-              //     //     fontWeight: FontWeight.w700,
-              //     //     height: 1.50.h,
-              //     //   ),
-              //     // ),
-              //   ],
-              // ),
             ],
           ),
         ),

@@ -13,8 +13,8 @@ import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
 import 'package:smle/features/gifts/gifts_screen.dart';
 import 'package:smle/features/guest/main_layout_page.dart';
 import 'package:smle/features/home/home_screen.dart';
-import 'package:smle/features/login/cubit/login_cubit.dart';
-import 'package:smle/features/login/login_screen.dart';
+import 'package:smle/features/auth/cubit/login_cubit.dart';
+import 'package:smle/features/auth/login_screen.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/main_layout.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';
@@ -133,15 +133,18 @@ class AppRouter {
           cubit: AnalysisCubit(getIt())..getAnalysis(),
         );
       case AppRoutes.createQuizScreen:
+        final istrial = settings.arguments as bool?;
         return transition(
-          screen: const CreateQuizScreen(),
-          cubit: QBankCubit(getIt())..getCategories(),
+          screen: CreateQuizScreen(istrial: istrial),
+          cubit: getIt<QBankCubit>()..getCategories(),
         );
       case AppRoutes.qBankScreen:
         final startQuizModel = settings.arguments as StartQuizModel;
         return transition(
-          screen: QBankScreen(startQuizModel: startQuizModel),
-          cubit: getIt<QBankCubit>(),
+          screen: BlocProvider.value(
+            value: getIt<QBankCubit>(),
+            child: QBankScreen(startQuizModel: startQuizModel),
+          ),
         );
       case AppRoutes.examsHistoryScreen:
         return transition(
@@ -245,7 +248,10 @@ class AppRouter {
   }
 
   List<Widget> screen = [
-    const TrialExamScreen(),
+    BlocProvider(
+      create: (context) => getIt<QBankCubit>()..getCategories(),
+      child: const CreateQuizScreen(istrial: true),
+    ),
     const HomeScreen(),
     const ProfileScreen(),
   ];
