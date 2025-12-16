@@ -84,7 +84,11 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
 
     result.when(
       success: (iframeUrl) {
-        _openPayMobWebView(context, iframeUrl);
+        if (context.mounted) {
+          _openPayMobWebView(context, iframeUrl);
+        } else {
+          log('Context is not mounted, cannot open WebView');
+        }
       },
       failure: (error) {
         if (!isClosed) emit(PurchaseFailedState(error.errMessage));
@@ -121,7 +125,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
               return NavigationDecision.prevent;
             }
             if (request.url.contains('your-callback-url')) {
-              Navigator.of(context).pop();
+              context.pop();
 
               if (request.url.contains('success')) {
                 if (!isClosed) emit(PurchaseSuccessState());

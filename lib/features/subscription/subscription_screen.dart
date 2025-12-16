@@ -77,7 +77,9 @@ class SubscriptionScreen extends StatelessWidget {
                         ? allBackendPackages
                               .where((p) => p.isExtra == true)
                               .toList()
-                        : allBackendPackages;
+                        : allBackendPackages
+                              .where((p) => p.isExtra != true)
+                              .toList();
 
                     return SingleChildScrollView(
                       padding: EdgeInsets.symmetric(
