@@ -15,6 +15,7 @@ import 'package:smle/features/check_subscription/data/models/check_subscription_
 import 'package:smle/features/main%20layout/data/model/profile_model.dart'
     hide Data;
 import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
+import 'package:smle/features/subscription/data/model/checkout_model.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
 import 'package:smle/features/subscription/data/repo/subscription_repo.dart';
 import 'package:webview_flutter/webview_flutter.dart' as webview_flutter;
@@ -57,16 +58,41 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     );
   }
 
+  CheckoutModel? checkoutData;
+
+  Future<void> getCheckoutDetails({required int offerId, String? code}) async {
+    showLoading();
+    emit(CheckoutLoadingState());
+    final result = await _subscriptionRepository.checkout(
+      offerId: offerId,
+      code: code,
+    );
+    result.when(
+      success: (data) {
+        hideLoading();
+        checkoutData = data;
+        emit(CheckoutSuccessState(data));
+      },
+      failure: (error) {
+        hideLoading();
+        emit(CheckoutFailedState(error.errMessage));
+      },
+    );
+  }
+
   late webview_flutter.WebViewController webViewController;
   Future<void> startPayMobPayment(
     BuildContext context,
-    Data packageData,
+    int offerId,
+    int amount,
+    String? code,
   ) async {
-    if (state is PurchaseLoadingState) return;
     emit(PurchaseLoadingState());
     showLoading();
-    final amountCents = (packageData.price ?? 0) * 100;
+
+    final amountCents = amount * 100; // المبلغ القادم هنا هو الإجمالي بعد الخصم
     await getProfile();
+
     final billingData = {
       'first_name': profileModel?.data?.name ?? '',
       'last_name': profileModel?.data?.id.toString() ?? '',
@@ -75,9 +101,10 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     };
 
     final result = await _subscriptionRepository.processPayment(
-      offerId: packageData.id ?? 0,
+      offerId: offerId,
       amountCents: amountCents,
       billingData: billingData,
+      code: code, // إرسال الكود
     );
 
     hideLoading();

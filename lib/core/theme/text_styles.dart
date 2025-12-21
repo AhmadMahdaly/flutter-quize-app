@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:smle/core/constants.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-
-import '../constants.dart';
 
 const double size9 = 9;
 const double size12 = 12;

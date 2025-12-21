@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
@@ -125,6 +127,7 @@ class GiftsScreen extends StatelessWidget {
                 );
               }
             } else {
+              log(state.toString());
               return const SizedBox.shrink();
             }
           },

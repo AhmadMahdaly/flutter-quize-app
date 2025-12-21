@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
+import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/home/widgets/category/analysis_widget.dart';
 import 'package:smle/features/home/widgets/category/q_bank_widget.dart';
 import 'package:smle/features/home/widgets/category/real_exam_widget.dart';
+import 'package:smle/features/home/widgets/drawer/drawer_widget.dart';
 import 'package:smle/features/home/widgets/end_page_banner.dart';
 import 'package:smle/features/home/widgets/top/user_and_points_header_widget.dart';
 import 'package:smle/features/home/widgets/top_banner_widget.dart';
@@ -19,7 +21,17 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         // appBar: const HomeAppBarWidget(),
-        // drawer: const DrawerWidget(),
+        drawer: const DrawerWidget(),
+        appBar: AppBar(
+          leading: Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                icon: const Icon(Icons.menu, color: AppColors.iconColorGray),
+              );
+            },
+          ),
+        ),
         body: BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
           builder: (context, state) {
             if (state is SubscriptionLoading) {
@@ -39,7 +51,6 @@ class HomeScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      32.verticalSpace,
                       const UserAndPointsHeaderWidget(),
                       32.verticalSpace,
                       const TopBannerWidget(),

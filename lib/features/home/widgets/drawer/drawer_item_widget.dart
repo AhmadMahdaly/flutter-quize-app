@@ -5,23 +5,24 @@ import 'package:smle/core/theme/text_styles.dart';
 class DrawerItemWidget extends StatelessWidget {
   const DrawerItemWidget({
     super.key,
-    required this.iconAsset,
-    required this.title,
-    required this.onTap,
+    required this.imagePath,
+    required this.text,
+    required this.onPressed,
   });
-  final String iconAsset;
-  final String title;
-  final GestureTapCallback onTap;
+  final IconData imagePath;
+  final String text;
+  final GestureTapCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: ImageIcon(AssetImage(iconAsset), color: AppColors.iconColorGray),
+      leading: Icon(imagePath, color: AppColors.iconColorGray),
+
       title: Text(
-        title,
+        text,
         style: AppTextStyle.style14Bold.copyWith(color: AppColors.forthColor),
       ),
-      onTap: onTap,
+      onTap: onPressed,
     );
   }
 }

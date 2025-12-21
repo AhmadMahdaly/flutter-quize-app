@@ -13,10 +13,10 @@ class PayDoneDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40.r), // Rounded corners
+        borderRadius: BorderRadius.circular(90.r), // Rounded corners
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(40.r), // Image respects corners
+        borderRadius: BorderRadius.circular(90.r), // Image respects corners
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(

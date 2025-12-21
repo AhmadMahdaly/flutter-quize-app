@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -109,12 +111,14 @@ class SubscriptionScreen extends StatelessWidget {
                               padding: EdgeInsets.only(bottom: 16.h),
                               child: GestureDetector(
                                 onTap: () {
-                                  if (state is! PurchaseLoadingState) {
-                                    cubit.startPayMobPayment(
-                                      context,
-                                      backendPackage,
-                                    );
-                                  }
+                                  context.pushNamed(
+                                    AppRoutes.checkoutScreen,
+                                    arguments: {
+                                      'cubit': context
+                                          .read<SubscriptionCubit>(),
+                                      'package': backendPackage,
+                                    },
+                                  );
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(

@@ -31,10 +31,9 @@ class EndPoints {
   static const String calculate = 'schfs/calculate';
 
   // ? Question Bank
-  // FIXED: Renamed for clarity. This endpoint returns the list of questions.
   static const String startQBank = 'start/q_bank';
-  // FIXED: Renamed for clarity. This endpoint returns the count of questions.
   static const String getQBankCount = 'qbank/filter';
+  static const String createQBank = 'create/q_bank';
 
   static const String getPlayList = 'all/playlist';
   static const String getPlayListDetails = 'playlist/questions';
@@ -44,7 +43,11 @@ class EndPoints {
   static const String addToPlayList = 'add/question/to/playlist';
   static const String getFreeTrial = 'start/free/trial';
   static const String markAsAnswered = 'qbank/mark-as-answered';
-  static const String createQBank = 'create/q_bank';
+
+  ///
+  static const String startFreeQBank = 'free-trial/start';
+  static const String getFreeQBankCount = 'free-trial/filter';
+  static const String createFreeQBank = 'free-trial/create';
 
   /// ? Real Exam
   static const String startRealExam = 'start/real/exam';
@@ -59,5 +62,5 @@ class EndPoints {
   static const String checkSubscribe = 'check/subscribed';
   static const String addQBankNote = 'add/q/bank/note';
   static const String paymentProcess = 'payment/process';
-    static const String paymentCallback = 'payment/callback';
+  static const String paymentCallback = 'payment/callback';
 }

@@ -33,4 +33,5 @@ class AppRoutes {
   static const String trialExamScreen = '/trialExamScreen';
   static const String playlistQuestionsScreen = '/playlistQuestionsScreen';
   static const String confirmAccessToRealExam = '/confirmAccessToRealExam';
+  static const String checkoutScreen = '/checkoutScreen';
 }

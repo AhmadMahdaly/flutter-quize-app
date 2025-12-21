@@ -113,14 +113,23 @@ class ConfirmAccessToRealExam extends StatelessWidget {
             const Spacer(),
 
             // Start Button
-            CustomPrimaryButton(
-              onPressed: () => context.mounted
-                  ? showCustomPrimaryDialog(
-                      context,
-                      widget: const ConfirmAccessToRealExamDialogWidget(),
-                    )
-                  : null,
-              text: 'Start Exam',
+            BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
+              builder: (context, state) {
+                return CustomPrimaryButton(
+                  onPressed: () =>
+                      state is SubscriptionLoaded &&
+                          context.mounted &&
+                          state.subscription.availableRealExam != null &&
+                          state.subscription.availableRealExam != '0' &&
+                          state.subscription.availableRealExam!.isNotEmpty
+                      ? showCustomPrimaryDialog(
+                          context,
+                          widget: const ConfirmAccessToRealExamDialogWidget(),
+                        )
+                      : null,
+                  text: 'Start Exam',
+                );
+              },
             ),
           ],
         ),

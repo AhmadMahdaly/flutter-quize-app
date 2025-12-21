@@ -5,10 +5,9 @@ import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
-// تأكد من إضافة هذا المتغير في ملف EndPoints
-// static const String paymentProcess = 'payment/process';
 import 'package:smle/core/network/end_points.dart';
 import 'package:smle/core/network/failures.dart';
+import 'package:smle/features/subscription/data/model/checkout_model.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
 import 'package:smle/features/subscription/data/model/payment_callback_model.dart';
 
@@ -37,10 +36,35 @@ class SubscriptionRepository {
     }
   }
 
+  Future<ApiResult<CheckoutModel>> checkout({
+    required int offerId,
+    String? code,
+  }) async {
+    try {
+      final response = await _dioFactory.post(
+        endPoint: 'GetYour/Checkout', // تأكد من المسار الصحيح في EndPoints
+        data: {'offer_id': offerId, 'code': code},
+      );
+      if (response!.statusCode == 200) {
+        return ApiResult.success(CheckoutModel.fromJson(response.data));
+      } else {
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Error checking code'));
+    }
+  }
+
   Future<ApiResult<String>> processPayment({
     required int offerId,
     required int amountCents,
     required Map<String, dynamic> billingData,
+    String? code,
   }) async {
     try {
       final response = await _dioFactory.post(
@@ -49,11 +73,11 @@ class SubscriptionRepository {
           'offer_id': offerId,
           'amount_cents': amountCents,
           'billing_data': billingData,
+          'code': code,
         },
       );
 
       if (response!.statusCode == 200) {
-        // نتأكد أن العملية نجحت من رد الباك إند
         if (response.data['success'] == true) {
           final String iframeUrl = response.data['url'];
           return ApiResult.success(iframeUrl);

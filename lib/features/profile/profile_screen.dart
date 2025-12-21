@@ -12,6 +12,7 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
+import 'package:smle/features/home/widgets/drawer/drawer_widget.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/profile/widgets/profile_button_widget.dart';
 
@@ -51,9 +52,22 @@ class ProfileScreen extends StatelessWidget {
                           .profileModel!
                           .data!;
                       return Scaffold(
+                        drawer: const DrawerWidget(),
                         appBar: CustomAppBar(
                           title: 'profile'.tr(context),
                           canBack: false,
+                          leading: Builder(
+                            builder: (context) {
+                              return IconButton(
+                                onPressed: () =>
+                                    Scaffold.of(context).openDrawer(),
+                                icon: const Icon(
+                                  Icons.menu,
+                                  color: AppColors.offwhiteColor,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                         body: Padding(
                           padding: EdgeInsets.symmetric(
@@ -123,15 +137,15 @@ class ProfileScreen extends StatelessWidget {
                                               );
                                             },
                                     ),
-                                    ProfileButtonWidget(
-                                      text: 'SCFHS Score Calculator',
-                                      imagePath: Icons.calculate_outlined,
-                                      onPressed: () async {
-                                        await context.pushNamed(
-                                          AppRoutes.sCFHSScoreCalculatorScreen,
-                                        );
-                                      },
-                                    ),
+                                    // ProfileButtonWidget(
+                                    //   text: 'SCFHS Score Calculator',
+                                    //   imagePath: Icons.calculate_outlined,
+                                    //   onPressed: () async {
+                                    //     await context.pushNamed(
+                                    //       AppRoutes.sCFHSScoreCalculatorScreen,
+                                    //     );
+                                    //   },
+                                    // ),
                                     ProfileButtonWidget(
                                       text: 'exams_history'.tr(context),
                                       imagePath: Icons.history,
@@ -143,18 +157,18 @@ class ProfileScreen extends StatelessWidget {
                                               );
                                             },
                                     ),
-                                    ProfileButtonWidget(
-                                      text: 'exams_analysis'.tr(context),
-                                      imagePath: Icons.line_axis_outlined,
-                                      onPressed: !isSubscribed
-                                          ? () async => subscripeDialog(context)
-                                          : () async {
-                                              await context.pushNamed(
-                                                AppRoutes.analysisScreen,
-                                                arguments: false,
-                                              );
-                                            },
-                                    ),
+                                    // ProfileButtonWidget(
+                                    //   text: 'exams_analysis'.tr(context),
+                                    //   imagePath: Icons.line_axis_outlined,
+                                    //   onPressed: !isSubscribed
+                                    //       ? () async => subscripeDialog(context)
+                                    //       : () async {
+                                    //           await context.pushNamed(
+                                    //             AppRoutes.analysisScreen,
+                                    //             arguments: false,
+                                    //           );
+                                    //         },
+                                    // ),
                                     ProfileButtonWidget(
                                       text: 'subscription'.tr(context),
                                       imagePath: Icons.payment,
@@ -278,23 +292,22 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  void subscripeDialog(BuildContext context) {
-    return showCustomPrimaryDialog(
-      context,
-      widget: CustomPrimaryDialog(
-        title: 'Subscription Required',
-        description: 'Subscribe to access.',
-        confirmText: 'Subscribe Now',
-        onConfirm: () {
-          context.pushNamed(
-            AppRoutes.subscriptionScreen,
-            arguments:
-                context.read<MainLayoutCubit>().profileModel!.data!.offerId ??
-                -1,
-          );
-        },
-      ),
-    );
-  }
+void subscripeDialog(BuildContext context) {
+  return showCustomPrimaryDialog(
+    context,
+    widget: CustomPrimaryDialog(
+      title: 'Subscription Required',
+      description: 'Subscribe to access.',
+      confirmText: 'Subscribe Now',
+      onConfirm: () {
+        context.pushNamed(
+          AppRoutes.subscriptionScreen,
+          arguments:
+              context.read<MainLayoutCubit>().profileModel!.data!.offerId ?? -1,
+        );
+      },
+    ),
+  );
 }

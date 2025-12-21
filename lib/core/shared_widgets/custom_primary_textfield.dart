@@ -57,9 +57,8 @@ class CustomPrimaryTextfield extends StatelessWidget {
       onChanged: onChanged,
       onTap: onTap,
       readOnly: readOnly ?? false,
-      style: style ?? AppTextStyle.style14W500.copyWith(fontSize: 14.sp),
-
-      textAlign: textAlign ?? TextAlign.center,
+      style: style ?? AppTextStyle.style14W500,
+      textAlign: textAlign ?? TextAlign.start,
       validator: validator,
       focusNode: focusNode,
       controller: controller,
@@ -68,7 +67,11 @@ class CustomPrimaryTextfield extends StatelessWidget {
       decoration: InputDecoration(
         hint: Text(
           text ?? '',
-          style: style ?? AppTextStyle.style14W600.copyWith(fontSize: 18.sp),
+          style:
+              style ??
+              AppTextStyle.style14W600.copyWith(
+                color: AppColors.darkGreyColor.withAlpha(100),
+              ),
         ),
         border: customOutlineInputBorder(),
         focusedBorder: customOutlineInputBorder(),

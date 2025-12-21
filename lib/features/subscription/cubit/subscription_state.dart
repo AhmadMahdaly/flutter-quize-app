@@ -43,3 +43,15 @@ class SubscriptionError extends SubscriptionStates {
 
   List<Object?> get props => [message];
 }
+
+class CheckoutLoadingState extends SubscriptionStates {}
+
+class CheckoutSuccessState extends SubscriptionStates {
+  CheckoutSuccessState(this.checkoutModel);
+  final CheckoutModel checkoutModel;
+}
+
+class CheckoutFailedState extends SubscriptionStates {
+  CheckoutFailedState(this.message);
+  final String message;
+}

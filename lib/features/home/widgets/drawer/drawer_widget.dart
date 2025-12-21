@@ -3,17 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/di.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
-import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/shared_widgets/no_data_widget.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/home/widgets/drawer/drawer_item_widget.dart';
-import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
+import 'package:smle/features/profile/profile_screen.dart';
+import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -22,127 +26,269 @@ class DrawerWidget extends StatelessWidget {
     return Drawer(
       backgroundColor: AppColors.thirdColor,
       width: MediaQuery.of(context).size.width / 1.2,
-      child: ListView(
-        children: [
-          // Drawer Items
-          // DrawerItemWidget(
-          //   iconAsset: Assets.userCircleLight,
-          //   title: 'profile'.tr(context),
-          //   onTap: () {
-          //     context.pushNamed(Routes.profileScreen);
-          //   },
-          // ),
-          DrawerItemWidget(
-            iconAsset: Assets.mortarboardLight,
-            title: 'SCFHS_score_calculator'.tr(context),
-            onTap: () {
-              context.pushNamed(AppRoutes.sCFHSScoreCalculatorScreen);
-            },
-          ),
-          // if (Platform.isIOS)
-          DrawerItemWidget(
-            iconAsset: Assets.trophyLight,
-            title: 'subscription'.tr(context),
-            onTap: () {
-              context.pushNamed(
-                AppRoutes.subscriptionScreen,
-                arguments:
-                    context
-                        .read<MainLayoutCubit>()
-                        .profileModel!
-                        .data!
-                        .offerId ??
-                    -1,
-              );
-            },
-          ),
+      child: BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
+        builder: (context, state) {
+          if (state is SubscriptionLoaded) {
+            final sub = state.subscription;
+            final isSubscribed = sub.isSubscribed ?? false;
+            final hasQBank = sub.qBank ?? false;
+            final availableExam = sub.availableRealExam ?? '0';
 
-          BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
-            builder: (context, state) {
-              if (state is SubscriptionLoaded) {
-                final sub = state.subscription;
-
-                final isSubscribed = sub.isSubscribed ?? false;
-
-                return DrawerItemWidget(
-                  iconAsset: Assets.columUpLight,
-                  title: 'analysis'.tr(context),
-                  onTap: !isSubscribed
-                      ? () => showCustomPrimaryDialog(
-                          context,
-                          widget: CustomPrimaryDialog(
-                            title: 'Subscription Required',
-                            description: 'Subscribe to access.',
-                            confirmText: 'Subscribe Now',
-                            onConfirm: () {
-                              context.pushNamed(
-                                AppRoutes.subscriptionScreen,
-                                arguments:
-                                    context
-                                        .read<MainLayoutCubit>()
-                                        .profileModel!
-                                        .data!
-                                        .offerId ??
-                                    -1,
-                              );
-                            },
-                          ),
-                        )
-                      : () {
-                          context.pushNamed(
-                            AppRoutes.analysisScreen,
-                            arguments: false,
-                          );
-                        },
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-          DrawerItemWidget(
-            iconAsset: Assets.questionLight,
-            title: 'support'.tr(context),
-            onTap: () {
-              context.pushNamed(AppRoutes.supportScreen);
-            },
-          ),
-          DrawerItemWidget(
-            iconAsset: Assets.privacyPolicy,
-            title: 'privacy_policy'.tr(context),
-            onTap: () {
-              context.pushNamed(AppRoutes.privacyPolicyScreen);
-            },
-          ),
-          BlocProvider(
-            create: (context) => LoginCubit(getIt()),
-            child: BlocBuilder<LoginCubit, LoginStates>(
-              builder: (context, state) {
-                return DrawerItemWidget(
-                  iconAsset: Assets.logOut,
-                  title: 'log_out'.tr(context),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (dialogContext) => ActionConfirmationDialog(
-                        title: 'Are you sure you want to log out?',
-                        onConfirm: () async {
-                          try {
-                            await context.read<LoginCubit>().logOut();
-                          } catch (_) {}
-
-                          CacheHelper.sharedPreferences.remove(
-                            CacheKeys.userToken,
-                          );
-                          context.pushReplacementNamed(AppRoutes.loginScreen);
-                        },
+            return ListView(
+              children: [
+                32.verticalSpace,
+                Padding(
+                  padding: EdgeInsets.only(right: 40.w, left: 16.w),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/png/logo.png',
+                        height: 60.h,
+                        // color: AppColors.secondaryColor.withAlpha(100),
                       ),
-                    );
+                      8.horizontalSpace,
+                      Expanded(
+                        child: Text(
+                          'Get a seamless experience for your tests.',
+                          style: AppTextStyle.style18Bold.copyWith(
+                            color: AppColors.secondaryColor.withAlpha(100),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                16.verticalSpace,
+                Divider(color: AppColors.secondaryColor.withAlpha(100)),
+                DrawerItemWidget(
+                  text: 'question_bank'.tr(context),
+                  imagePath: Icons.ballot,
+                  onPressed: () {
+                    if (!isSubscribed || !hasQBank) {
+                      showCustomPrimaryDialog(
+                        context,
+                        widget: CustomPrimaryDialog(
+                          title: 'Subscription Required',
+                          description:
+                              'You cannot access the Question bank. Renew your subscription to enjoy the benefits.',
+                          confirmText: 'Subscribe Now',
+                          onConfirm: () {
+                            context.pushNamed(
+                              AppRoutes.subscriptionScreen,
+                              arguments:
+                                  context
+                                      .read<MainLayoutCubit>()
+                                      .profileModel!
+                                      .data!
+                                      .offerId ??
+                                  -1,
+                            );
+                          },
+                        ),
+                      );
+                      return;
+                    }
+
+                    context.pushNamed(AppRoutes.createQuizScreen);
                   },
-                );
-              },
-            ),
-          ),
-        ],
+                ),
+
+                DrawerItemWidget(
+                  text: 'real_exam'.tr(context),
+                  imagePath: Icons.edit_document,
+                  onPressed: () {
+                    if (!isSubscribed) {
+                      showCustomPrimaryDialog(
+                        context,
+                        widget: CustomPrimaryDialog(
+                          title: 'Subscription Required',
+                          description: 'Subscribe to access the real exams.',
+                          confirmText: 'Subscribe Now',
+                          onConfirm: () {
+                            context.pushNamed(
+                              AppRoutes.subscriptionScreen,
+                              arguments:
+                                  context
+                                      .read<MainLayoutCubit>()
+                                      .profileModel!
+                                      .data!
+                                      .offerId ??
+                                  -1,
+                            );
+                          },
+                        ),
+                      );
+                      return;
+                    }
+
+                    if (availableExam == 'Unlimited' ||
+                        (int.tryParse(availableExam) ?? 0) > 0) {
+                      final examState = getIt<RealExamCubit>().state;
+                      final bool isExamInProgress =
+                          examState.status == ExamStatus.success ||
+                          examState.status == ExamStatus.onBreak;
+
+                      if (isExamInProgress) {
+                        if (context.mounted) {
+                          context.pushNamed(AppRoutes.realExamScreen);
+                        }
+                      } else {
+                        context.pushNamed(AppRoutes.confirmAccessToRealExam);
+                      }
+                    } else {
+                      showCustomPrimaryDialog(
+                        context,
+                        widget: CustomPrimaryDialog(
+                          title: 'Your Attempts Have Ended',
+                          description:
+                              'You’ve used all the real exams available to you. Please renew your subscription to continue.',
+                          confirmText: 'Subscribe Now',
+                          onConfirm: () {
+                            context.pushNamed(
+                              AppRoutes.subscriptionScreen,
+                              arguments:
+                                  context
+                                      .read<MainLayoutCubit>()
+                                      .profileModel!
+                                      .data!
+                                      .offerId ??
+                                  -1,
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  },
+                ),
+                DrawerItemWidget(
+                  text: 'SCFHS Score Calculator',
+                  imagePath: Icons.calculate_outlined,
+                  onPressed: () async {
+                    context.pop();
+                    if (context.mounted) {
+                      await context.pushNamed(
+                        AppRoutes.sCFHSScoreCalculatorScreen,
+                      );
+                    }
+                  },
+                ),
+                DrawerItemWidget(
+                  text: 'Playlist',
+                  imagePath: Icons.playlist_add_check_circle_outlined,
+                  onPressed: !isSubscribed
+                      ? () async => subscripeDialog(context)
+                      : () async {
+                          context.pop();
+                          if (context.mounted) {
+                            await context.pushNamed(
+                              AppRoutes.playListScreen,
+                              arguments: {'questionId': 0, 'isAdd': true},
+                            );
+                          }
+                        },
+                ),
+
+                DrawerItemWidget(
+                  text: 'exams_history'.tr(context),
+                  imagePath: Icons.history,
+                  onPressed: !isSubscribed
+                      ? () async => subscripeDialog(context)
+                      : () async {
+                          context.pop();
+                          if (context.mounted) {
+                            await context.pushNamed(
+                              AppRoutes.examsHistoryScreen,
+                            );
+                          }
+                        },
+                ),
+
+                DrawerItemWidget(
+                  text: 'exams_analysis'.tr(context),
+                  imagePath: Icons.line_axis_outlined,
+                  onPressed: !isSubscribed
+                      ? () async => subscripeDialog(context)
+                      : () async {
+                          context.pop();
+                          if (context.mounted) {
+                            await context.pushNamed(
+                              AppRoutes.analysisScreen,
+                              arguments: false,
+                            );
+                          }
+                        },
+                ),
+                DrawerItemWidget(
+                  text: 'subscription'.tr(context),
+                  imagePath: Icons.payment,
+                  onPressed: () async {
+                    context.pop();
+                    if (context.mounted) {
+                      await context.pushNamed(
+                        AppRoutes.subscriptionScreen,
+                        arguments:
+                            context
+                                .read<MainLayoutCubit>()
+                                .profileModel!
+                                .data!
+                                .offerId ??
+                            -1,
+                      );
+                    }
+                  },
+                ),
+                DrawerItemWidget(
+                  text: 'gifts'.tr(context),
+                  imagePath: Icons.card_giftcard_rounded,
+                  onPressed: () async {
+                    context.pop();
+                    if (context.mounted) {
+                      await context.pushNamed(AppRoutes.giftsScreen);
+                    }
+                  },
+                ),
+                BlocProvider(
+                  create: (context) => LoginCubit(getIt()),
+                  child: BlocBuilder<LoginCubit, LoginStates>(
+                    builder: (context, state) {
+                      return DrawerItemWidget(
+                        imagePath: Icons.logout,
+                        text: 'log_out'.tr(context),
+                        onPressed: () {
+                          context.pop();
+                          if (context.mounted) {
+                            showDialog(
+                              context: context,
+                              builder: (dialogContext) =>
+                                  ActionConfirmationDialog(
+                                    title: 'Are you sure you want to log out?',
+                                    onConfirm: () async {
+                                      try {
+                                        await context
+                                            .read<LoginCubit>()
+                                            .logOut();
+                                      } catch (_) {}
+
+                                      CacheHelper.sharedPreferences.remove(
+                                        CacheKeys.userToken,
+                                      );
+                                      context.pushReplacementNamed(
+                                        AppRoutes.loginScreen,
+                                      );
+                                    },
+                                  ),
+                            );
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
+          return const LoadingDataWidget();
+        },
       ),
     );
   }

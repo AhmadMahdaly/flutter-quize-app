@@ -18,7 +18,6 @@ class MainLayoutScreen extends StatelessWidget {
           canPop: false,
           child: Scaffold(
             backgroundColor: Colors.transparent,
-
             body: AppRouter().screen[mainLayoutInitialScreenIndex],
             bottomNavigationBar: Container(
               height: 70.h,

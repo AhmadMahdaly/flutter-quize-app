@@ -13,8 +13,9 @@ import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/data/models/exams_history_model.dart';
 import 'package:smle/features/exams_history/exams_history_screen.dart';
+import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
+import 'package:smle/features/free_q_bank/free_create_quiz_screen.dart';
 import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
-import 'package:smle/features/free_trial/views/webview_trial.dart';
 import 'package:smle/features/gifts/gifts_screen.dart';
 import 'package:smle/features/home/home_screen.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
@@ -37,7 +38,9 @@ import 'package:smle/features/revision/revision_screen.dart';
 import 'package:smle/features/revision/subCategories_screen.dart';
 import 'package:smle/features/scfhs_score_calculator/cubit/scfhs_score_calculator_cubit_cubit.dart';
 import 'package:smle/features/splash/screens/splash_screen.dart';
+import 'package:smle/features/subscription/checkout_screen.dart';
 import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
+import 'package:smle/features/subscription/data/model/packages_model.dart';
 import 'package:smle/features/subscription/subscription_screen.dart';
 import 'package:smle/features/support_privacy_policy/cubit/privacy_policy_cubit.dart';
 import 'package:smle/features/support_privacy_policy/privacy_policy_screen.dart';
@@ -92,7 +95,10 @@ class AppRouter {
       case AppRoutes.profileScreen:
         return transition(screen: const ProfileScreen());
       case AppRoutes.giftsScreen:
-        return transition(screen: const GiftsScreen());
+        return transition(
+          screen: const GiftsScreen(),
+          cubit: getIt<MainLayoutCubit>()..getGifts(),
+        );
 
       case AppRoutes.notificationScreen:
         return transition(
@@ -246,20 +252,29 @@ class AppRouter {
         );
       case AppRoutes.trialExamScreen:
         return MaterialPageRoute(builder: (_) => const TrialExamScreen());
+
+      case AppRoutes.checkoutScreen:
+        final data = settings.arguments as Map;
+        final package = data['package'] as Data;
+        final cubit = data['cubit'] as SubscriptionCubit;
+
+        return transition(
+          screen: CheckoutScreen(package: package, cubit: cubit),
+        );
       default:
         return null;
     }
   }
 
   List<Widget> screen = [
-    // BlocProvider(
-    //   create: (context) => getIt<QBankCubit>()..getCategories(),
-    //   child: const CreateQuizScreen(istrial: true),
-    // ),
-    const WebViewScreen(),
+    BlocProvider(
+      create: (context) => getIt<FreeQBankCubit>()..getCategories(),
+      child: const FreeCreateQuizScreen(istrial: true),
+    ),
 
+    // const FreeCreateQuizScreen(),
     const HomeScreen(),
     const ProfileScreen(),
   ];
-  List<Widget> guestScreen = [const HomeScreen()];
+  // List<Widget> guestScreen = [const HomeScreen()];
 }
