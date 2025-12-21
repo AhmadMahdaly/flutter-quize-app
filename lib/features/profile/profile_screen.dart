@@ -61,9 +61,9 @@ class ProfileScreen extends StatelessWidget {
                               return IconButton(
                                 onPressed: () =>
                                     Scaffold.of(context).openDrawer(),
-                                icon: const Icon(
+                                icon:  Icon(
                                   Icons.menu,
-                                  color: AppColors.offwhiteColor,
+                                  color: AppColors.offwhiteColor,size: SizeConfig.responsiveValue(phone: 24.r, tablet: 16.r),
                                 ),
                               );
                             },

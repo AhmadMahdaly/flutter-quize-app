@@ -43,7 +43,7 @@ class DrawerWidget extends StatelessWidget {
                     children: [
                       Image.asset(
                         'assets/images/png/logo.png',
-                        height: 60.h,
+                        height: SizeConfig.responsiveValue(phone: 60.h, tablet: 30.h),
                         // color: AppColors.secondaryColor.withAlpha(100),
                       ),
                       8.horizontalSpace,

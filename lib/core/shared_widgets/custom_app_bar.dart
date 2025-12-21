@@ -25,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: canBack
           ? IconButton(
               icon: Icon(
-                size: SizeConfig.responsiveValue(phone: 24.sp, tablet: 30.sp),
+                size: SizeConfig.responsiveValue(phone: 24.r, tablet: 30.r),
                 Icons.arrow_back_ios_new,
                 color: AppColors.iconColorBlack,
               ),
@@ -59,5 +59,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize =>
-      Size.fromHeight(SizeConfig.responsiveValue(phone: 50.h, tablet: 80.h));
+      Size.fromHeight(SizeConfig.responsiveValue(phone: 50.h, tablet: 50.h));
 }

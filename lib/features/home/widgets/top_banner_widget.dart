@@ -36,6 +36,8 @@ class TopBannerWidget extends StatelessWidget {
                         text: 'Questions across\nall medical specialties',
                         style: AppTextStyle.style16Bold.copyWith(
                           color: AppColors.thirdColor,
+                          fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 10.sp),
+
                         ),
                       ),
                     ],

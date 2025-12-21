@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
             builder: (context) {
               return IconButton(
                 onPressed: () => Scaffold.of(context).openDrawer(),
-                icon: const Icon(Icons.menu, color: AppColors.iconColorGray),
+                icon:  Icon(Icons.menu, color: AppColors.iconColorGray,size: SizeConfig.responsiveValue(phone: 24.r, tablet: 16.r),),
               );
             },
           ),
