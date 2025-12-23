@@ -4,10 +4,12 @@ import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
 import 'package:smle/core/network/failures.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
-import 'package:smle/features/free_q_bank/data/model/q_bank_model.dart';
-import 'package:smle/features/free_q_bank/data/model/question_count_model.dart';
-import 'package:smle/features/revision/data/model/categories_model.dart';
-import 'package:smle/features/revision/data/model/subcategories_model.dart';
+import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
+import 'package:smle/features/q_bank/data/model/question_count_model.dart';
+import 'package:smle/features/revision/data/model/categories_model.dart'
+    hide Data;
+import 'package:smle/features/revision/data/model/subcategories_model.dart'
+    hide Data;
 
 class FreeQBankRepository {
   FreeQBankRepository(this._dioFactory);
@@ -45,14 +47,32 @@ class FreeQBankRepository {
         endPoint: EndPoints.startFreeQBank,
         data: data,
       );
+
+      // داخل ملف Repository
       if (response!.statusCode == 200) {
-        if (response.data is Map<String, dynamic>) {
-          return ApiResult.success(QBankModel.fromJson(response.data));
-        } else if (response.data is List) {
+        if (response.data is List) {
+          // 1. استلام القائمة الخام
+          final List<dynamic> rawList = response.data;
+
+          // 2. تحويل كل عنصر في القائمة إلى كائن Data (Question)
+          final List<Data> questions = rawList
+              .map((item) => Data.fromJson(item))
+              .toList();
+
+          // 3. تغليف القائمة داخل QBankModel لكي لا ينهار Cubit
           return ApiResult.success(
-            QBankModel(status: 404, message: 'No data', data: []),
+            QBankModel(
+              status: 200,
+              message: 'Success',
+              questionsCount: questions.length,
+              data: questions,
+            ),
           );
+        } else if (response.data is Map<String, dynamic>) {
+          // في حال عاد الـ API مستقبلاً بشكل Object
+          return ApiResult.success(QBankModel.fromJson(response.data));
         }
+
         return ApiResult.failure(ServerFailure('Invalid format'));
       } else {
         return ApiResult.failure(

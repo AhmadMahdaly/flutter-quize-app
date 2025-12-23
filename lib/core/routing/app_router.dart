@@ -15,6 +15,7 @@ import 'package:smle/features/exams_history/data/models/exams_history_model.dart
 import 'package:smle/features/exams_history/exams_history_screen.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
 import 'package:smle/features/free_q_bank/free_create_quiz_screen.dart';
+import 'package:smle/features/free_q_bank/free_q_bank_screen.dart';
 import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
 import 'package:smle/features/gifts/gifts_screen.dart';
 import 'package:smle/features/home/home_screen.dart';
@@ -160,6 +161,14 @@ class AppRouter {
           screen: BlocProvider.value(
             value: getIt<QBankCubit>(),
             child: QBankScreen(startQuizModel: startQuizModel),
+          ),
+        );
+      case AppRoutes.freeqBankScreen:
+        final startQuizModel = settings.arguments as StartQuizModel;
+        return transition(
+          screen: BlocProvider.value(
+            value: getIt<FreeQBankCubit>(),
+            child: FreeQBankScreen(startQuizModel: startQuizModel),
           ),
         );
       case AppRoutes.examsHistoryScreen:

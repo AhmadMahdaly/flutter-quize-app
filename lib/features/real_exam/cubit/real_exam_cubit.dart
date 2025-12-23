@@ -1,5 +1,7 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:smle/core/di.dart';
 import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/real_exam/data/model/finish_analysis_exam.dart';
 import 'package:smle/features/real_exam/data/model/get_real_exam_model.dart';
 import 'package:smle/features/real_exam/data/model/question_action_model.dart';
@@ -25,7 +27,7 @@ class RealExamCubit extends HydratedCubit<RealExamState> {
     }
     showLoading();
     emit(state.copyWith(status: ExamStatus.loading));
-
+    getIt<MainLayoutCubit>().getProfile();
     final result = await repo.startRealExam();
     hideLoading();
     if (isClosed) return;

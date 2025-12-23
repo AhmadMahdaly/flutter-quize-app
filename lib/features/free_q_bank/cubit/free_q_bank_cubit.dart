@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/helpers/safe_cubit.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
-import 'package:smle/features/free_q_bank/data/model/q_bank_model.dart';
 import 'package:smle/features/free_q_bank/data/repo/free_q_bank_repo.dart';
+import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
 import 'package:smle/features/revision/data/model/categories_model.dart';
 import 'package:smle/features/revision/data/model/subcategories_model.dart';
 
@@ -20,34 +20,27 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
   }
 
   bool isSubCategoriesLoading = false;
-
   DateTime selectedYearDate = DateTime(2024);
   int selectedMonth = DateTime.now().month;
 
-  // bool isAllMonthsSelected = true;
-  // bool isAllYearsSelected = false;
   QBankModel? qBankModel;
-
   List<int> availableYears = [];
-  List<int> availableMonths = []; // سنخزن الـ value كـ int هنا
+  List<int> availableMonths = [];
 
-  // تحديث الـ init لجلب السنوات فوراً
   Future<void> init() async {
+    showLoading();
     _qBankRepository.init();
-    await getAvailableYears(); // جلب السنوات المتاحة
+    await getAvailableYears();
+    hideLoading();
   }
 
-  // 1. جلب السنوات
   Future<void> getAvailableYears() async {
-    emit(
-      GetCategoriesLoadingState(),
-    ); // يمكنك إنشاء State خاص بها أو استخدام loading عام
+    emit(GetCategoriesLoadingState());
     final result = await _qBankRepository.getAvailableYears();
     result.when(
       success: (years) {
         availableYears = years;
         if (availableYears.isNotEmpty) {
-          // نختار أول سنة متاحة تلقائياً ونجلب شهورها
           selectYear(availableYears.first);
         }
         emit(GetCategoriesSuccessState());
@@ -56,43 +49,37 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
     );
   }
 
-  // 2. جلب الشهور بناءً على السنة
   Future<void> getAvailableMonths(int year) async {
     emit(GetSubCategoriesLoadingState());
     final result = await _qBankRepository.getAvailableMonths(year);
     result.when(
       success: (monthsData) {
-        // تحويل البيانات من القادم من السيرفر [ {"value": "11", ...} ] إلى [11]
         availableMonths = monthsData
             .map((m) => int.parse(m['value'].toString()))
             .toList();
 
-        // إذا كان الشهر الحالي المختار غير موجود في القائمة الجديدة، اختر أول شهر متاح
         if (!availableMonths.contains(selectedMonth) &&
             availableMonths.isNotEmpty) {
           selectedMonth = availableMonths.first;
         }
 
-        updateAvailableQuestionsCount();
+        // updateAvailableQuestionsCount();
         emit(GetSubCategoriesSuccessState());
       },
       failure: (error) => emit(GetSubCategoriesFailedState()),
     );
   }
 
-  // 3. تعديل دالة اختيار السنة
   void selectYear(int year) {
     selectedYearDate = DateTime(year);
-    getAvailableMonths(year); // جلب الشهور فور تغيير السنة
+    getAvailableMonths(year);
     emit(SelectDateState());
   }
 
-  // 4. تعديل دالة اختيار الشهر
   void toggleMonthSelection(int month) {
-    // لا نسمح بالاختيار إلا إذا كان الشهر متاحاً في الـ API
     if (availableMonths.contains(month)) {
       selectedMonth = month;
-      updateAvailableQuestionsCount();
+      // updateAvailableQuestionsCount();
       emit(SelectDateState());
     }
   }
@@ -110,15 +97,13 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
 
     final int limit = int.tryParse(numberOfQuestionsController.text) ?? 0;
 
-    // إرسال السنة كـ int والشهر كـ int
     final int apiYear = selectedYearDate.year;
     final int apiMonth = selectedMonth;
     final int apiAllMonths = 0;
 
-    // ملاحظة: تأكد من تعديل الـ Repository لكي يستقبل int وليس List
     final result = await _qBankRepository.startQuiz(
-      year: apiYear, // تم التغيير من List إلى int
-      month: apiMonth, // تم التغيير من List إلى int
+      year: apiYear,
+      month: apiMonth,
       allMonths: apiAllMonths,
       subcategoryIds: selectedSubCategoryIds,
       unansweredOnly: unansweredOnly ? 1 : 0,
@@ -139,33 +124,12 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
       },
     );
   }
-  // void toggleAllMonths(bool selectAll) {
-  //   isAllMonthsSelected = selectAll;
-  //   if (selectAll) {
-  //     selectedMonths.clear();
-  //   } else {
-  //     selectedMonths = [selectedYearDate.month];
-  //   }
-  //   updateAvailableQuestionsCount();
-  //   emit(SelectDateState());
-  // }
-
-  // void toggleAllYears(bool selectAll) {
-  //   isAllYearsSelected = selectAll;
-  //   if (selectAll) {
-  //     isAllMonthsSelected = true;
-  //     selectedMonths.clear();
-  //   }
-  //   updateAvailableQuestionsCount();
-  //   emit(SelectDateState());
-  // }
 
   int index = 0;
   void setIndexQBank(bool isNext) {
     if (isNext) {
       if (index < (qBankModel?.data?.length ?? 1) - 1) {
         index++;
-        // isAnswered = false;
       }
     } else {
       if (index > 0) {
@@ -177,17 +141,15 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
 
   CategoriesModel? categoriesModel;
   Future getCategories() async {
-    showLoading();
     emit(GetCategoriesLoadingState());
     final result = await _qBankRepository.getCategories();
     result.when(
       success: (success) {
         categoriesModel = success;
-        hideLoading();
+
         emit(GetCategoriesSuccessState());
       },
       failure: (error) {
-        hideLoading();
         emit(GetCategoriesFailedState());
       },
     );
@@ -280,8 +242,8 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
     final int apiAllMonths = 0;
 
     final result = await _qBankRepository.getQuestionsCount(
-      year: apiYear, // int
-      month: apiMonth, // int
+      year: apiYear,
+      month: apiMonth,
       allMonths: apiAllMonths,
       subcategoryIds: selectedSubCategoryIds,
       unansweredOnly: unansweredOnly ? 1 : 0,
@@ -368,9 +330,8 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
   }
 
   void selectAnswer(String key, int questionId) {
-    // selectedAnswer = key;
     qBankModel!.data![index].selectedAnswer = key;
-    // isAnswered = true;
+
     markQuestionAsAnswered(questionId);
     emit(SelectAnswerState());
   }
@@ -418,7 +379,7 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
         );
         index = 0;
         isAnswered = false;
-        // selectedAnswer = null;
+
         hideLoading();
         emit(GetPlaylistQuestionsSuccessState());
       },

@@ -10,13 +10,13 @@ import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
-import 'package:smle/features/free_q_bank/data/model/start_quiz_model.dart';
 import 'package:smle/features/free_q_bank/widgets/create_quiz_widgets/selected_items.dart';
 import 'package:smle/features/free_q_bank/widgets/create_quiz_widgets/specialty_list.dart';
 import 'package:smle/features/free_q_bank/widgets/create_quiz_widgets/sub_specialty_list.dart';
 import 'package:smle/features/free_q_bank/widgets/question_button_widget.dart';
 import 'package:smle/features/free_q_bank/widgets/year_picker_widget.dart';
 import 'package:smle/features/home/widgets/drawer/drawer_widget.dart';
+import 'package:smle/features/q_bank/data/model/start_quiz_model.dart';
 
 class FreeCreateQuizScreen extends StatefulWidget {
   const FreeCreateQuizScreen({super.key, this.istrial});
@@ -47,9 +47,13 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                 builder: (context) {
                   return IconButton(
                     onPressed: () => Scaffold.of(context).openDrawer(),
-                    icon:  Icon(
+                    icon: Icon(
                       Icons.menu,
-                      color: AppColors.offwhiteColor,size: SizeConfig.responsiveValue(phone: 24.r, tablet: 16.r),
+                      color: AppColors.offwhiteColor,
+                      size: SizeConfig.responsiveValue(
+                        phone: 24.r,
+                        tablet: 16.r,
+                      ),
                     ),
                   );
                 },
@@ -189,7 +193,7 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                                     (cubit.qBankModel?.data?.isNotEmpty ??
                                         false)) {
                                   context.pushReplacementNamed(
-                                    AppRoutes.qBankScreen,
+                                    AppRoutes.freeqBankScreen,
                                     arguments: StartQuizModel(
                                       qBankModel: cubit.qBankModel,
                                     ),
