@@ -37,7 +37,7 @@ class FreeQBankRepository {
       'year': year,
       'subcategory_id': subcategoryIds,
       'unanswered_only': unansweredOnly,
-      'limit': limit,
+      'question_count': limit,
       'month': month,
       'allMonths': allMonths,
     };
