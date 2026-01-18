@@ -37,7 +37,7 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'q_bank'.tr(context), canBack: false),
+      appBar: const CustomAppBar(title: 'Free Trial quiz', canBack: false),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
 

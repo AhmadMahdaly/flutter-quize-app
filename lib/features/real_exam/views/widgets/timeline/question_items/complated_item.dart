@@ -7,11 +7,11 @@ class ComplatedItem extends StatelessWidget {
     required this.number,
     required this.color,
     super.key,
-    required this.isBookmarked,
+    required this.isFlaged,
   });
   final String number;
   final Color color;
-  final bool isBookmarked;
+  final bool isFlaged;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -38,10 +38,10 @@ class ComplatedItem extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              isBookmarked
+              isFlaged
                   ? Icon(
                       Icons.flag,
-                      color: Colors.white,
+                      color: Colors.redAccent,
                       size: SizeConfig.responsiveValue(
                         phone: 18.h,
                         tablet: 20.h,

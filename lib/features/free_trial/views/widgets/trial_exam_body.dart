@@ -249,19 +249,19 @@ class TimelineItem extends StatelessWidget {
               ComplatedItem(
                 number: number,
                 color: backgroundColor,
-                isBookmarked: false,
+                isFlaged: false,
               ),
             if (status == UITimelineStatus.current)
               CurrentItem(
                 text: number,
                 color: backgroundColor,
-                isBookmarked: false,
+                isFlaged: false,
               ),
             if (status == UITimelineStatus.upcoming)
               UpcomingItem(
                 text: number,
                 color: backgroundColor,
-                isBookmarked: false,
+                isFlaged: false,
               ),
           ],
         ),

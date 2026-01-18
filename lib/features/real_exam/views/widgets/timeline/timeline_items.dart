@@ -11,13 +11,13 @@ class TimelineItem extends StatelessWidget {
     required this.number,
     required this.status,
     super.key,
-    required this.isBookmarked,
+    required this.isFlaged,
     required this.hasNote,
   });
   final String number;
   final bool hasNote;
   final TimelineStatus status;
-  final bool isBookmarked;
+  final bool isFlaged;
 
   Color get backgroundColor {
     switch (status) {
@@ -38,19 +38,15 @@ class TimelineItem extends StatelessWidget {
           ComplatedItem(
             number: number,
             color: backgroundColor,
-            isBookmarked: isBookmarked,
+            isFlaged: isFlaged,
           ),
         if (status == TimelineStatus.current)
-          CurrentItem(
-            text: number,
-            color: backgroundColor,
-            isBookmarked: isBookmarked,
-          ),
+          CurrentItem(text: number, color: backgroundColor, isFlaged: isFlaged),
         if (status == TimelineStatus.upcoming)
           UpcomingItem(
             text: number,
             color: backgroundColor,
-            isBookmarked: isBookmarked,
+            isFlaged: isFlaged,
           ),
         if (hasNote)
           Positioned(

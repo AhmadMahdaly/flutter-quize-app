@@ -117,7 +117,7 @@ class _RealExamBodyState extends State<RealExamBody> {
           child: SizedBox(
             height: _itemHeight - 24.h,
             child: TimelineItem(
-              isBookmarked: isBookmarkedForThisItem,
+              isFlaged: isBookmarkedForThisItem,
               number: questionNumber.toString(),
               status: status,
               hasNote: hasNoteForThisItem,

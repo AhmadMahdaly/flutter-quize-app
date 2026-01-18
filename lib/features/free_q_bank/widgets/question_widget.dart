@@ -41,10 +41,11 @@ class QuestionWidget extends StatelessWidget {
               10.verticalSpace,
               Row(
                 children: [
-                  GestureDetector(
+                  InkWell(
                     onTap: addCircledFun,
                     child: ExcludeSemantics(
                       child: Icon(
+                        semanticLabel: 'Add to playlist',
                         isAdd
                             ? CupertinoIcons.delete
                             : CupertinoIcons.add_circled,
@@ -71,6 +72,7 @@ class QuestionWidget extends StatelessWidget {
                   GestureDetector(
                     onTap: onNoteTap,
                     child: Icon(
+                      semanticLabel: 'Send note',
                       CupertinoIcons.news,
                       color: AppColors.forthColor,
                       size: SizeConfig.responsiveValue(
@@ -84,7 +86,7 @@ class QuestionWidget extends StatelessWidget {
                     triggerMode: TooltipTriggerMode.tap,
                     decoration: BoxDecoration(
                       color: AppColors.thirdColor,
-                      borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                      borderRadius: BorderRadius.all(Radius.circular(12.r)),
                       boxShadow: const [
                         BoxShadow(
                           color: AppColors.darkGreyColor,
@@ -92,7 +94,7 @@ class QuestionWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    showDuration: const Duration(milliseconds: 5000),
+                    showDuration: const Duration(minutes: 10),
                     richMessage: TextSpan(
                       children: [
                         TextSpan(
@@ -130,7 +132,7 @@ class QuestionWidget extends StatelessWidget {
                     triggerMode: TooltipTriggerMode.tap,
                     decoration: BoxDecoration(
                       color: AppColors.thirdColor,
-                      borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                      borderRadius: BorderRadius.all(Radius.circular(12.r)),
                       boxShadow: const [
                         BoxShadow(
                           color: AppColors.darkGreyColor,

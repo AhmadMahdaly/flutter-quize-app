@@ -84,7 +84,7 @@ class QuestionWidget extends StatelessWidget {
                     triggerMode: TooltipTriggerMode.tap,
                     decoration: BoxDecoration(
                       color: AppColors.thirdColor,
-                      borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                      borderRadius: BorderRadius.all(Radius.circular(12.r)),
                       boxShadow: const [
                         BoxShadow(
                           color: AppColors.darkGreyColor,
@@ -92,7 +92,7 @@ class QuestionWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    showDuration: const Duration(milliseconds: 5000),
+                    showDuration: const Duration(minutes: 10),
                     richMessage: TextSpan(
                       children: [
                         TextSpan(
@@ -130,7 +130,7 @@ class QuestionWidget extends StatelessWidget {
                     triggerMode: TooltipTriggerMode.tap,
                     decoration: BoxDecoration(
                       color: AppColors.thirdColor,
-                      borderRadius: BorderRadius.all(Radius.circular(30.r)),
+                      borderRadius: BorderRadius.all(Radius.circular(12.r)),
                       boxShadow: const [
                         BoxShadow(
                           color: AppColors.darkGreyColor,

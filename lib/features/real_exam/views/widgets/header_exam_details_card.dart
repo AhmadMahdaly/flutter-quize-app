@@ -183,13 +183,33 @@ class HeaderExamDetailsCard extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       final cubit = context.read<RealExamCubit>();
-                      showCustomPrimaryDialog(
-                        context,
-                        widget: ConfirmFinishExamDialog(
-                          cubit: cubit,
-                          section: section!,
-                        ),
-                      );
+                      if (cubit.state.bookmarkedStatuses.values.contains(
+                        true,
+                      )) {
+                        showCustomPrimaryDialog(
+                          context,
+                          widget: ConfirmHasFlagDialog(
+                            onPressed: () {
+                              if (context.mounted) context.pop();
+                              showCustomPrimaryDialog(
+                                context,
+                                widget: ConfirmFinishExamDialog(
+                                  cubit: cubit,
+                                  section: section!,
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        showCustomPrimaryDialog(
+                          context,
+                          widget: ConfirmFinishExamDialog(
+                            cubit: cubit,
+                            section: section!,
+                          ),
+                        );
+                      }
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(

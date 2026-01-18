@@ -326,11 +326,12 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
               onEditingComplete: () => FocusScope.of(context).unfocus(),
+              // إضافة الـ Formatter لمنع إدخال غير الأرقام
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(
                 labelText: 'Enter Number of questions',
                 labelStyle: const TextStyle(color: AppColors.primaryColor),
-                hintText: '${'Max'}: ${cubit.questionsCount}',
+                hintText: 'Max: 10', // تحديث النص التوضيحي ليظهر 10
                 hintStyle: TextStyle(
                   color: AppColors.secondaryColor,
                   fontSize: 12.sp,
@@ -338,15 +339,26 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12.r)),
                 ),
+                // منطق التحقق من القيمة (لا تزيد عن 10)
                 errorText:
                     (cubit.numberOfQuestionsController.text.isNotEmpty &&
                         (int.tryParse(cubit.numberOfQuestionsController.text) ??
                                 0) >
-                            cubit.questionsCount)
-                    ? 'error_max_questions'.tr(context)
+                            10)
+                    ? 'Maximum allowed is 10' // رسالة الخطأ
                     : null,
               ),
               onChanged: (value) {
+                if (value.isNotEmpty && (int.tryParse(value) ?? 0) > 10) {
+                  cubit.numberOfQuestionsController.text = '10';
+                  cubit.numberOfQuestionsController.selection =
+                      TextSelection.fromPosition(
+                        TextPosition(
+                          offset: cubit.numberOfQuestionsController.text.length,
+                        ),
+                      );
+                }
+
                 setState(() {});
               },
             ),

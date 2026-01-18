@@ -122,3 +122,102 @@ class ConfirmFinishExamDialog extends StatelessWidget {
     );
   }
 }
+
+class ConfirmHasFlagDialog extends StatelessWidget {
+  const ConfirmHasFlagDialog({super.key, required this.onPressed});
+  final void Function()? onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      spacing: 8.h,
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+
+      children: [
+        1.verticalSpace,
+        Container(
+          padding: EdgeInsets.all(10.r),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(360.r),
+            border: Border.all(color: AppColors.darkGreyColor),
+          ),
+          child: Icon(
+            Icons.flag_rounded,
+            color: AppColors.primaryColor,
+            size: 56.r,
+          ),
+        ),
+        10.verticalSpace,
+        Text(
+          textAlign: TextAlign.center,
+          'You have flagged questions',
+          style: AppTextStyle.style18Bold.copyWith(
+            color: AppColors.iconColorGray,
+          ),
+        ),
+
+        Text(
+          textAlign: TextAlign.center,
+          'Are you sure you want to end this section?',
+          style: AppTextStyle.style16W700.copyWith(
+            color: AppColors.iconColorGray,
+          ),
+        ),
+        Row(
+          spacing: 6.w,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: onPressed,
+
+                child: Container(
+                  height: 40.h,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(vertical: 8.r, horizontal: 8.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.successColor,
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  child: FittedBox(
+                    child: Text(
+                      'Yes',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyle.style14Bold.copyWith(
+                        color: AppColors.offwhiteColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: TextButton(
+                onPressed: () {
+                  context.pop();
+                },
+                child: Container(
+                  height: 40.h,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(8.r),
+                  decoration: BoxDecoration(
+                    color: AppColors.errorColor.withAlpha(170),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  child: FittedBox(
+                    child: Text(
+                      'Cancel',
+                      style: AppTextStyle.style14Bold.copyWith(
+                        color: AppColors.offwhiteColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

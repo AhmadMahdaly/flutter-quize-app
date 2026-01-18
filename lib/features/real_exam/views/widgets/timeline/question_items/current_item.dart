@@ -7,9 +7,9 @@ class CurrentItem extends StatelessWidget {
     required this.text,
     required this.color,
     super.key,
-    required this.isBookmarked,
+    required this.isFlaged,
   });
-  final bool isBookmarked;
+  final bool isFlaged;
   final String text;
   final Color color;
   @override
@@ -38,10 +38,10 @@ class CurrentItem extends StatelessWidget {
                 ),
               ),
             ),
-            isBookmarked
+            isFlaged
                 ? Icon(
-                    Icons.flag,
-                    color: Colors.white,
+                    Icons.flag_outlined,
+                    color: Colors.redAccent,
                     size: SizeConfig.responsiveValue(phone: 18.h, tablet: 20.h),
                   )
                 : const SizedBox.shrink(),
