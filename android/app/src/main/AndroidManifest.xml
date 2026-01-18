@@ -16,6 +16,8 @@
         </intent>
     </queries>
     <application
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:label="SMLE Gate"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"

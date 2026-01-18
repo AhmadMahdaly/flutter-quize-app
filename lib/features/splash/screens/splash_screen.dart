@@ -35,14 +35,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _route() async {
-    context.pushReplacementNamed(AppRoutes.mainLayoutScreen);
+    // context.pushReplacementNamed(AppRoutes.mainLayoutScreen);
 
     /// Without Onboard
-    // if (await isLoggedIn()) {
-    //   context.pushReplacementNamed(AppRoutes.mainLayoutScreen);
-    // } else {
-    //   context.pushReplacementNamed(AppRoutes.loginScreen);
-    // }
+    if (await isLoggedIn()) {
+      context.pushReplacementNamed(AppRoutes.mainLayoutScreen);
+    } else {
+      context.pushReplacementNamed(AppRoutes.loginScreen);
+    }
 
     /// With Onboard
     // final isOnboardingComplete =
