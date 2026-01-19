@@ -14,20 +14,21 @@ class NoDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          110.verticalSpace,
-          if (noDataImage != '') Image(image: AssetImage(noDataImage)),
-          40.verticalSpace,
-          Text(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (noDataImage != '')
+          Center(child: Image(image: AssetImage(noDataImage))),
+        20.verticalSpace,
+        Center(
+          child: Text(
             noDataText,
             style: AppTextStyle.style20Bold.copyWith(
               color: AppColors.forthColor,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

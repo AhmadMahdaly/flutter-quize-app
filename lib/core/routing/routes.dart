@@ -35,4 +35,5 @@ class AppRoutes {
   static const String confirmAccessToRealExam = '/confirmAccessToRealExam';
   static const String checkoutScreen = '/checkoutScreen';
   static const String freeqBankScreen = '/freeqBankScreen';
+  static const String sendGiftScreen = '/sendGiftScreen';
 }

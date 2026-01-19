@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/no_data_widget.dart';
 import 'package:smle/core/theme/assets.dart';
@@ -18,6 +20,14 @@ class GiftsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'gifts'.tr(context)),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primaryColor,
+        child: const Icon(Icons.card_giftcard, color: Colors.white),
+        onPressed: () {
+          // الانتقال لصفحة إرسال الهدية
+          context.pushNamed(AppRoutes.sendGiftScreen);
+        },
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
         child: BlocBuilder<MainLayoutCubit, MainLayoutState>(

@@ -1,5 +1,4 @@
 class PackagesModel {
-
   PackagesModel({this.status, this.message, this.data});
 
   PackagesModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +25,7 @@ class PackagesModel {
     return data;
   }
 }
+
 class Data {
   Data({
     this.id,
@@ -79,9 +79,7 @@ class Data {
   }
 }
 
-
 class Features {
-
   Features({this.id, this.name});
 
   Features.fromJson(Map<String, dynamic> json) {

@@ -18,6 +18,7 @@ import 'package:smle/features/free_q_bank/free_create_quiz_screen.dart';
 import 'package:smle/features/free_q_bank/free_q_bank_screen.dart';
 import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
 import 'package:smle/features/gifts/gifts_screen.dart';
+import 'package:smle/features/gifts/send_gift_screen.dart';
 import 'package:smle/features/home/home_screen.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/main_layout.dart';
@@ -269,6 +270,11 @@ class AppRouter {
 
         return transition(
           screen: CheckoutScreen(package: package, cubit: cubit),
+        );
+      case AppRoutes.sendGiftScreen:
+        return transition(
+          screen: const SendGiftScreen(),
+          cubit: getIt<SubscriptionCubit>()..getPackages(),
         );
       default:
         return null;

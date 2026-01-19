@@ -204,6 +204,92 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     );
   }
 
+  void _openPayGiftMobWebView(
+    BuildContext context,
+    String iframeUrl,
+    int currentReceiverId,
+  ) {
+    final controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onNavigationRequest: (NavigationRequest request) async {
+            final uri = Uri.parse(request.url);
+
+            if (uri.queryParameters.containsKey('success')) {
+              await _subscriptionRepository.processPaymentCallbackGift(
+                billingData: uri.queryParameters,
+                currentReceiverId: currentReceiverId,
+              );
+              log(uri.queryParameters.toString());
+
+              context.pop();
+              if (uri.queryParameters['success'] == 'true') {
+                if (!isClosed) emit(PurchaseSuccessState());
+              } else {
+                uri.queryParameters.dPrint();
+                final message =
+                    uri.queryParameters['message'] ??
+                    uri.queryParameters['error'] ??
+                    'Payment failed';
+                message.dPrint();
+                if (!isClosed) emit(PurchaseFailedState(message));
+              }
+              return NavigationDecision.prevent;
+            }
+            if (request.url.contains('your-callback-url')) {
+              context.pop();
+
+              if (request.url.contains('success')) {
+                if (!isClosed) emit(PurchaseSuccessState());
+              } else {
+                '${uri.queryParameters}  fail'.dPrint();
+                if (!isClosed) emit(PurchaseFailedState('Payment failed'));
+              }
+              return NavigationDecision.prevent;
+            }
+
+            return NavigationDecision.navigate;
+          },
+          onPageStarted: (String url) {
+            '🔄 Page started: $url'.dPrint();
+          },
+          onPageFinished: (String url) {
+            '✅ Page loaded: $url'.dPrint();
+          },
+          onWebResourceError: (WebResourceError error) {
+            '❌ Error: ${error.description}'.dPrint();
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(iframeUrl));
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => WillPopScope(
+        onWillPop: () async {
+          if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
+          return true;
+        },
+        child: Dialog.fullscreen(
+          child: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.close, color: AppColors.secondaryColor),
+                onPressed: () {
+                  if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            body: WebViewWidget(controller: controller),
+          ),
+        ),
+      ),
+    );
+  }
+
   /// Get Profile
   ProfileModel? profileModel;
   Future getProfile() async {
@@ -218,6 +304,57 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
         hideLoading();
         emit(GetProfileFailedState());
       },
+    );
+  }
+  // داخل SubscriptionCubit
+
+  int? currentReceiverId; // لحفظ الـ ID المستلم بعد الـ checkout
+
+  Future<void> checkGiftEmail(int offerId, String email) async {
+    emit(CheckEmailLoadingState());
+    final result = await _subscriptionRepository.checkGiftCheckout(
+      offerId: offerId,
+      email: email,
+    );
+    result.when(
+      success: (receiverId) {
+        currentReceiverId = receiverId; // حفظ الـ ID
+        emit(CheckEmailSuccessState('User Verified'));
+      },
+      failure: (error) => emit(CheckEmailFailedState(error.errMessage)),
+    );
+  }
+
+  Future<void> startGiftPaymentFlow(
+    BuildContext context,
+    int offerId,
+    int amount,
+  ) async {
+    if (currentReceiverId == null) {
+      emit(PurchaseFailedState('Please verify email first'));
+      return;
+    }
+
+    emit(PurchaseLoadingState());
+    showLoading();
+
+    // جلب بيانات الدافع (Payer) من البروفايل
+    await getProfile();
+
+    final result = await _subscriptionRepository.processGiftPayment(
+      offerId: offerId,
+      receiverId: currentReceiverId!,
+      amountCents: amount * 100,
+      payerName: profileModel?.data?.name ?? 'Guest',
+      payerEmail: profileModel?.data?.email ?? '',
+      payerPhone: '01000000000', // أو من البروفايل إذا متاح
+    );
+
+    hideLoading();
+    result.when(
+      success: (url) =>
+          _openPayGiftMobWebView(context, url, currentReceiverId!),
+      failure: (error) => emit(PurchaseFailedState(error.errMessage)),
     );
   }
 }

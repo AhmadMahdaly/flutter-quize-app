@@ -55,3 +55,15 @@ class CheckoutFailedState extends SubscriptionStates {
   CheckoutFailedState(this.message);
   final String message;
 }
+
+class CheckEmailLoadingState extends SubscriptionStates {}
+
+class CheckEmailSuccessState extends SubscriptionStates {
+  CheckEmailSuccessState(this.userName);
+  final String userName;
+}
+
+class CheckEmailFailedState extends SubscriptionStates {
+  CheckEmailFailedState(this.message);
+  final String message;
+}
