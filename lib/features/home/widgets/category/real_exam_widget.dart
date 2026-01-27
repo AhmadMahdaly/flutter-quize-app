@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
@@ -90,7 +89,7 @@ class RealExamHomeWidget extends StatelessWidget {
           );
         }
       },
-      categoryName: 'real_exam'.tr(context),
+      categoryName: 'Realistic Exam Simulation',
       imagePath: Assets.examCategory,
     );
   }

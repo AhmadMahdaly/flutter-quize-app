@@ -64,4 +64,5 @@ class EndPoints {
   static const String paymentProcess = 'payment/process';
   static const String paymentCallback = 'payment/callback';
   static const String paymentCallbackGift = 'gift/payment/callback';
+  static const String years = 'exam-dates/qbank';
 }

@@ -44,8 +44,8 @@ class DioFactory {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = await CacheHelper.getData(key: CacheKeys.userToken);
-          // final token = '158|hTfRe3Opk0SFpeOrgUONy6xAOyMXwz98XUY8sx3rd5d5fa1a';
+          // final token = await CacheHelper.getData(key: CacheKeys.userToken);
+          final token = '158|hTfRe3Opk0SFpeOrgUONy6xAOyMXwz98XUY8sx3rd5d5fa1a';
           options.headers['Authorization'] = 'Bearer $token';
           options.headers['Accept'] = 'application/json';
           return handler.next(options);

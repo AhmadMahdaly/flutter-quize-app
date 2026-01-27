@@ -61,9 +61,13 @@ class ProfileScreen extends StatelessWidget {
                               return IconButton(
                                 onPressed: () =>
                                     Scaffold.of(context).openDrawer(),
-                                icon:  Icon(
+                                icon: Icon(
                                   Icons.menu,
-                                  color: AppColors.offwhiteColor,size: SizeConfig.responsiveValue(phone: 24.r, tablet: 16.r),
+                                  color: AppColors.offwhiteColor,
+                                  size: SizeConfig.responsiveValue(
+                                    phone: 24.r,
+                                    tablet: 16.r,
+                                  ),
                                 ),
                               );
                             },
@@ -94,6 +98,12 @@ class ProfileScreen extends StatelessWidget {
                                         color: AppColors.darkGreyColor,
                                       ),
                                     ),
+                                    Text(
+                                      '${"Subscription Package:"} ${data.offerName}',
+                                      style: AppTextStyle.style14W700.copyWith(
+                                        color: AppColors.primaryColor,
+                                      ),
+                                    ),
                                     if (data.remainingRealExams != null)
                                       Text(
                                         '${"remaining_real_exams".tr(context)} ${data.remainingRealExams} ${"exams".tr(context)}',
@@ -109,12 +119,18 @@ class ProfileScreen extends StatelessWidget {
                                             .packageExpireAt !=
                                         null)
                                       Text(
-                                        '${"expire_date".tr(context)} ${data.packageExpireAt}',
+                                        '${"Created Date:"} ${data.packageCreateAt}',
                                         style: AppTextStyle.style14W700
                                             .copyWith(
                                               color: AppColors.primaryColor,
                                             ),
                                       ),
+                                    Text(
+                                      '${"expire_date".tr(context)} ${data.packageExpireAt}',
+                                      style: AppTextStyle.style14W700.copyWith(
+                                        color: AppColors.primaryColor,
+                                      ),
+                                    ),
                                     16.verticalSpace,
                                   ],
                                 ),

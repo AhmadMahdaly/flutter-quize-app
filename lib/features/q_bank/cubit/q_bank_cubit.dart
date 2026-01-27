@@ -3,6 +3,7 @@ import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/helpers/safe_cubit.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
+import 'package:smle/features/q_bank/data/model/year_model.dart';
 import 'package:smle/features/q_bank/data/repo/q_bank_repo.dart';
 import 'package:smle/features/revision/data/model/categories_model.dart';
 import 'package:smle/features/revision/data/model/subcategories_model.dart';
@@ -140,6 +141,24 @@ class QBankCubit extends SafeCubit<QBankStates> {
       failure: (error) {
         hideLoading();
         emit(GetCategoriesFailedState());
+      },
+    );
+  }
+
+  YearsModel? yearsModel;
+  Future getYears() async {
+    showLoading();
+    emit(GetYearsLoadingState());
+    final result = await _qBankRepository.getYears();
+    result.when(
+      success: (success) {
+        yearsModel = success;
+        hideLoading();
+        emit(GetYearsSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetYearsFailedState());
       },
     );
   }

@@ -7,55 +7,81 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
 
-class YearPickerWidget extends StatelessWidget {
+class YearPickerWidget extends StatefulWidget {
   const YearPickerWidget({super.key});
 
   @override
+  State<YearPickerWidget> createState() => _YearPickerWidgetState();
+}
+
+class _YearPickerWidgetState extends State<YearPickerWidget> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<QBankCubit>().getYears();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<QBankCubit>();
-    final List<int> allowedYears = [2024, 2025];
+    // final cubit = context.watch<QBankCubit>();
+    // final List<int> allowedYears = [2024, 2025];
 
-    int dropdownValue = cubit.selectedYearDate.year;
-    if (!allowedYears.contains(dropdownValue)) {
-      dropdownValue = 2024;
-    }
+    // int dropdownValue = cubit.selectedYearDate.year;
+    // if (!allowedYears.contains(dropdownValue)) {
+    //   dropdownValue = 2024;
+    // }
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(12.r)),
-        border: Border.all(color: AppColors.greyColor, width: 2.w),
-        color: AppColors.thirdColor,
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<int>(
-          value: dropdownValue,
-          isExpanded: true,
-          icon: Icon(
-            CupertinoIcons.chevron_down,
-            size: SizeConfig.responsiveValue(phone: 20.r, tablet: 24.r),
-            color: AppColors.darkGreyColor,
+    return BlocBuilder<QBankCubit, QBankStates>(
+      builder: (context, state) {
+        final cubit = context.read<QBankCubit>();
+        final List<int> allowedYears =
+            cubit.yearsModel?.data?.map((e) => e.year!).toList() ?? [];
+
+        int? dropdownValue;
+        if (allowedYears.isNotEmpty) {
+          dropdownValue = allowedYears.contains(cubit.selectedYearDate.year)
+              ? cubit.selectedYearDate.year
+              : allowedYears.first;
+        }
+
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(12.r)),
+            border: Border.all(color: AppColors.greyColor, width: 2.w),
+            color: AppColors.thirdColor,
           ),
-          dropdownColor: AppColors.thirdColor,
-          borderRadius: BorderRadius.circular(12.r),
-          items: allowedYears.map((int year) {
-            return DropdownMenuItem<int>(
-              value: year,
-              child: Text(
-                year.toString(),
-                style: AppTextStyle.style14W500.copyWith(
-                  color: AppColors.forthColor,
-                ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<int>(
+              value: dropdownValue,
+              isExpanded: true,
+              icon: Icon(
+                CupertinoIcons.chevron_down,
+                size: SizeConfig.responsiveValue(phone: 20.r, tablet: 24.r),
+                color: AppColors.darkGreyColor,
               ),
-            );
-          }).toList(),
-          onChanged: (int? newYear) {
-            if (newYear != null) {
-              cubit.selectYear(DateTime(newYear));
-            }
-          },
-        ),
-      ),
+              dropdownColor: AppColors.thirdColor,
+              borderRadius: BorderRadius.circular(12.r),
+              items: allowedYears.map((int year) {
+                return DropdownMenuItem<int>(
+                  value: year,
+                  child: Text(
+                    year.toString(),
+                    style: AppTextStyle.style14W500.copyWith(
+                      color: AppColors.forthColor,
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: (int? newYear) {
+                if (newYear != null) {
+                  cubit.selectYear(DateTime(newYear));
+                }
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

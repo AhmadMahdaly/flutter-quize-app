@@ -43,7 +43,10 @@ class DrawerWidget extends StatelessWidget {
                     children: [
                       Image.asset(
                         'assets/images/png/logo.png',
-                        height: SizeConfig.responsiveValue(phone: 60.h, tablet: 30.h),
+                        height: SizeConfig.responsiveValue(
+                          phone: 60.h,
+                          tablet: 30.h,
+                        ),
                         // color: AppColors.secondaryColor.withAlpha(100),
                       ),
                       8.horizontalSpace,
@@ -94,7 +97,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
 
                 DrawerItemWidget(
-                  text: 'real_exam'.tr(context),
+                  text: 'Realistic Exam Simulation',
                   imagePath: Icons.edit_document,
                   onPressed: () {
                     if (!isSubscribed) {

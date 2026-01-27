@@ -27,7 +27,11 @@ class HomeScreen extends StatelessWidget {
             builder: (context) {
               return IconButton(
                 onPressed: () => Scaffold.of(context).openDrawer(),
-                icon:  Icon(Icons.menu, color: AppColors.iconColorGray,size: SizeConfig.responsiveValue(phone: 24.r, tablet: 16.r),),
+                icon: Icon(
+                  Icons.menu,
+                  color: AppColors.iconColorGray,
+                  size: SizeConfig.responsiveValue(phone: 24.r, tablet: 16.r),
+                ),
               );
             },
           ),
@@ -63,9 +67,9 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Expanded(
-                            child: QBankHomeWidget(
+                            child: RealExamHomeWidget(
                               isSubscribed: isSubscribed,
-                              hasQBank: hasQBank,
+                              availableExam: availableExam.toString(),
                             ),
                           ),
                         ],
@@ -78,9 +82,9 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Expanded(
-                            child: RealExamHomeWidget(
+                            child: QBankHomeWidget(
                               isSubscribed: isSubscribed,
-                              availableExam: availableExam.toString(),
+                              hasQBank: hasQBank,
                             ),
                           ),
                           Expanded(

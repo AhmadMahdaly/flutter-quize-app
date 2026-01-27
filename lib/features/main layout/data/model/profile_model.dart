@@ -1,5 +1,4 @@
 class ProfileModel {
-
   ProfileModel({this.status, this.message, this.data});
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -23,20 +22,20 @@ class ProfileModel {
 }
 
 class Data {
-
-  Data(
-      {this.id,
-        this.name,
-        this.code,
-        this.email,
-        this.points,
-        this.fcmToken,
-        this.photo,
-        this.offerId,
-        this.offerName,
-        this.remainingRealExams,
-        this.packageExpireAt
-      });
+  Data({
+    this.id,
+    this.name,
+    this.code,
+    this.email,
+    this.points,
+    this.fcmToken,
+    this.photo,
+    this.offerId,
+    this.offerName,
+    this.remainingRealExams,
+    this.packageExpireAt,
+    this.packageCreateAt,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -50,6 +49,7 @@ class Data {
     offerName = json['offer_name'];
     remainingRealExams = json['remaining_real_exams'];
     packageExpireAt = json['package_expire_at'];
+    packageCreateAt = json['package_created_at'];
   }
   int? id;
   String? name;
@@ -62,6 +62,7 @@ class Data {
   String? offerName;
   int? remainingRealExams;
   String? packageExpireAt;
+  String? packageCreateAt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -76,6 +77,7 @@ class Data {
     data['offer_name'] = offerName;
     data['remaining_real_exams'] = remainingRealExams;
     data['package_expire_at'] = packageExpireAt;
+    data['package_created_at'] = packageCreateAt;
     return data;
   }
 }

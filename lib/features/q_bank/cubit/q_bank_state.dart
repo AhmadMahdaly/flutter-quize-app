@@ -60,6 +60,12 @@ class PlaylistQuestionsEndState extends QBankStates {}
 
 class AddNoteLoadingState extends QBankStates {}
 
+class GetYearsLoadingState extends QBankStates {}
+
+class GetYearsSuccessState extends QBankStates {}
+
+class GetYearsFailedState extends QBankStates {}
+
 class AddNoteSuccessState extends QBankStates {
   AddNoteSuccessState(this.message);
   final String message;
