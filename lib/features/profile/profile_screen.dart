@@ -47,6 +47,9 @@ class ProfileScreen extends StatelessWidget {
                     if (state is SubscriptionLoaded) {
                       final sub = state.subscription;
                       final isSubscribed = sub.isSubscribed ?? false;
+                      final hasQBank = sub.qBank ?? false;
+                      // final availableExam = sub.availableRealExam ?? '0';
+
                       final data = context
                           .read<MainLayoutCubit>()
                           .profileModel!
@@ -80,59 +83,65 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           child: SingleChildScrollView(
                             child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    10.verticalSpace,
-                                    Text(
-                                      '${data.name}',
-                                      style: AppTextStyle.style18Bold
-                                          .copyWith(),
-                                    ),
-                                    Text(
-                                      '${data.email}',
-                                      style: AppTextStyle.style14W500.copyWith(
-                                        color: AppColors.darkGreyColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${"Subscription Package:"} ${data.offerName}',
-                                      style: AppTextStyle.style14W700.copyWith(
-                                        color: AppColors.primaryColor,
-                                      ),
-                                    ),
-                                    if (data.remainingRealExams != null)
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 24.w,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      10.verticalSpace,
                                       Text(
-                                        '${"remaining_real_exams".tr(context)} ${data.remainingRealExams} ${"exams".tr(context)}',
-                                        style: AppTextStyle.style14W700
+                                        '${data.name}',
+                                        style: AppTextStyle.style18Bold
+                                            .copyWith(),
+                                      ),
+                                      Text(
+                                        '${data.email}',
+                                        style: AppTextStyle.style14W500
                                             .copyWith(
-                                              color: AppColors.primaryColor,
+                                              color: AppColors.darkGreyColor,
                                             ),
                                       ),
-                                    if (context
-                                            .read<MainLayoutCubit>()
-                                            .profileModel!
-                                            .data!
-                                            .packageExpireAt !=
-                                        null)
-                                      Text(
-                                        '${"Created Date:"} ${data.packageCreateAt}',
-                                        style: AppTextStyle.style14W700
-                                            .copyWith(
-                                              color: AppColors.primaryColor,
-                                            ),
-                                      ),
-                                    Text(
-                                      '${"expire_date".tr(context)} ${data.packageExpireAt}',
-                                      style: AppTextStyle.style14W700.copyWith(
-                                        color: AppColors.primaryColor,
-                                      ),
-                                    ),
-                                    16.verticalSpace,
-                                  ],
+                                      if (data.remainingRealExams != null)
+                                        Text(
+                                          '${"remaining_real_exams".tr(context)} ${data.remainingRealExams} ${"exams".tr(context)}',
+                                          style: AppTextStyle.style12W700
+                                              .copyWith(
+                                                color: AppColors.primaryColor,
+                                              ),
+                                        ),
+                                      if (data.offerName != null)
+                                        Text(
+                                          '${"Subscription Package:"} ${data.offerName}',
+                                          style: AppTextStyle.style12W700
+                                              .copyWith(
+                                                color: AppColors.primaryColor,
+                                              ),
+                                        ),
+                                      if (data.packageExpireAt != null)
+                                        Text(
+                                          '${"Created Date:"} ${data.packageCreateAt}',
+                                          style: AppTextStyle.style12W700
+                                              .copyWith(
+                                                color: AppColors.primaryColor,
+                                              ),
+                                        ),
+                                      if (data.packageExpireAt != null)
+                                        Text(
+                                          '${"expire_date".tr(context)} ${data.packageExpireAt}',
+                                          style: AppTextStyle.style12W700
+                                              .copyWith(
+                                                color: AppColors.primaryColor,
+                                              ),
+                                        ),
+                                      16.verticalSpace,
+                                    ],
+                                  ),
                                 ),
                                 Column(
                                   spacing: 8.h,
@@ -141,8 +150,11 @@ class ProfileScreen extends StatelessWidget {
                                       text: 'Playlist',
                                       imagePath: Icons
                                           .playlist_add_check_circle_outlined,
-                                      onPressed: !isSubscribed
-                                          ? () async => subscripeDialog(context)
+                                      onPressed: !isSubscribed || !hasQBank
+                                          ? () async =>
+                                                subscripeDialogQuestionBank(
+                                                  context,
+                                                )
                                           : () async {
                                               await context.pushNamed(
                                                 AppRoutes.playListScreen,
@@ -166,6 +178,12 @@ class ProfileScreen extends StatelessWidget {
                                       text: 'exams_history'.tr(context),
                                       imagePath: Icons.history,
                                       onPressed: !isSubscribed
+                                          //   ||   (availableExam != 'Unlimited' ||
+                                          //         (int.tryParse(
+                                          //                   availableExam,
+                                          //                 ) ??
+                                          //                 0) <
+                                          //             0)
                                           ? () async => subscripeDialog(context)
                                           : () async {
                                               await context.pushNamed(
@@ -264,32 +282,37 @@ class ProfileScreen extends StatelessWidget {
                                       text: 'log_out'.tr(context),
                                       imagePath: Icons.logout,
                                       onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (dialogContext) =>
-                                              ActionConfirmationDialog(
-                                                title:
-                                                    'Are you sure you want to log out?',
-                                                onConfirm: () async {
-                                                  try {
-                                                    if (context.mounted) {
-                                                      await context
-                                                          .read<LoginCubit>()
-                                                          .logOut();
+                                        if (context.mounted) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (dialogContext) =>
+                                                ActionConfirmationDialog(
+                                                  title:
+                                                      'Are you sure you want to log out?',
+                                                  onConfirm: () async {
+                                                    try {
+                                                      if (dialogContext
+                                                          .mounted) {
+                                                        await dialogContext
+                                                            .read<LoginCubit>()
+                                                            .logOut();
+                                                      }
+                                                    } catch (_) {}
+                                                    if (dialogContext.mounted) {
+                                                      dialogContext
+                                                          .read<
+                                                            MainLayoutCubit
+                                                          >()
+                                                          .clearDataOnLogOut();
                                                     }
-                                                  } catch (_) {}
-                                                  if (context.mounted) {
-                                                    context
-                                                        .read<MainLayoutCubit>()
-                                                        .clearDataOnLogOut();
-                                                  }
-                                                  await context
-                                                      .pushReplacementNamed(
-                                                        AppRoutes.loginScreen,
-                                                      );
-                                                },
-                                              ),
-                                        );
+                                                    await dialogContext
+                                                        .pushReplacementNamed(
+                                                          AppRoutes.loginScreen,
+                                                        );
+                                                  },
+                                                ),
+                                          );
+                                        }
                                       },
                                     ),
                                     8.verticalSpace,
@@ -310,12 +333,32 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
+void subscripeDialogQuestionBank(BuildContext context) {
+  return showCustomPrimaryDialog(
+    context,
+    widget: CustomPrimaryDialog(
+      title: 'Subscription Required',
+      description:
+          'You cannot access. Renew your Question bank subscription to enjoy the benefits.',
+      confirmText: 'Subscribe Now',
+      onConfirm: () {
+        context.pushNamed(
+          AppRoutes.subscriptionScreen,
+          arguments:
+              context.read<MainLayoutCubit>().profileModel!.data!.offerId ?? -1,
+        );
+      },
+    ),
+  );
+}
+
 void subscripeDialog(BuildContext context) {
   return showCustomPrimaryDialog(
     context,
     widget: CustomPrimaryDialog(
       title: 'Subscription Required',
-      description: 'Subscribe to access.',
+      description:
+          'You cannot access. Renew your Realistic Exam Simulation subscription to enjoy the benefits.',
       confirmText: 'Subscribe Now',
       onConfirm: () {
         context.pushNamed(

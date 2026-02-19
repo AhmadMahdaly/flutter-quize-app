@@ -15,7 +15,15 @@ class MainLayoutCubit extends SafeCubit<MainLayoutState> {
   MainLayoutCubit(this._mainLayoutRepository) : super(MainLayoutInitial());
   final MainLayoutRepository _mainLayoutRepository;
   int mainLayoutInitialScreenIndex = 1;
+  int backPressCount = 0;
+
+  void resetBackPress() {
+    backPressCount = 0;
+  }
+
   void changeBottomNavBar(index) {
+    if (index == mainLayoutInitialScreenIndex) return;
+    resetBackPress();
     mainLayoutInitialScreenIndex = index;
     emit(AppBottomNavState(mainLayoutInitialScreenIndex));
   }

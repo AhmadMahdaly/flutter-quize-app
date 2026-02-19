@@ -4,8 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:month_year_picker/month_year_picker.dart';
-import 'package:smle/core/cache_helper/cache_helper.dart';
-import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/constants.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/config_loading.dart';
@@ -33,18 +31,16 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 getIt<CheckSubscriptionCubit>()..loadSubscription(),
           ),
-          BlocProvider.value(value: getIt<MainLayoutCubit>()),
+          BlocProvider(create: (context) => getIt<MainLayoutCubit>()),
         ],
         child: MaterialApp(
           onGenerateRoute: AppRouter().generateRoute,
-          initialRoute: CacheHelper.getData(key: CacheKeys.isFirstOpen) == true
-              ? AppRoutes.mainLayoutScreen
-              : AppRoutes.splashScreen,
+          initialRoute: AppRoutes.splashScreen,
           theme: lightTheme,
           navigatorKey: navigatorKey,
           darkTheme: lightTheme,
           themeMode: ThemeMode.light,
-          title: 'SMLE',
+          title: 'SMLE Gate',
           debugShowCheckedModeBanner: false,
           localeResolutionCallback: (deviceLocale, supportedLocales) {
             for (var locale in supportedLocales) {

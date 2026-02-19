@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smle/core/cache_helper/cache_helper.dart';
-import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
@@ -179,7 +177,7 @@ class DrawerWidget extends StatelessWidget {
                   text: 'Playlist',
                   imagePath: Icons.playlist_add_check_circle_outlined,
                   onPressed: !isSubscribed
-                      ? () async => subscripeDialog(context)
+                      ? () async => subscripeDialogQuestionBank(context)
                       : () async {
                           context.pop();
                           if (context.mounted) {
@@ -250,14 +248,14 @@ class DrawerWidget extends StatelessWidget {
                     }
                   },
                 ),
-                BlocProvider(
-                  create: (context) => LoginCubit(getIt()),
+                BlocProvider.value(
+                  value: getIt<LoginCubit>(),
                   child: BlocBuilder<LoginCubit, LoginStates>(
                     builder: (context, state) {
                       return DrawerItemWidget(
                         imagePath: Icons.logout,
                         text: 'log_out'.tr(context),
-                        onPressed: () {
+                        onPressed: () async {
                           context.pop();
                           if (context.mounted) {
                             showDialog(
@@ -267,15 +265,18 @@ class DrawerWidget extends StatelessWidget {
                                     title: 'Are you sure you want to log out?',
                                     onConfirm: () async {
                                       try {
-                                        await context
-                                            .read<LoginCubit>()
-                                            .logOut();
+                                        if (dialogContext.mounted) {
+                                          await dialogContext
+                                              .read<LoginCubit>()
+                                              .logOut();
+                                        }
                                       } catch (_) {}
-
-                                      CacheHelper.sharedPreferences.remove(
-                                        CacheKeys.userToken,
-                                      );
-                                      context.pushReplacementNamed(
+                                      if (dialogContext.mounted) {
+                                        dialogContext
+                                            .read<MainLayoutCubit>()
+                                            .clearDataOnLogOut();
+                                      }
+                                      await dialogContext.pushReplacementNamed(
                                         AppRoutes.loginScreen,
                                       );
                                     },

@@ -30,7 +30,7 @@ class RealExamHomeWidget extends StatelessWidget {
             context,
             widget: CustomPrimaryDialog(
               title: 'Subscription Required',
-              description: 'Subscribe to access the real exams.',
+              description: 'Subscribe to access the Realistic Exam Simulation.',
               confirmText: 'Subscribe Now',
               onConfirm: () {
                 context.pushNamed(
@@ -71,7 +71,7 @@ class RealExamHomeWidget extends StatelessWidget {
             widget: CustomPrimaryDialog(
               title: 'Your Attempts Have Ended',
               description:
-                  'You’ve used all the real exams available to you. Please renew your subscription to continue.',
+                  'You’ve used all the Realistic Exam Simulation available to you. Please renew your subscription to continue.',
               confirmText: 'Subscribe Now',
               onConfirm: () {
                 context.pushNamed(

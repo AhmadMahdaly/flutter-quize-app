@@ -125,10 +125,7 @@ class AppRouter {
       case AppRoutes.subscriptionScreen:
         final offerId = settings.arguments as int;
         return transition(
-          screen: BlocProvider.value(
-            value: getIt<CheckSubscriptionCubit>()..loadSubscription(),
-            child: SubscriptionScreen(offerId: offerId),
-          ),
+          screen: SubscriptionScreen(offerId: offerId),
           cubit: getIt<SubscriptionCubit>()..getPackages(),
         );
       // case Routes.paymentScreen:

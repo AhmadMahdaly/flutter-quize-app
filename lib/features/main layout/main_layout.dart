@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/routing/app_router.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 
 class MainLayoutScreen extends StatelessWidget {
@@ -16,6 +18,43 @@ class MainLayoutScreen extends StatelessWidget {
         final mainLayoutInitialScreenIndex = cubit.mainLayoutInitialScreenIndex;
         return PopScope(
           canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) return;
+
+            cubit.backPressCount++;
+
+            if (cubit.backPressCount == 1 &&
+                mainLayoutInitialScreenIndex != 1) {
+              cubit.changeBottomNavBar(1);
+            } else if (cubit.backPressCount == 1 &&
+                mainLayoutInitialScreenIndex == 1) {
+              ScaffoldMessenger.of(context)
+                ..removeCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    content: Container(
+                      margin: EdgeInsets.all(4.r),
+                      padding: EdgeInsets.symmetric(vertical: 10.r),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor.withAlpha(220),
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Text(
+                        'Press again to exit',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.style14W500.copyWith(
+                          color: AppColors.thirdColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+            } else {
+              SystemNavigator.pop();
+            }
+          },
           child: Scaffold(
             backgroundColor: Colors.transparent,
             body: AppRouter().screen[mainLayoutInitialScreenIndex],

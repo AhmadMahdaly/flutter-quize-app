@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_button.dart';
@@ -115,8 +114,9 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                   text: 'Recipient email',
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (val) {
-                    if (isEmailVerified)
+                    if (isEmailVerified) {
                       setState(() => isEmailVerified = false);
+                    }
                   },
                 ),
                 15.verticalSpace,
@@ -193,10 +193,10 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                   initialValue: selectedPackageId,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: AppColors.darkGreyColor.withOpacity(0.1),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 12.h,
+                    fillColor: AppColors.darkGreyColor.withAlpha(25),
+                    contentPadding: EdgeInsets.only(
+                      left: 12.w,
+                      // vertical: 12.h,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
@@ -215,9 +215,14 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                   items: packages.map((pkg) {
                     return DropdownMenuItem<int>(
                       value: pkg.id,
-                      child: Text(
-                        "${pkg.name} (${pkg.price} ${'sar'.tr(context)})",
-                        style: AppTextStyle.style14Bold,
+                      child: Row(
+                        children: [
+                          Text(
+                            '${pkg.name}: ${pkg.price} SAR',
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyle.style12Bold,
+                          ),
+                        ],
                       ),
                     );
                   }).toList(),

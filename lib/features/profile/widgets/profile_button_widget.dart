@@ -22,7 +22,7 @@ class ProfileButtonWidget extends StatelessWidget {
         onTap: onPressed,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          height:SizeConfig.responsiveValue(phone: 50.h, tablet: 48.h),
+          height: SizeConfig.responsiveValue(phone: 45.h, tablet: 48.h),
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.r),
@@ -34,9 +34,19 @@ class ProfileButtonWidget extends StatelessWidget {
                   ? ImageIcon(
                       AssetImage(imagePath),
                       color: AppColors.greyColor,
-                      size: SizeConfig.responsiveValue(phone: 30.r, tablet: 20.r),
+                      size: SizeConfig.responsiveValue(
+                        phone: 26.r,
+                        tablet: 20.r,
+                      ),
                     )
-                  : Icon(imagePath, color: AppColors.greyColor, size: SizeConfig.responsiveValue(phone: 30.r, tablet: 20.r),),
+                  : Icon(
+                      imagePath,
+                      color: AppColors.greyColor,
+                      size: SizeConfig.responsiveValue(
+                        phone: 26.r,
+                        tablet: 20.r,
+                      ),
+                    ),
               10.horizontalSpace,
               Text(
                 text,
