@@ -9,6 +9,7 @@ import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
+import 'package:smle/features/analysis/data/model/analysis_model.dart';
 import 'package:smle/features/analysis/widgets/analysis_chart_widget.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/data/models/exams_history_model.dart';
@@ -56,22 +57,39 @@ class _AnalysisDashboardScreenState extends State<AnalysisDashboardScreen> {
 
                 if (state is ExamsHistorySuccess &&
                     examsCubit.allExams.isEmpty) {
-                  return Center(child: Text('no_exams_found'.tr(context)));
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ((SizeConfig.screenHeight / 2) - 300).verticalSpace,
+                      Icon(
+                        Icons.edit_document,
+                        color: AppColors.darkGreyColor,
+                        size: 160.r,
+                      ),
+                      12.verticalSpace,
+                      Center(
+                        child: Text(
+                          'no_exams_found'.tr(context),
+                          style: AppTextStyle.style16W700.copyWith(
+                            color: AppColors.darkGreyColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
                 }
 
                 if (state is ExamsHistorySuccess) {
                   return Column(
                     children: examsCubit.allExams
                         .map(
-                          (exam) => Padding(
-                            padding: EdgeInsets.only(bottom: 16.h),
-                            child: GestureDetector(
-                              onTap: () {
-                                context.pushNamed(
-                                  AppRoutes.examAnalysisScreen,
-                                  arguments: exam,
-                                );
-                              },
+                          (exam) => InkWell(
+                            onTap: () => context.pushNamed(
+                              AppRoutes.examAnalysisScreen,
+                              arguments: exam,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 16.h),
                               child: ExamScoreCard(exam: exam),
                             ),
                           ),
@@ -145,12 +163,19 @@ class ExamAnalysisScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final analysis = context.read<AnalysisCubit>().analysisModel;
+    final List<Analysis>? examCategories = exam.categories;
 
     return Scaffold(
       appBar: CustomAppBar(title: 'Exam ${exam.examNo}'),
-      body: analysis == null || analysis.data == null
-          ? const SizedBox.shrink()
+      body: examCategories == null || examCategories.isEmpty
+          ? Center(
+              child: Text(
+                'No analysis data found for this exam.',
+                style: AppTextStyle.style16Bold.copyWith(
+                  color: AppColors.forthColor,
+                ),
+              ),
+            )
           : SingleChildScrollView(
               padding: EdgeInsets.all(16.w),
               child: Column(
@@ -166,24 +191,37 @@ class ExamAnalysisScreen extends StatelessWidget {
                   30.verticalSpace,
                   const Divider(color: AppColors.darkGreyColor),
                   20.verticalSpace,
-                  Text(
-                    'This analysis reflects your latest exam only',
-                    style: AppTextStyle.style14W500.copyWith(
-                      color: Colors.grey,
-                    ),
-                  ),
+
                   30.verticalSpace,
 
                   /// Chart
-                  PerformanceChart(data: analysis.data!),
+                  PerformanceChart(data: examCategories),
 
                   30.verticalSpace,
 
                   /// Detailed Table
-                  buildDetailedTable(context, analysis.data!),
+                  buildDetailedTable(context, examCategories),
                 ],
               ),
             ),
     );
   }
 }
+  // return ListView.builder(
+  //                     shrinkWrap: true,
+  //                     physics: const NeverScrollableScrollPhysics(),
+  //                     itemCount: exams.length,
+  //                     itemBuilder: (context, index) {
+  //                       final exam = exams[index];
+  //                       return InkWell(
+  //                         onTap: () => context.pushNamed(
+  //                           AppRoutes.examAnalysisScreen,
+  //                           arguments: exam,
+  //                         ),
+  //                         child: Padding(
+  //                           padding: EdgeInsets.only(bottom: 16.h),
+  //                           child: ExamScoreCard(exam: exam),
+  //                         ),
+  //                       );
+  //                     },
+  //                   );

@@ -1,8 +1,13 @@
+import 'package:smle/features/analysis/data/model/analysis_model.dart'; // تأكد من مسار Analysis
+
 class ExamsHistoryModel {
   ExamsHistoryModel({this.status, this.message, this.data});
 
   ExamsHistoryModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
+    // جعلنا status يقبل bool أو int بناءً على الـ JSON الجديد
+    status = json['status'] == true
+        ? 1
+        : (json['status'] == false ? 0 : json['status']);
     message = json['message'];
     if (json['data'] != null) {
       data = <Exam>[];
@@ -11,20 +16,32 @@ class ExamsHistoryModel {
       });
     }
   }
-  int? status;
+
+  dynamic status;
   String? message;
   List<Exam>? data;
 }
 
 class Exam {
-  Exam({this.id, this.examNo, this.score});
-
   Exam.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    examNo = json['exam_no'];
-    score = json['score'];
+    examId = json['exam_id'];
+    score = json['total_score']; // المفتاح الجديد من الـ JSON
+    examDate = json['exam_date'];
+
+    if (json['categories'] != null) {
+      categories = <Analysis>[];
+      json['categories'].forEach((v) {
+        categories!.add(Analysis.fromJson(v));
+      });
+    }
   }
-  int? id;
-  int? examNo;
+  Exam({this.examId, this.score, this.examDate, this.categories});
+
+  // Getter لربط الموديل القديم بالجديد دون كسر الـ UI
+  int? get examNo => examId;
+
+  int? examId;
   num? score;
+  String? examDate;
+  List<Analysis>? categories;
 }

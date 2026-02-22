@@ -9,10 +9,33 @@ class ExamsHistoryRepository {
   ExamsHistoryRepository(this._dioFactory);
   final DioFactory _dioFactory;
 
+  // Future<ApiResult<ExamsHistoryModel>> getExamHistory() async {
+  //   try {
+  //     final response = await _dioFactory.post(
+  //       endPoint: EndPoints.getExamHistory,
+  //     );
+  //     if (response!.statusCode == 200) {
+  //       final examsHistoryModel = ExamsHistoryModel.fromJson(response.data);
+  //       return ApiResult.success(examsHistoryModel);
+  //     } else {
+  //       return ApiResult.failure(
+  //         ServerFailure.fromResponse(
+  //           response.statusCode,
+  //           response.data['message'],
+  //         ),
+  //       );
+  //     }
+  //   } on DioException catch (e) {
+  //     return ApiResult.failure(ServerFailure.fromDioError(e));
+  //   } catch (e) {
+  //     return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+  //   }
+  // }
+
   Future<ApiResult<ExamsHistoryModel>> getExamsHistory() async {
     try {
-      final response = await _dioFactory.post(
-        endPoint: EndPoints.getExamHistory,
+      final response = await _dioFactory.get(
+        endPoint: EndPoints.getExamsHistory,
       );
       if (response!.statusCode == 200) {
         final examsHistoryModel = ExamsHistoryModel.fromJson(response.data);

@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
@@ -16,9 +18,21 @@ class ExamsList extends StatelessWidget {
     log(cubit.state.toString());
     if (cubit.allExams.isEmpty && cubit.state is! ExamsHistoryLoading) {
       return Center(
-        child: Text(
-          'no_exams_found'.tr(context),
-          style: AppTextStyle.style16Bold.copyWith(color: AppColors.forthColor),
+        child: Column(
+          children: [
+            Icon(
+              Icons.edit_document,
+              color: AppColors.darkGreyColor,
+              size: 160.r,
+            ),
+            12.verticalSpace,
+            Text(
+              'no_exams_found'.tr(context),
+              style: AppTextStyle.style16Bold.copyWith(
+                color: AppColors.forthColor,
+              ),
+            ),
+          ],
         ),
       );
     }
@@ -27,7 +41,11 @@ class ExamsList extends StatelessWidget {
       itemCount: cubit.allExams.length,
       itemBuilder: (context, index) {
         final exam = cubit.allExams[index];
-        return ExamScoreCard(exam: exam);
+        return InkWell(
+          onTap: () =>
+              context.pushNamed(AppRoutes.examAnalysisScreen, arguments: exam),
+          child: ExamScoreCard(exam: exam),
+        );
       },
       separatorBuilder: (context, index) => 20.verticalSpace,
     );

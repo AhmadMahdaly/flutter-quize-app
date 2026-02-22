@@ -58,6 +58,7 @@ class EndPoints {
   static const String addQuestionNote = 'question/note';
   static const String finishAnalysisExam = 'exam/analysis';
   static const String getExamHistory = 'exam/history';
+  static const String getExamsHistory = 'exams/history';
   static const String verifyPurchase = 'verifyPurchase';
   static const String checkSubscribe = 'check/subscribed';
   static const String addQBankNote = 'add/q/bank/note';

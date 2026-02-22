@@ -234,16 +234,11 @@ class QBankRepository {
     }
   }
 
-  Future<ApiResult<YearsModel>> getYears()
-     async {
+  Future<ApiResult<YearsModel>> getYears() async {
     try {
-      final response = await _dioFactory.get(
-        endPoint: EndPoints.years,
-      );
+      final response = await _dioFactory.get(endPoint: EndPoints.years);
       if (response!.statusCode == 200) {
-        final YearsModel model = YearsModel.fromJson(
-          response.data,
-        );
+        final YearsModel model = YearsModel.fromJson(response.data);
         return ApiResult.success(model);
       } else {
         debugPrintWidget(response.data['error']);
@@ -260,5 +255,4 @@ class QBankRepository {
       return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
-  
 }

@@ -15,6 +15,7 @@ class AppRoutes {
   static const String addCardScreen = '/addCardScreen';
   static const String applePayScreen = '/applePayScreen';
   static const String analysisScreen = '/analysisScreen';
+  // static const String analysisHistoryScreen = '/analysisHistoryScreen';
   static const String createQuizScreen = '/createQuizScreen';
   static const String qBankScreen = '/qBankScreen';
   static const String examsHistoryScreen = '/examsHistoryScreen';

@@ -147,6 +147,12 @@ class AppRouter {
           screen: AnalysisScreen(isExam: isExam),
           cubit: getIt<AnalysisCubit>()..getAnalysis(),
         );
+      // case AppRoutes.analysisHistoryScreen:
+      //   final exam = settings.arguments as Exam;
+      //   return transition(
+      //     screen: ExamAnalysisHistoryScreen(exam: exam),
+      //     cubit: getIt<AnalysisCubit>()..getAnalysis(),
+      //   );
       case AppRoutes.createQuizScreen:
         final istrial = settings.arguments as bool?;
         return transition(

@@ -13,20 +13,31 @@ part 'q_bank_state.dart';
 class QBankCubit extends SafeCubit<QBankStates> {
   QBankCubit(this._qBankRepository) : super(QBankInitialState());
   final QBankRepository _qBankRepository;
+  DateTime selectedYearDate = DateTime.now();
 
+  bool isAllMonthsSelected = false;
+  List<int> selectedMonths = [];
+  bool isAllYearsSelected = false;
   @override
   Future<void> close() {
     numberOfQuestionsController.dispose();
     return super.close();
   }
 
+  void toggleAllMonths(bool selectAll) {
+    isAllMonthsSelected = selectAll;
+    if (selectAll) {
+      selectedMonths.clear();
+    } else {
+      // تم التعديل هنا: تفريغ الشهور المحددة بدلاً من إجبار تحديد الشهر الأول
+      selectedMonths.clear();
+    }
+    updateAvailableQuestionsCount();
+    emit(SelectDateState());
+  }
+
   bool isSubCategoriesLoading = false;
 
-  DateTime selectedYearDate = DateTime(2024);
-
-  bool isAllMonthsSelected = true;
-  List<int> selectedMonths = [];
-  bool isAllYearsSelected = false;
   QBankModel? qBankModel;
 
   Future<void> init() async {
@@ -91,13 +102,13 @@ class QBankCubit extends SafeCubit<QBankStates> {
     );
   }
 
-  void toggleAllMonths(bool selectAll) {
-    isAllMonthsSelected = selectAll;
-    if (selectAll) {
-      selectedMonths.clear();
-    } else {
-      selectedMonths = [selectedYearDate.month];
-    }
+  void selectYear(DateTime selected) {
+    selectedYearDate = selected;
+
+    // تم التعديل هنا: عند تغيير السنة نبقي على إظهار الشهور ونصيفر الاختيارات
+    isAllMonthsSelected = false;
+    selectedMonths.clear();
+
     updateAvailableQuestionsCount();
     emit(SelectDateState());
   }
@@ -161,6 +172,25 @@ class QBankCubit extends SafeCubit<QBankStates> {
         emit(GetYearsFailedState());
       },
     );
+  }
+  // --- أضف هذه الدوال (Getters) داخل الكيوبت ---
+
+  // استخراج السنوات المتاحة بدون تكرار وترتيبها تنازلياً (الأحدث أولاً)
+  List<int> get availableYears {
+    if (yearsModel?.data == null) return [];
+    return yearsModel!.data!.map((e) => e.year!).toSet().toList()
+      ..sort((a, b) => b.compareTo(a));
+  }
+
+  // استخراج الشهور المتاحة بناءً على السنة المحددة حالياً
+  List<int> get availableMonthsForSelectedYear {
+    if (yearsModel?.data == null) return [];
+    return yearsModel!.data!
+        .where((e) => e.year == selectedYearDate.year)
+        .map((e) => e.month!)
+        .toSet()
+        .toList()
+      ..sort();
   }
 
   List<Subcategories> aggregatedSubcategories = [];
@@ -229,11 +259,6 @@ class QBankCubit extends SafeCubit<QBankStates> {
   final TextEditingController numberOfQuestionsController =
       TextEditingController();
   bool unansweredOnly = false;
-  void selectYear(DateTime selected) {
-    selectedYearDate = selected;
-    updateAvailableQuestionsCount();
-    emit(SelectDateState());
-  }
 
   void toggleMonthSelection(int month) {
     if (isAllMonthsSelected) return;

@@ -32,7 +32,7 @@ class RealExamPage extends StatelessWidget {
             switch (state.status) {
               case ExamStatus.loading:
               case ExamStatus.initial:
-                return const SizedBox.shrink();
+                return const Center(child: CircularProgressIndicator());
               case ExamStatus.success:
                 return RealExamBody(
                   examModel: state.examModel!,

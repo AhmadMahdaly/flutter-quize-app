@@ -35,18 +35,30 @@ class MainLayoutScreen extends StatelessWidget {
                     elevation: 0,
                     backgroundColor: Colors.transparent,
                     content: Container(
+                      alignment: Alignment.center,
                       margin: EdgeInsets.all(4.r),
-                      padding: EdgeInsets.symmetric(vertical: 10.r),
+                      padding: EdgeInsets.symmetric(vertical: 4.r),
                       decoration: BoxDecoration(
                         color: AppColors.primaryColor.withAlpha(220),
                         borderRadius: BorderRadius.circular(10.r),
                       ),
-                      child: Text(
-                        'Press again to exit',
-                        textAlign: TextAlign.center,
-                        style: AppTextStyle.style14W500.copyWith(
-                          color: AppColors.thirdColor,
-                        ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.logout_rounded,
+                            color: AppColors.thirdColor,
+                            size: 16.r,
+                          ),
+                          8.horizontalSpace,
+                          Text(
+                            'Press again to exit',
+                            textAlign: TextAlign.center,
+                            style: AppTextStyle.style14Bold.copyWith(
+                              color: AppColors.thirdColor,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
