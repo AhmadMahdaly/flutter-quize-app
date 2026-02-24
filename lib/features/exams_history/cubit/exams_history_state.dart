@@ -14,14 +14,14 @@ class ExamsHistoryFailure extends ExamsHistoryState {
   final String errorMessage;
 }
 
-class DeleteExamHistoryLoading extends ExamsHistoryState {}
+// class DeleteExamHistoryLoading extends ExamsHistoryState {}
 
-class DeleteExamHistorySuccess extends ExamsHistoryState {
-  DeleteExamHistorySuccess(this.errorMessage);
-  final String errorMessage;
-}
+// class DeleteExamHistorySuccess extends ExamsHistoryState {
+//   DeleteExamHistorySuccess(this.errorMessage);
+//   final String errorMessage;
+// }
 
-class DeleteExamHistoryFailure extends ExamsHistoryState {
-  DeleteExamHistoryFailure(this.errorMessage);
-  final String errorMessage;
-}
+// class DeleteExamHistoryFailure extends ExamsHistoryState {
+//   DeleteExamHistoryFailure(this.errorMessage);
+//   final String errorMessage;
+// }

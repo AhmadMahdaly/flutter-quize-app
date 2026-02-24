@@ -8,6 +8,7 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
+import 'package:smle/core/shared_widgets/powered_by_widget.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/auth/cubit/login_cubit.dart';
@@ -318,6 +319,8 @@ class ProfileScreen extends StatelessWidget {
                                     8.verticalSpace,
                                   ],
                                 ),
+                                16.verticalSpace,
+                                const PoweredByWidget(),
                               ],
                             ),
                           ),

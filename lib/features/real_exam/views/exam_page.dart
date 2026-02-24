@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
 import 'package:smle/features/real_exam/views/widgets/break_time_dailog.dart';
 import 'package:smle/features/real_exam/views/widgets/real_exam_body.dart';
@@ -32,7 +35,19 @@ class RealExamPage extends StatelessWidget {
             switch (state.status) {
               case ExamStatus.loading:
               case ExamStatus.initial:
-                return const Center(child: CircularProgressIndicator());
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Loading...',
+                      style: AppTextStyle.style16W700.copyWith(
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                    10.verticalSpace,
+                    const Center(child: CircularProgressIndicator()),
+                  ],
+                );
               case ExamStatus.success:
                 return RealExamBody(
                   examModel: state.examModel!,

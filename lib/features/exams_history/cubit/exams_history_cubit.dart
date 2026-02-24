@@ -32,25 +32,37 @@ class ExamsHistoryCubit extends Cubit<ExamsHistoryState> {
   }
 
   Future<void> deleteExamHistory(String examId) async {
-    showLoading();
+    // 1. البحث عن العنصر وحفظه (تحسباً لفشل الحذف من السيرفر حتى نتمكن من إرجاعه)
+    final index = allExams.indexWhere(
+      (exam) => exam.examId.toString() == examId,
+    );
+    final deletedExam = index != -1 ? allExams[index] : null;
 
-    emit(DeleteExamHistoryLoading());
+    // 2. الحذف محلياً وتحديث الواجهة *فوراً* لتجنب خطأ الـ Dismissible
+    allExams.removeWhere((exam) => exam.examId.toString() == examId);
+    emit(ExamsHistorySuccess());
+
+    // 3. إظهار التحميل وإرسال الطلب للسيرفر
+    showLoading();
+    emit(ExamsHistoryLoading());
+
     final result = await _repository.deleteExamHistory(examId);
+
     result.when(
       success: (s) async {
-        // 1. قم بحذف الاختبار من القائمة المحلية (allExams) بناءً على الـ ID
-        allExams.removeWhere((exam) => exam.examId.toString() == examId);
-
         hideLoading();
-        // 2. إصدار حالة نجاح الحذف (إذا كنت تستخدمها لإظهار رسالة مثلاً)
-        emit(DeleteExamHistorySuccess(s.toString()));
-
-        // 3. الأهم: إصدار حالة ExamsHistorySuccess لكي يقوم BlocBuilder بإعادة رسم الكروت المتبقية
         emit(ExamsHistorySuccess());
       },
       failure: (error) {
         hideLoading();
-        emit(DeleteExamHistoryFailure(error.errMessage));
+
+        // 4. في حالة فشل السيرفر، نقوم بإرجاع الاختبار للقائمة وتحديث الشاشة
+        if (deletedExam != null && index != -1) {
+          allExams.insert(index, deletedExam);
+          emit(ExamsHistorySuccess()); // إعادة رسم الكروت
+        }
+
+        emit(ExamsHistoryFailure(error.errMessage));
       },
     );
   }
