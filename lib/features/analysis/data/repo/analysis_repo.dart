@@ -5,6 +5,7 @@ import 'package:smle/core/network/end_points.dart';
 import 'package:smle/core/network/failures.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/features/analysis/data/model/analysis_model.dart';
+import 'package:smle/features/exams_history/data/models/exams_history_model.dart';
 
 class AnalysisRepository {
   AnalysisRepository(this._dioFactory);
@@ -30,6 +31,29 @@ class AnalysisRepository {
         );
       } else {
         debugPrintWidget(response.data['message']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+    }
+  }
+
+  Future<ApiResult<ExamsHistoryModel>> deleteExamHistory(String examId) async {
+    try {
+      final response = await _dioFactory.get(
+        endPoint: '${EndPoints.getExamsHistory}/$examId',
+      );
+      if (response!.statusCode == 200) {
+        final examsHistoryModel = ExamsHistoryModel.fromJson(response.data);
+        return ApiResult.success(examsHistoryModel);
+      } else {
         return ApiResult.failure(
           ServerFailure.fromResponse(
             response.statusCode,

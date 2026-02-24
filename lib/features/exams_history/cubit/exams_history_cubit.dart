@@ -30,4 +30,28 @@ class ExamsHistoryCubit extends Cubit<ExamsHistoryState> {
       },
     );
   }
+
+  Future<void> deleteExamHistory(String examId) async {
+    showLoading();
+
+    emit(DeleteExamHistoryLoading());
+    final result = await _repository.deleteExamHistory(examId);
+    result.when(
+      success: (s) async {
+        // 1. قم بحذف الاختبار من القائمة المحلية (allExams) بناءً على الـ ID
+        allExams.removeWhere((exam) => exam.examId.toString() == examId);
+
+        hideLoading();
+        // 2. إصدار حالة نجاح الحذف (إذا كنت تستخدمها لإظهار رسالة مثلاً)
+        emit(DeleteExamHistorySuccess(s.toString()));
+
+        // 3. الأهم: إصدار حالة ExamsHistorySuccess لكي يقوم BlocBuilder بإعادة رسم الكروت المتبقية
+        emit(ExamsHistorySuccess());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(DeleteExamHistoryFailure(error.errMessage));
+      },
+    );
+  }
 }

@@ -56,7 +56,9 @@ class _AnalysisDashboardScreenState extends State<AnalysisDashboardScreen> {
                 }
 
                 if (state is ExamsHistorySuccess &&
-                    examsCubit.allExams.isEmpty) {
+                        examsCubit.allExams.isEmpty ||
+                    state is ExamsHistorySuccess &&
+                        examsCubit.allExams == null) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -83,14 +85,74 @@ class _AnalysisDashboardScreenState extends State<AnalysisDashboardScreen> {
                   return Column(
                     children: examsCubit.allExams
                         .map(
-                          (exam) => InkWell(
-                            onTap: () => context.pushNamed(
-                              AppRoutes.examAnalysisScreen,
-                              arguments: exam,
+                          (exam) => Dismissible(
+                            key: Key(exam.examId.toString()),
+                            direction: DismissDirection.endToStart,
+                            background: Container(
+                              alignment: AlignmentDirectional.centerEnd,
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              decoration: BoxDecoration(
+                                color: AppColors.errorColor,
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: const Icon(
+                                Icons.delete_outline,
+                                color: Colors.white,
+                                size: 30,
+                              ),
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.only(bottom: 16.h),
-                              child: ExamScoreCard(exam: exam),
+                            confirmDismiss: (DismissDirection direction) async {
+                              return await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Confirm Deletion'),
+                                    content: Text(
+                                      'Are you sure you want to delete this exam?\n'
+                                      'Please note that deleting any exam will affect your total results analysis.',
+                                      style: AppTextStyle.style14W700,
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.of(
+                                          context,
+                                        ).pop(false), // إلغاء الحذف
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => Navigator.of(
+                                          context,
+                                        ).pop(true), // تأكيد الحذف
+                                        child: const Text(
+                                          'Delete',
+                                          style: TextStyle(
+                                            color: AppColors.errorColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            onDismissed: (direction) {
+                              // سيتم استدعاء هذا الكود فقط إذا اختار المستخدم "Delete" وأرجع الديالوج true
+                              examsCubit.deleteExamHistory(
+                                exam.examId.toString(),
+                              );
+                            },
+                            child: InkWell(
+                              onTap: () => context.pushNamed(
+                                AppRoutes.examAnalysisScreen,
+                                arguments: exam,
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 16.h),
+                                child: ExamScoreCard(exam: exam),
+                              ),
                             ),
                           ),
                         )

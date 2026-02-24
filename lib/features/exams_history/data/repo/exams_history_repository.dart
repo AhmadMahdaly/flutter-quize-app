@@ -54,4 +54,27 @@ class ExamsHistoryRepository {
       return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
+
+  Future<ApiResult<String>> deleteExamHistory(String examId) async {
+    try {
+      final response = await _dioFactory.get(
+        endPoint: 'delete/${EndPoints.getExamHistory}/$examId',
+      );
+      if (response!.statusCode == 200) {
+        final examHistory = response.data['message'];
+        return ApiResult.success(examHistory);
+      } else {
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+    }
+  }
 }

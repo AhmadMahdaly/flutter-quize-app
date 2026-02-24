@@ -71,12 +71,14 @@ class _PlayListScreenState extends State<PlayListScreen> {
                   if (cubit.playListModel != null &&
                       cubit.playListModel!.data != null)
                     if (cubit.playListModel!.data!.isEmpty)
-                      Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(20.w),
+                      Padding(
+                        padding: EdgeInsets.all(20.r),
+                        child: Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              ((SizeConfig.screenHeight / 3) - 150)
+                                  .verticalSpace,
                               const Icon(
                                 Icons.playlist_add_outlined,
                                 size: 80,

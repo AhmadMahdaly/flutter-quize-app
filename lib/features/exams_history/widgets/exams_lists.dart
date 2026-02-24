@@ -19,6 +19,7 @@ class ExamsList extends StatelessWidget {
     if (cubit.allExams.isEmpty && cubit.state is! ExamsHistoryLoading) {
       return Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.edit_document,
@@ -29,7 +30,7 @@ class ExamsList extends StatelessWidget {
             Text(
               'no_exams_found'.tr(context),
               style: AppTextStyle.style16Bold.copyWith(
-                color: AppColors.forthColor,
+                color: AppColors.darkGreyColor,
               ),
             ),
           ],
