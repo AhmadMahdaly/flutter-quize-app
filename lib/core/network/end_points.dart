@@ -48,6 +48,8 @@ class EndPoints {
   static const String startFreeQBank = 'free-trial/start';
   static const String getFreeQBankCount = 'free-trial/filter';
   static const String createFreeQBank = 'free-trial/create';
+   static const String freeTrialYears = 'free-trial/years';
+   static const String freeTrialMonths = 'free-trial/months';
 
   /// ? Real Exam
   static const String startRealExam = 'start/real/exam';
@@ -65,5 +67,7 @@ class EndPoints {
   static const String paymentProcess = 'payment/process';
   static const String paymentCallback = 'payment/callback';
   static const String paymentCallbackGift = 'gift/payment/callback';
+  static const String paymentProcessGift = 'gift/payment/process';
+  static const String giftCheckout = 'gift/checkout';
   static const String years = 'exam-dates/qbank';
 }

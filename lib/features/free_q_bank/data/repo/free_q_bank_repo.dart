@@ -91,7 +91,7 @@ class FreeQBankRepository {
 
   Future<ApiResult<List<int>>> getAvailableYears() async {
     try {
-      final response = await _dioFactory.get(endPoint: 'free-trial/years');
+      final response = await _dioFactory.get(endPoint: EndPoints.freeTrialYears);
       if (response!.statusCode == 200) {
         final List<int> years = List<int>.from(response.data['data']);
         return ApiResult.success(years);
@@ -105,7 +105,7 @@ class FreeQBankRepository {
   Future<ApiResult<List<dynamic>>> getAvailableMonths(int year) async {
     try {
       final response = await _dioFactory.get(
-        endPoint: 'free-trial/months',
+        endPoint: EndPoints.freeTrialMonths,
         data: {'year': year},
       );
       if (response!.statusCode == 200) {
