@@ -20,6 +20,8 @@ class PurchaseFailedState extends SubscriptionStates {
   final String message;
 }
 
+class PurchaseCancelledState extends SubscriptionStates {}
+
 /// Get Profile
 class GetProfileLoadingState extends SubscriptionStates {}
 

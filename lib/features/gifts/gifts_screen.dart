@@ -5,6 +5,7 @@ import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/no_data_widget.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
@@ -34,7 +35,13 @@ class GiftsScreen extends StatelessWidget {
           builder: (context, state) {
             final cubit = context.watch<MainLayoutCubit>();
             final gifts = cubit.gifts;
-            if (gifts.isEmpty) {
+            if (gifts.isEmpty && state is GetGiftsSuccessState) {
+              return const NoDataWidget(
+                noDataImage: 'assets/images/png/present.png',
+                noDataText: 'No Gifts yet!',
+              );
+            }
+            if (gifts.isEmpty && state is GetGiftsLoadingState) {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -69,7 +76,13 @@ class GiftsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Send by: ${invoice.createdByName}'),
+                      Text(
+                        'Send by: ${invoice.createdByName}',
+                        style: AppTextStyle.style16Bold.copyWith(
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                      4.verticalSpace,
                       Text(
                         invoice.invoiceNumber,
                         style: AppTextStyle.style16Bold,

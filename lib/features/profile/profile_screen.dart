@@ -109,7 +109,7 @@ class ProfileScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16.r),
                                   border: Border.all(
-                                    color: AppColors.darkGreyColor,
+                                    color: AppColors.greyColor,
                                   ),
                                 ),
                                 child: Column(

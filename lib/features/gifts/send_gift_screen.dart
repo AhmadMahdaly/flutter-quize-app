@@ -7,6 +7,7 @@ import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
+import 'package:smle/features/subscription/widgets/pay_done_dialog.dart';
 
 class SendGiftScreen extends StatefulWidget {
   const SendGiftScreen({super.key});
@@ -70,12 +71,13 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
               ),
             );
           } else if (state is PurchaseSuccessState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Your gift is send'),
-                backgroundColor: Colors.green,
-              ),
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) =>
+                  const PayDoneDialog(title: 'Your gift is send'),
             );
+
             // if (context.mounted) context.pop();
           }
         },

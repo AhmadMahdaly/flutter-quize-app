@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
@@ -9,7 +10,6 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
-import 'package:smle/features/subscription/widgets/pay_done_dialog.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key, required this.package, required this.cubit});
@@ -37,10 +37,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         bloc: widget.cubit,
         listener: (context, state) {
           if (state is PurchaseSuccessState) {
-            showDialog(
-              context: context,
-              builder: (context) => const PayDoneDialog(),
-            );
+            if (mounted) context.pop();
+          }
+          if (state is PurchaseCancelledState) {
+            if (mounted) context.pop();
           }
         },
         builder: (context, state) {

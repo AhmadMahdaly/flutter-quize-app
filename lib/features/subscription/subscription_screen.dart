@@ -22,11 +22,18 @@ class SubscriptionScreen extends StatelessWidget {
           showDialog(
             context: context,
             barrierDismissible: false,
-            builder: (context) => const PayDoneDialog(),
+            builder: (context) => const PayDoneDialog(title: 'Done'),
           );
         } else if (state is PurchaseFailedState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+          );
+        } else if (state is PurchaseCancelledState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Payment cancelled'),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       },

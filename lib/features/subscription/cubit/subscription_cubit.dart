@@ -122,52 +122,43 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     );
   }
 
+  // bool isBack = true;
   void _openPayMobWebView(BuildContext context, String iframeUrl) {
     final controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onNavigationRequest: (NavigationRequest request) async {
-            final uri = Uri.parse(request.url);
-
-            if (uri.queryParameters.containsKey('success')) {
-              // await _subscriptionRepository.processPaymentCallback(
-              //   billingData: uri.queryParameters,
-              // );
-              log(uri.queryParameters.toString());
-              getIt<CheckSubscriptionCubit>().loadSubscription();
-              // context.pop();
-              if (uri.queryParameters['success'] == 'true') {
-                if (!isClosed) emit(PurchaseSuccessState());
-              } else {
-                uri.queryParameters.dPrint();
-                final message =
-                    uri.queryParameters['message'] ??
-                    uri.queryParameters['error'] ??
-                    'Payment failed';
-                message.dPrint();
-                if (!isClosed) emit(PurchaseFailedState(message));
-              }
-              return NavigationDecision.prevent;
-            }
-            if (request.url.contains('your-callback-url')) {
-              // context.pop();
-
-              if (request.url.contains('success')) {
-                if (!isClosed) emit(PurchaseSuccessState());
-              } else {
-                '${uri.queryParameters}  fail'.dPrint();
-                if (!isClosed) emit(PurchaseFailedState('Payment failed'));
-              }
-              return NavigationDecision.prevent;
-            }
-
+          onNavigationRequest: (NavigationRequest request) {
             return NavigationDecision.navigate;
           },
           onPageStarted: (String url) {
-            '🔄 Page started: $url'.dPrint();
+            '✅ Page Started: $url'.dPrint();
           },
           onPageFinished: (String url) {
+            if (url.startsWith(
+              'https://ksa.paymob.com/unifiedcheckout/payment-status',
+            )) {
+              // isBack = false;
+            }
+
+            if (url.startsWith('https://smlegate.com/payment/success')) {
+              log('hkjlhnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+              getIt<CheckSubscriptionCubit>().loadSubscription();
+
+              if (!isClosed) {
+                emit(PurchaseSuccessState());
+              }
+
+              Navigator.of(context).pop();
+            }
+
+            if (url.startsWith('https://smlegate.com/payment/failed')) {
+              if (!isClosed) {
+                emit(PurchaseFailedState('Payment failed'));
+              }
+
+              Navigator.of(context).pop();
+            }
             '✅ Page loaded: $url'.dPrint();
           },
           onWebResourceError: (WebResourceError error) {
@@ -180,22 +171,36 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => WillPopScope(
-        onWillPop: () async {
-          if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
-          return true;
-        },
+      builder: (_) => PopScope(
+        canPop: false,
+        // onWillPop: () async {
+        //   if (!isClosed && isBack) {
+        //     // emit(PurchaseCancelledState());
+        //     isBack = true;
+        //     // Navigator.pop(context);
+        //   }
+
+        // return isBack;
+        // },
         child: Dialog.fullscreen(
           child: Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.close, color: AppColors.secondaryColor),
-                onPressed: () {
-                  if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
-                  Navigator.pop(context);
-                },
-              ),
-            ),
+            // appBar: AppBar(
+            //   leading: isBack == true
+            //       ? IconButton(
+            //           icon: const Icon(
+            //             Icons.close,
+            //             color: AppColors.secondaryColor,
+            //           ),
+            //           onPressed: () {
+            //             if (!isClosed && isBack) {
+            //               emit(PurchaseCancelledState());
+            //               isBack = true;
+            //             }
+            //             Navigator.pop(context);
+            //           },
+            //         )
+            //       : null,
+            // ),
             body: WebViewWidget(controller: controller),
           ),
         ),
