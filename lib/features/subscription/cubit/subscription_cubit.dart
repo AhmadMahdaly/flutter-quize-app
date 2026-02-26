@@ -7,8 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/debug_print_extension.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/check_subscription/data/models/check_subscription_model.dart';
 import 'package:smle/features/main%20layout/data/model/profile_model.dart'
@@ -170,25 +173,62 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       barrierDismissible: false,
       builder: (_) => WillPopScope(
         onWillPop: () async {
-          if (!isClosed) {
-            // emit(PurchaseCancelledState());
-            // Navigator.pop(context);
-          }
+          final shouldExit = await showDialog<bool>(
+            context: context,
+            builder: (dialogContext) {
+              return AlertDialog(
+                title: Text('Cancel', style: AppTextStyle.style16W600),
+                content: Text(
+                  'Are you sure you want to cancel?',
+                  style: AppTextStyle.style16W500,
+                ),
+                actions: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomPrimaryButton(
+                          text: 'Yes',
+                          onPressed: () {
+                            if (!isClosed) {
+                              emit(PurchaseCancelledState());
+                            }
+                            Navigator.of(dialogContext).pop(true);
+                          },
+                        ),
+                      ),
 
-          return true;
+                      10.horizontalSpace,
+
+                      Expanded(
+                        child: CustomPrimaryButton(
+                          text: 'No',
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop(false);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+          );
+
+          return shouldExit ?? false;
         },
         child: Dialog.fullscreen(
           child: Scaffold(
-            appBar: AppBar(
-              leading: TextButton(
-                child: const Text('Cancel'),
-                onPressed: () {
-                  emit(PurchaseCancelledState());
+            // appBar: AppBar(
+            //   leadingWidth: 100.w,
+            //   leading: TextButton(
+            //     child: const Text('Cancel'),
+            //     onPressed: () {
+            //       emit(PurchaseCancelledState());
 
-                  Navigator.pop(context);
-                },
-              ),
-            ),
+            //       Navigator.pop(context);
+            //     },
+            //   ),
+            // ),
             body: WebViewWidget(controller: controller),
           ),
         ),
