@@ -67,7 +67,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                           style: AppTextStyle.style16Bold,
                         )
                       : const SizedBox.shrink(),
-                  30.verticalSpace,
+                  8.verticalSpace,
                   if (cubit.playListModel != null &&
                       cubit.playListModel!.data != null)
                     if (cubit.playListModel!.data!.isEmpty)
@@ -214,6 +214,28 @@ class _PlayListScreenState extends State<PlayListScreen> {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(320.r),
+        ),
+        child: const Icon(Icons.add),
+        onPressed: () async {
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return BlocProvider.value(
+                value: context.read<PlayListCubit>(),
+                child: PlaylistAlertWidget(
+                  playListNameController: playListNameController,
+                  title: 'new_playlist'.tr(context),
+                  isEdit: false,
+                  questionId: widget.questionId,
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

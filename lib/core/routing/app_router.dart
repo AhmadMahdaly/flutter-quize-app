@@ -16,7 +16,7 @@ import 'package:smle/features/exams_history/exams_history_screen.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
 import 'package:smle/features/free_q_bank/free_create_quiz_screen.dart';
 import 'package:smle/features/free_q_bank/free_q_bank_screen.dart';
-import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
+// import 'package:smle/features/free_trial/views/trial_exam_screen.dart';
 import 'package:smle/features/gifts/gifts_screen.dart';
 import 'package:smle/features/gifts/send_gift_screen.dart';
 import 'package:smle/features/home/home_screen.dart';
@@ -263,8 +263,8 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => VideoPlayerScreen(videoUrl: url),
         );
-      case AppRoutes.trialExamScreen:
-        return MaterialPageRoute(builder: (_) => const TrialExamScreen());
+      // case AppRoutes.trialExamScreen:
+      //   return MaterialPageRoute(builder: (_) => const TrialExamScreen());
 
       case AppRoutes.checkoutScreen:
         final data = settings.arguments as Map;

@@ -9,7 +9,7 @@ part 'check_subscription_state.dart';
 class CheckSubscriptionCubit extends SafeCubit<CheckSubscriptionState> {
   CheckSubscriptionCubit(this.repository) : super(CheckSubscriptionInitial());
   final CheckSubscriptionRepository repository;
-
+  CheckSubscriptionModel? checkSubscriptionModel;
   Future<void> loadSubscription() async {
     if (!isClosed) emit(SubscriptionLoading());
 
@@ -17,6 +17,7 @@ class CheckSubscriptionCubit extends SafeCubit<CheckSubscriptionState> {
 
     result.when(
       success: (data) {
+        checkSubscriptionModel = data;
         if (!isClosed) emit(SubscriptionLoaded(data));
       },
       failure: (error) {

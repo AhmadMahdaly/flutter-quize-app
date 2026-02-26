@@ -11,8 +11,8 @@ import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/data/repo/exams_history_repository.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
 import 'package:smle/features/free_q_bank/data/repo/free_q_bank_repo.dart';
-import 'package:smle/features/free_trial/cubit/free_trial_cubit.dart';
-import 'package:smle/features/free_trial/data/repo/free_trial_repo.dart';
+// import 'package:smle/features/free_trial/cubit/free_trial_cubit.dart';
+// import 'package:smle/features/free_trial/data/repo/free_trial_repo.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';
@@ -75,7 +75,9 @@ Future<void> setupGetIt() async {
     () => CalculatorRepository(getIt()),
   );
   getIt.registerLazySingleton<QBankRepository>(() => QBankRepository(getIt()));
-    getIt.registerLazySingleton<FreeQBankRepository>(() => FreeQBankRepository(getIt()));
+  getIt.registerLazySingleton<FreeQBankRepository>(
+    () => FreeQBankRepository(getIt()),
+  );
 
   getIt.registerLazySingleton<PlayListRepository>(
     () => PlayListRepository(getIt()),
@@ -84,11 +86,11 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<RealExamCubit>(() => RealExamCubit(getIt()));
   getIt.registerLazySingleton<PlayListCubit>(() => PlayListCubit(getIt()));
 
-  getIt.registerFactory<TrialExamRepository>(
-    () => TrialExamRepository(getIt()),
-  );
-  getIt.registerFactory<TrialExamCubit>(() => TrialExamCubit(getIt()));
-    getIt.registerFactory<FreeQBankCubit>(() => FreeQBankCubit(getIt()));
+  // getIt.registerFactory<TrialExamRepository>(
+  //   () => TrialExamRepository(getIt()),
+  // );
+  // getIt.registerFactory<TrialExamCubit>(() => TrialExamCubit(getIt()));
+  getIt.registerFactory<FreeQBankCubit>(() => FreeQBankCubit(getIt()));
   getIt.registerFactory<QBankCubit>(() => QBankCubit(getIt()));
 
   getIt.registerLazySingleton<CheckSubscriptionRepository>(

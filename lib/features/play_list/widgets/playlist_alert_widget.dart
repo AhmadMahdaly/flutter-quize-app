@@ -38,7 +38,7 @@ class PlaylistAlertWidget extends StatelessWidget {
       child: AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
-            SizeConfig.responsiveValue(phone: 35.r, tablet: 12.r),
+            SizeConfig.responsiveValue(phone: 12.r, tablet: 12.r),
           ),
         ),
         backgroundColor: Colors.white,
@@ -53,14 +53,14 @@ class PlaylistAlertWidget extends StatelessWidget {
           child: TextFormField(
             controller: playListNameController,
             style: AppTextStyle.style14W500.copyWith(
-              color: AppColors.darkGreyColor,
+              color: AppColors.iconColorBlack,
             ),
             decoration: InputDecoration(
               fillColor: AppColors.greyColor,
               filled: true,
-              hintText: 'title'.tr(context),
+              hintText: 'Playlist title',
               hintStyle: TextStyle(
-                color: AppColors.iconColorGray,
+                color: AppColors.darkGreyColor.withAlpha(150),
                 fontSize: 12.sp,
               ),
               enabledBorder: OutlineInputBorder(

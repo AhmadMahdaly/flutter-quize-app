@@ -116,6 +116,7 @@ class ConfirmAccessToRealExam extends StatelessWidget {
             BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
               builder: (context, state) {
                 return CustomPrimaryButton(
+                  width: double.infinity,
                   onPressed: () =>
                       state is SubscriptionLoaded &&
                           context.mounted &&

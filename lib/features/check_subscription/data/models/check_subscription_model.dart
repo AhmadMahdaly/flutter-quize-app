@@ -4,6 +4,8 @@ class CheckSubscriptionModel {
     this.qBank,
     this.availableRealExam,
     this.expireDate,
+    this.offerName,
+    this.createdAt,
   });
 
   factory CheckSubscriptionModel.fromJson(Map<String, dynamic>? json) {
@@ -14,6 +16,8 @@ class CheckSubscriptionModel {
       qBank: _toBool(json['q_bank']),
       availableRealExam: json['available_real_exam']?.toString(),
       expireDate: json['expire_date'] as String?,
+      offerName: json['offer_name'] as String?,
+      createdAt: json['created_at'] as String?,
     );
   }
 
@@ -21,6 +25,8 @@ class CheckSubscriptionModel {
   final bool? qBank;
   final String? availableRealExam;
   final String? expireDate;
+  final String? offerName;
+  final String? createdAt;
 
   // -------- Helpers ----------
   // static int? _toInt(dynamic value) {

@@ -49,8 +49,10 @@ class ProfileScreen extends StatelessWidget {
                       final sub = state.subscription;
                       final isSubscribed = sub.isSubscribed ?? false;
                       final hasQBank = sub.qBank ?? false;
-                      // final availableExam = sub.availableRealExam ?? '0';
-
+                      final availableExam = sub.availableRealExam;
+                      final offerName = sub.offerName;
+                      final createdAt = sub.createdAt;
+                      final expireDate = sub.expireDate;
                       final data = context
                           .read<MainLayoutCubit>()
                           .profileModel!
@@ -87,15 +89,20 @@ class ProfileScreen extends StatelessWidget {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 24.w,
+                                Container(
+                                  width: double.infinity,
+                                  margin: EdgeInsets.symmetric(vertical: 16.h),
+                                  padding: EdgeInsets.all(16.r),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.r),
+                                    border: Border.all(
+                                      color: AppColors.darkGreyColor,
+                                    ),
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
-                                      10.verticalSpace,
                                       Text(
                                         '${data.name}',
                                         style: AppTextStyle.style18Bold
@@ -108,39 +115,39 @@ class ProfileScreen extends StatelessWidget {
                                               color: AppColors.darkGreyColor,
                                             ),
                                       ),
-                                      if (data.remainingRealExams != null)
+                                      12.verticalSpace,
+                                      if (offerName != null)
                                         Text(
-                                          '${"remaining_real_exams".tr(context)} ${data.remainingRealExams} ${"exams".tr(context)}',
+                                          'Subscription Package: $offerName',
                                           style: AppTextStyle.style12W700
                                               .copyWith(
                                                 color: AppColors.primaryColor,
                                               ),
                                         ),
-                                      if (data.offerName != null)
+                                      if (createdAt != null)
                                         Text(
-                                          '${"Subscription Package:"} ${data.offerName}',
+                                          '${"Created Date:"} $createdAt',
                                           style: AppTextStyle.style12W700
                                               .copyWith(
                                                 color: AppColors.primaryColor,
                                               ),
                                         ),
-                                      if (data.packageExpireAt != null)
+                                      if (expireDate != null)
                                         Text(
-                                          '${"Created Date:"} ${data.packageCreateAt}',
+                                          '${"expire_date".tr(context)} $expireDate',
                                           style: AppTextStyle.style12W700
                                               .copyWith(
                                                 color: AppColors.primaryColor,
                                               ),
                                         ),
-                                      if (data.packageExpireAt != null)
+                                      if (availableExam != null)
                                         Text(
-                                          '${"expire_date".tr(context)} ${data.packageExpireAt}',
+                                          '${"remaining_real_exams".tr(context)} $availableExam ${"exams".tr(context)}',
                                           style: AppTextStyle.style12W700
                                               .copyWith(
                                                 color: AppColors.primaryColor,
                                               ),
                                         ),
-                                      16.verticalSpace,
                                     ],
                                   ),
                                 ),

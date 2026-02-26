@@ -25,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: canBack
           ? IconButton(
               icon: Icon(
-                size: SizeConfig.responsiveValue(phone: 24.r, tablet: 30.r),
+                size: SizeConfig.responsiveValue(phone: 16.r, tablet: 30.r),
                 Icons.arrow_back_ios_new,
                 color: AppColors.iconColorBlack,
               ),
@@ -37,7 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         textAlign: TextAlign.center,
         style: AppTextStyle.style20Bold.copyWith(
           color: AppColors.secondaryColor,
-          fontSize: SizeConfig.responsiveValue(phone: 18.sp, tablet: 24.sp),
+          fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 24.sp),
         ),
       ),
       shape: RoundedRectangleBorder(
@@ -51,7 +51,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Icon(
           iconAction,
           color: AppColors.secondaryColor,
-          size: SizeConfig.responsiveValue(phone: 30.sp, tablet: 40.sp),
+          size: SizeConfig.responsiveValue(phone: 16.sp, tablet: 40.sp),
         ),
       ],
     );
