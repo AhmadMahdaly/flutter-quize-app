@@ -37,7 +37,8 @@ class SubscriptionRepository {
   }) async {
     try {
       final response = await _dioFactory.post(
-        endPoint: 'GetYour/Checkout', // تأكد من المسار الصحيح في EndPoints
+        endPoint:
+            EndPoints.getYourCheckout, // تأكد من المسار الصحيح في EndPoints
         data: {'offer_id': offerId, 'code': code},
       );
       if (response!.statusCode == 200) {
@@ -177,7 +178,7 @@ class SubscriptionRepository {
   }) async {
     try {
       final response = await _dioFactory.post(
-        endPoint: 'gifts/checkout',
+        endPoint: EndPoints.giftCheckout,
         data: {'offer_id': offerId, 'email': email},
       );
       if (response!.statusCode == 200 && response.data['success'] == true) {
@@ -205,7 +206,7 @@ class SubscriptionRepository {
   }) async {
     try {
       final response = await _dioFactory.post(
-        endPoint: 'gifts/payment/process',
+        endPoint: EndPoints.paymentProcessGift,
         data: {
           'offer_id': offerId,
           'receiver_id': receiverId,
