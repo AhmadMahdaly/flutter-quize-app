@@ -8,7 +8,6 @@ import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
-import 'package:smle/features/subscription/widgets/pay_done_dialog.dart';
 
 class SubscriptionScreen extends StatelessWidget {
   const SubscriptionScreen({super.key, required this.offerId});
@@ -16,28 +15,7 @@ class SubscriptionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SubscriptionCubit, SubscriptionStates>(
-      listener: (context, state) {
-        if (state is PurchaseSuccessState) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PayDoneDialog(title: 'Done'),
-          );
-        } else if (state is PurchaseFailedState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
-          );
-        } else if (state is PurchaseCancelledState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Payment cancelled'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      },
-
+    return BlocBuilder<SubscriptionCubit, SubscriptionStates>(
       builder: (context, state) {
         final cubit = context.read<SubscriptionCubit>();
 

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/assets.dart';
@@ -29,19 +30,19 @@ class PayDoneDialog extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min, // Flexible height
               children: [
-                // GestureDetector(
-                //   onTap: () {
-                //     Navigator.pop(context);
-                //   },
-                //   child: Align(
-                //     alignment: Alignment.topRight,
-                //     child: Icon(
-                //       CupertinoIcons.xmark_circle,
-                //       color: AppColors.secondaryColor,
-                //       size: 30.sp,
-                //     ),
-                //   ),
-                // ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Icon(
+                      CupertinoIcons.xmark_circle,
+                      color: AppColors.secondaryColor,
+                      size: 30.sp,
+                    ),
+                  ),
+                ),
                 60.verticalSpace,
                 Text(
                   title,

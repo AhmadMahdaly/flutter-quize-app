@@ -122,7 +122,6 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     );
   }
 
-  // bool isBack = true;
   void _openPayMobWebView(BuildContext context, String iframeUrl) {
     final controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -137,9 +136,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
           onPageFinished: (String url) {
             if (url.startsWith(
               'https://ksa.paymob.com/unifiedcheckout/payment-status',
-            )) {
-              // isBack = false;
-            }
+            )) {}
 
             if (url.startsWith('https://smlegate.com/payment/success')) {
               log('hkjlhnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
@@ -171,36 +168,27 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => PopScope(
-        canPop: false,
-        // onWillPop: () async {
-        //   if (!isClosed && isBack) {
-        //     // emit(PurchaseCancelledState());
-        //     isBack = true;
-        //     // Navigator.pop(context);
-        //   }
+      builder: (_) => WillPopScope(
+        onWillPop: () async {
+          if (!isClosed) {
+            // emit(PurchaseCancelledState());
+            // Navigator.pop(context);
+          }
 
-        // return isBack;
-        // },
+          return true;
+        },
         child: Dialog.fullscreen(
           child: Scaffold(
-            // appBar: AppBar(
-            //   leading: isBack == true
-            //       ? IconButton(
-            //           icon: const Icon(
-            //             Icons.close,
-            //             color: AppColors.secondaryColor,
-            //           ),
-            //           onPressed: () {
-            //             if (!isClosed && isBack) {
-            //               emit(PurchaseCancelledState());
-            //               isBack = true;
-            //             }
-            //             Navigator.pop(context);
-            //           },
-            //         )
-            //       : null,
-            // ),
+            appBar: AppBar(
+              leading: TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  emit(PurchaseCancelledState());
+
+                  Navigator.pop(context);
+                },
+              ),
+            ),
             body: WebViewWidget(controller: controller),
           ),
         ),

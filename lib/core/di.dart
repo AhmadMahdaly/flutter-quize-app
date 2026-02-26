@@ -43,7 +43,7 @@ Future<void> setupGetIt() async {
   getIt.registerFactory<ScfhsScoreCalculatorCubit>(
     () => ScfhsScoreCalculatorCubit(getIt()),
   );
-  getIt.registerFactory<SubscriptionCubit>(
+  getIt.registerLazySingleton<SubscriptionCubit>(
     () => SubscriptionCubit(getIt(), getIt()),
   );
   getIt.registerLazySingleton<AnalysisRepository>(
