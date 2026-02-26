@@ -237,7 +237,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                           : null,
                       child: Opacity(
                         opacity: canStartQuiz ? 1.0 : 0.2,
-                        child: QuestionButtonWidget(
+                        child: CustomQuestionButtonWidget(
                           text: 'start_quiz'.tr(context),
                         ),
                       ),

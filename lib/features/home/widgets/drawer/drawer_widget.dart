@@ -213,8 +213,7 @@ class DrawerWidget extends StatelessWidget {
                           context.pop();
                           if (context.mounted) {
                             await context.pushNamed(
-                              AppRoutes.analysisScreen,
-                              arguments: false,
+                              AppRoutes.analysisDashboardScreen,
                             );
                           }
                         },

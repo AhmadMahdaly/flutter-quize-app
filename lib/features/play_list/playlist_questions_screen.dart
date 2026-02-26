@@ -204,6 +204,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                     itemCount: currentQuestion.options.length,
                   ),
                 ),
+                30.verticalSpace,
                 Center(
                   child: GestureDetector(
                     onTap: isAnswered
@@ -229,7 +230,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                               ),
                             );
                           },
-                    child: QuestionButtonWidget(
+                    child: CustomQuestionButtonWidget(
                       text: isAnswered ? 'Next' : 'Answer to continue',
                     ),
                   ),

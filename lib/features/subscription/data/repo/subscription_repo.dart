@@ -1,15 +1,10 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
-import 'package:smle/core/cache_helper/cache_helper.dart';
-import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/network/api_result.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/network/end_points.dart';
 import 'package:smle/core/network/failures.dart';
 import 'package:smle/features/subscription/data/model/checkout_model.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
-import 'package:smle/features/subscription/data/model/payment_callback_model.dart';
 
 class SubscriptionRepository {
   SubscriptionRepository(this._dioFactory);
@@ -103,77 +98,77 @@ class SubscriptionRepository {
     }
   }
 
-  Future<ApiResult<String>> processPaymentCallback({
-    required Map<String, dynamic> billingData,
-  }) async {
-    try {
-      final userId = CacheHelper.getData(key: CacheKeys.userId);
-      log(userId.toString());
-      final model = PaymentCallbackModel.fromJson(billingData);
-      log(model.toString());
-      final response = await _dioFactory.get(
-        endPoint: EndPoints.paymentCallback,
-        data: {
-          'success': model.success,
-          'merchant_order_id': model.merchantOrderId,
-          'id': model.id,
-          'user_id': userId,
-        },
-      );
+  // Future<ApiResult<String>> processPaymentCallback({
+  //   required Map<String, dynamic> billingData,
+  // }) async {
+  //   try {
+  //     final userId = CacheHelper.getData(key: CacheKeys.userId);
+  //     log(userId.toString());
+  //     final model = PaymentCallbackModel.fromJson(billingData);
+  //     log(model.toString());
+  // final response = await _dioFactory.get(
+  //   endPoint: EndPoints.paymentCallback,
+  //   data: {
+  //     'success': model.success,
+  //     'merchant_order_id': model.merchantOrderId,
+  //     'id': model.id,
+  //     'user_id': userId,
+  //   },
+  // );
 
-      if (response!.statusCode == 200) {
-        final data = response.data['success'];
-        return ApiResult.success(data);
-      } else {
-        return ApiResult.failure(
-          ServerFailure(
-            response.data['message'] ?? 'Payment initialization failed',
-          ),
-        );
-      }
-    } on DioException catch (e) {
-      return ApiResult.failure(ServerFailure.fromDioError(e));
-    } catch (e) {
-      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
-    }
-  }
+  // if (response!.statusCode == 200) {
+  //   final data = response.data['success'];
+  //   return ApiResult.success(data);
+  // } else {
+  //   return ApiResult.failure(
+  //     ServerFailure(
+  //       response.data['message'] ?? 'Payment initialization failed',
+  //     ),
+  //   );
+  // }
+  //   } on DioException catch (e) {
+  //     return ApiResult.failure(ServerFailure.fromDioError(e));
+  //   } catch (e) {
+  //     return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+  //   }
+  // }
 
-  Future<ApiResult<String>> processPaymentCallbackGift({
-    required Map<String, dynamic> billingData,
-    required int currentReceiverId,
-  }) async {
-    try {
-      final userId = CacheHelper.getData(key: CacheKeys.userId);
-      log(userId.toString());
-      final model = PaymentCallbackModel.fromJson(billingData);
-      log(model.toString());
-      final response = await _dioFactory.post(
-        endPoint: EndPoints.paymentCallbackGift,
-        data: {
-          'success': model.success,
-          'merchant_order_id': model.merchantOrderId,
-          'id': model.id,
-          'user_id': currentReceiverId,
-        },
-      );
+  // Future<ApiResult<String>> processPaymentCallbackGift({
+  //   required Map<String, dynamic> billingData,
+  //   required int currentReceiverId,
+  // }) async {
+  //   try {
+  //     final userId = CacheHelper.getData(key: CacheKeys.userId);
+  //     log(userId.toString());
+  //     final model = PaymentCallbackModel.fromJson(billingData);
+  //     log(model.toString());
+  //     final response = await _dioFactory.post(
+  //       endPoint: EndPoints.paymentCallbackGift,
+  //       data: {
+  //         'success': model.success,
+  //         'merchant_order_id': model.merchantOrderId,
+  //         'id': model.id,
+  //         'user_id': currentReceiverId,
+  //       },
+  //     );
 
-      if (response!.statusCode == 200) {
-        final data = response.data['success'];
-        return ApiResult.success(data);
-      } else {
-        return ApiResult.failure(
-          ServerFailure(
-            response.data['message'] ?? 'Payment initialization failed',
-          ),
-        );
-      }
-    } on DioException catch (e) {
-      return ApiResult.failure(ServerFailure.fromDioError(e));
-    } catch (e) {
-      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
-    }
-  }
-  // داخل SubscriptionRepository
+  //     if (response!.statusCode == 200) {
+  //       final data = response.data['success'];
+  //       return ApiResult.success(data);
+  //     } else {
+  //       return ApiResult.failure(
+  //         ServerFailure(
+  //           response.data['message'] ?? 'Payment initialization failed',
+  //         ),
+  //       );
+  //     }
+  //   } on DioException catch (e) {
+  //     return ApiResult.failure(ServerFailure.fromDioError(e));
+  //   } catch (e) {
+  //     return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+  //   }
+  // }
+  // // داخل SubscriptionRepository
 
   // 1. تشيك على الإيميل وجلب الـ receiver_id
   Future<ApiResult<int>> checkGiftCheckout({
@@ -182,7 +177,7 @@ class SubscriptionRepository {
   }) async {
     try {
       final response = await _dioFactory.post(
-        endPoint: 'gift/checkout',
+        endPoint: 'gifts/checkout',
         data: {'offer_id': offerId, 'email': email},
       );
       if (response!.statusCode == 200 && response.data['success'] == true) {
@@ -210,7 +205,7 @@ class SubscriptionRepository {
   }) async {
     try {
       final response = await _dioFactory.post(
-        endPoint: 'gift/payment/process',
+        endPoint: 'gifts/payment/process',
         data: {
           'offer_id': offerId,
           'receiver_id': receiverId,

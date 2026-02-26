@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/debug_print_extension.dart';
-import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
@@ -132,12 +131,12 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
             final uri = Uri.parse(request.url);
 
             if (uri.queryParameters.containsKey('success')) {
-              await _subscriptionRepository.processPaymentCallback(
-                billingData: uri.queryParameters,
-              );
+              // await _subscriptionRepository.processPaymentCallback(
+              //   billingData: uri.queryParameters,
+              // );
               log(uri.queryParameters.toString());
               getIt<CheckSubscriptionCubit>().loadSubscription();
-              context.pop();
+              // context.pop();
               if (uri.queryParameters['success'] == 'true') {
                 if (!isClosed) emit(PurchaseSuccessState());
               } else {
@@ -152,7 +151,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
               return NavigationDecision.prevent;
             }
             if (request.url.contains('your-callback-url')) {
-              context.pop();
+              // context.pop();
 
               if (request.url.contains('success')) {
                 if (!isClosed) emit(PurchaseSuccessState());
@@ -217,13 +216,13 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
             final uri = Uri.parse(request.url);
 
             if (uri.queryParameters.containsKey('success')) {
-              await _subscriptionRepository.processPaymentCallbackGift(
-                billingData: uri.queryParameters,
-                currentReceiverId: currentReceiverId,
-              );
+              // await _subscriptionRepository.processPaymentCallbackGift(
+              //   billingData: uri.queryParameters,
+              //   currentReceiverId: currentReceiverId,
+              // );
               log(uri.queryParameters.toString());
 
-              context.pop();
+              // context.pop();
               if (uri.queryParameters['success'] == 'true') {
                 if (!isClosed) emit(PurchaseSuccessState());
               } else {
@@ -238,7 +237,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
               return NavigationDecision.prevent;
             }
             if (request.url.contains('your-callback-url')) {
-              context.pop();
+              // context.pop();
 
               if (request.url.contains('success')) {
                 if (!isClosed) emit(PurchaseSuccessState());

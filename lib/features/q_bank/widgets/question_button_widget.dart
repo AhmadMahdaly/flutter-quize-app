@@ -30,3 +30,31 @@ class QuestionButtonWidget extends StatelessWidget {
     );
   }
 }
+
+class CustomQuestionButtonWidget extends StatelessWidget {
+  const CustomQuestionButtonWidget({super.key, required this.text});
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300.w,
+      height: 56.h,
+      decoration: BoxDecoration(
+        color: AppColors.primaryColor,
+        borderRadius: BorderRadius.circular(40.r),
+      ),
+      alignment: Alignment.center,
+      child: FittedBox(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            text,
+            style: AppTextStyle.style14Bold.copyWith(
+              color: AppColors.thirdColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

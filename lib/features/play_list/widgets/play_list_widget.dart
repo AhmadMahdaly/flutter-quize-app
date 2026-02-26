@@ -72,7 +72,7 @@ class PlayListWidget extends StatelessWidget {
                           value: cubit,
                           child: PlaylistAlertWidget(
                             playListNameController: playListNameController,
-                            title: 'edit_playlist'.tr(context),
+                            title: 'Edit',
                             isEdit: true,
                             playListName: playListName,
                             playListId: playListId,

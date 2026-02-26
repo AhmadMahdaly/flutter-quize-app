@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
@@ -39,7 +38,7 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
             setState(() => isEmailVerified = true);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('User verified'),
+                content: Text('Email verified'),
                 backgroundColor: Colors.green,
               ),
             );
@@ -77,7 +76,7 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                 backgroundColor: Colors.green,
               ),
             );
-            if (context.mounted) context.pop();
+            // if (context.mounted) context.pop();
           }
         },
         builder: (context, state) {

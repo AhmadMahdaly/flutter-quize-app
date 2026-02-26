@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
@@ -45,106 +46,214 @@ class _ScfhsScoreCalculatorScreenState
                           secondText:
                               '(${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.realExamScore!.percentage})',
                         ),
-                        TextFormField(
-                          textAlign: TextAlign.center,
-                          controller: context
-                              .read<ScfhsScoreCalculatorCubit>()
-                              .realExamController,
-                          style: AppTextStyle.style14W500.copyWith(
-                            color: AppColors.darkGreyColor,
-                          ),
-                          decoration: InputDecoration(
-                            fillColor: AppColors.greyColor.withAlpha(55),
-                            filled: true,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(40.r),
-                              ),
-                              borderSide: const BorderSide(
-                                color: AppColors.greyColor,
-                              ),
+                        GestureDetector(
+                          onTap: () => FocusScope.of(context).unfocus(),
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () =>
+                                FocusScope.of(context).unfocus(),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            textAlign: TextAlign.center,
+                            controller: context
+                                .read<ScfhsScoreCalculatorCubit>()
+                                .realExamController,
+                            style: AppTextStyle.style14W500.copyWith(
+                              color: AppColors.iconColorBlack,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(40.r),
+                            onChanged: (value) {
+                              if (value.isNotEmpty &&
+                                  (int.tryParse(value) ?? 0) > 800) {
+                                context
+                                    .read<ScfhsScoreCalculatorCubit>()
+                                    .realExamController
+                                    .text = context
+                                    .read<ScfhsScoreCalculatorCubit>()
+                                    .calculatorInfoModel!
+                                    .realExamScore!
+                                    .maxScore!
+                                    .toString();
+                                context
+                                    .read<ScfhsScoreCalculatorCubit>()
+                                    .realExamController
+                                    .selection = TextSelection.fromPosition(
+                                  TextPosition(
+                                    offset: context
+                                        .read<ScfhsScoreCalculatorCubit>()
+                                        .realExamController
+                                        .text
+                                        .length,
+                                  ),
+                                );
+                              }
+
+                              setState(() {});
+                            },
+                            decoration: InputDecoration(
+                              errorText:
+                                  (context
+                                          .read<ScfhsScoreCalculatorCubit>()
+                                          .realExamController
+                                          .text
+                                          .isNotEmpty &&
+                                      (int.tryParse(
+                                                context
+                                                    .read<
+                                                      ScfhsScoreCalculatorCubit
+                                                    >()
+                                                    .realExamController
+                                                    .text,
+                                              ) ??
+                                              0) >
+                                          (context
+                                                  .read<
+                                                    ScfhsScoreCalculatorCubit
+                                                  >()
+                                                  .calculatorInfoModel!
+                                                  .realExamScore!
+                                                  .maxScore)!
+                                              .toInt())
+                                  ? 'Maximum allowed is ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.realExamScore!.maxScore}' // رسالة الخطأ
+                                  : null,
+                              hintText:
+                                  '${'maximum_score'.tr(context)} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.realExamScore!.maxScore}',
+                              hintStyle: AppTextStyle.style12W500.copyWith(
+                                color: AppColors.darkGreyColor,
                               ),
-                              borderSide: const BorderSide(
-                                color: AppColors.greyColor,
+                              fillColor: AppColors.greyColor.withAlpha(55),
+                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(40.r),
+                                ),
+                                borderSide: const BorderSide(
+                                  color: AppColors.greyColor,
+                                ),
                               ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(40.r),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(40.r),
+                                ),
+                                borderSide: const BorderSide(
+                                  color: AppColors.greyColor,
+                                ),
                               ),
-                              borderSide: const BorderSide(
-                                color: AppColors.greyColor,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(40.r),
+                                ),
+                                borderSide: const BorderSide(
+                                  color: AppColors.greyColor,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        Text(
-                          '${'maximum_score'.tr(context)} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.realExamScore!.maxScore}',
-                          style: AppTextStyle.style14W500.copyWith(
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 14.sp,
-                              tablet: 18.sp,
-                            ),
-                            color: AppColors.darkGreyColor,
-                          ),
-                        ),
+
                         TextRowWidget(
                           firstText:
                               '${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.gPA!.name}',
                           secondText:
                               '(${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.gPA!.percentage})',
                         ),
-                        TextFormField(
-                          controller: context
-                              .read<ScfhsScoreCalculatorCubit>()
-                              .gpaController,
-                          textAlign: TextAlign.center,
-                          style: AppTextStyle.style14W500.copyWith(
-                            color: AppColors.darkGreyColor,
-                          ),
-                          decoration: InputDecoration(
-                            fillColor: AppColors.greyColor, // Background color
-                            filled: true, // Enables the background color
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(40.r),
-                              ),
-                              borderSide: const BorderSide(
-                                color: AppColors.greyColor,
-                              ),
+                        GestureDetector(
+                          onTap: () => FocusScope.of(context).unfocus(),
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.done,
+                            onEditingComplete: () =>
+                                FocusScope.of(context).unfocus(),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            controller: context
+                                .read<ScfhsScoreCalculatorCubit>()
+                                .gpaController,
+                            textAlign: TextAlign.center,
+                            style: AppTextStyle.style14W500.copyWith(
+                              color: AppColors.iconColorBlack,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(40.r),
+                            onChanged: (value) {
+                              if (value.isNotEmpty &&
+                                  (int.tryParse(value) ?? 0) > 5) {
+                                context
+                                        .read<ScfhsScoreCalculatorCubit>()
+                                        .gpaController
+                                        .text =
+                                    '5';
+                                context
+                                    .read<ScfhsScoreCalculatorCubit>()
+                                    .gpaController
+                                    .selection = TextSelection.fromPosition(
+                                  TextPosition(
+                                    offset: context
+                                        .read<ScfhsScoreCalculatorCubit>()
+                                        .gpaController
+                                        .text
+                                        .length,
+                                  ),
+                                );
+                              }
+
+                              setState(() {});
+                            },
+                            decoration: InputDecoration(
+                              hintText:
+                                  '${'maximum_score'.tr(context)} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.gPA!.maxScore}',
+                              hintStyle: AppTextStyle.style12W500.copyWith(
+                                color: AppColors.darkGreyColor,
                               ),
-                              borderSide: const BorderSide(
-                                color: AppColors.greyColor,
+                              errorText:
+                                  (context
+                                          .read<ScfhsScoreCalculatorCubit>()
+                                          .gpaController
+                                          .text
+                                          .isNotEmpty &&
+                                      (int.tryParse(
+                                                context
+                                                    .read<
+                                                      ScfhsScoreCalculatorCubit
+                                                    >()
+                                                    .gpaController
+                                                    .text,
+                                              ) ??
+                                              0) >
+                                          5)
+                                  ? 'Maximum allowed is 5' // رسالة الخطأ
+                                  : null,
+                              fillColor: AppColors.greyColor.withAlpha(55),
+
+                              filled: true, // Enables the background color
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(40.r),
+                                ),
+                                borderSide: const BorderSide(
+                                  color: AppColors.greyColor,
+                                ),
                               ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(40.r),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(40.r),
+                                ),
+                                borderSide: const BorderSide(
+                                  color: AppColors.greyColor,
+                                ),
                               ),
-                              borderSide: const BorderSide(
-                                color: AppColors.greyColor,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(40.r),
+                                ),
+                                borderSide: const BorderSide(
+                                  color: AppColors.greyColor,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        Text(
-                          '${'maximum_score'.tr(context)} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.gPA!.maxScore}',
-                          style: AppTextStyle.style14W500.copyWith(
-                            fontSize: SizeConfig.responsiveValue(
-                              phone: 14.sp,
-                              tablet: 18.sp,
-                            ),
-                            color: AppColors.darkGreyColor,
-                          ),
-                        ),
+
                         TextRowWidget(
                           firstText:
                               '${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.cVChecklist!.name}',
@@ -229,6 +338,7 @@ class _ScfhsScoreCalculatorScreenState
                                 .items!
                                 .length,
                           ),
+                        24.verticalSpace,
                         Center(
                           child: TextButton(
                             onPressed: () {
@@ -267,7 +377,7 @@ class _ScfhsScoreCalculatorScreenState
                               ),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               minimumSize: WidgetStateProperty.all(
-                                Size(150.w, 52.h),
+                                Size(300.w, 52.h),
                               ),
                               shape: WidgetStateProperty.all(
                                 RoundedRectangleBorder(

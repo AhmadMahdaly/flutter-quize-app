@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/helpers/launch_url.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -86,6 +88,10 @@ class CalculateResultDialog extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              await launchURL('https://scfhs.org.sa/en');
+                            },
                           text: 'here'.tr(context),
                           style: AppTextStyle.style14W500.copyWith(
                             color: AppColors.blueColor,

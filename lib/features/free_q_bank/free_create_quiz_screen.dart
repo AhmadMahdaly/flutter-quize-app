@@ -13,10 +13,10 @@ import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
 import 'package:smle/features/free_q_bank/widgets/create_quiz_widgets/selected_items.dart';
 import 'package:smle/features/free_q_bank/widgets/create_quiz_widgets/specialty_list.dart';
 import 'package:smle/features/free_q_bank/widgets/create_quiz_widgets/sub_specialty_list.dart';
-import 'package:smle/features/free_q_bank/widgets/question_button_widget.dart';
 import 'package:smle/features/free_q_bank/widgets/year_picker_widget.dart';
 import 'package:smle/features/home/widgets/drawer/drawer_widget.dart';
 import 'package:smle/features/q_bank/data/model/start_quiz_model.dart';
+import 'package:smle/features/q_bank/widgets/question_button_widget.dart';
 
 class FreeCreateQuizScreen extends StatefulWidget {
   const FreeCreateQuizScreen({super.key, this.istrial});
@@ -210,7 +210,7 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                           : null,
                       child: Opacity(
                         opacity: canStartQuiz ? 1.0 : 0.2,
-                        child: QuestionButtonWidget(
+                        child: CustomQuestionButtonWidget(
                           text: 'start_quiz'.tr(context),
                         ),
                       ),
