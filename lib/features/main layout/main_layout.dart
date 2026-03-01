@@ -152,7 +152,7 @@ class _BottomNavItem extends StatelessWidget {
           color: isActive
               ? AppColors.secondaryColor.withAlpha(40)
               : Colors.transparent,
-          borderRadius: BorderRadius.circular(50.r),
+          borderRadius: BorderRadius.circular(320.r),
         ),
         child: Image.asset(
           isActive ? activeIcon : inactiveIcon,
