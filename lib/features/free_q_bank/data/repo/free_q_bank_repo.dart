@@ -91,7 +91,9 @@ class FreeQBankRepository {
 
   Future<ApiResult<List<int>>> getAvailableYears() async {
     try {
-      final response = await _dioFactory.get(endPoint: EndPoints.freeTrialYears);
+      final response = await _dioFactory.get(
+        endPoint: EndPoints.freeTrialYears,
+      );
       if (response!.statusCode == 200) {
         final List<int> years = List<int>.from(response.data['data']);
         return ApiResult.success(years);
@@ -106,7 +108,7 @@ class FreeQBankRepository {
     try {
       final response = await _dioFactory.get(
         endPoint: EndPoints.freeTrialMonths,
-        data: {'year': year},
+        queryParameters: {'year': year},
       );
       if (response!.statusCode == 200) {
         return ApiResult.success(response.data['data']);
@@ -158,7 +160,11 @@ class FreeQBankRepository {
     try {
       final response = await _dioFactory.get(
         endPoint: EndPoints.getPlaylistQuestions,
-        data: {'playlist_id': playlistId, 'limit': limit, 'offset': offset},
+        queryParameters: {
+          'playlist_id': playlistId,
+          'limit': limit,
+          'offset': offset,
+        },
       );
       if (response!.statusCode == 200) {
         final QBankModel model = QBankModel.fromJson(response.data);

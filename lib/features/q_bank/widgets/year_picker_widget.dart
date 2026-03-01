@@ -19,7 +19,6 @@ class _YearPickerWidgetState extends State<YearPickerWidget> {
   void initState() {
     super.initState();
     final cubit = context.read<QBankCubit>();
-    // جلب السنوات فقط إذا لم يتم جلبها مسبقاً
     if (cubit.yearsModel == null) {
       cubit.getYears();
     }
@@ -47,14 +46,7 @@ class _YearPickerWidgetState extends State<YearPickerWidget> {
         }
 
         // 2. تحديد السنة المحددة برمجياً لتجنب الأخطاء
-        int dropdownValue = cubit.selectedYearDate.year;
-        if (!allowedYears.contains(dropdownValue)) {
-          dropdownValue = allowedYears.first;
-          // تحديث الكيوبت بصمت بالسنة الصحيحة
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            cubit.selectYear(DateTime(dropdownValue));
-          });
-        }
+        final int dropdownValue = cubit.selectedYearDate.year;
 
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),

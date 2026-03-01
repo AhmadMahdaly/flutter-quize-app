@@ -37,30 +37,6 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
           child: BlocBuilder<QBankCubit, QBankStates>(
             builder: (context, state) {
-              final bool areAllCategoriesSelected =
-                  (cubit.categoriesModel?.data?.isNotEmpty ?? false) &&
-                  cubit.selectedCategoryIds.length ==
-                      cubit.categoriesModel!.data!.length;
-
-              final bool areAllSubCategoriesSelected =
-                  cubit.aggregatedSubcategories.isNotEmpty &&
-                  cubit.selectedSubCategoryIds.length ==
-                      cubit.aggregatedSubcategories.length;
-
-              final bool isQuestionCountValid =
-                  cubit.numberOfQuestionsController.text.isNotEmpty &&
-                  (int.tryParse(cubit.numberOfQuestionsController.text) ?? 0) >
-                      0 &&
-                  (int.tryParse(cubit.numberOfQuestionsController.text) ?? 0) <=
-                      cubit.questionsCount;
-              final bool isMonthValid =
-                  cubit.isAllYearsSelected ||
-                  cubit.isAllMonthsSelected ||
-                  cubit.selectedMonths.isNotEmpty;
-              final bool canStartQuiz =
-                  cubit.selectedSubCategoryIds.isNotEmpty &&
-                  isQuestionCountValid &&
-                  isMonthValid;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -115,7 +91,8 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   _buildSectionHeader(
                     context,
                     title: 'Specialty',
-                    isAllSelected: areAllCategoriesSelected,
+                    isAllSelected:
+                        cubit.areAllCategoriesSelected, // استخدام الـ Getter
                     isEnabled: cubit.categoriesModel?.data?.isNotEmpty ?? false,
                     onSelectAllChanged: (value) {
                       cubit.selectAllCategories(value ?? false);
@@ -169,7 +146,8 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                                 style: AppTextStyle.style14W500.copyWith(),
                               ),
                               Checkbox(
-                                value: areAllSubCategoriesSelected,
+                                value: cubit
+                                    .areAllSubCategoriesSelected, // استخدام الـ Getter
                                 onChanged:
                                     cubit.aggregatedSubcategories.isNotEmpty
                                     ? (value) => cubit.selectAllSubCategories(
@@ -206,7 +184,9 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   16.verticalSpace,
                   Center(
                     child: GestureDetector(
-                      onTap: canStartQuiz
+                      onTap:
+                          cubit
+                              .canStartQuiz // استخدام الـ Getter
                           ? () {
                               cubit.getQuestions().then((_) {
                                 if (cubit.qBankModel != null &&
@@ -229,7 +209,9 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                             }
                           : null,
                       child: Opacity(
-                        opacity: canStartQuiz ? 1.0 : 0.2,
+                        opacity: cubit.canStartQuiz
+                            ? 1.0
+                            : 0.2, // استخدام الـ Getter
                         child: const CustomQuestionButtonWidget(
                           text: 'Start quiz',
                         ),

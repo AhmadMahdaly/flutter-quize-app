@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -24,11 +25,15 @@ class DioFactory {
     return Future.value();
   }
 
-  Future<Response?> get({required String endPoint, data}) async {
-    return await dio.get(endPoint, queryParameters: data);
+  // تم تعديل المسميات لتكون أوضح (queryParameters للـ GET)
+  Future<Response?> get({
+    required String endPoint,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    return await dio.get(endPoint, queryParameters: queryParameters);
   }
 
-  Future<Response?> post({required String endPoint, data}) async {
+  Future<Response?> post({required String endPoint, dynamic data}) async {
     return await dio.post(endPoint, data: data);
   }
 
@@ -46,7 +51,9 @@ class DioFactory {
         onRequest: (options, handler) async {
           final token = await CacheHelper.getData(key: CacheKeys.userToken);
           // final token = '158|hTfRe3Opk0SFpeOrgUONy6xAOyMXwz98XUY8sx3rd5d5fa1a';
-          options.headers['Authorization'] = 'Bearer $token';
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
           options.headers['Accept'] = 'application/json';
           return handler.next(options);
         },
@@ -65,7 +72,8 @@ class DioFactory {
 class RetryInterceptor extends Interceptor {
   RetryInterceptor({
     required this.dio,
-    this.retries = 4,
+    this.retries =
+        3, // تم توحيد عدد المحاولات مع ما يتم تمريره من الـ DioFactory
     this.retryDelay = const Duration(seconds: 2),
   });
 
@@ -78,26 +86,30 @@ class RetryInterceptor extends Interceptor {
     if (_shouldRetry(err)) {
       final requestOptions = err.requestOptions;
 
-      if (requestOptions.extra['retryCount'] == null) {
-        requestOptions.extra['retryCount'] = 0;
-      }
-
-      final retryCount = requestOptions.extra['retryCount'] as int;
+      // تهيئة العداد إذا لم يكن موجوداً
+      int retryCount = requestOptions.extra['retryCount'] ?? 0;
 
       if (retryCount < retries) {
-        requestOptions.extra['retryCount'] = retryCount + 1;
+        retryCount++;
+        requestOptions.extra['retryCount'] = retryCount;
 
+        // الانتظار قبل المحاولة الجديدة
         await Future.delayed(retryDelay);
 
         try {
+          // إعادة إرسال الطلب
           final response = await dio.fetch(requestOptions);
           return handler.resolve(response);
+        } on DioException catch (e) {
+          // إذا فشلت المحاولة الجديدة، نمرر الخطأ الجديد للمحاولة التالية
+          return handler.next(e);
         } catch (e) {
           return handler.next(err);
         }
       }
     }
 
+    // إذا استنفدنا عدد المحاولات أو كان الخطأ لا يستدعي الإعادة، نمرر الخطأ الأصلي
     return handler.next(err);
   }
 
@@ -105,6 +117,9 @@ class RetryInterceptor extends Interceptor {
     return err.type == DioExceptionType.connectionTimeout ||
         err.type == DioExceptionType.sendTimeout ||
         err.type == DioExceptionType.receiveTimeout ||
-        err.type == DioExceptionType.connectionError;
+        err.type == DioExceptionType.connectionError ||
+        // إضافة هذا السطر لالتقاط أخطاء الـ Unknown الناتجة عن انقطاع النت (SocketException)
+        err.type == DioExceptionType.unknown ||
+        (err.error is SocketException);
   }
 }
