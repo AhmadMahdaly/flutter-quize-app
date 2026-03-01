@@ -10,7 +10,6 @@ import 'package:smle/core/functions/debug_print_extension.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/shared_widgets/custom_primary_button.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/check_subscription/data/models/check_subscription_model.dart';
@@ -61,7 +60,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
   }
 
   CheckoutModel? checkoutData;
-
+  CheckoutModel? giftCheckoutData;
   Future<void> getCheckoutDetails({required int offerId, String? code}) async {
     showLoading();
     emit(CheckoutLoadingState());
@@ -82,11 +81,34 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     );
   }
 
+  Future<void> getGiftCheckoutDetails({
+    required int offerId,
+    String? code,
+  }) async {
+    showLoading();
+    emit(CheckoutLoadingState());
+    final result = await _subscriptionRepository.checkout(
+      offerId: offerId,
+      code: code,
+    );
+    result.when(
+      success: (data) {
+        hideLoading();
+        giftCheckoutData = data;
+        emit(CheckoutSuccessState(data));
+      },
+      failure: (error) {
+        hideLoading();
+        emit(CheckoutFailedState(error.errMessage));
+      },
+    );
+  }
+
   late webview_flutter.WebViewController webViewController;
   Future<void> startPayMobPayment(
     BuildContext context,
     int offerId,
-    int amount,
+    double amount,
     String? code,
   ) async {
     emit(PurchaseLoadingState());
@@ -245,48 +267,35 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onNavigationRequest: (NavigationRequest request) async {
-            final uri = Uri.parse(request.url);
-
-            if (uri.queryParameters.containsKey('success')) {
-              // await _subscriptionRepository.processPaymentCallbackGift(
-              //   billingData: uri.queryParameters,
-              //   currentReceiverId: currentReceiverId,
-              // );
-              log(uri.queryParameters.toString());
-
-              // context.pop();
-              if (uri.queryParameters['success'] == 'true') {
-                if (!isClosed) emit(PurchaseSuccessState());
-              } else {
-                uri.queryParameters.dPrint();
-                final message =
-                    uri.queryParameters['message'] ??
-                    uri.queryParameters['error'] ??
-                    'Payment failed';
-                message.dPrint();
-                if (!isClosed) emit(PurchaseFailedState(message));
-              }
-              return NavigationDecision.prevent;
-            }
-            if (request.url.contains('your-callback-url')) {
-              // context.pop();
-
-              if (request.url.contains('success')) {
-                if (!isClosed) emit(PurchaseSuccessState());
-              } else {
-                '${uri.queryParameters}  fail'.dPrint();
-                if (!isClosed) emit(PurchaseFailedState('Payment failed'));
-              }
-              return NavigationDecision.prevent;
-            }
-
+          onNavigationRequest: (NavigationRequest request) {
             return NavigationDecision.navigate;
           },
           onPageStarted: (String url) {
-            '🔄 Page started: $url'.dPrint();
+            '✅ Page Started: $url'.dPrint();
           },
           onPageFinished: (String url) {
+            if (url.startsWith(
+              'https://ksa.paymob.com/unifiedcheckout/payment-status',
+            )) {}
+
+            if (url.startsWith('https://smlegate.com/payment/success')) {
+              log('hkjlhnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+              getIt<CheckSubscriptionCubit>().loadSubscription();
+
+              if (!isClosed) {
+                emit(PurchaseSuccessState());
+              }
+
+              Navigator.of(context).pop();
+            }
+
+            if (url.startsWith('https://smlegate.com/payment/failed')) {
+              if (!isClosed) {
+                emit(PurchaseFailedState('Payment failed'));
+              }
+
+              Navigator.of(context).pop();
+            }
             '✅ Page loaded: $url'.dPrint();
           },
           onWebResourceError: (WebResourceError error) {
@@ -301,20 +310,62 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       barrierDismissible: false,
       builder: (_) => WillPopScope(
         onWillPop: () async {
-          if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
-          return true;
+          final shouldExit = await showDialog<bool>(
+            context: context,
+            builder: (dialogContext) {
+              return AlertDialog(
+                title: Text('Cancel', style: AppTextStyle.style16W600),
+                content: Text(
+                  'Are you sure you want to cancel?',
+                  style: AppTextStyle.style16W500,
+                ),
+                actions: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomPrimaryButton(
+                          text: 'Yes',
+                          onPressed: () {
+                            if (!isClosed) {
+                              emit(PurchaseCancelledState());
+                            }
+                            Navigator.of(dialogContext).pop(true);
+                          },
+                        ),
+                      ),
+
+                      10.horizontalSpace,
+
+                      Expanded(
+                        child: CustomPrimaryButton(
+                          text: 'No',
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop(false);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+          );
+
+          return shouldExit ?? false;
         },
         child: Dialog.fullscreen(
           child: Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.close, color: AppColors.secondaryColor),
-                onPressed: () {
-                  if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
-                  Navigator.pop(context);
-                },
-              ),
-            ),
+            // appBar: AppBar(
+            //   leadingWidth: 100.w,
+            //   leading: TextButton(
+            //     child: const Text('Cancel'),
+            //     onPressed: () {
+            //       emit(PurchaseCancelledState());
+
+            //       Navigator.pop(context);
+            //     },
+            //   ),
+            // ),
             body: WebViewWidget(controller: controller),
           ),
         ),
@@ -360,7 +411,8 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
   Future<void> startGiftPaymentFlow(
     BuildContext context,
     int offerId,
-    int amount,
+    double amount,
+    String? code,
   ) async {
     if (currentReceiverId == null) {
       emit(PurchaseFailedState('Please verify email first'));
@@ -380,6 +432,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       payerName: profileModel?.data?.name ?? 'Guest',
       payerEmail: profileModel?.data?.email ?? '',
       payerPhone: '01000000000', // أو من البروفايل إذا متاح
+      code: code,
     );
 
     hideLoading();

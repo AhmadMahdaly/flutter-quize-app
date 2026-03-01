@@ -6,6 +6,7 @@ class CheckoutModel {
     message = json['message'];
     data = json['data'] != null ? CheckoutData.fromJson(json['data']) : null;
   }
+
   int? status;
   String? message;
   CheckoutData? data;
@@ -14,6 +15,7 @@ class CheckoutModel {
 class CheckoutData {
   CheckoutData({
     this.offerId,
+    this.priceBeforeDiscount,
     this.offerPrice,
     this.codeDiscount,
     this.codeDiscountPrice,
@@ -25,20 +27,33 @@ class CheckoutData {
 
   CheckoutData.fromJson(Map<String, dynamic> json) {
     offerId = json['offer_id'];
+
+    priceBeforeDiscount = json['price_before_discount'];
+
     offerPrice = json['offer_price'];
+
     codeDiscount = json['code_discount'];
-    codeDiscountPrice = json['code_discount_price'];
-    totalAfterCodeDiscount = json['total_after_code_discount'];
+
+    codeDiscountPrice = (json['code_discount_price'] as num?)?.toDouble();
+
+    totalAfterCodeDiscount = (json['total_after_code_discount'] as num?)
+        ?.toDouble();
+
     deductedPoints = json['deducted_points'];
+
     pointsDiscount = json['points_discount'];
-    payments = json['payments'];
+
+    /// 🔥 هنا التعديل المهم
+    payments = (json['payments'] as num?)?.toDouble();
   }
+
   int? offerId;
+  String? priceBeforeDiscount;
   int? offerPrice;
   String? codeDiscount;
-  int? codeDiscountPrice;
-  int? totalAfterCodeDiscount;
+  double? codeDiscountPrice;
+  double? totalAfterCodeDiscount;
   int? deductedPoints;
   int? pointsDiscount;
-  int? payments;
+  double? payments; // ← يجب أن تكون double
 }

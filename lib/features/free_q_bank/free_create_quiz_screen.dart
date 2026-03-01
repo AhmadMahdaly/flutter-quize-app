@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
@@ -59,7 +58,7 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                 },
               ),
             )
-          : CustomAppBar(title: 'create_quiz'.tr(context)),
+          : const CustomAppBar(title: 'Create quiz'),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
@@ -103,7 +102,7 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                   15.verticalSpace,
                   _buildSectionHeader(
                     context,
-                    title: 'specialty'.tr(context),
+                    title: 'Specialty',
                     isAllSelected: areAllCategoriesSelected,
                     isEnabled: cubit.categoriesModel?.data?.isNotEmpty ?? false,
                     onSelectAllChanged: (value) {
@@ -123,7 +122,7 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                       cubit.aggregatedSubcategories.isEmpty)
                     Center(
                       child: Text(
-                        'not_found_sub_specialty'.tr(context),
+                        'Not found Sub Specialty',
                         style: AppTextStyle.style14W500.copyWith(
                           color: AppColors.darkGreyColor,
                         ),
@@ -138,14 +137,14 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'sub_specialty'.tr(context),
+                            'Sub Specialty',
                             style: AppTextStyle.style16W700.copyWith(),
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'select_all'.tr(context),
+                                'Select all',
                                 style: AppTextStyle.style14W500.copyWith(),
                               ),
                               Checkbox(
@@ -173,7 +172,7 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                     collapsedIconColor: AppColors.forthColor,
                     iconColor: AppColors.forthColor,
                     title: Text(
-                      'selected_items'.tr(context),
+                      'Selected items',
                       style: AppTextStyle.style14W700.copyWith(
                         fontSize: SizeConfig.responsiveValue(
                           phone: 16.sp,
@@ -210,8 +209,8 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                           : null,
                       child: Opacity(
                         opacity: canStartQuiz ? 1.0 : 0.2,
-                        child: CustomQuestionButtonWidget(
-                          text: 'start_quiz'.tr(context),
+                        child: const CustomQuestionButtonWidget(
+                          text: 'Start quiz',
                         ),
                       ),
                     ),
@@ -245,10 +244,7 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              'select_all'.tr(context),
-              style: AppTextStyle.style14W500.copyWith(),
-            ),
+            Text('Select all', style: AppTextStyle.style14W500.copyWith()),
             Checkbox(
               value: isAllSelected,
               onChanged: isEnabled ? onSelectAllChanged : null,

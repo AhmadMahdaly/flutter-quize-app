@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
@@ -74,7 +73,7 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                         ),
                         20.verticalSpace,
                         QuestionWidget(
-                          addCircledFun: () {
+                          addToPlaylistFun: () {
                             context.pushNamed(
                               AppRoutes.playListScreen,
 
@@ -91,12 +90,16 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                               false,
                           question:
                               '${cubit.qBankModel!.data![cubit.index].question}',
-                          newsExplain:
-                              '${cubit.qBankModel!.data![cubit.index].hint}',
-                          questionCircleExplain:
+
+                          explainText:
                               '${cubit.qBankModel!.data![cubit.index].explanation}',
-                          lightBulbExplain:
+                          explainPhoto:
+                              '${cubit.qBankModel!.data![cubit.index].explanationPhoto}',
+                          qPhoto:
+                              '${cubit.qBankModel!.data![cubit.index].photo}',
+                          hintText:
                               '${cubit.qBankModel!.data![cubit.index].hint}',
+
                           onNoteTap: () {
                             showDialog(
                               context: context,
@@ -160,9 +163,7 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                                 onTap: () {
                                   cubit.setIndexQBank(false);
                                 },
-                                child: QuestionButtonWidget(
-                                  text: 'back'.tr(context),
-                                ),
+                                child: const QuestionButtonWidget(text: 'Back'),
                               ),
                             if (cubit.index == 0)
                               GestureDetector(
@@ -172,9 +173,7 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                                     (route) => false,
                                   );
                                 },
-                                child: QuestionButtonWidget(
-                                  text: 'quit'.tr(context),
-                                ),
+                                child: const QuestionButtonWidget(text: 'Quit'),
                               ),
                             GestureDetector(
                               onTap: () {
@@ -192,7 +191,7 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                                 text:
                                     cubit.index <
                                         cubit.qBankModel!.data!.length - 1
-                                    ? 'next'.tr(context)
+                                    ? 'Next'
                                     : 'Finish',
                               ),
                             ),
@@ -209,8 +208,8 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                                         (route) => false,
                                       );
                                     },
-                                    child: QuestionButtonWidget(
-                                      text: 'quit'.tr(context),
+                                    child: const QuestionButtonWidget(
+                                      text: 'Quit',
                                     ),
                                   ),
                                 )
@@ -218,9 +217,9 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                         ],
                       ],
                     )
-                  : NoDataWidget(
+                  : const NoDataWidget(
                       noDataImage: '',
-                      noDataText: 'no_data_found'.tr(context),
+                      noDataText: 'No data found',
                     );
             },
           ),

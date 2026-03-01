@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
@@ -27,6 +26,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     super.initState();
 
     widget.cubit.getCheckoutDetails(offerId: widget.package.id!);
+  }
+
+  @override
+  void dispose() {
+    codeController.dispose();
+    widget.cubit.checkoutData = null;
+    super.dispose();
   }
 
   @override
@@ -66,6 +72,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           return Padding(
             padding: EdgeInsets.all(20.w),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomPrimaryTextfield(
                   controller: codeController,
@@ -78,6 +85,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         code: codeController.text,
                       );
                     },
+                  ),
+                ),
+                Text(
+                  'Press ✓ to promo code apply.',
+                  textAlign: TextAlign.start,
+                  style: AppTextStyle.style12W600.copyWith(
+                    color: AppColors.darkGreyColor.withAlpha(100),
                   ),
                 ),
                 30.verticalSpace,
@@ -97,12 +111,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       data.deductedPoints! > 0) ...[
                     const Divider(height: 20),
                     _priceRow(
-                      'Points used'.tr(context),
-                      "${data.deductedPoints} ${'point'.tr(context)}",
+                      'Points used',
+                      "${data.deductedPoints} ${'point'}",
                       valueColor: AppColors.secondaryColor,
                     ),
                     _priceRow(
-                      'Points discount'.tr(context),
+                      'Points discount',
                       "- ${data.deductedPoints} ${'sar'}",
                       valueColor: Colors.red,
                     ),

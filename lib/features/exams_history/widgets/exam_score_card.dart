@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
@@ -78,11 +77,11 @@ class ExamScoreCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${'exam'.tr(context)} ${exam.examNo}',
+                    '${'Exam'} ${exam.examNo}',
                     style: AppTextStyle.style16Bold,
                   ),
                   Text(
-                    '$score ${'marks'.tr(context)}',
+                    '$score ${'Marks'}',
                     style: AppTextStyle.style16W700.copyWith(
                       color: AppColors.forthColor,
                     ),

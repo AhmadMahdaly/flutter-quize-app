@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
@@ -65,7 +64,7 @@ class LoginScreen extends StatelessWidget {
 
                       Text(
                         textAlign: TextAlign.center,
-                        'welcome_to'.tr(context),
+                        'Welcome to',
                         style: AppTextStyle.style20Bold.copyWith(
                           fontSize: SizeConfig.responsiveValue(
                             phone: 24.sp,
@@ -75,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       Text(
                         textAlign: TextAlign.center,
-                        'smle_gate'.tr(context),
+                        'SMLE Gate',
                         style: AppTextStyle.style20Bold.copyWith(
                           color: AppColors.secondaryColor,
                           fontSize: SizeConfig.responsiveValue(
@@ -86,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                       ),
 
                       Text(
-                        'trusted_partner'.tr(context),
+                        'Your trusted partner for all your medical test',
                         style: AppTextStyle.style18W500,
                         textAlign: TextAlign.center,
                       ),
@@ -119,17 +118,14 @@ class LoginScreen extends StatelessWidget {
                       FittedBox(
                         child: Row(
                           children: [
+                            Text('By the', style: AppTextStyle.style14W500),
                             Text(
-                              'by_the'.tr(context),
-                              style: AppTextStyle.style14W500,
-                            ),
-                            Text(
-                              '${'register'.tr(context)} ',
+                              '${'Register'} ',
                               style: AppTextStyle.style14W500,
                             ),
 
                             Text(
-                              'confirm_agreement'.tr(context),
+                              'you confirm your agreement to the ',
 
                               style: AppTextStyle.style12W500,
                             ),
@@ -138,7 +134,7 @@ class LoginScreen extends StatelessWidget {
                                 AppRoutes.privacyPolicyScreen,
                               ),
                               child: Text(
-                                'privacy_policy'.tr(context),
+                                'Privacy Policy',
 
                                 style: AppTextStyle.style12W500.copyWith(
                                   color: AppColors.secondaryColor,

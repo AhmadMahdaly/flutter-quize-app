@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/assets.dart';
@@ -48,17 +47,18 @@ class EndPageBanner extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: '${'now'.tr(context)}\n',
+                      text: '${'Now'}\n',
                       style: AppTextStyle.style18Bold,
                     ),
                     TextSpan(
-                      text: "${'flashback_discount'.tr(context)}\n",
+                      text:
+                          "${'Get a Flashback discount code after subscribing when your referred friends use it.'}\n",
                       style: AppTextStyle.style16W700.copyWith(
                         color: AppColors.secondaryColor,
                       ),
                     ),
                     TextSpan(
-                      text: 'discover_now'.tr(context),
+                      text: 'Discover now!',
                       style: AppTextStyle.style16Bold.copyWith(
                         color: AppColors.thirdColor,
                         decoration: TextDecoration.underline,

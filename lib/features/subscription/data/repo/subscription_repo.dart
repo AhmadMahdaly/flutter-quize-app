@@ -58,7 +58,7 @@ class SubscriptionRepository {
 
   Future<ApiResult<String>> processPayment({
     required int offerId,
-    required int amountCents,
+    required double amountCents,
     required Map<String, dynamic> billingData,
     String? code,
   }) async {
@@ -199,10 +199,11 @@ class SubscriptionRepository {
   Future<ApiResult<String>> processGiftPayment({
     required int offerId,
     required int receiverId,
-    required int amountCents,
+    required double amountCents,
     required String payerName,
     required String payerEmail,
     required String payerPhone,
+    String? code,
   }) async {
     try {
       final response = await _dioFactory.post(
@@ -214,6 +215,7 @@ class SubscriptionRepository {
           'payer_name': payerName,
           'payer_email': payerEmail,
           'payer_phone': payerPhone,
+          'code': code,
         },
       );
 

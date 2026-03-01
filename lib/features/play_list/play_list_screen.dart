@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
@@ -34,7 +33,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
   Widget build(BuildContext context) {
     // final bool isAddMode = widget.questionId != null;
     return Scaffold(
-      appBar: CustomAppBar(title: 'playlists'.tr(context)),
+      appBar: const CustomAppBar(title: 'Playlists'),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
         child: BlocConsumer<PlayListCubit, PlayListStates>(
@@ -62,10 +61,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                       ? 24.verticalSpace
                       : const SizedBox.shrink(),
                   widget.isAdd == true
-                      ? Text(
-                          'recently_added'.tr(context),
-                          style: AppTextStyle.style16Bold,
-                        )
+                      ? Text('Recently added', style: AppTextStyle.style16Bold)
                       : const SizedBox.shrink(),
                   8.verticalSpace,
                   if (cubit.playListModel != null &&
@@ -116,7 +112,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                             child: PlaylistAlertWidget(
                                               playListNameController:
                                                   playListNameController,
-                                              title: 'new_playlist'.tr(context),
+                                              title: 'New playlist',
                                               isEdit: false,
                                               questionId: widget.questionId,
                                             ),
@@ -136,7 +132,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                       ),
                                     ),
                                     child: Text(
-                                      'create_new_playlist'.tr(context),
+                                      'Create new playlist',
                                       style: AppTextStyle.style14W500.copyWith(
                                         color: AppColors.thirdColor,
                                       ),
@@ -156,7 +152,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                             child: PlaylistAlertWidget(
                                               playListNameController:
                                                   playListNameController,
-                                              title: 'new_playlist'.tr(context),
+                                              title: 'New playlist',
                                               isEdit: false,
                                               questionId: widget.questionId,
                                             ),
@@ -228,7 +224,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                 value: context.read<PlayListCubit>(),
                 child: PlaylistAlertWidget(
                   playListNameController: playListNameController,
-                  title: 'new_playlist'.tr(context),
+                  title: 'New playlist',
                   isEdit: false,
                   questionId: widget.questionId,
                 ),

@@ -33,7 +33,7 @@ class EndPoints {
   // ? Question Bank
   static const String startQBank = 'start/q_bank';
   static const String getQBankCount = 'qbank/filter';
-  static const String createQBank = 'create/q_bank';
+  // static const String createQBank = 'create/q_bank';
 
   static const String getPlayList = 'all/playlist';
   static const String getPlayListDetails = 'playlist/questions';

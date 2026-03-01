@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
@@ -20,9 +19,9 @@ class SubscriptionScreen extends StatelessWidget {
         final cubit = context.read<SubscriptionCubit>();
 
         if (state is GetPackagesLoadingState && cubit.packagesModel == null) {
-          return Scaffold(
-            appBar: CustomAppBar(title: 'subscription'.tr(context)),
-            body: const Center(child: CircularProgressIndicator()),
+          return const Scaffold(
+            appBar: CustomAppBar(title: 'Subscription'),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
 
@@ -37,14 +36,14 @@ class SubscriptionScreen extends StatelessWidget {
         });
 
         if (allBackendPackages.isEmpty && state is! GetPackagesLoadingState) {
-          return Scaffold(
-            appBar: CustomAppBar(title: 'subscription'.tr(context)),
-            body: Center(child: Text('no_packages_found'.tr(context))),
+          return const Scaffold(
+            appBar: CustomAppBar(title: 'Subscription'),
+            body: Center(child: Text('No packages Found')),
           );
         }
 
         return Scaffold(
-          appBar: CustomAppBar(title: 'subscription'.tr(context)),
+          appBar: const CustomAppBar(title: 'Subscription'),
           body: Stack(
             children: [
               // BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
@@ -74,7 +73,7 @@ class SubscriptionScreen extends StatelessWidget {
                   children: [
                     // 12.verticalSpace,
                     Text(
-                      'choose_your_plan'.tr(context),
+                      'Choose your plan',
                       style: AppTextStyle.style16Bold.copyWith(
                         fontSize: SizeConfig.responsiveValue(
                           phone: 16.sp,
@@ -147,7 +146,7 @@ class SubscriptionScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    '$priceInSAR ${'sar'.tr(context)}',
+                                    '$priceInSAR sar',
                                     style: AppTextStyle.style16Bold.copyWith(
                                       color: AppColors.thirdColor,
                                       fontSize: 20.sp,

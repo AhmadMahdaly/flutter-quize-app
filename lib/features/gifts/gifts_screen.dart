@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
@@ -16,7 +15,7 @@ class GiftsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'gifts'.tr(context)),
+      appBar: const CustomAppBar(title: 'Gifts'),
       floatingActionButton: FloatingActionButton.extended(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(320.r),
@@ -93,7 +92,9 @@ class GiftsScreen extends StatelessWidget {
                       if (invoice.offer != null)
                         Text('Offer: ${invoice.offer!.name}'),
                       if (invoice.expiredAt != null)
-                        Text('Expire: ${invoice.expiredAt}'),
+                        Text(
+                          'Expire: ${invoice.expiredAt?.year}-${invoice.expiredAt?.month}-${invoice.expiredAt?.day}',
+                        ),
                     ],
                   ),
                 );

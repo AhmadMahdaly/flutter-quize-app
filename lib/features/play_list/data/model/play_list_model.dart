@@ -1,5 +1,4 @@
 class PlayListModel {
-
   PlayListModel({this.status, this.message, this.data});
 
   PlayListModel.fromJson(Map<String, dynamic> json) {
@@ -28,7 +27,6 @@ class PlayListModel {
 }
 
 class Data {
-
   Data({this.id, this.name, this.userId, this.questions});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -60,7 +58,6 @@ class Data {
 }
 
 class Questions {
-
   Questions({this.id});
 
   Questions.fromJson(Map<String, dynamic> json) {
@@ -73,4 +70,85 @@ class Questions {
     data['id'] = id;
     return data;
   }
+}
+
+class PlaylistQuestionsResponse {
+  PlaylistQuestionsResponse({this.status, this.message, this.data});
+
+  PlaylistQuestionsResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    data = json['data'] != null ? PaginationData.fromJson(json['data']) : null;
+  }
+  int? status;
+  String? message;
+  PaginationData? data;
+}
+
+class PaginationData {
+  PaginationData({this.currentPage, this.data, this.lastPage, this.total});
+
+  PaginationData.fromJson(Map<String, dynamic> json) {
+    currentPage = json['current_page'];
+    lastPage = json['last_page'];
+    total = json['total'];
+    if (json['data'] != null) {
+      data = <QuestionItemData>[];
+      json['data'].forEach((v) {
+        data!.add(QuestionItemData.fromJson(v));
+      });
+    }
+  }
+  int? currentPage;
+  List<QuestionItemData>? data;
+  int? lastPage;
+  int? total;
+}
+
+class QuestionItemData {
+  QuestionItemData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    question = json['question'];
+    photo = json['photo'];
+    a = json['a'];
+    b = json['b'];
+    c = json['c'];
+    d = json['d'];
+    answer = json['answer'];
+    explanation = json['explanation'];
+    explanationPhoto = json['explanation_photo'];
+    hint = json['hint'];
+    isFavourite = json['is_favourite'] ?? false;
+  }
+  int? id;
+  String? question;
+  String? photo;
+  String? a;
+  String? b;
+  String? c;
+  String? d;
+  String? answer;
+  String? explanation;
+  String? explanationPhoto;
+  String? hint;
+  bool? isFavourite;
+
+  // متغير إضافي محلي لحفظ إجابة المستخدم إن أردت
+  String? selectedAnswer;
+
+  // هذه الدالة ستقوم بتجميع الخيارات لكي يسهل عرضها في الـ UI كما هي في كودك الحالي
+  List<OptionItem> get options {
+    final List<OptionItem> list = [];
+    if (a != null && a != 'NULL') list.add(OptionItem(key: 'a', value: a));
+    if (b != null && b != 'NULL') list.add(OptionItem(key: 'b', value: b));
+    if (c != null && c != 'NULL') list.add(OptionItem(key: 'c', value: c));
+    if (d != null && d != 'NULL') list.add(OptionItem(key: 'd', value: d));
+    return list;
+  }
+}
+
+class OptionItem {
+  OptionItem({required this.key, this.value});
+  String key;
+  String? value;
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -45,7 +44,7 @@ class UserImageNameWidget extends StatelessWidget {
               spacing: 4.w,
               children: [
                 Text(
-                  'welcome'.tr(context),
+                  'Welcome',
                   style: AppTextStyle.style14Bold.copyWith(
                     color: AppColors.secondaryColor,
                   ),
@@ -83,7 +82,7 @@ class UserImageNameWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'points'.tr(context),
+                  'Points',
                   style: AppTextStyle.style12Bold.copyWith(
                     color: AppColors.secondaryColor,
                   ),

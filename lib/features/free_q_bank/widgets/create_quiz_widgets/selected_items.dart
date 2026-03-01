@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
@@ -44,7 +43,7 @@ class SelectedItemsWidget extends StatelessWidget {
             )
           : Center(
               child: Text(
-                'no_items_selected'.tr(context),
+                'No items selected',
                 style: AppTextStyle.style14W500.copyWith(
                   color: AppColors.darkGreyColor,
                 ),

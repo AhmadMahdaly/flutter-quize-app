@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
@@ -62,7 +61,7 @@ class DrawerWidget extends StatelessWidget {
                 16.verticalSpace,
                 Divider(color: AppColors.secondaryColor.withAlpha(100)),
                 DrawerItemWidget(
-                  text: 'question_bank'.tr(context),
+                  text: 'Question Bank',
                   imagePath: Icons.ballot,
                   onPressed: () {
                     if (!isSubscribed || !hasQBank) {
@@ -190,7 +189,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
 
                 DrawerItemWidget(
-                  text: 'exams_history'.tr(context),
+                  text: 'Exams History',
                   imagePath: Icons.history,
                   onPressed: !isSubscribed
                       ? () async => subscripeDialog(context)
@@ -205,7 +204,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
 
                 DrawerItemWidget(
-                  text: 'exams_analysis'.tr(context),
+                  text: 'Exams Analysis',
                   imagePath: Icons.line_axis_outlined,
                   onPressed: !isSubscribed
                       ? () async => subscripeDialog(context)
@@ -219,7 +218,7 @@ class DrawerWidget extends StatelessWidget {
                         },
                 ),
                 DrawerItemWidget(
-                  text: 'subscription'.tr(context),
+                  text: 'Subscription',
                   imagePath: Icons.payment,
                   onPressed: () async {
                     context.pop();
@@ -238,7 +237,7 @@ class DrawerWidget extends StatelessWidget {
                   },
                 ),
                 DrawerItemWidget(
-                  text: 'gifts'.tr(context),
+                  text: 'Gifts',
                   imagePath: Icons.card_giftcard_rounded,
                   onPressed: () async {
                     context.pop();
@@ -253,7 +252,7 @@ class DrawerWidget extends StatelessWidget {
                     builder: (context, state) {
                       return DrawerItemWidget(
                         imagePath: Icons.logout,
-                        text: 'log_out'.tr(context),
+                        text: 'Log out',
                         onPressed: () async {
                           context.pop();
                           if (context.mounted) {

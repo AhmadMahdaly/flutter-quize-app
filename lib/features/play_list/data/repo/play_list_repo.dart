@@ -33,18 +33,20 @@ class PlayListRepository {
     }
   }
 
-  Future<ApiResult<QBankModel>> getPlayListDetails({
+  Future<ApiResult<PlaylistQuestionsResponse>> getPlayListDetails({
     required String playlistId,
-    int limit = 1, // افتراضي 1 لسؤال واحد
-    int offset = 0,
+    int limit = 1,
+    int page = 1, // تم التغيير إلى page بدلاً من offset
   }) async {
     try {
       final response = await _dioFactory.post(
-        endPoint: EndPoints.getPlayListDetails, // /playlist/questions
-        data: {'playlist_id': playlistId, 'limit': limit, 'offset': offset},
+        endPoint: EndPoints.getPlayListDetails,
+        // تم تغيير البارامترات المرسلة للسيرفر لتدعم الـ Pagination
+        data: {'playlist_id': playlistId, 'limit': limit, 'page': page},
       );
       if (response!.statusCode == 200) {
-        final QBankModel model = QBankModel.fromJson(response.data);
+        final PlaylistQuestionsResponse model =
+            PlaylistQuestionsResponse.fromJson(response.data);
         return ApiResult.success(model);
       } else {
         debugPrintWidget(response.data['message']);
@@ -171,6 +173,34 @@ class PlayListRepository {
       );
       if (response!.statusCode == 200) {
         return ApiResult.success(response);
+      } else {
+        debugPrintWidget(response.data['message']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+    }
+  }
+
+  Future<ApiResult<QBankModel>> addQBankNote({
+    required int questionId,
+    required String note,
+  }) async {
+    try {
+      final response = await _dioFactory.post(
+        endPoint: EndPoints.addQBankNote,
+        data: {'question_id': questionId, 'note': note},
+      );
+      if (response!.statusCode == 200) {
+        final QBankModel model = QBankModel.fromJson(response.data);
+        return ApiResult.success(model);
       } else {
         debugPrintWidget(response.data['message']);
         return ApiResult.failure(

@@ -4,7 +4,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
@@ -38,7 +37,7 @@ class _AnalysisDashboardScreenState extends State<AnalysisDashboardScreen> {
     final examsCubit = context.watch<ExamsHistoryCubit>();
 
     return Scaffold(
-      appBar: CustomAppBar(title: 'analysis'.tr(context)),
+      appBar: const CustomAppBar(title: 'Analysis'),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.w),
         child: Column(
@@ -67,15 +66,15 @@ class _AnalysisDashboardScreenState extends State<AnalysisDashboardScreen> {
                       ((SizeConfig.screenHeight / 2) - 300).verticalSpace,
                       Icon(
                         Icons.edit_document,
-                        color: AppColors.darkGreyColor,
+                        color: AppColors.darkGreyColor.withAlpha(100),
                         size: 160.r,
                       ),
                       12.verticalSpace,
                       Center(
                         child: Text(
-                          'no_exams_found'.tr(context),
+                          'No Exams found',
                           style: AppTextStyle.style16W700.copyWith(
-                            color: AppColors.darkGreyColor,
+                            color: AppColors.darkGreyColor.withAlpha(100),
                           ),
                         ),
                       ),

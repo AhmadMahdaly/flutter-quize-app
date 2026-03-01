@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
@@ -28,10 +27,7 @@ class ProfileScreen extends StatelessWidget {
         builder: (context, state) {
           return context.read<MainLayoutCubit>().profileModel == null
               ? Scaffold(
-                  appBar: CustomAppBar(
-                    title: 'profile'.tr(context),
-                    canBack: false,
-                  ),
+                  appBar: const CustomAppBar(title: 'Profile', canBack: false),
                   body: Column(
                     children: [
                       Center(
@@ -73,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                     return Scaffold(
                       drawer: const DrawerWidget(),
                       appBar: CustomAppBar(
-                        title: 'profile'.tr(context),
+                        title: 'Profile',
                         canBack: false,
                         leading: Builder(
                           builder: (context) {
@@ -146,14 +142,14 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                     if (expireDate != null)
                                       Text(
-                                        '${"expire_date".tr(context)} $expireDate',
+                                        '${"Expire Date"} $expireDate',
                                         style: AppTextStyle.style12W700
                                             .copyWith(
                                               color: AppColors.primaryColor,
                                             ),
                                       ),
                                     Text(
-                                      '${"remaining_real_exams".tr(context)} $availableExam ${"exams".tr(context)}',
+                                      '${"Remaining real exams"} $availableExam ${"exams"}',
                                       style: AppTextStyle.style12W700.copyWith(
                                         color: AppColors.primaryColor,
                                       ),
@@ -193,7 +189,7 @@ class ProfileScreen extends StatelessWidget {
                                   //   },
                                   // ),
                                   ProfileButtonWidget(
-                                    text: 'exams_history'.tr(context),
+                                    text: 'Exams history',
                                     imagePath: Icons.history,
                                     onPressed: !isSubscribed
                                         //   ||   (availableExam != 'Unlimited' ||
@@ -222,7 +218,7 @@ class ProfileScreen extends StatelessWidget {
                                   //         },
                                   // ),
                                   ProfileButtonWidget(
-                                    text: 'subscription'.tr(context),
+                                    text: 'Subscription',
                                     imagePath: Icons.payment,
                                     onPressed: () async {
                                       await context.pushNamed(
@@ -238,7 +234,7 @@ class ProfileScreen extends StatelessWidget {
                                     },
                                   ),
                                   ProfileButtonWidget(
-                                    text: 'gifts'.tr(context),
+                                    text: 'Gifts',
                                     imagePath: Icons.card_giftcard_rounded,
                                     onPressed: () async {
                                       await context.pushNamed(
@@ -248,7 +244,7 @@ class ProfileScreen extends StatelessWidget {
                                   ),
 
                                   ProfileButtonWidget(
-                                    text: 'support'.tr(context),
+                                    text: 'Support',
                                     imagePath: Icons.quiz_outlined,
                                     onPressed: () async {
                                       await context.pushNamed(
@@ -257,7 +253,7 @@ class ProfileScreen extends StatelessWidget {
                                     },
                                   ),
                                   ProfileButtonWidget(
-                                    text: 'privacy_policy'.tr(context),
+                                    text: 'Privacy Policy',
                                     imagePath: Icons.lock_outlined,
                                     onPressed: () async {
                                       await context.pushNamed(
@@ -266,7 +262,7 @@ class ProfileScreen extends StatelessWidget {
                                     },
                                   ),
                                   ProfileButtonWidget(
-                                    text: 'delete_account'.tr(context),
+                                    text: 'Delete account',
                                     imagePath: Icons.delete_outline_rounded,
                                     onPressed: () {
                                       showDialog(
@@ -297,7 +293,7 @@ class ProfileScreen extends StatelessWidget {
                                   ),
 
                                   ProfileButtonWidget(
-                                    text: 'log_out'.tr(context),
+                                    text: 'Log out',
                                     imagePath: Icons.logout,
                                     onPressed: () {
                                       if (context.mounted) {

@@ -34,11 +34,28 @@ class AddToPlayListLoadingState extends PlayListStates {}
 class AddToPlayListSuccessState extends PlayListStates {}
 
 class AddToPlayListFailedState extends PlayListStates {}
+
 class GetPlayListDetailsLoadingState extends PlayListStates {}
+
 class GetPlayListDetailsSuccessState extends PlayListStates {}
+
 class GetPlayListDetailsFailedState extends PlayListStates {}
+
 class RemoveFromPlayListLoadingState extends PlayListStates {}
 
 class RemoveFromPlayListSuccessState extends PlayListStates {}
 
 class RemoveFromPlayListFailedState extends PlayListStates {}
+
+class AddNoteLoadingState extends PlayListStates {}
+
+class AddNoteSuccessState extends PlayListStates {
+  AddNoteSuccessState(this.message);
+
+  final String? message;
+}
+
+class AddNoteFailureState extends PlayListStates {
+  AddNoteFailureState(this.message);
+  final String? message;
+}

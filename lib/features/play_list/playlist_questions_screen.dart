@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
+import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
@@ -26,7 +29,7 @@ class PlaylistQuestionsScreen extends StatefulWidget {
 }
 
 class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
-  int currentOffset = 0;
+  int currentPage = 1; // تم التعديل إلى currentPage بدلاً من offset
   String? localSelectedAnswer;
   bool localIsAnswered = false;
   int currentTotalQuestions = 0;
@@ -38,8 +41,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       context.read<PlayListCubit>().getPlayListDetails(
         playlistId: widget.playlistId.toString(),
-        limit: 1,
-        offset: currentOffset,
+        page: currentPage, // تمرير الصفحة
       );
     });
   }
@@ -60,34 +62,44 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
               }
             });
           } else if (state is GetPlayListDetailsFailedState) {
-            SchedulerBinding.instance.addPostFrameCallback((_) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Error!')));
-            });
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('Error!')));
           } else if (state is RemoveFromPlayListSuccessState) {
             SchedulerBinding.instance.addPostFrameCallback((_) {
               if (mounted) {
                 setState(() {
-                  currentTotalQuestions--;
+                  // 1. تقليل عدد الأسئلة الإجمالي
+                  if (currentTotalQuestions > 0) {
+                    currentTotalQuestions--;
+                  }
+
+                  // 2. تصفير الإجابات لتجهيز السؤال القادم
                   localSelectedAnswer = null;
                   localIsAnswered = false;
+
+                  // 3. معالجة الصفحة الحالية (Page) لتجنب طلب صفحة غير موجودة
+                  // إذا حذفت السؤال الأخير، ستصبح الصفحة الحالية أكبر من إجمالي الأسئلة المتبقية
+                  if (currentPage > currentTotalQuestions &&
+                      currentTotalQuestions > 0) {
+                    currentPage = currentTotalQuestions;
+                  }
                 });
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('Removed')));
-                context.read<PlayListCubit>().getPlayListDetails(
-                  playlistId: widget.playlistId.toString(),
-                  limit: 1,
-                  offset: currentOffset, // نفس offset
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Question removed from playlist'),
+                  ),
                 );
+
+                // 4. جلب البيانات الجديدة فقط إذا كان هناك أسئلة متبقية
+                if (currentTotalQuestions > 0) {
+                  context.read<PlayListCubit>().getPlayListDetails(
+                    playlistId: widget.playlistId.toString(),
+                    page: currentPage,
+                  );
+                }
               }
-            });
-          } else if (state is RemoveFromPlayListFailedState) {
-            SchedulerBinding.instance.addPostFrameCallback((_) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Error!')));
             });
           }
         },
@@ -99,10 +111,13 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (cubit.playListQuestionsModel == null ||
-              cubit.playListQuestionsModel!.data == null ||
-              cubit.playListQuestionsModel!.data!.isEmpty) {
-            if (currentTotalQuestions == 0) {
+          // التحقق من الهيكل الجديد: model.data.data
+          if (cubit.playListQuestionsModel?.data?.data == null ||
+              cubit.playListQuestionsModel!.data!.data!.isEmpty) {
+            // يمكننا أيضاً أخذ التوتال من السيرفر مباشرة لو فضلنا:
+            // currentTotalQuestions = cubit.playListQuestionsModel?.data?.total ?? 0;
+
+            if (currentTotalQuestions <= 0) {
               return Center(
                 child: Padding(
                   padding: EdgeInsets.all(20.w),
@@ -143,10 +158,11 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final currentQuestion = cubit.playListQuestionsModel!.data![0];
+          // جلب السؤال الأول من مصفوفة البيانات في الهيكل الجديد
+          final currentQuestion = cubit.playListQuestionsModel!.data!.data![0];
           final bool isAnswered = localIsAnswered;
-          final currentQuestionNumber =
-              '${currentOffset + 1} / $currentTotalQuestions';
+          // تحديث رقم السؤال استناداً للصفحة (لأننا نجلب سؤالاً واحداً لكل صفحة)
+          final currentQuestionNumber = '$currentPage / $currentTotalQuestions';
           final playlistId = widget.playlistId.toString();
 
           return SingleChildScrollView(
@@ -167,6 +183,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                   child: ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
+                    // استخدام دالة الـ get options التي أنشأناها في الموديل
                     itemBuilder: (context, optionIndex) {
                       final currentOption =
                           currentQuestion.options[optionIndex];
@@ -209,12 +226,11 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                   child: GestureDetector(
                     onTap: isAnswered
                         ? () {
-                            if (currentOffset + 1 < currentTotalQuestions) {
-                              currentOffset++;
+                            if (currentPage < currentTotalQuestions) {
+                              currentPage++; // الانتقال للصفحة التالية
                               cubit.getPlayListDetails(
                                 playlistId: widget.playlistId.toString(),
-                                limit: 1,
-                                offset: currentOffset,
+                                page: currentPage,
                               );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -253,30 +269,6 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
-        if (question.photo != null &&
-            question.photo != 'NULL' &&
-            question.photo!.isNotEmpty)
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.r),
-                image: DecorationImage(
-                  image: NetworkImage(question.photo!),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Colors.black.withAlpha(170)],
-                  ),
-                ),
-              ),
-            ),
-          ),
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
@@ -287,25 +279,170 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: QuestionWidget(
                   isAdd: widget.isAdd,
-                  addCircledFun: () {
+                  addToPlaylistFun: () {
                     cubit.removeFromPlayList(
                       playlistId,
                       question.id.toString(),
-                      offset: currentOffset,
+                      offset: 0,
                     );
                   },
+                  onNoteTap: () => showDialog(
+                    context: context,
+                    builder: (context) => QBankAddNoteDialog(
+                      cubit: getIt<PlayListCubit>(),
+                      questionId: question.id,
+                    ),
+                  ),
                   currentQuestion: currentQuestionNumber,
-                  isFav: question.isFavorite ?? false,
+                  isFav: question.isFavourite ?? false, // تمت إضافة حرف u
                   question: '${question.question ?? ''}',
-                  newsExplain: '${question.hint ?? ''}',
-                  questionCircleExplain: '${question.explanation ?? ''}',
-                  lightBulbExplain: '${question.hint ?? ''}',
+                  explainPhoto: '${question.explanationPhoto}',
+                  qPhoto: '${question.photo}',
+                  explainText: '${question.explanation ?? ''}',
+                  hintText: '${question.hint ?? ''}',
                 ),
               ),
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+class QBankAddNoteDialog extends StatefulWidget {
+  const QBankAddNoteDialog({
+    super.key,
+    required this.cubit,
+    required this.questionId,
+  });
+  final PlayListCubit cubit;
+  final int questionId;
+
+  @override
+  State<QBankAddNoteDialog> createState() => _QBankAddNoteDialogState();
+}
+
+class _QBankAddNoteDialogState extends State<QBankAddNoteDialog> {
+  final controller = TextEditingController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<PlayListCubit, PlayListStates>(
+      bloc: widget.cubit,
+      listener: (context, state) {
+        if (state is AddNoteSuccessState) {
+          context.pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message.toString()),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } else if (state is AddNoteFailureState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message.toString()),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(16.r),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Send Notes To Admin for this Question',
+                  style: AppTextStyle.style16Bold,
+                ),
+                12.verticalSpace,
+                CustomPrimaryTextfield(
+                  maxLines: 7,
+                  controller: controller,
+                  text: 'Type your note here...',
+                  style: AppTextStyle.style14W500,
+                ),
+                12.verticalSpace,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: state is AddNoteLoadingState
+                          ? null // تعطيل الزر أثناء التحميل
+                          : () {
+                              if (controller.text.isNotEmpty) {
+                                widget.cubit.addQuestionNote(
+                                  controller.text,
+                                  widget.questionId,
+                                );
+                              }
+                            },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8.r,
+                          horizontal: 16.w,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.greenColor,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: state is AddNoteLoadingState
+                            ? SizedBox(
+                                height: 20.h,
+                                width: 20.w,
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                'Send note',
+                                style: AppTextStyle.style14Bold.copyWith(
+                                  color: AppColors.offwhiteColor,
+                                ),
+                              ),
+                      ),
+                    ),
+                    8.horizontalSpace,
+                    TextButton(
+                      onPressed: () => context.pop(),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8.r,
+                          horizontal: 16.w,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.darkGreyColor,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Text(
+                          'Cancel',
+                          style: AppTextStyle.style14Bold.copyWith(
+                            color: AppColors.offwhiteColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

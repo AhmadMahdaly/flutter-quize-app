@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -25,7 +24,7 @@ class _ScfhsScoreCalculatorScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'SCFHS_score_calculator'.tr(context)),
+      appBar: const CustomAppBar(title: 'SCFHS score calculator'),
       body: SingleChildScrollView(
         child: BlocBuilder<ScfhsScoreCalculatorCubit, ScfhsScoreCalculatorStates>(
           builder: (context, state) {
@@ -118,7 +117,7 @@ class _ScfhsScoreCalculatorScreenState
                                   ? 'Maximum allowed is ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.realExamScore!.maxScore}' // رسالة الخطأ
                                   : null,
                               hintText:
-                                  '${'maximum_score'.tr(context)} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.realExamScore!.maxScore}',
+                                  '${'Maximum score'} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.realExamScore!.maxScore}',
                               hintStyle: AppTextStyle.style12W500.copyWith(
                                 color: AppColors.darkGreyColor,
                               ),
@@ -201,7 +200,7 @@ class _ScfhsScoreCalculatorScreenState
                             },
                             decoration: InputDecoration(
                               hintText:
-                                  '${'maximum_score'.tr(context)} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.gPA!.maxScore}',
+                                  '${'Maximum score'} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.gPA!.maxScore}',
                               hintStyle: AppTextStyle.style12W500.copyWith(
                                 color: AppColors.darkGreyColor,
                               ),
@@ -319,7 +318,7 @@ class _ScfhsScoreCalculatorScreenState
                                 ),
                                 5.horizontalSpace,
                                 Text(
-                                  '(${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.cVChecklist!.items![index].maxScore} ${"points".tr(context)})',
+                                  '(${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.cVChecklist!.items![index].maxScore} ${"points"})',
                                   style: AppTextStyle.style14W500.copyWith(
                                     fontSize: SizeConfig.responsiveValue(
                                       phone: 14.sp,
@@ -386,7 +385,7 @@ class _ScfhsScoreCalculatorScreenState
                               ),
                             ),
                             child: Text(
-                              'calculate'.tr(context),
+                              'Calculate',
                               style: AppTextStyle.style16Bold.copyWith(
                                 color: AppColors.thirdColor,
                                 fontSize: SizeConfig.responsiveValue(

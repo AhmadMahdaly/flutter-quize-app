@@ -40,9 +40,9 @@ class QBankCubit extends SafeCubit<QBankStates> {
 
   QBankModel? qBankModel;
 
-  Future<void> init() async {
-    _qBankRepository.init();
-  }
+  // Future<void> init() async {
+  //   _qBankRepository.init();
+  // }
 
   void setQuizModel(QBankModel model) {
     qBankModel = model;

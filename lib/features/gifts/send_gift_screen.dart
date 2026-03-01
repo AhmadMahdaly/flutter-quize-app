@@ -21,12 +21,21 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
   int? selectedPackageId;
   bool isEmailVerified = false;
   bool _isAutoPaying = false;
-
+  final TextEditingController codeController = TextEditingController();
+  late SubscriptionCubit cubit;
   @override
   void initState() {
     super.initState();
-    context.read<SubscriptionCubit>().getPackages();
-    context.read<SubscriptionCubit>().currentReceiverId = null;
+    cubit = context.read<SubscriptionCubit>();
+    cubit.getPackages();
+    cubit.currentReceiverId = null;
+  }
+
+  @override
+  void dispose() {
+    cubit.giftCheckoutData = null;
+    codeController.dispose();
+    super.dispose();
   }
 
   @override
@@ -36,25 +45,25 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
       body: BlocConsumer<SubscriptionCubit, SubscriptionStates>(
         listener: (context, state) {
           if (state is CheckEmailSuccessState) {
-            setState(() => isEmailVerified = true);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Email verified'),
-                backgroundColor: Colors.green,
-              ),
-            );
-
             if (_isAutoPaying && selectedPackageId != null) {
-              final cubit = context.read<SubscriptionCubit>();
               final selectedPkg = cubit.packagesModel?.data?.firstWhere(
                 (p) => p.id == selectedPackageId,
               );
 
               if (selectedPkg != null) {
+                // 1. إضافة نفس عملية التحقق من السعر بعد الخصم هنا أيضاً
+                final double finalAmount =
+                    (cubit.giftCheckoutData?.data?.totalAfterCodeDiscount !=
+                        null)
+                    ? cubit.giftCheckoutData!.data!.totalAfterCodeDiscount!
+                          .toDouble()
+                    : (selectedPkg.price?.toDouble() ?? 0.0);
+
                 cubit.startGiftPaymentFlow(
                   context,
                   selectedPkg.id!,
-                  selectedPkg.price!,
+                  finalAmount, // 2. تمرير السعر النهائي بعد الحسبة
+                  codeController.text,
                 );
               }
               setState(() => _isAutoPaying = false);
@@ -82,9 +91,9 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
           }
         },
         builder: (context, state) {
-          final cubit = context.read<SubscriptionCubit>();
-          final packages = cubit.packagesModel?.data ?? [];
-
+          final packages = (cubit.packagesModel?.data ?? [])
+            ..sort((a, b) => (a.price ?? 0).compareTo(b.price ?? 0));
+          final data = cubit.giftCheckoutData?.data;
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
             child: Column(
@@ -109,7 +118,7 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                               : Icons.verified_user_outlined,
                           color: isEmailVerified
                               ? Colors.green
-                              : AppColors.primaryColor,
+                              : AppColors.darkGreyColor.withAlpha(150),
                         ),
                   controller: emailController,
                   text: 'Recipient email',
@@ -230,30 +239,123 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                   onChanged: (val) {
                     setState(() {
                       selectedPackageId = val;
-                      isEmailVerified = false;
+                      // isEmailVerified = false;
                     });
                   },
                 ),
+                25.verticalSpace,
 
-                80.verticalSpace,
+                ...[
+                  CustomPrimaryTextfield(
+                    controller: codeController,
+                    text: 'Enter Promo Code',
+                    suffix: IconButton(
+                      icon: const Icon(
+                        Icons.check,
+                        color: AppColors.primaryColor,
+                      ),
+                      onPressed: () {
+                        cubit.getGiftCheckoutDetails(
+                          offerId: selectedPackageId!,
+                          code: codeController.text,
+                        );
+                      },
+                    ),
+                  ),
 
+                  Text(
+                    'Press ✓ to promo code apply.',
+                    style: AppTextStyle.style12W600.copyWith(
+                      color: AppColors.darkGreyColor.withAlpha(100),
+                    ),
+                  ),
+
+                  30.verticalSpace,
+
+                  if (data != null) ...[
+                    _priceRow('Original price', "${data.offerPrice} ${'sar'}"),
+
+                    if (data.codeDiscountPrice != null &&
+                        data.codeDiscountPrice! > 0)
+                      _priceRow(
+                        '${'Code discount'} (${data.codeDiscount})',
+                        "- ${data.codeDiscountPrice} ${'sar'}",
+                        valueColor: Colors.red,
+                      ),
+
+                    if (data.deductedPoints != null &&
+                        data.deductedPoints! > 0) ...[
+                      const Divider(height: 20),
+                      _priceRow(
+                        'Points used',
+                        "${data.deductedPoints} ${'point'}",
+                        valueColor: AppColors.secondaryColor,
+                      ),
+                      _priceRow(
+                        'Points discount',
+                        "- ${data.deductedPoints} ${'sar'}",
+                        valueColor: Colors.red,
+                      ),
+                    ],
+
+                    const Divider(height: 30, thickness: 1),
+
+                    _priceRow(
+                      'Total payment',
+                      "${data.payments} ${'sar'}",
+                      isTotal: true,
+                    ),
+                  ],
+
+                  //   // const Spacer(),
+                  //   CustomPrimaryButton(
+                  //     text: 'Pay Now (${data?.totalAfterCodeDiscount ?? 0} SAR)',
+                  //     onPressed: () {
+                  //       if (data != null) {
+                  //         cubit.startPayMobPayment(
+                  //           context,
+                  //           data.offerId!,
+                  //           data.totalAfterCodeDiscount!,
+                  //           codeController.text,
+                  //         );
+                  //       }
+                  //     },
+                  //   ),
+                ],
+                25.verticalSpace,
                 // الخطوة الثالثة: الدفع
                 CustomPrimaryButton(
                   width: double.infinity,
                   text:
-                      'Pay & Send Gift (${packages.any((p) => p.id == selectedPackageId) ? packages.firstWhere((p) => p.id == selectedPackageId).price : 0} sar)',
+                      'Pay & Send Gift (${data?.totalAfterCodeDiscount ?? 0} sar)',
                   onPressed:
                       (selectedPackageId != null &&
                           emailController.text.isNotEmpty)
                       ? () {
+                          final selectedPkg = packages.firstWhere(
+                            (p) => p.id == selectedPackageId,
+                          );
+
+                          // التحقق من السعر: الأولوية لسعر الخصم إذا وجد، وإلا سعر الباقة
+                          final double finalAmount =
+                              (cubit
+                                      .giftCheckoutData
+                                      ?.data
+                                      ?.totalAfterCodeDiscount !=
+                                  null)
+                              ? cubit
+                                    .giftCheckoutData!
+                                    .data!
+                                    .totalAfterCodeDiscount!
+                                    .toDouble()
+                              : (selectedPkg.price?.toDouble() ?? 0.0);
+
                           if (isEmailVerified) {
-                            final selectedPkg = packages.firstWhere(
-                              (p) => p.id == selectedPackageId,
-                            );
                             cubit.startGiftPaymentFlow(
                               context,
                               selectedPkg.id!,
-                              selectedPkg.price!,
+                              finalAmount, // نمرر السعر النهائي هنا
+                              codeController.text,
                             );
                           } else {
                             setState(() => _isAutoPaying = true);
@@ -270,6 +372,41 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _priceRow(
+    String label,
+    String value, {
+    bool isTotal = false,
+    Color? valueColor,
+  }) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: isTotal
+                ? AppTextStyle.style16Bold
+                : AppTextStyle.style14W500.copyWith(color: Colors.grey[700]),
+          ),
+          Text(
+            value,
+            style: isTotal
+                ? AppTextStyle.style18Bold.copyWith(
+                    color: AppColors.primaryColor,
+                  )
+                : AppTextStyle.style14W500.copyWith(
+                    color: valueColor ?? Colors.black,
+                    fontWeight: valueColor != null
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                  ),
+          ),
+        ],
       ),
     );
   }
