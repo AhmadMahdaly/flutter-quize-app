@@ -139,7 +139,10 @@ class QuestionWidget extends StatelessWidget {
 
                   /// Explanation
                   Tooltip(
+                    enableTapToDismiss: false,
                     triggerMode: TooltipTriggerMode.tap,
+                    showDuration: const Duration(minutes: 30),
+                    waitDuration: Duration.zero,
                     decoration: BoxDecoration(
                       color: AppColors.thirdColor,
                       borderRadius: BorderRadius.all(Radius.circular(12.r)),
@@ -150,39 +153,69 @@ class QuestionWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    showDuration: const Duration(minutes: 10),
-                    richMessage: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '${'Explanation'}\n',
-                          style: AppTextStyle.style16Bold.copyWith(
-                            color: AppColors.forthColor,
-                            decoration: TextDecoration.underline,
+                    richMessage: WidgetSpan(
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height * 0.6,
+                            maxWidth: SizeConfig.screenWidth,
                           ),
-                        ),
-                        WidgetSpan(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child:
-                                  (explainPhoto != null &&
-                                      explainPhoto != 'null' &&
-                                      explainPhoto != 'NULL')
-                                  ? CustomCacheImageWidget(
-                                      imageUrl: explainPhoto!,
-                                    )
-                                  : const SizedBox.shrink(),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Explanation',
+                                      style: AppTextStyle.style16Bold.copyWith(
+                                        color: AppColors.forthColor,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Tooltip.dismissAllToolTips();
+                                      },
+                                      child: Icon(
+                                        Icons.close,
+                                        color: AppColors.forthColor,
+                                        size: 20.sp,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Divider(color: Colors.white24),
+                                if (explainPhoto != null &&
+                                    explainPhoto != 'null' &&
+                                    explainPhoto != 'NULL')
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 8,
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: CustomCacheImageWidget(
+                                        imageUrl: explainPhoto!,
+                                      ),
+                                    ),
+                                  ),
+
+                                Text(
+                                  explainText == 'null' ? '' : explainText,
+                                  style: AppTextStyle.style16W500.copyWith(
+                                    color: AppColors.forthColor,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        TextSpan(
-                          text: explainText == 'null' ? '' : explainText,
-                          style: AppTextStyle.style16W500.copyWith(
-                            color: AppColors.forthColor,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     child: Icon(
                       CupertinoIcons.question_circle,

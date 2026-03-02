@@ -34,7 +34,7 @@ class ConfirmAccessToRealExamDialogWidget extends StatelessWidget {
                     context.pop();
                   }
                   if (context.mounted) {
-                    context.pushNamed(AppRoutes.realExamScreen);
+                    context.pushReplacementNamed(AppRoutes.realExamScreen);
                   }
                 },
                 child: Container(

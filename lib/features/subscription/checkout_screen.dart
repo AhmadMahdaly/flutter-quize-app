@@ -91,7 +91,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   'Press ✓ to promo code apply.',
                   textAlign: TextAlign.start,
                   style: AppTextStyle.style12W600.copyWith(
-                    color: AppColors.darkGreyColor.withAlpha(100),
+                    color: AppColors.primaryColor,
                   ),
                 ),
                 30.verticalSpace,

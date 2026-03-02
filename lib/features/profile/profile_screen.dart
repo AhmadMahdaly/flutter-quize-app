@@ -125,6 +125,15 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                     ),
                                     12.verticalSpace,
+                                    if (!isSubscribed)
+                                      Text(
+                                        'You don’t have an active subscription.',
+                                        textAlign: TextAlign.center,
+                                        style: AppTextStyle.style14W900
+                                            .copyWith(
+                                              color: AppColors.primaryColor,
+                                            ),
+                                      ),
                                     if (offerName != null)
                                       Text(
                                         'Subscription Package: $offerName',
@@ -157,12 +166,14 @@ class ProfileScreen extends StatelessWidget {
                                               color: AppColors.primaryColor,
                                             ),
                                       ),
-                                    Text(
-                                      '${"Remaining Realistic Exams Simulation:"} $availableExam ${"exams"}',
-                                      style: AppTextStyle.style12W700.copyWith(
-                                        color: AppColors.primaryColor,
+                                    if (availableExam != '0')
+                                      Text(
+                                        '${"Remaining Realistic Exams Simulation:"} $availableExam ${"exams"}',
+                                        style: AppTextStyle.style12W700
+                                            .copyWith(
+                                              color: AppColors.primaryColor,
+                                            ),
                                       ),
-                                    ),
                                   ],
                                 ),
                               ),

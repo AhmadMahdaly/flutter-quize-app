@@ -135,18 +135,19 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                       Expanded(
                         child: ListView(
                           children: [
+                            if (q.photo != null &&
+                                q.photo!.isNotEmpty &&
+                                q.photo != 'null' &&
+                                q.photo != 'NULL')
+                              CustomCacheImageWidget(imageUrl: q.photo!)
+                            else
+                              const SizedBox.shrink(),
                             Text(
                               q.questionText ?? '',
                               style: AppTextStyle.style14W700.copyWith(
                                 color: AppColors.forthColor,
                               ),
                             ),
-                            if (q.photo != null && q.photo!.isNotEmpty ||
-                                q.photo != null && q.photo != 'null' ||
-                                q.photo != null && q.photo != 'NULL')
-                              CustomCacheImageWidget(imageUrl: q.photo!)
-                            else
-                              const SizedBox.shrink(),
 
                             16.verticalSpace,
                             buildOption('a', q.a ?? ''),

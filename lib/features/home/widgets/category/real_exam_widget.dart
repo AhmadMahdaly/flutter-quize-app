@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
@@ -65,7 +63,6 @@ class RealExamHomeWidget extends StatelessWidget {
             context.pushNamed(AppRoutes.confirmAccessToRealExam);
           }
         } else {
-          log(availableExam.toString());
           showCustomPrimaryDialog(
             context,
             widget: CustomPrimaryDialog(
