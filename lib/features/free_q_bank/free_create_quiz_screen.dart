@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:skeletonizer/skeletonizer.dart'; // 1. استيراد المكتبة
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
@@ -64,6 +65,11 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
           child: BlocBuilder<FreeQBankCubit, FreeQBankStates>(
             builder: (context, state) {
+              // تحديد حالة التحميل الكلية للشاشة
+              final bool isLoading = state is GetCategoriesLoadingState
+              //  || state is GetSubCategoriesLoadingState
+              ;
+
               final bool areAllCategoriesSelected =
                   (cubit.categoriesModel?.data?.isNotEmpty ?? false) &&
                   cubit.selectedCategoryIds.length ==
@@ -86,137 +92,148 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                   cubit.selectedSubCategoryIds.isNotEmpty &&
                   isQuestionCountValid &&
                   isMonthValid;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  10.verticalSpace,
-                  Text('Select Year:', style: AppTextStyle.style16W700),
-                  10.verticalSpace,
-                  const YearPickerWidget(),
 
-                  15.verticalSpace,
-                  Text('Select Month:', style: AppTextStyle.style16W700),
-                  10.verticalSpace,
-                  const SingleMonthSelector(),
+              // 2. تغليف المحتوى بـ Skeletonizer
+              return Skeletonizer(
+                enabled: isLoading,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    10.verticalSpace,
+                    Text('Select Year:', style: AppTextStyle.style16W700),
+                    10.verticalSpace,
+                    const YearPickerWidget(),
 
-                  15.verticalSpace,
-                  _buildSectionHeader(
-                    context,
-                    title: 'Specialty',
-                    isAllSelected: areAllCategoriesSelected,
-                    isEnabled: cubit.categoriesModel?.data?.isNotEmpty ?? false,
-                    onSelectAllChanged: (value) {
-                      cubit.selectAllCategories(value ?? false);
-                    },
-                  ),
-                  10.verticalSpace,
-                  if (cubit.categoriesModel != null)
-                    SpecialtyList(cubit: cubit)
-                  else
-                    const Center(child: CircularProgressIndicator()),
-                  20.verticalSpace,
+                    15.verticalSpace,
+                    Text('Select Month:', style: AppTextStyle.style16W700),
+                    10.verticalSpace,
+                    const SingleMonthSelector(),
 
-                  if (state is GetSubCategoriesLoadingState)
-                    const Center(child: CircularProgressIndicator())
-                  else if (cubit.selectedCategoryIds.isNotEmpty &&
-                      cubit.aggregatedSubcategories.isEmpty)
-                    Center(
-                      child: Text(
-                        'Not found Sub Specialty',
-                        style: AppTextStyle.style14W500.copyWith(
-                          color: AppColors.darkGreyColor,
+                    15.verticalSpace,
+                    _buildSectionHeader(
+                      context,
+                      title: 'Specialty',
+                      isAllSelected: areAllCategoriesSelected,
+                      isEnabled:
+                          cubit.categoriesModel?.data?.isNotEmpty ?? false,
+                      onSelectAllChanged: (value) {
+                        cubit.selectAllCategories(value ?? false);
+                      },
+                    ),
+                    10.verticalSpace,
+
+                    if (cubit.categoriesModel != null)
+                      SpecialtyList(cubit: cubit)
+                    else
+                      const Center(child: LinearProgressIndicator()),
+
+                    20.verticalSpace,
+                    if (state is GetSubCategoriesLoadingState)
+                      const Center(child: LinearProgressIndicator())
+                    else if (cubit.selectedCategoryIds.isNotEmpty &&
+                        cubit.aggregatedSubcategories.isEmpty &&
+                        !isLoading)
+                      Center(
+                        child: Text(
+                          'Not found Sub Specialty',
+                          style: AppTextStyle.style14W500.copyWith(
+                            color: AppColors.darkGreyColor,
+                          ),
                         ),
+                      )
+                    else
+                      ExpansionTile(
+                        tilePadding: EdgeInsets.zero,
+                        collapsedIconColor: AppColors.forthColor,
+                        iconColor: AppColors.forthColor,
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Sub Specialty',
+                              style: AppTextStyle.style16W700.copyWith(),
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Select all',
+                                  style: AppTextStyle.style14W500.copyWith(),
+                                ),
+                                Checkbox(
+                                  value: areAllSubCategoriesSelected,
+                                  onChanged:
+                                      cubit.aggregatedSubcategories.isNotEmpty
+                                      ? (value) => cubit.selectAllSubCategories(
+                                          value ?? false,
+                                        )
+                                      : null,
+                                  activeColor: AppColors.primaryColor,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        children: [SubSpecialtyList(cubit: cubit)],
                       ),
-                    )
-                  else
+
+                    20.verticalSpace,
+                    _buildAdvancedFilters(context, cubit, state),
+                    20.verticalSpace,
+
                     ExpansionTile(
-                      tilePadding: EdgeInsets.zero,
                       collapsedIconColor: AppColors.forthColor,
                       iconColor: AppColors.forthColor,
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Sub Specialty',
-                            style: AppTextStyle.style16W700.copyWith(),
+                      title: Text(
+                        'Selected items',
+                        style: AppTextStyle.style14W700.copyWith(
+                          fontSize: SizeConfig.responsiveValue(
+                            phone: 16.sp,
+                            tablet: 20.sp,
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Select all',
-                                style: AppTextStyle.style14W500.copyWith(),
-                              ),
-                              Checkbox(
-                                value: areAllSubCategoriesSelected,
-                                onChanged:
-                                    cubit.aggregatedSubcategories.isNotEmpty
-                                    ? (value) => cubit.selectAllSubCategories(
-                                        value ?? false,
-                                      )
-                                    : null,
-                                activeColor: AppColors.primaryColor,
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
-                      children: [SubSpecialtyList(cubit: cubit)],
+                      children: [SelectedItemsWidget(cubit: cubit)],
                     ),
-                  20.verticalSpace,
-                  _buildAdvancedFilters(context, cubit, state),
-                  20.verticalSpace,
-                  ExpansionTile(
-                    collapsedIconColor: AppColors.forthColor,
-                    iconColor: AppColors.forthColor,
-                    title: Text(
-                      'Selected items',
-                      style: AppTextStyle.style14W700.copyWith(
-                        fontSize: SizeConfig.responsiveValue(
-                          phone: 16.sp,
-                          tablet: 20.sp,
+                    16.verticalSpace,
+
+                    Center(
+                      child: GestureDetector(
+                        onTap: (canStartQuiz && !isLoading)
+                            ? () {
+                                cubit.getQuestions().then((_) {
+                                  if (cubit.qBankModel != null &&
+                                      (cubit.qBankModel?.data?.isNotEmpty ??
+                                          false)) {
+                                    context.pushReplacementNamed(
+                                      AppRoutes.freeqBankScreen,
+                                      arguments: StartQuizModel(
+                                        qBankModel: cubit.qBankModel,
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('No Questions Found'),
+                                      ),
+                                    );
+                                  }
+                                });
+                              }
+                            : null,
+                        child: Opacity(
+                          opacity: canStartQuiz ? 1.0 : 0.2,
+                          child: const CustomQuestionButtonWidget(
+                            text: 'Start quiz',
+                          ),
                         ),
                       ),
                     ),
-                    children: [SelectedItemsWidget(cubit: cubit)],
-                  ),
-                  16.verticalSpace,
-                  Center(
-                    child: GestureDetector(
-                      onTap: canStartQuiz
-                          ? () {
-                              cubit.getQuestions().then((_) {
-                                if (cubit.qBankModel != null &&
-                                    (cubit.qBankModel?.data?.isNotEmpty ??
-                                        false)) {
-                                  context.pushReplacementNamed(
-                                    AppRoutes.freeqBankScreen,
-                                    arguments: StartQuizModel(
-                                      qBankModel: cubit.qBankModel,
-                                    ),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('No Questions Found'),
-                                    ),
-                                  );
-                                }
-                              });
-                            }
-                          : null,
-                      child: Opacity(
-                        opacity: canStartQuiz ? 1.0 : 0.2,
-                        child: const CustomQuestionButtonWidget(
-                          text: 'Start quiz',
-                        ),
-                      ),
-                    ),
-                  ),
-                  24.verticalSpace,
-                ],
+                    24.verticalSpace,
+                  ],
+                ),
               );
             },
           ),
@@ -272,7 +289,7 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Selected: ${DateFormat.MMMM('en').format(DateTime(2024, cubit.selectedMonth))} / Year: ${cubit.selectedYearDate.year}',
+            'Selected: ${DateFormat.MMMM().format(DateTime(2024, cubit.selectedMonth))} / Year: ${cubit.selectedYearDate.year}',
             style: AppTextStyle.style14W700.copyWith(
               fontSize: 14.sp,
               color: AppColors.secondaryColor,

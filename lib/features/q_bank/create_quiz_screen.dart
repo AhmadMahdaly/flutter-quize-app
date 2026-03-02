@@ -102,7 +102,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   if (cubit.categoriesModel != null)
                     SpecialtyList(cubit: cubit)
                   else
-                    const Center(child: CircularProgressIndicator()),
+                    const Center(child: LinearProgressIndicator()),
                   20.verticalSpace,
                   // _buildSectionHeader(
                   //   context,
@@ -115,7 +115,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   // ),
                   // 10.verticalSpace,
                   if (state is GetSubCategoriesLoadingState)
-                    const Center(child: CircularProgressIndicator())
+                    const Center(child: LinearProgressIndicator())
                   else if (cubit.selectedCategoryIds.isNotEmpty &&
                       cubit.aggregatedSubcategories.isEmpty)
                     Center(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
+import 'package:smle/core/functions/date_format.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
@@ -142,14 +143,22 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                     if (expireDate != null)
                                       Text(
-                                        '${"Expire Date"} $expireDate',
+                                        '${"Expire Date:"} $expireDate',
+                                        style: AppTextStyle.style12W700
+                                            .copyWith(
+                                              color: AppColors.primaryColor,
+                                            ),
+                                      ),
+                                    if (expireDate != null)
+                                      Text(
+                                        '${"Remaining subscription days:"} ${calculateRemainingDaysFromString(expireDate)} ${"days"}',
                                         style: AppTextStyle.style12W700
                                             .copyWith(
                                               color: AppColors.primaryColor,
                                             ),
                                       ),
                                     Text(
-                                      '${"Remaining real exams"} $availableExam ${"exams"}',
+                                      '${"Remaining Realistic Exams Simulation:"} $availableExam ${"exams"}',
                                       style: AppTextStyle.style12W700.copyWith(
                                         color: AppColors.primaryColor,
                                       ),

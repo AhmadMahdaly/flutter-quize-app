@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:month_year_picker/month_year_picker.dart';
-import 'package:smle/core/constants.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/config_loading.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/routing/app_router.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/themes.dart';
@@ -37,28 +33,29 @@ class MyApp extends StatelessWidget {
           onGenerateRoute: AppRouter().generateRoute,
           initialRoute: AppRoutes.splashScreen,
           theme: lightTheme,
-          navigatorKey: navigatorKey,
+          // navigatorKey: navigatorKey,
           darkTheme: lightTheme,
           themeMode: ThemeMode.light,
           title: 'SMLE Gate',
           debugShowCheckedModeBanner: false,
-          localeResolutionCallback: (deviceLocale, supportedLocales) {
-            for (var locale in supportedLocales) {
-              if (deviceLocale != null &&
-                  deviceLocale.languageCode == locale.languageCode) {
-                return deviceLocale;
-              }
-            }
-            return supportedLocales.first;
-          },
-          supportedLocales: const [Locale('en'), Locale('ar')],
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            MonthYearPickerLocalizations.delegate,
-          ],
+          // localeResolutionCallback: (deviceLocale, supportedLocales) {
+          //   for (var locale in supportedLocales) {
+          //     if (deviceLocale != null &&
+          //         deviceLocale.languageCode == locale.languageCode) {
+          //       return deviceLocale;
+          //     }
+          //   }
+          //   return supportedLocales.first;
+          // },
+          // supportedLocales: const [Locale('en'),],
+          // locale: const Locale('en'),
+          // localizationsDelegates: const [
+          //   AppLocalizations.delegate,
+          //   GlobalMaterialLocalizations.delegate,
+          //   GlobalWidgetsLocalizations.delegate,
+          //   GlobalCupertinoLocalizations.delegate,
+          //   MonthYearPickerLocalizations.delegate,
+          // ],
           builder: (context, myWidget) {
             myWidget = EasyLoading.init()(context, myWidget);
             configLoading(context);

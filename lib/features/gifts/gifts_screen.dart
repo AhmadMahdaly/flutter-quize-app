@@ -29,7 +29,7 @@ class GiftsScreen extends StatelessWidget {
         },
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: BlocBuilder<MainLayoutCubit, MainLayoutState>(
           builder: (context, state) {
             final cubit = context.watch<MainLayoutCubit>();
@@ -64,7 +64,7 @@ class GiftsScreen extends StatelessWidget {
                 final invoice = gifts[index];
 
                 return Container(
-                  margin: EdgeInsets.only(bottom: 20.h),
+                  margin: EdgeInsets.only(bottom: 16.h),
                   padding: EdgeInsets.all(20.r),
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -88,12 +88,12 @@ class GiftsScreen extends StatelessWidget {
                       ),
                       10.verticalSpace,
                       Text('Status: ${invoice.status}'),
-                      Text('Payment: ${invoice.payments}'),
+                      Text('Payment: ${invoice.payments} SAR'),
                       if (invoice.offer != null)
                         Text('Offer: ${invoice.offer!.name}'),
                       if (invoice.expiredAt != null)
                         Text(
-                          'Expire: ${invoice.expiredAt?.year}-${invoice.expiredAt?.month}-${invoice.expiredAt?.day}',
+                          'Expire: ${invoice.expiredAt?.day}-${invoice.expiredAt?.month}-${invoice.expiredAt?.year}',
                         ),
                     ],
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
+import 'package:smle/core/shared_widgets/custom_cache_image.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/real_exam/cubit/real_exam_cubit.dart';
@@ -141,17 +142,12 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                               ),
                             ),
                             if (q.photo != null && q.photo!.isNotEmpty ||
-                                q.photo != null && q.photo != 'null')
-                              Image.network(
-                                q.photo!,
-                                height: SizeConfig.responsiveValue(
-                                  phone: 200.h,
-                                  tablet: 140.h,
-                                ),
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const SizedBox.shrink(),
-                              ),
+                                q.photo != null && q.photo != 'null' ||
+                                q.photo != null && q.photo != 'NULL')
+                              CustomCacheImageWidget(imageUrl: q.photo!)
+                            else
+                              const SizedBox.shrink(),
+
                             16.verticalSpace,
                             buildOption('a', q.a ?? ''),
                             buildOption('b', q.b ?? ''),

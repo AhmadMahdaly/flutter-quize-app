@@ -22,14 +22,14 @@ class ExamsList extends StatelessWidget {
           children: [
             Icon(
               Icons.edit_document,
-              color: AppColors.darkGreyColor,
+              color: AppColors.darkGreyColor.withAlpha(100),
               size: 160.r,
             ),
             12.verticalSpace,
             Text(
-              'No exams found',
+              'No Exams found',
               style: AppTextStyle.style16Bold.copyWith(
-                color: AppColors.darkGreyColor,
+                color: AppColors.darkGreyColor.withAlpha(100),
               ),
             ),
           ],

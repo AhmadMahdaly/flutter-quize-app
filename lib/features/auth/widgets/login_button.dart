@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -31,9 +30,7 @@ class LoginButton extends StatelessWidget {
           ),
           16.horizontalSpace,
           Text(
-            Platform.isAndroid
-                ? 'continue_google'.tr(context)
-                : 'continue_apple'.tr(context),
+            Platform.isAndroid ? 'Continue with google' : 'Continue with apple',
             style: AppTextStyle.style14W500.copyWith(
               color: AppColors.forthColor,
             ),

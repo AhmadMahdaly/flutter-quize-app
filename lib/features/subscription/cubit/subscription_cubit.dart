@@ -114,7 +114,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     emit(PurchaseLoadingState());
     showLoading();
 
-    final amountCents = amount * 100; // المبلغ القادم هنا هو الإجمالي بعد الخصم
+    final amountCents = amount * 100;
     await getProfile();
 
     final billingData = {
@@ -128,7 +128,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       offerId: offerId,
       amountCents: amountCents,
       billingData: billingData,
-      code: code, // إرسال الكود
+      code: code,
     );
 
     hideLoading();
@@ -148,6 +148,8 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
   }
 
   void _openPayMobWebView(BuildContext context, String iframeUrl) {
+    final ValueNotifier<bool> isLoading = ValueNotifier(true);
+
     final controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -157,14 +159,16 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
           },
           onPageStarted: (String url) {
             '✅ Page Started: $url'.dPrint();
+            isLoading.value = true;
           },
           onPageFinished: (String url) {
+            isLoading.value = false;
+
             if (url.startsWith(
               'https://ksa.paymob.com/unifiedcheckout/payment-status',
             )) {}
 
             if (url.startsWith('https://smlegate.com/payment/success')) {
-              log('hkjlhnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
               getIt<CheckSubscriptionCubit>().loadSubscription();
 
               if (!isClosed) {
@@ -185,6 +189,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
           },
           onWebResourceError: (WebResourceError error) {
             '❌ Error: ${error.description}'.dPrint();
+            isLoading.value = false;
           },
         ),
       )
@@ -195,63 +200,69 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       barrierDismissible: false,
       builder: (_) => WillPopScope(
         onWillPop: () async {
-          final shouldExit = await showDialog<bool>(
-            context: context,
-            builder: (dialogContext) {
-              return AlertDialog(
-                title: Text('Cancel', style: AppTextStyle.style16W600),
-                content: Text(
-                  'Are you sure you want to cancel?',
-                  style: AppTextStyle.style16W500,
-                ),
-                actions: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomPrimaryButton(
-                          text: 'Yes',
-                          onPressed: () {
-                            if (!isClosed) {
-                              emit(PurchaseCancelledState());
-                            }
-                            Navigator.of(dialogContext).pop(true);
-                          },
-                        ),
-                      ),
-
-                      10.horizontalSpace,
-
-                      Expanded(
-                        child: CustomPrimaryButton(
-                          text: 'No',
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop(false);
-                          },
-                        ),
-                      ),
-                    ],
+          if (context.mounted) {
+            final shouldExit = await showDialog<bool>(
+              context: context,
+              builder: (dialogContext) {
+                return AlertDialog(
+                  title: Text('Cancel', style: AppTextStyle.style16W600),
+                  content: Text(
+                    'Are you sure you want to cancel?',
+                    style: AppTextStyle.style16W500,
                   ),
-                ],
-              );
-            },
-          );
-
-          return shouldExit ?? false;
+                  actions: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomPrimaryButton(
+                            text: 'Yes',
+                            onPressed: () {
+                              if (!isClosed) {
+                                emit(PurchaseCancelledState());
+                              }
+                              Navigator.of(dialogContext).pop(true);
+                            },
+                          ),
+                        ),
+                        10.horizontalSpace,
+                        Expanded(
+                          child: CustomPrimaryButton(
+                            text: 'No',
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop(false);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            );
+            return shouldExit ?? false;
+          }
+          return false;
         },
         child: Dialog.fullscreen(
           child: Scaffold(
-            // appBar: AppBar(
-            //   leadingWidth: 100.w,
-            //   leading: TextButton(
-            //     child: const Text('Cancel'),
-            //     onPressed: () {
-            //       emit(PurchaseCancelledState());
+            body: Stack(
+              children: [
+                WebViewWidget(controller: controller),
 
-            //       Navigator.pop(context);
-            //     },
-            //   ),
-            // ),
-            body: WebViewWidget(controller: controller),
+                ValueListenableBuilder<bool>(
+                  valueListenable: isLoading,
+                  builder: (context, loading, child) {
+                    if (loading) {
+                      return Container(
+                        color: Colors.white,
+                        child: const Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -263,6 +274,8 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     String iframeUrl,
     int currentReceiverId,
   ) {
+    final ValueNotifier<bool> isLoading = ValueNotifier(true);
+
     final controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -272,14 +285,16 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
           },
           onPageStarted: (String url) {
             '✅ Page Started: $url'.dPrint();
+            isLoading.value = true;
           },
           onPageFinished: (String url) {
+            isLoading.value = false;
+
             if (url.startsWith(
               'https://ksa.paymob.com/unifiedcheckout/payment-status',
             )) {}
 
             if (url.startsWith('https://smlegate.com/payment/success')) {
-              log('hkjlhnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
               getIt<CheckSubscriptionCubit>().loadSubscription();
 
               if (!isClosed) {
@@ -300,6 +315,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
           },
           onWebResourceError: (WebResourceError error) {
             '❌ Error: ${error.description}'.dPrint();
+            isLoading.value = false;
           },
         ),
       )
@@ -310,70 +326,76 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       barrierDismissible: false,
       builder: (_) => WillPopScope(
         onWillPop: () async {
-          final shouldExit = await showDialog<bool>(
-            context: context,
-            builder: (dialogContext) {
-              return AlertDialog(
-                title: Text('Cancel', style: AppTextStyle.style16W600),
-                content: Text(
-                  'Are you sure you want to cancel?',
-                  style: AppTextStyle.style16W500,
-                ),
-                actions: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomPrimaryButton(
-                          text: 'Yes',
-                          onPressed: () {
-                            if (!isClosed) {
-                              emit(PurchaseCancelledState());
-                            }
-                            Navigator.of(dialogContext).pop(true);
-                          },
-                        ),
-                      ),
-
-                      10.horizontalSpace,
-
-                      Expanded(
-                        child: CustomPrimaryButton(
-                          text: 'No',
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop(false);
-                          },
-                        ),
-                      ),
-                    ],
+          if (context.mounted) {
+            final shouldExit = await showDialog<bool>(
+              context: context,
+              builder: (dialogContext) {
+                return AlertDialog(
+                  title: Text('Cancel', style: AppTextStyle.style16W600),
+                  content: Text(
+                    'Are you sure you want to cancel?',
+                    style: AppTextStyle.style16W500,
                   ),
-                ],
-              );
-            },
-          );
+                  actions: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomPrimaryButton(
+                            text: 'Yes',
+                            onPressed: () {
+                              if (!isClosed) {
+                                emit(PurchaseCancelledState());
+                              }
+                              Navigator.of(dialogContext).pop(true);
+                            },
+                          ),
+                        ),
+                        10.horizontalSpace,
+                        Expanded(
+                          child: CustomPrimaryButton(
+                            text: 'No',
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop(false);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            );
 
-          return shouldExit ?? false;
+            return shouldExit ?? false;
+          }
+          return false;
         },
         child: Dialog.fullscreen(
           child: Scaffold(
-            // appBar: AppBar(
-            //   leadingWidth: 100.w,
-            //   leading: TextButton(
-            //     child: const Text('Cancel'),
-            //     onPressed: () {
-            //       emit(PurchaseCancelledState());
+            body: Stack(
+              children: [
+                WebViewWidget(controller: controller),
 
-            //       Navigator.pop(context);
-            //     },
-            //   ),
-            // ),
-            body: WebViewWidget(controller: controller),
+                ValueListenableBuilder<bool>(
+                  valueListenable: isLoading,
+                  builder: (context, loading, child) {
+                    if (loading) {
+                      return Container(
+                        color: Colors.white,
+                        child: const Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  /// Get Profile
   ProfileModel? profileModel;
   Future getProfile() async {
     emit(GetProfileLoadingState());
@@ -389,10 +411,8 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       },
     );
   }
-  // داخل SubscriptionCubit
 
-  int? currentReceiverId; // لحفظ الـ ID المستلم بعد الـ checkout
-
+  int? currentReceiverId;
   Future<void> checkGiftEmail(int offerId, String email) async {
     emit(CheckEmailLoadingState());
     final result = await _subscriptionRepository.checkGiftCheckout(
@@ -422,7 +442,6 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     emit(PurchaseLoadingState());
     showLoading();
 
-    // جلب بيانات الدافع (Payer) من البروفايل
     await getProfile();
 
     final result = await _subscriptionRepository.processGiftPayment(
@@ -431,7 +450,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       amountCents: amount * 100,
       payerName: profileModel?.data?.name ?? 'Guest',
       payerEmail: profileModel?.data?.email ?? '',
-      payerPhone: '01000000000', // أو من البروفايل إذا متاح
+      payerPhone: '01000000000',
       code: code,
     );
 

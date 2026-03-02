@@ -51,7 +51,6 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
               );
 
               if (selectedPkg != null) {
-                // 1. إضافة نفس عملية التحقق من السعر بعد الخصم هنا أيضاً
                 final double finalAmount =
                     (cubit.giftCheckoutData?.data?.totalAfterCodeDiscount !=
                         null)
@@ -62,7 +61,7 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                 cubit.startGiftPaymentFlow(
                   context,
                   selectedPkg.id!,
-                  finalAmount, // 2. تمرير السعر النهائي بعد الحسبة
+                  finalAmount,
                   codeController.text,
                 );
               }
@@ -86,117 +85,65 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
               builder: (context) =>
                   const PayDoneDialog(title: 'Your gift is send'),
             );
-
-            // if (context.mounted) context.pop();
           }
         },
         builder: (context, state) {
           final packages = (cubit.packagesModel?.data ?? [])
             ..sort((a, b) => (a.price ?? 0).compareTo(b.price ?? 0));
           final data = cubit.giftCheckoutData?.data;
+
+          double displayPrice = 0.0;
+          if (selectedPackageId != null) {
+            final selectedPkg = packages
+                .where((p) => p.id == selectedPackageId)
+                .firstOrNull;
+
+            displayPrice = (data?.totalAfterCodeDiscount != null)
+                ? data!.totalAfterCodeDiscount!.toDouble()
+                : (selectedPkg?.price?.toDouble() ?? 0.0);
+          }
+
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 15.verticalSpace,
-                // الخطوة الثانية: إدخال الإيميل والتحقق
+
                 Text('1. Recipient info', style: AppTextStyle.style16Bold),
                 15.verticalSpace,
                 CustomPrimaryTextfield(
-                  suffix: state is CheckEmailLoadingState
-                      ? SizedBox(
-                          width: 5.w,
-                          height: 5.h,
-                          child: const CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : Icon(
-                          isEmailVerified
-                              ? Icons.check_circle
-                              : Icons.verified_user_outlined,
-                          color: isEmailVerified
-                              ? Colors.green
-                              : AppColors.darkGreyColor.withAlpha(150),
-                        ),
+                  // suffix: state is CheckEmailLoadingState
+                  //     ? SizedBox(
+                  //         width: 5.w,
+                  //         height: 5.h,
+                  //         child: const CircularProgressIndicator(
+                  //           strokeWidth: 2,
+                  //         ),
+                  //       )
+                  //     : Icon(
+                  //         isEmailVerified
+                  //             ? Icons.check_circle
+                  //             : Icons.verified_user_outlined,
+                  //         color: isEmailVerified
+                  //             ? Colors.green
+                  //             : AppColors.darkGreyColor.withAlpha(150),
+                  //       ),
                   controller: emailController,
                   text: 'Recipient email',
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (val) {
-                    if (isEmailVerified) {
-                      setState(() => isEmailVerified = false);
-                    }
+                    setState(() {
+                      if (isEmailVerified) {
+                        isEmailVerified = false;
+                      }
+                    });
                   },
                 ),
                 15.verticalSpace,
 
-                // زر التحقق
-                // SizedBox(
-                //   width: double.infinity,
-                //   child: OutlinedButton.icon(
-                //     style: OutlinedButton.styleFrom(
-                //       padding: EdgeInsets.symmetric(vertical: 12.h),
-                //       side: BorderSide(
-                //         color: isEmailVerified
-                //             ? Colors.green
-                //             : AppColors.primaryColor,
-                //       ),
-                //       shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(10.r),
-                //       ),
-                //     ),
-                //     onPressed: (emailController.text.isNotEmpty)
-                //         ? () {
-                //             if (selectedPackageId == null) {
-                //               ScaffoldMessenger.of(context).showSnackBar(
-                //                 const SnackBar(
-                //                   content: Text(
-                //                     'Please select a package first',
-                //                   ),
-                //                   backgroundColor: Colors.orange,
-                //                 ),
-                //               );
-                //               return;
-                //             }
-                //             cubit.checkGiftEmail(
-                //               selectedPackageId!,
-                //               emailController.text,
-                //             );
-                //           }
-                //         : null,
-                //     icon: state is CheckEmailLoadingState
-                //         ? SizedBox(
-                //             width: 20.w,
-                //             height: 20.h,
-                //             child: const CircularProgressIndicator(
-                //               strokeWidth: 2,
-                //             ),
-                //           )
-                //         : Icon(
-                //             isEmailVerified
-                //                 ? Icons.check_circle
-                //                 : Icons.verified_user_outlined,
-                //             color: isEmailVerified
-                //                 ? Colors.green
-                //                 : AppColors.primaryColor,
-                //           ),
-                //     label: Text(
-                //       isEmailVerified ? 'Verified' : 'Verify recipient',
-                //       style: TextStyle(
-                //         color: isEmailVerified
-                //             ? Colors.green
-                //             : AppColors.primaryColor,
-                //         fontWeight: isEmailVerified
-                //             ? FontWeight.bold
-                //             : FontWeight.normal,
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 25.verticalSpace,
 
-                // الخطوة الأولى: اختيار الباقة (Dropdown)
                 Text('2. Choose gift package', style: AppTextStyle.style16Bold),
                 15.verticalSpace,
                 DropdownButtonFormField<int>(
@@ -204,10 +151,7 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.darkGreyColor.withAlpha(25),
-                    contentPadding: EdgeInsets.only(
-                      left: 12.w,
-                      // vertical: 12.h,
-                    ),
+                    contentPadding: EdgeInsets.only(left: 12.w),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
                       borderSide: BorderSide(
@@ -237,10 +181,9 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                     );
                   }).toList(),
                   onChanged: (val) {
-                    setState(() {
-                      selectedPackageId = val;
-                      // isEmailVerified = false;
-                    });
+                    selectedPackageId = val;
+
+                    setState(() {});
                   },
                 ),
                 25.verticalSpace,
@@ -266,7 +209,7 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                   Text(
                     'Press ✓ to promo code apply.',
                     style: AppTextStyle.style12W600.copyWith(
-                      color: AppColors.darkGreyColor.withAlpha(100),
+                      color: AppColors.primaryColor,
                     ),
                   ),
 
@@ -280,7 +223,7 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                       _priceRow(
                         '${'Code discount'} (${data.codeDiscount})',
                         "- ${data.codeDiscountPrice} ${'sar'}",
-                        valueColor: Colors.red,
+                        valueColor: AppColors.greenColor,
                       ),
 
                     if (data.deductedPoints != null &&
@@ -294,7 +237,7 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                       _priceRow(
                         'Points discount',
                         "- ${data.deductedPoints} ${'sar'}",
-                        valueColor: Colors.red,
+                        valueColor: AppColors.greenColor,
                       ),
                     ],
 
@@ -306,67 +249,52 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                       isTotal: true,
                     ),
                   ],
-
-                  //   // const Spacer(),
-                  //   CustomPrimaryButton(
-                  //     text: 'Pay Now (${data?.totalAfterCodeDiscount ?? 0} SAR)',
-                  //     onPressed: () {
-                  //       if (data != null) {
-                  //         cubit.startPayMobPayment(
-                  //           context,
-                  //           data.offerId!,
-                  //           data.totalAfterCodeDiscount!,
-                  //           codeController.text,
-                  //         );
-                  //       }
-                  //     },
-                  //   ),
                 ],
                 25.verticalSpace,
-                // الخطوة الثالثة: الدفع
-                CustomPrimaryButton(
-                  width: double.infinity,
-                  text:
-                      'Pay & Send Gift (${data?.totalAfterCodeDiscount ?? 0} sar)',
-                  onPressed:
-                      (selectedPackageId != null &&
-                          emailController.text.isNotEmpty)
-                      ? () {
-                          final selectedPkg = packages.firstWhere(
-                            (p) => p.id == selectedPackageId,
-                          );
 
-                          // التحقق من السعر: الأولوية لسعر الخصم إذا وجد، وإلا سعر الباقة
-                          final double finalAmount =
-                              (cubit
-                                      .giftCheckoutData
-                                      ?.data
-                                      ?.totalAfterCodeDiscount !=
-                                  null)
-                              ? cubit
-                                    .giftCheckoutData!
-                                    .data!
-                                    .totalAfterCodeDiscount!
-                                    .toDouble()
-                              : (selectedPkg.price?.toDouble() ?? 0.0);
+                state is CheckEmailLoadingState
+                    ? const LinearProgressIndicator()
+                    : CustomPrimaryButton(
+                        width: double.infinity,
+                        text: 'Pay & Send Gift ($displayPrice sar)',
+                        onPressed:
+                            (selectedPackageId != null &&
+                                emailController.text.isNotEmpty)
+                            ? () {
+                                final selectedPkg = packages.firstWhere(
+                                  (p) => p.id == selectedPackageId,
+                                );
 
-                          if (isEmailVerified) {
-                            cubit.startGiftPaymentFlow(
-                              context,
-                              selectedPkg.id!,
-                              finalAmount, // نمرر السعر النهائي هنا
-                              codeController.text,
-                            );
-                          } else {
-                            setState(() => _isAutoPaying = true);
-                            cubit.checkGiftEmail(
-                              selectedPackageId!,
-                              emailController.text,
-                            );
-                          }
-                        }
-                      : null,
-                ),
+                                final double finalAmount =
+                                    (cubit
+                                            .giftCheckoutData
+                                            ?.data
+                                            ?.totalAfterCodeDiscount !=
+                                        null)
+                                    ? cubit
+                                          .giftCheckoutData!
+                                          .data!
+                                          .totalAfterCodeDiscount!
+                                          .toDouble()
+                                    : (selectedPkg.price?.toDouble() ?? 0.0);
+
+                                if (isEmailVerified) {
+                                  cubit.startGiftPaymentFlow(
+                                    context,
+                                    selectedPkg.id!,
+                                    finalAmount,
+                                    codeController.text,
+                                  );
+                                } else {
+                                  setState(() => _isAutoPaying = true);
+                                  cubit.checkGiftEmail(
+                                    selectedPackageId!,
+                                    emailController.text,
+                                  );
+                                }
+                              }
+                            : null,
+                      ),
                 20.verticalSpace,
               ],
             ),

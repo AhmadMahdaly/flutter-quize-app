@@ -120,7 +120,7 @@ class LoginScreen extends StatelessWidget {
                           children: [
                             Text('By the', style: AppTextStyle.style14W500),
                             Text(
-                              '${'Register'} ',
+                              ' ${'Register'} ',
                               style: AppTextStyle.style14W500,
                             ),
 
@@ -137,7 +137,8 @@ class LoginScreen extends StatelessWidget {
                                 'Privacy Policy',
 
                                 style: AppTextStyle.style12W500.copyWith(
-                                  color: AppColors.secondaryColor,
+                                  color: AppColors.forthColor,
+                                  decoration: TextDecoration.underline,
                                 ),
                               ),
                             ),

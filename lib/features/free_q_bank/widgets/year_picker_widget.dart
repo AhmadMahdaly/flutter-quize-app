@@ -88,9 +88,9 @@ class SingleMonthSelector extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           final monthNumber = index + 1;
-          final monthName = DateFormat.MMM(
-            'en',
-          ).format(DateTime(2000, monthNumber));
+          final monthName = DateFormat.MMM().format(
+            DateTime(2000, monthNumber),
+          );
 
           final isSelected = cubit.selectedMonth == monthNumber;
 

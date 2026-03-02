@@ -28,10 +28,10 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
   List<int> availableMonths = [];
 
   Future<void> init() async {
-    showLoading();
+    // showLoading();
     _qBankRepository.init();
     await getAvailableYears();
-    hideLoading();
+    // hideLoading();
   }
 
   Future<void> getAvailableYears() async {

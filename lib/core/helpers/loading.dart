@@ -1,13 +1,9 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 
-import 'package:smle/core/constants.dart';
-
-void showLoading(){
-  EasyLoading.show(
-          status: 'loading'.tr(navigatorKey.currentContext!),
-        );
+void showLoading() {
+  EasyLoading.show(status: 'Loading...');
 }
-void hideLoading(){
+
+void hideLoading() {
   EasyLoading.dismiss();
 }

@@ -1,7 +1,7 @@
 name: smle
 description: "A new Flutter project."
 publish_to: 'none' 
-version: 1.0.28+28
+version: 1.0.29+29
 
 environment:
   sdk: ^3.8.1
@@ -18,12 +18,10 @@ dependencies:
   fluttertoast:
   flutter_svg: ^2.0.7
   image_picker: ^1.0.4
-  flutter_phoenix: ^1.1.1
+  # flutter_phoenix: ^1.1.1
   intl: ^0.20.0
   page_transition: ^2.1.0
-  freezed_annotation: ^3.1.0
   dio: ^5.3.3
-  pretty_dio_logger: ^1.3.1
   get_it: ^8.2.0
   url_launcher: ^6.3.1
   # flutter_phone_direct_caller: ^2.2.0
@@ -32,10 +30,10 @@ dependencies:
   sign_in_with_apple: ^7.0.1
   month_year_picker: ^0.5.0+1
   multiselect: ^0.1.1
-  flutter_localizations:
-    sdk: flutter
-  syncfusion_flutter_pdfviewer: ^31.2.4
-  video_player: ^2.10.1 
+  # flutter_localizations:
+  #   sdk: flutter
+  # syncfusion_flutter_pdfviewer: ^31.2.4
+  # video_player: ^2.10.1 
   chewie: ^1.12.1
   fl_chart: ^1.1.1
   hydrated_bloc: ^10.1.1
@@ -44,14 +42,17 @@ dependencies:
   webview_flutter: ^4.13.0
   flutter_paymob: ^1.0.8
   animate_do: ^4.2.0
-  device_preview: ^1.3.1
   package_info_plus: ^9.0.0
   cached_network_image: ^3.4.1
+  skeletonizer: ^2.1.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.14.4
+  device_preview: ^1.3.1
+  pretty_dio_logger: ^1.3.1
+  freezed_annotation: ^3.1.0
 
   flutter_lints: ^6.0.0
 
@@ -61,7 +62,7 @@ flutter:
   assets:
     - assets/
     - assets/images/png/
-    - assets/language/
+    # - assets/language/
     - shorebird.yaml
     - assets/images/icons/
   fonts:
