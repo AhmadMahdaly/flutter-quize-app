@@ -36,6 +36,7 @@ class Data {
     this.isSubscribed,
     this.features,
     this.appleProductId,
+    this.priceBeforeDiscount,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -46,6 +47,7 @@ class Data {
     price = json['price'];
     isSubscribed = json['is_subscribed'];
     appleProductId = json['apple_product_id'];
+    priceBeforeDiscount = json['price_before_discount'];
     if (json['features'] != null) {
       features = <Features>[];
       json['features'].forEach((v) {
@@ -62,7 +64,7 @@ class Data {
   int? isSubscribed;
   String? appleProductId;
   List<Features>? features;
-
+  int? priceBeforeDiscount;
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;

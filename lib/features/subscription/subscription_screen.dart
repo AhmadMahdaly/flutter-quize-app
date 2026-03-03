@@ -86,7 +86,8 @@ class SubscriptionScreen extends StatelessWidget {
                     ...List.generate(allBackendPackages.length, (index) {
                       final backendPackage = allBackendPackages[index];
                       final int priceInSAR = backendPackage.price ?? 0;
-
+                      final int priceBeforeDiscount =
+                          backendPackage.priceBeforeDiscount ?? 0;
                       return Padding(
                         padding: EdgeInsets.only(bottom: 12.h),
                         child: GestureDetector(
@@ -145,12 +146,41 @@ class SubscriptionScreen extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  Text(
-                                    '$priceInSAR sar',
-                                    style: AppTextStyle.style16Bold.copyWith(
-                                      color: AppColors.thirdColor,
-                                      fontSize: 20.sp,
-                                    ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // السعر الأساسي (سواء بخصم أو بدون)
+                                      Text(
+                                        '$priceInSAR SAR',
+                                        style: AppTextStyle.style16Bold
+                                            .copyWith(
+                                              color: AppColors.thirdColor,
+                                              fontSize: 20.sp,
+                                              decorationColor:
+                                                  AppColors.greenColor,
+                                              decorationThickness: 2,
+                                              decoration:
+                                                  priceBeforeDiscount != 0
+                                                  ? TextDecoration.lineThrough
+                                                  : null,
+                                            ),
+                                      ),
+
+                                      // لو فيه خصم فعلاً
+                                      if (priceBeforeDiscount != 0) ...[
+                                        SizedBox(width: 8.w),
+                                        Text(
+                                          '$priceBeforeDiscount SAR',
+                                          style: AppTextStyle.style16Bold
+                                              .copyWith(
+                                                color: AppColors.greenColor,
+                                                fontSize: 22.sp,
+                                                // decoration:
+                                                //     TextDecoration.lineThrough,
+                                              ),
+                                        ),
+                                      ],
+                                    ],
                                   ),
                                 ],
                               ),

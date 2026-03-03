@@ -195,7 +195,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       )
       ..loadRequest(Uri.parse(iframeUrl));
 
-    showDialog(
+    showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (_) => WillPopScope(
@@ -241,6 +241,45 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
         },
         child: Dialog.fullscreen(
           child: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () async => await showDialog<bool>(
+                  context: context,
+                  builder: (dialogContext) {
+                    return Center(
+                      child: Container(
+                        padding: EdgeInsets.all(20.r),
+                        margin: EdgeInsets.all(50.r),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          color: AppColors.thirdColor,
+                        ),
+
+                        child: CustomPrimaryDialog(
+                          icon: Icons.error_outline_sharp,
+                          title: 'Cancel',
+                          description: 'Are you sure you want to cancel?',
+
+                          confirmText: 'Yes',
+                          onConfirm: () {
+                            if (!isClosed) {
+                              emit(PurchaseCancelledState());
+                            }
+                            Navigator.of(dialogContext).pop(true);
+                          },
+
+                          cancelText: 'No',
+                          onCancel: () {
+                            Navigator.of(dialogContext).pop(false);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                icon: const Icon(Icons.close),
+              ),
+            ),
             body: Stack(
               children: [
                 WebViewWidget(controller: controller),
@@ -364,6 +403,45 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
         },
         child: Dialog.fullscreen(
           child: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () async => await showDialog<bool>(
+                  context: context,
+                  builder: (dialogContext) {
+                    return Center(
+                      child: Container(
+                        padding: EdgeInsets.all(20.r),
+                        margin: EdgeInsets.all(50.r),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          color: AppColors.thirdColor,
+                        ),
+
+                        child: CustomPrimaryDialog(
+                          icon: Icons.error_outline_sharp,
+                          title: 'Cancel',
+                          description: 'Are you sure you want to cancel?',
+
+                          confirmText: 'Yes',
+                          onConfirm: () {
+                            if (!isClosed) {
+                              emit(PurchaseCancelledState());
+                            }
+                            Navigator.of(dialogContext).pop(true);
+                          },
+
+                          cancelText: 'No',
+                          onCancel: () {
+                            Navigator.of(dialogContext).pop(false);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                icon: const Icon(Icons.close),
+              ),
+            ),
             body: Stack(
               children: [
                 WebViewWidget(controller: controller),
