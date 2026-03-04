@@ -1,11 +1,8 @@
 import 'package:dio/dio.dart';
-
 import 'package:smle/core/functions/flutter_toast.dart';
 import 'package:smle/core/theme/colors.dart';
 
-
 abstract class Failure {
-
   const Failure(this.errMessage);
   final String errMessage;
 }
@@ -26,7 +23,9 @@ class ServerFailure extends Failure {
 
       case DioExceptionType.badResponse:
         return ServerFailure.fromResponse(
-            dioExeption.response!.statusCode, dioExeption.response!.data);
+          dioExeption.response!.statusCode,
+          dioExeption.response!.data,
+        );
       case DioExceptionType.cancel:
         return ServerFailure('Request to ApiServer was canceld');
 
@@ -40,17 +39,18 @@ class ServerFailure extends Failure {
     }
   }
 
-  factory ServerFailure.fromResponse(int? statusCode, dynamic response,
-      {String? message}) {
+  factory ServerFailure.fromResponse(
+    int? statusCode,
+    dynamic response, {
+    String? message,
+  }) {
     if (statusCode == 400 ||
         statusCode == 401 ||
         statusCode == 403 ||
         statusCode == 404 ||
         statusCode == 500 ||
         statusCode == 422) {
-      customToast(
-          msg: response.toString(),
-          color: AppColors.errorColor);
+      customToast(msg: response.toString(), color: AppColors.primaryDColor);
       return ServerFailure(response);
     }
     // else if (statusCode == 404) {
@@ -60,7 +60,8 @@ class ServerFailure extends Failure {
     // }
     else {
       return ServerFailure(
-          message ?? 'Opps There was an Error, Please try again');
+        message ?? 'Opps There was an Error, Please try again',
+      );
     }
   }
 }

@@ -46,32 +46,11 @@ class SubscriptionScreen extends StatelessWidget {
           appBar: const CustomAppBar(title: 'Subscription'),
           body: Stack(
             children: [
-              // BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
-              //   builder: (context, state) {
-              //     if (state is SubscriptionLoading) {
-              //       return const Center(child: CircularProgressIndicator());
-              //     }
-
-              //     if (state is SubscriptionLoaded) {
-              // final sub = state.subscription;
-
-              // final isSubscribed = sub.isSubscribed ?? false;
-
-              // final filteredPackages = isSubscribed
-              //     ? allBackendPackages
-              //           .where((p) => p.isExtra == true)
-              //           .toList()
-              //     : allBackendPackages
-              //           .where((p) => p.isExtra != true)
-              //           .toList();
-
-              // return
               SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 12.verticalSpace,
                     Text(
                       'Choose your plan',
                       style: AppTextStyle.style16Bold.copyWith(
@@ -149,34 +128,39 @@ class SubscriptionScreen extends StatelessWidget {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      // السعر الأساسي (سواء بخصم أو بدون)
-                                      Text(
-                                        '$priceInSAR SAR',
-                                        style: AppTextStyle.style16Bold
-                                            .copyWith(
-                                              color: AppColors.thirdColor,
-                                              fontSize: 20.sp,
-                                              decorationColor:
-                                                  AppColors.greenColor,
-                                              decorationThickness: 2,
-                                              decoration:
-                                                  priceBeforeDiscount != 0
-                                                  ? TextDecoration.lineThrough
-                                                  : null,
-                                            ),
-                                      ),
-
-                                      // لو فيه خصم فعلاً
                                       if (priceBeforeDiscount != 0) ...[
-                                        SizedBox(width: 8.w),
                                         Text(
                                           '$priceBeforeDiscount SAR',
                                           style: AppTextStyle.style16Bold
                                               .copyWith(
+                                                color: AppColors.thirdColor,
+                                                fontSize: 20.sp,
+                                                decorationColor:
+                                                    AppColors.greenColor,
+                                                decorationThickness: 2,
+                                                decoration:
+                                                    priceBeforeDiscount != 0
+                                                    ? TextDecoration.lineThrough
+                                                    : null,
+                                              ),
+                                        ),
+                                        SizedBox(width: 8.w),
+                                        Text(
+                                          '$priceInSAR SAR',
+                                          style: AppTextStyle.style16Bold
+                                              .copyWith(
                                                 color: AppColors.greenColor,
                                                 fontSize: 22.sp,
-                                                // decoration:
-                                                //     TextDecoration.lineThrough,
+                                              ),
+                                        ),
+                                      ] else ...[
+                                        SizedBox(width: 8.w),
+                                        Text(
+                                          '$priceInSAR SAR',
+                                          style: AppTextStyle.style16Bold
+                                              .copyWith(
+                                                color: AppColors.thirdColor,
+                                                fontSize: 22.sp,
                                               ),
                                         ),
                                       ],
@@ -191,12 +175,8 @@ class SubscriptionScreen extends StatelessWidget {
                     }),
                   ],
                 ),
-              ), //;
-              // }
+              ),
 
-              //     return const SizedBox.shrink();
-              //   },
-              // ),
               if (state is PurchaseLoadingState)
                 Container(
                   color: Colors.black.withAlpha(120),

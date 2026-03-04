@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/date_format.dart';
@@ -8,6 +9,7 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
+import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/core/shared_widgets/powered_by_widget.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -16,6 +18,7 @@ import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/home/widgets/drawer/drawer_widget.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/profile/widgets/profile_button_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -118,17 +121,45 @@ class ProfileScreen extends StatelessWidget {
                                       style: AppTextStyle.style18Bold
                                           .copyWith(),
                                     ),
-                                    Text(
-                                      '${data.email}',
-                                      style: AppTextStyle.style14W500.copyWith(
-                                        color: AppColors.darkGreyColor,
-                                      ),
+
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            '${data.email}',
+                                            style: AppTextStyle.style14W500
+                                                .copyWith(
+                                                  color:
+                                                      AppColors.darkGreyColor,
+                                                ),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.copy, size: 18.r),
+                                          onPressed: () {
+                                            Clipboard.setData(
+                                              ClipboardData(
+                                                text: data.email ?? '',
+                                              ),
+                                            );
+
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              const SnackBar(
+                                                content: Text('Email copied'),
+                                                duration: Duration(seconds: 1),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    12.verticalSpace,
+                                    10.verticalSpace,
                                     if (!isSubscribed)
                                       Text(
                                         'You don’t have an active subscription.',
-                                        textAlign: TextAlign.center,
+                                        // textAlign: TextAlign.center,
                                         style: AppTextStyle.style14W900
                                             .copyWith(
                                               color: AppColors.primaryColor,
@@ -349,6 +380,46 @@ class ProfileScreen extends StatelessWidget {
                                   8.verticalSpace,
                                 ],
                               ),
+                              8.verticalSpace,
+                              Center(
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  onTap: _launchUpdateUrl,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w,
+                                    ),
+                                    height: SizeConfig.responsiveValue(
+                                      phone: 50.h,
+                                      tablet: 48.h,
+                                    ),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      border: Border.all(
+                                        color: AppColors.darkGreyColor
+                                            .withAlpha(100),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/icons/telegram_logo.png',
+                                          height: 40.h,
+                                        ),
+                                        8.horizontalSpace,
+                                        Text(
+                                          'Join us on Telegram to stay updated',
+                                          style: AppTextStyle.style14Bold
+                                              .copyWith(
+                                                color: AppColors.darkGreyColor,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                               16.verticalSpace,
                               const PoweredByWidget(),
                             ],
@@ -363,6 +434,18 @@ class ProfileScreen extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+Future<void> _launchUpdateUrl() async {
+  final Uri url = Uri.parse(
+    'https://t.me/SmleGateChannel',
+    // Theme.of(context).platform == TargetPlatform.iOS
+    //     ? UpdateScreen.iosUrl
+    //     : UpdateScreen.androidUrl,
+  );
+  if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+    debugPrintWidget('Could not launch $url');
   }
 }
 

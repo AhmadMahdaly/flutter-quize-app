@@ -68,7 +68,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         builder: (context, state) {
           final cubit = widget.cubit;
           final data = cubit.checkoutData?.data;
-
+          final offerPrice = cubit.checkoutData?.data?.offerPrice;
+          final offerPriceBefore =
+              cubit.checkoutData?.data?.priceBeforeDiscount;
           return Padding(
             padding: EdgeInsets.all(20.w),
             child: Column(
@@ -97,8 +99,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 30.verticalSpace,
 
                 if (data != null) ...[
-                  _priceRow('Original price', "${data.offerPrice} ${'sar'}"),
-
+                  if (offerPriceBefore != null && offerPriceBefore != '0') ...[
+                    _priceRow(
+                      'Original price',
+                      "$offerPriceBefore ${'sar'}",
+                      isNotActive: true,
+                    ),
+                    _priceRow('Price after discount', "$offerPrice ${'sar'}"),
+                  ] else
+                    _priceRow('Original price', "$offerPrice ${'sar'}"),
                   if (data.codeDiscountPrice != null &&
                       data.codeDiscountPrice! > 0)
                     _priceRow(
@@ -157,6 +166,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     String label,
     String value, {
     bool isTotal = false,
+    bool isNotActive = false,
     Color? valueColor,
   }) {
     return Padding(
@@ -178,6 +188,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   )
                 : AppTextStyle.style14W500.copyWith(
                     color: valueColor ?? Colors.black,
+                    decoration: isNotActive ? TextDecoration.lineThrough : null,
                     fontWeight: valueColor != null
                         ? FontWeight.bold
                         : FontWeight.normal,

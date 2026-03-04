@@ -113,22 +113,6 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                 Text('1. Recipient info', style: AppTextStyle.style16Bold),
                 15.verticalSpace,
                 CustomPrimaryTextfield(
-                  // suffix: state is CheckEmailLoadingState
-                  //     ? SizedBox(
-                  //         width: 5.w,
-                  //         height: 5.h,
-                  //         child: const CircularProgressIndicator(
-                  //           strokeWidth: 2,
-                  //         ),
-                  //       )
-                  //     : Icon(
-                  //         isEmailVerified
-                  //             ? Icons.check_circle
-                  //             : Icons.verified_user_outlined,
-                  //         color: isEmailVerified
-                  //             ? Colors.green
-                  //             : AppColors.darkGreyColor.withAlpha(150),
-                  //       ),
                   controller: emailController,
                   text: 'Recipient email',
                   keyboardType: TextInputType.emailAddress,
@@ -167,15 +151,50 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                   ),
                   hint: const Text('Select a package'),
                   items: packages.map((pkg) {
+                    final int priceInSAR = pkg.price ?? 0;
+                    final int priceBeforeDiscount =
+                        pkg.priceBeforeDiscount ?? 0;
+
                     return DropdownMenuItem<int>(
                       value: pkg.id,
                       child: Row(
                         children: [
                           Text(
-                            '${pkg.name}: ${pkg.price} SAR',
+                            '${pkg.name}: ',
                             overflow: TextOverflow.ellipsis,
                             style: AppTextStyle.style12Bold,
                           ),
+                          if (priceBeforeDiscount != 0 &&
+                              priceBeforeDiscount > priceInSAR) ...[
+                            Text(
+                              textAlign: TextAlign.end,
+
+                              '$priceBeforeDiscount SAR',
+                              style: AppTextStyle.style12Bold.copyWith(
+                                color: AppColors.darkGreyColor,
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor: AppColors.greenColor,
+                                decorationThickness: 2,
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
+                            Text(
+                              textAlign: TextAlign.end,
+
+                              '$priceInSAR SAR',
+                              style: AppTextStyle.style12Bold.copyWith(
+                                color: AppColors.greenColor,
+                              ),
+                            ),
+                          ] else ...[
+                            Text(
+                              textAlign: TextAlign.end,
+                              '$priceInSAR SAR',
+                              style: AppTextStyle.style12Bold.copyWith(
+                                color: AppColors.iconColorBlack,
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     );
