@@ -116,12 +116,34 @@ class ProfileScreen extends StatelessWidget {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
-                                    Text(
-                                      '${data.name}',
-                                      style: AppTextStyle.style18Bold
-                                          .copyWith(),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            '${data.name}',
+                                            style: AppTextStyle.style18Bold
+                                                .copyWith(),
+                                          ),
+                                        ),
+                                        Center(
+                                          child: InkWell(
+                                            borderRadius: BorderRadius.circular(
+                                              12.r,
+                                            ),
+                                            onTap: _launchUpdateUrl,
+                                            child: Image.asset(
+                                              'assets/images/icons/telegram_logo.png',
+                                              height: 30.h,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-
+                                    8.verticalSpace,
                                     Row(
                                       children: [
                                         Expanded(
@@ -155,7 +177,7 @@ class ProfileScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    10.verticalSpace,
+                                    // 6.verticalSpace,
                                     if (!isSubscribed)
                                       Text(
                                         'You don’t have an active subscription.',
@@ -380,46 +402,47 @@ class ProfileScreen extends StatelessWidget {
                                   8.verticalSpace,
                                 ],
                               ),
-                              8.verticalSpace,
-                              Center(
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  onTap: _launchUpdateUrl,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 16.w,
-                                    ),
-                                    height: SizeConfig.responsiveValue(
-                                      phone: 50.h,
-                                      tablet: 48.h,
-                                    ),
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12.r),
-                                      border: Border.all(
-                                        color: AppColors.darkGreyColor
-                                            .withAlpha(100),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/icons/telegram_logo.png',
-                                          height: 40.h,
-                                        ),
-                                        8.horizontalSpace,
-                                        Text(
-                                          'Join us on Telegram to stay updated',
-                                          style: AppTextStyle.style14Bold
-                                              .copyWith(
-                                                color: AppColors.darkGreyColor,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+
+                              // 8.verticalSpace,
+                              // Center(
+                              //   child: InkWell(
+                              //     borderRadius: BorderRadius.circular(12.r),
+                              //     onTap: _launchUpdateUrl,
+                              //     child: Container(
+                              //       padding: EdgeInsets.symmetric(
+                              //         horizontal: 16.w,
+                              //       ),
+                              //       height: SizeConfig.responsiveValue(
+                              //         phone: 50.h,
+                              //         tablet: 48.h,
+                              //       ),
+                              //       width: double.infinity,
+                              //       decoration: BoxDecoration(
+                              //         borderRadius: BorderRadius.circular(12.r),
+                              //         border: Border.all(
+                              //           color: AppColors.darkGreyColor
+                              //               .withAlpha(100),
+                              //         ),
+                              //       ),
+                              //       child: Row(
+                              //         children: [
+                              //           Image.asset(
+                              //             'assets/images/icons/telegram_logo.png',
+                              //             height: 40.h,
+                              //           ),
+                              //           8.horizontalSpace,
+                              //           Text(
+                              //             'Join us on Telegram to stay updated',
+                              //             style: AppTextStyle.style14Bold
+                              //                 .copyWith(
+                              //                   color: AppColors.darkGreyColor,
+                              //                 ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                               16.verticalSpace,
                               const PoweredByWidget(),
                             ],

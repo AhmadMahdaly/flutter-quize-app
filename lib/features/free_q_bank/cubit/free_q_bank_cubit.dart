@@ -34,6 +34,30 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
     // hideLoading();
   }
 
+  // YearsModel? yearsModel;
+  // Future getYears() async {
+  //   showLoading();
+  //   emit(GetYearsLoadingState());
+  //   final result = await _qBankRepository.getYears();
+  //   result.when(
+  //     success: (success) {
+  //       yearsModel = success;
+
+  //       // -- التعديل هنا: ضبط السنة الافتراضية إذا لم تكن السنة الحالية متاحة --
+  //       if (availableYears.isNotEmpty &&
+  //           !availableYears.contains(selectedYearDate.year)) {
+  //         selectedYearDate = DateTime(availableYears.first);
+  //       }
+
+  //       hideLoading();
+  //       emit(GetYearsSuccessState());
+  //     },
+  //     failure: (error) {
+  //       hideLoading();
+  //       emit(GetYearsFailedState());
+  //     },
+  //   );
+  // }
   Future<void> getAvailableYears() async {
     emit(GetCategoriesLoadingState());
     final result = await _qBankRepository.getAvailableYears();

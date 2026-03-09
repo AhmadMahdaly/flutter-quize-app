@@ -74,7 +74,7 @@ class _QBankScreenState extends State<QBankScreen> {
                           );
                         },
                         currentQuestion: '${cubit.index + 1}',
-                        isFav:
+                        isRepeated:
                             cubit.qBankModel!.data![cubit.index].isFavorite ??
                             false,
                         question:

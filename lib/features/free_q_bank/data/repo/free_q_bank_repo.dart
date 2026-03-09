@@ -48,18 +48,14 @@ class FreeQBankRepository {
         data: data,
       );
 
-      // داخل ملف Repository
       if (response!.statusCode == 200) {
         if (response.data is List) {
-          // 1. استلام القائمة الخام
           final List<dynamic> rawList = response.data;
 
-          // 2. تحويل كل عنصر في القائمة إلى كائن Data (Question)
           final List<Data> questions = rawList
               .map((item) => Data.fromJson(item))
               .toList();
 
-          // 3. تغليف القائمة داخل QBankModel لكي لا ينهار Cubit
           return ApiResult.success(
             QBankModel(
               status: 200,
@@ -69,7 +65,6 @@ class FreeQBankRepository {
             ),
           );
         } else if (response.data is Map<String, dynamic>) {
-          // في حال عاد الـ API مستقبلاً بشكل Object
           return ApiResult.success(QBankModel.fromJson(response.data));
         }
 
@@ -212,6 +207,28 @@ class FreeQBankRepository {
       return ApiResult.failure(ServerFailure('Unexpected error occurred'));
     }
   }
+
+  // Future<ApiResult<YearsModel>> getYears() async {
+  //   try {
+  //     final response = await _dioFactory.get(endPoint: EndPoints.years);
+  //     if (response!.statusCode == 200) {
+  //       final YearsModel model = YearsModel.fromJson(response.data);
+  //       return ApiResult.success(model);
+  //     } else {
+  //       debugPrintWidget(response.data['error']);
+  //       return ApiResult.failure(
+  //         ServerFailure.fromResponse(
+  //           response.statusCode,
+  //           response.data['error'],
+  //         ),
+  //       );
+  //     }
+  //   } on DioException catch (e) {
+  //     return ApiResult.failure(ServerFailure.fromDioError(e));
+  //   } catch (e) {
+  //     return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+  //   }
+  // }
 
   Future<ApiResult<bool>> markQuestionAsAnswered(int questionId) async {
     try {

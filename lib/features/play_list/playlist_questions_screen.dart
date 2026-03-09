@@ -294,7 +294,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                     ),
                   ),
                   currentQuestion: currentQuestionNumber,
-                  isFav: question.isFavourite ?? false, // تمت إضافة حرف u
+                  isRepeated: question.isFavourite ?? false, // تمت إضافة حرف u
                   question: '${question.question ?? ''}',
                   explainPhoto: '${question.explanationPhoto}',
                   qPhoto: '${question.photo}',
