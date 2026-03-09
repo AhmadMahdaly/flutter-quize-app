@@ -4,6 +4,7 @@ import 'package:smle/core/helpers/safe_cubit.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/features/free_q_bank/data/repo/free_q_bank_repo.dart';
 import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
+import 'package:smle/features/q_bank/data/model/year_model.dart';
 import 'package:smle/features/revision/data/model/categories_model.dart';
 import 'package:smle/features/revision/data/model/subcategories_model.dart';
 
@@ -34,30 +35,31 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
     // hideLoading();
   }
 
-  // YearsModel? yearsModel;
-  // Future getYears() async {
-  //   showLoading();
-  //   emit(GetYearsLoadingState());
-  //   final result = await _qBankRepository.getYears();
-  //   result.when(
-  //     success: (success) {
-  //       yearsModel = success;
+  YearsModel? yearsModel;
+  Future getYears() async {
+    showLoading();
+    emit(GetYearsLoadingState());
+    final result = await _qBankRepository.getYears();
+    result.when(
+      success: (success) {
+        yearsModel = success;
 
-  //       // -- التعديل هنا: ضبط السنة الافتراضية إذا لم تكن السنة الحالية متاحة --
-  //       if (availableYears.isNotEmpty &&
-  //           !availableYears.contains(selectedYearDate.year)) {
-  //         selectedYearDate = DateTime(availableYears.first);
-  //       }
+        // -- التعديل هنا: ضبط السنة الافتراضية إذا لم تكن السنة الحالية متاحة --
+        if (availableYears.isNotEmpty &&
+            !availableYears.contains(selectedYearDate.year)) {
+          selectedYearDate = DateTime(availableYears.first);
+        }
 
-  //       hideLoading();
-  //       emit(GetYearsSuccessState());
-  //     },
-  //     failure: (error) {
-  //       hideLoading();
-  //       emit(GetYearsFailedState());
-  //     },
-  //   );
-  // }
+        hideLoading();
+        emit(GetYearsSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetYearsFailedState());
+      },
+    );
+  }
+
   Future<void> getAvailableYears() async {
     emit(GetCategoriesLoadingState());
     final result = await _qBankRepository.getAvailableYears();

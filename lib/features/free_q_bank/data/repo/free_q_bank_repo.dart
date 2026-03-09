@@ -6,6 +6,7 @@ import 'package:smle/core/network/failures.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
 import 'package:smle/features/q_bank/data/model/question_count_model.dart';
+import 'package:smle/features/q_bank/data/model/year_model.dart';
 import 'package:smle/features/revision/data/model/categories_model.dart'
     hide Data;
 import 'package:smle/features/revision/data/model/subcategories_model.dart'
@@ -208,27 +209,27 @@ class FreeQBankRepository {
     }
   }
 
-  // Future<ApiResult<YearsModel>> getYears() async {
-  //   try {
-  //     final response = await _dioFactory.get(endPoint: EndPoints.years);
-  //     if (response!.statusCode == 200) {
-  //       final YearsModel model = YearsModel.fromJson(response.data);
-  //       return ApiResult.success(model);
-  //     } else {
-  //       debugPrintWidget(response.data['error']);
-  //       return ApiResult.failure(
-  //         ServerFailure.fromResponse(
-  //           response.statusCode,
-  //           response.data['error'],
-  //         ),
-  //       );
-  //     }
-  //   } on DioException catch (e) {
-  //     return ApiResult.failure(ServerFailure.fromDioError(e));
-  //   } catch (e) {
-  //     return ApiResult.failure(ServerFailure('Unexpected error occurred'));
-  //   }
-  // }
+  Future<ApiResult<YearsModel>> getYears() async {
+    try {
+      final response = await _dioFactory.get(endPoint: EndPoints.years);
+      if (response!.statusCode == 200) {
+        final YearsModel model = YearsModel.fromJson(response.data);
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['error']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['error'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+    }
+  }
 
   Future<ApiResult<bool>> markQuestionAsAnswered(int questionId) async {
     try {

@@ -137,13 +137,13 @@ class ProfileScreen extends StatelessWidget {
                                             onTap: _launchUpdateUrl,
                                             child: Image.asset(
                                               'assets/images/icons/telegram_logo.png',
-                                              height: 30.h,
+                                              height: 24.h,
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    8.verticalSpace,
+                                    6.verticalSpace,
                                     Row(
                                       children: [
                                         Expanded(
