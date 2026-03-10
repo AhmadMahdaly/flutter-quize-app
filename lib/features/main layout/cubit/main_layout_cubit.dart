@@ -67,8 +67,13 @@ class MainLayoutCubit extends SafeCubit<MainLayoutState> {
 
   bool isLoadingMore = false;
   Future<void> getGifts({bool isLoadMore = false}) async {
+    if (isLoadingMore) return;
+
+    if (isLoadMore && currentPage > lastPage) return;
     if (isLoadMore) {
+      if (isLoadingMore) return; // الحل هنا
       if (currentPage > lastPage) return;
+
       isLoadingMore = true;
       emit(GetGiftsLoadMoreState());
     } else {

@@ -3,15 +3,16 @@ class InvoicesResponseModel {
 
   factory InvoicesResponseModel.fromJson(Map<String, dynamic> json) {
     return InvoicesResponseModel(
-      success: json['success'] ?? false,
-      data: json['data'] != null
-          ? List<InvoiceModel>.from(
-              json['data'].map((e) => InvoiceModel.fromJson(e)),
-            )
-          : [],
+      success: parseBool(json['success']),
+      data:
+          (json['data'] as List?)
+              ?.map((e) => InvoiceModel.fromJson(e))
+              .toList() ??
+          [],
       meta: json['meta'] != null ? MetaModel.fromJson(json['meta']) : null,
     );
   }
+
   final bool success;
   final List<InvoiceModel> data;
   final MetaModel? meta;
@@ -52,45 +53,40 @@ class InvoiceModel {
 
   factory InvoiceModel.fromJson(Map<String, dynamic> json) {
     return InvoiceModel(
-      id: json['id'] ?? 0,
-      invoiceNumber: json['invoice_number'] ?? '',
-      userId: json['user_id'] ?? 0,
-      offerId: json['offer_id'] ?? 0,
-      createdBy: json['created_by'] ?? 0,
-      createdByType: json['created_by_type'] ?? '',
-      createdByName: json['created_by_name'] ?? '',
-      invoiceType: json['invoice_type'] ?? '',
-      status: json['status'] ?? '',
-      paymentWay: json['payment_way'] ?? '',
-      payments: json['payments'] ?? '',
-      deductedPoints: json['deducted_points'] ?? 0,
-      code: json['code'],
-      pointsDiscount: json['points_discount'] ?? '0',
-      codeDiscount: json['code_discount'] ?? '0',
-      residual: json['residual'] ?? 0,
-      qBank: json['q_bank'] ?? 0,
-      isQBank: json['is_q_bank'] ?? 0,
-      isUnlimited: json['is_unlimited'] ?? 0,
-      expiredAt: json['expired_at'] != null
-          ? DateTime.tryParse(json['expired_at'])
-          : null,
-      paymentID: json['PaymentID'],
-      trackID: json['TrackID'],
-      receiptId: json['receipt_id'],
-      active: json['active'] ?? false,
-      paymentStatus: json['payment_status'] ?? '',
-      createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'])
-          : null,
-      updatedAt: json['updated_at'] != null
-          ? DateTime.tryParse(json['updated_at'])
-          : null,
+      id: parseInt(json['id']),
+      invoiceNumber: parseString(json['invoice_number']),
+      userId: parseInt(json['user_id']),
+      offerId: parseInt(json['offer_id']),
+      createdBy: parseInt(json['created_by']),
+      createdByType: parseString(json['created_by_type']),
+      createdByName: parseString(json['created_by_name']),
+      invoiceType: parseString(json['invoice_type']),
+      status: parseString(json['status']),
+      paymentWay: parseString(json['payment_way']),
+      payments: parseString(json['payments']),
+      deductedPoints: parseInt(json['deducted_points']),
+      code: json['code']?.toString(),
+      pointsDiscount: parseString(json['points_discount']),
+      codeDiscount: parseString(json['code_discount']),
+      residual: parseInt(json['residual']),
+      qBank: parseInt(json['q_bank']),
+      isQBank: parseInt(json['is_q_bank']),
+      isUnlimited: parseInt(json['is_unlimited']),
+      expiredAt: parseDate(json['expired_at']),
+      paymentID: json['PaymentID']?.toString(),
+      trackID: json['TrackID']?.toString(),
+      receiptId: json['receipt_id']?.toString(),
+      active: parseBool(json['active']),
+      paymentStatus: parseString(json['payment_status']),
+      createdAt: parseDate(json['created_at']),
+      updatedAt: parseDate(json['updated_at']),
       user: json['user'] != null
           ? InvoiceUserModel.fromJson(json['user'])
           : null,
       offer: json['offer'] != null ? OfferModel.fromJson(json['offer']) : null,
     );
   }
+
   final int id;
   final String invoiceNumber;
   final int userId;
@@ -118,7 +114,6 @@ class InvoiceModel {
   final String paymentStatus;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-
   final InvoiceUserModel? user;
   final OfferModel? offer;
 }
@@ -187,7 +182,7 @@ class OfferModel {
     required this.name,
     required this.priceBeforeDiscount,
     required this.price,
-    required this.months,
+    this.months,
     required this.times,
     required this.isTimes,
     required this.qBank,
@@ -201,31 +196,28 @@ class OfferModel {
 
   factory OfferModel.fromJson(Map<String, dynamic> json) {
     return OfferModel(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-      priceBeforeDiscount: json['price_before_discount'] ?? '0',
-      price: json['price'] ?? 0,
-      months: json['months'] ?? '0',
-      times: json['times'] ?? 0,
-      isTimes: json['is_times'] ?? false,
-      qBank: json['q_bank'] ?? false,
-      isExtra: json['is_extra'] ?? false,
-      isMain: json['is_main'] ?? false,
-      isAdmin: json['is_admin'] ?? false,
-      isUnlimited: json['is_unlimited'] ?? false,
-      createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'])
-          : null,
-      updatedAt: json['updated_at'] != null
-          ? DateTime.tryParse(json['updated_at'])
-          : null,
+      id: parseInt(json['id']),
+      name: parseString(json['name']),
+      priceBeforeDiscount: parseString(json['price_before_discount']),
+      price: parseDouble(json['price']),
+      months: json['months']?.toString(),
+      times: parseInt(json['times']),
+      isTimes: parseBool(json['is_times']),
+      qBank: parseBool(json['q_bank']),
+      isExtra: parseBool(json['is_extra']),
+      isMain: parseBool(json['is_main']),
+      isAdmin: parseBool(json['is_admin']),
+      isUnlimited: parseBool(json['is_unlimited']),
+      createdAt: parseDate(json['created_at']),
+      updatedAt: parseDate(json['updated_at']),
     );
   }
+
   final int id;
   final String name;
   final String priceBeforeDiscount;
-  final int price;
-  final String months;
+  final double price;
+  final String? months;
   final int times;
   final bool isTimes;
   final bool qBank;
@@ -257,4 +249,39 @@ class MetaModel {
   final int lastPage;
   final int perPage;
   final int total;
+}
+
+///
+int parseInt(dynamic value) {
+  if (value == null) return 0;
+  if (value is int) return value;
+  if (value is double) return value.toInt();
+  return int.tryParse(value.toString()) ?? 0;
+}
+
+double parseDouble(dynamic value) {
+  if (value == null) return 0;
+  if (value is double) return value;
+  if (value is int) return value.toDouble();
+  return double.tryParse(value.toString()) ?? 0;
+}
+
+String parseString(dynamic value) {
+  if (value == null) return '';
+  return value.toString();
+}
+
+bool parseBool(dynamic value) {
+  if (value == null) return false;
+  if (value is bool) return value;
+  if (value is int) return value == 1;
+  if (value is String) {
+    return value == '1' || value.toLowerCase() == 'true';
+  }
+  return false;
+}
+
+DateTime? parseDate(dynamic value) {
+  if (value == null) return null;
+  return DateTime.tryParse(value.toString());
 }

@@ -64,9 +64,9 @@ class SubscriptionScreen extends StatelessWidget {
 
                     ...List.generate(allBackendPackages.length, (index) {
                       final backendPackage = allBackendPackages[index];
-                      final int priceInSAR = backendPackage.price ?? 0;
-                      final int priceBeforeDiscount =
-                          backendPackage.priceBeforeDiscount ?? 0;
+                      final double priceInSAR = backendPackage.price ?? 0.0;
+                      final double priceBeforeDiscount =
+                          backendPackage.priceBeforeDiscount ?? 0.0;
                       return Padding(
                         padding: EdgeInsets.only(bottom: 12.h),
                         child: GestureDetector(

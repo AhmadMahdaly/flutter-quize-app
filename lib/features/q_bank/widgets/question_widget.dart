@@ -44,12 +44,12 @@ class QuestionWidget extends StatelessWidget {
               10.verticalSpace,
               Row(
                 children: [
-                  /// is Repeated
+                  /// Add to favorite
                   InkWell(
                     onTap: addToPlaylistFun,
                     child: ExcludeSemantics(
                       child: Icon(
-                        semanticLabel: 'isRepeated',
+                        semanticLabel: 'Add to favorite',
                         isAdd
                             ? CupertinoIcons.delete
                             : CupertinoIcons.add_circled,
@@ -63,7 +63,7 @@ class QuestionWidget extends StatelessWidget {
                   ),
                   10.horizontalSpace,
 
-                  /// Add to favorite
+                  /// is Repeated
                   Tooltip(
                     triggerMode: TooltipTriggerMode.tap,
                     decoration: BoxDecoration(

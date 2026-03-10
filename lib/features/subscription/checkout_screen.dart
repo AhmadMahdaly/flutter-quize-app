@@ -71,6 +71,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           final offerPrice = cubit.checkoutData?.data?.offerPrice;
           final offerPriceBefore =
               cubit.checkoutData?.data?.priceBeforeDiscount;
+          // final totalAfterCode = data?.totalAfterCodeDiscount ?? 0;
+
+          // final pointsDiscount = (data?.deductedPoints ?? 0) / 100;
+
+          // final finalPrice = totalAfterCode - pointsDiscount;
           return Padding(
             padding: EdgeInsets.all(20.w),
             child: Column(
@@ -119,14 +124,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   if (data.deductedPoints != null &&
                       data.deductedPoints! > 0) ...[
                     const Divider(height: 20),
+
                     _priceRow(
                       'Points used',
-                      "${data.deductedPoints} ${'point'}",
+                      '${data.deductedPoints} point',
                       valueColor: AppColors.secondaryColor,
                     ),
+
                     _priceRow(
                       'Points discount',
-                      "- ${data.deductedPoints} ${'sar'}",
+                      '- ${(data.deductedPoints! / 100).toStringAsFixed(2)} sar',
                       valueColor: Colors.red,
                     ),
                   ],
@@ -142,13 +149,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                 const Spacer(),
                 CustomPrimaryButton(
-                  text: 'Pay Now (${data?.totalAfterCodeDiscount ?? 0} SAR)',
+                  text:
+                      'Pay Now (${cubit.finalPayment.toStringAsFixed(2)} SAR)',
                   onPressed: () {
                     if (data != null) {
                       cubit.startPayMobPayment(
                         context,
                         data.offerId!,
-                        data.totalAfterCodeDiscount!,
+                        cubit.finalPayment,
                         codeController.text,
                       );
                     }

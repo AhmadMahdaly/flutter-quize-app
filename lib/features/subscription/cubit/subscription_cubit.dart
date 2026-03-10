@@ -104,6 +104,16 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     );
   }
 
+  double get finalPayment {
+    final data = checkoutData?.data;
+    if (data == null) return 0;
+
+    final total = data.totalAfterCodeDiscount ?? 0;
+    final points = (data.deductedPoints ?? 0) / 100;
+
+    return total - points;
+  }
+
   late webview_flutter.WebViewController webViewController;
   Future<void> startPayMobPayment(
     BuildContext context,

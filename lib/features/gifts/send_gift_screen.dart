@@ -151,9 +151,9 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                   ),
                   hint: const Text('Select a package'),
                   items: packages.map((pkg) {
-                    final int priceInSAR = pkg.price ?? 0;
-                    final int priceBeforeDiscount =
-                        pkg.priceBeforeDiscount ?? 0;
+                    final double priceInSAR = pkg.price ?? 0.0;
+                    final double priceBeforeDiscount =
+                        pkg.priceBeforeDiscount ?? 0.0;
 
                     return DropdownMenuItem<int>(
                       value: pkg.id,

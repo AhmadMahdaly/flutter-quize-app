@@ -126,7 +126,7 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                                 );
                               },
                               currentQuestion: '${cubit.index + 1}',
-                              isFav:
+                              isRepeated:
                                   cubit
                                       .qBankModel!
                                       .data![cubit.index]

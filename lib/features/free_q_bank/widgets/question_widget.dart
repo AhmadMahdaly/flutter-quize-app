@@ -9,7 +9,7 @@ class QuestionWidget extends StatelessWidget {
   const QuestionWidget({
     super.key,
     required this.currentQuestion,
-    required this.isFav,
+    required this.isRepeated,
     required this.question,
     this.addToPlaylistFun,
     required this.hintText,
@@ -21,7 +21,7 @@ class QuestionWidget extends StatelessWidget {
   });
   final VoidCallback? onNoteTap;
   final String currentQuestion, question;
-  final bool isFav;
+  final bool isRepeated;
   final GestureTapCallback? addToPlaylistFun;
   final String hintText, explainText;
   final bool isAdd;
@@ -44,12 +44,12 @@ class QuestionWidget extends StatelessWidget {
               10.verticalSpace,
               Row(
                 children: [
-                  /// Add to playlist
+                  /// Add to favorite
                   InkWell(
                     onTap: addToPlaylistFun,
                     child: ExcludeSemantics(
                       child: Icon(
-                        semanticLabel: 'Add to playlist',
+                        semanticLabel: 'Add to favorite',
                         isAdd
                             ? CupertinoIcons.delete
                             : CupertinoIcons.add_circled,
@@ -63,15 +63,44 @@ class QuestionWidget extends StatelessWidget {
                   ),
                   10.horizontalSpace,
 
-                  /// Add to favorite
-                  Icon(
-                    isFav ? CupertinoIcons.star_fill : CupertinoIcons.star,
-                    color: isFav
-                        ? Colors.amber
-                        : AppColors.forthColor.withAlpha(170),
-                    size: SizeConfig.responsiveValue(
-                      phone: 20.sp,
-                      tablet: 40.sp,
+                  /// is Repeated
+                  Tooltip(
+                    triggerMode: TooltipTriggerMode.tap,
+                    decoration: BoxDecoration(
+                      color: AppColors.thirdColor,
+                      borderRadius: BorderRadius.all(Radius.circular(12.r)),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: AppColors.darkGreyColor,
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    showDuration: const Duration(minutes: 10),
+                    richMessage: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: isRepeated
+                              ? 'This Question Is Repeated More Than One Time.'
+                              : '',
+                          style: AppTextStyle.style16W500.copyWith(
+                            color: AppColors.forthColor,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    child: Icon(
+                      isRepeated
+                          ? CupertinoIcons.star_fill
+                          : CupertinoIcons.star,
+                      color: isRepeated
+                          ? Colors.amber
+                          : AppColors.forthColor.withAlpha(170),
+                      size: SizeConfig.responsiveValue(
+                        phone: 20.sp,
+                        tablet: 40.sp,
+                      ),
                     ),
                   ),
                   10.horizontalSpace,
@@ -128,13 +157,15 @@ class QuestionWidget extends StatelessWidget {
                       hintText == 'null' || hintText == 'NULL'
                           ? CupertinoIcons.lightbulb_slash
                           : CupertinoIcons.lightbulb_fill,
+                      color: hintText == 'null' || hintText == 'NULL'
+                          ? null
+                          : Colors.amber,
                       size: SizeConfig.responsiveValue(
                         phone: 20.sp,
                         tablet: 40.sp,
                       ),
                     ),
                   ),
-
                   10.horizontalSpace,
 
                   /// Explanation

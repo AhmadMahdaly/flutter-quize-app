@@ -127,139 +127,141 @@ class _RealExamBodyState extends State<RealExamBody> {
       );
     }
 
-    return Column(
-      children: [
-        HeaderExamDetailsCard(
-          question: currentQuestion,
-          totalQuestions: totalQuestions,
-        ),
-        Expanded(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: double.infinity,
-                width: 80.w,
-                color: AppColors.thirdColor,
-                child: ListView.builder(
-                  padding: EdgeInsets.symmetric(
-                    vertical: SizeConfig.responsiveValue(
-                      phone: 12.h,
-                      tablet: 4.h,
+    return SafeArea(
+      child: Column(
+        children: [
+          HeaderExamDetailsCard(
+            question: currentQuestion,
+            totalQuestions: totalQuestions,
+          ),
+          Expanded(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: double.infinity,
+                  width: 80.w,
+                  color: AppColors.thirdColor,
+                  child: ListView.builder(
+                    padding: EdgeInsets.symmetric(
+                      vertical: SizeConfig.responsiveValue(
+                        phone: 12.h,
+                        tablet: 4.h,
+                      ),
+                    ),
+                    controller: _scrollController,
+                    itemCount: totalQuestions,
+                    itemExtent: _itemHeight,
+                    itemBuilder: (context, index) => buildTimelineItem(index),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: QuestionWidget(
+                      key: ValueKey(currentQuestion.id),
+                      data: currentQuestion,
+                      savedAnswer: cubit.state.answersStatus[currentQuestionNo],
+                      onNext: cubit.goToNext,
+                      onPrevious: cubit.goToPrevious,
+                      isFirst: currentQuestionNo == 1,
+                      isLast: currentQuestionNo == totalQuestions,
                     ),
                   ),
-                  controller: _scrollController,
-                  itemCount: totalQuestions,
-                  itemExtent: _itemHeight,
-                  itemBuilder: (context, index) => buildTimelineItem(index),
                 ),
-              ),
-              Expanded(
-                child: Center(
-                  child: QuestionWidget(
-                    key: ValueKey(currentQuestion.id),
-                    data: currentQuestion,
-                    savedAnswer: cubit.state.answersStatus[currentQuestionNo],
-                    onNext: cubit.goToNext,
-                    onPrevious: cubit.goToPrevious,
-                    isFirst: currentQuestionNo == 1,
-                    isLast: currentQuestionNo == totalQuestions,
+              ],
+            ),
+          ),
+          8.verticalSpace,
+          Column(
+            children: [
+              const GreenlineWidget(),
+              Container(
+                width: 359.w,
+                height: 48.h,
+                decoration: ShapeDecoration(
+                  color: AppColors.secondaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10.r),
+                      bottomRight: Radius.circular(10.r),
+                    ),
                   ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const MakeNoteWidget(),
+                    8.horizontalSpace,
+                    const MakeFlagWidget(),
+                    8.horizontalSpace,
+                    InkWell(
+                      onTap: currentQuestionNo == 0 ? null : cubit.goToPrevious,
+                      child: Container(
+                        width: 74.w,
+                        height: 30.h,
+                        decoration: ShapeDecoration(
+                          color: AppColors.successColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100.r),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              '<Back',
+                              textAlign: TextAlign.justify,
+                              style: AppTextStyle.style14W500.copyWith(
+                                color: AppColors.thirdColor,
+                                fontWeight: FontWeight.w500,
+                                height: 1.h,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    8.horizontalSpace,
+                    InkWell(
+                      onTap: () => currentQuestionNo == totalQuestions - 1
+                          ? null
+                          : cubit.goToNext(),
+                      child: Container(
+                        width: 74.w,
+                        height: 30.h,
+                        decoration: ShapeDecoration(
+                          color: AppColors.successColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100.r),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Next>',
+                              textAlign: TextAlign.justify,
+                              style: AppTextStyle.style14W500.copyWith(
+                                color: AppColors.thirdColor,
+                                fontWeight: FontWeight.w500,
+                                height: 1.h,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-        ),
-        8.verticalSpace,
-        Column(
-          children: [
-            const GreenlineWidget(),
-            Container(
-              width: 359.w,
-              height: 48.h,
-              decoration: ShapeDecoration(
-                color: AppColors.secondaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10.r),
-                    bottomRight: Radius.circular(10.r),
-                  ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const MakeNoteWidget(),
-                  8.horizontalSpace,
-                  const MakeFlagWidget(),
-                  8.horizontalSpace,
-                  InkWell(
-                    onTap: currentQuestionNo == 0 ? null : cubit.goToPrevious,
-                    child: Container(
-                      width: 74.w,
-                      height: 30.h,
-                      decoration: ShapeDecoration(
-                        color: AppColors.successColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100.r),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '<Back',
-                            textAlign: TextAlign.justify,
-                            style: AppTextStyle.style14W500.copyWith(
-                              color: AppColors.thirdColor,
-                              fontWeight: FontWeight.w500,
-                              height: 1.h,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  8.horizontalSpace,
-                  InkWell(
-                    onTap: () => currentQuestionNo == totalQuestions - 1
-                        ? null
-                        : cubit.goToNext(),
-                    child: Container(
-                      width: 74.w,
-                      height: 30.h,
-                      decoration: ShapeDecoration(
-                        color: AppColors.successColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100.r),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Next>',
-                            textAlign: TextAlign.justify,
-                            style: AppTextStyle.style14W500.copyWith(
-                              color: AppColors.thirdColor,
-                              fontWeight: FontWeight.w500,
-                              height: 1.h,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

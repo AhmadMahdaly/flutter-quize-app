@@ -9,8 +9,35 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 
-class GiftsScreen extends StatelessWidget {
+class GiftsScreen extends StatefulWidget {
   const GiftsScreen({super.key});
+
+  @override
+  State<GiftsScreen> createState() => _GiftsScreenState();
+}
+
+class _GiftsScreenState extends State<GiftsScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    final cubit = context.read<MainLayoutCubit>();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
+        cubit.getGifts(isLoadMore: true);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +59,7 @@ class GiftsScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: BlocBuilder<MainLayoutCubit, MainLayoutState>(
           builder: (context, state) {
-            final cubit = context.watch<MainLayoutCubit>();
+            final cubit = context.read<MainLayoutCubit>();
             final gifts = cubit.gifts;
             if (gifts.isEmpty && state is GetGiftsSuccessState) {
               return const NoDataWidget(
@@ -45,20 +72,14 @@ class GiftsScreen extends StatelessWidget {
             }
 
             return ListView.builder(
-              itemCount: gifts.length + 1,
+              controller: _scrollController,
+              itemCount: gifts.length + (cubit.isLoadingMore ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index == gifts.length) {
-                  if (cubit.currentPage <= cubit.lastPage) {
-                    cubit.getGifts(isLoadMore: true);
-                    return Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(16.r),
-                        child: const CircularProgressIndicator(),
-                      ),
-                    );
-                  } else {
-                    return const SizedBox();
-                  }
+                  return const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
                 }
 
                 final invoice = gifts[index];
