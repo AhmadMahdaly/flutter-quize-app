@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/features/SCFHS_score_calculator/data/repo/calculator_repo.dart';
-import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
 import 'package:smle/features/analysis/data/repo/analysis_repo.dart';
+import 'package:smle/features/analysis/presentation/cubit/analysis_cubit.dart';
 import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/auth/data/repo/login_repo.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';

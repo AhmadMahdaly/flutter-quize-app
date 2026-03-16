@@ -29,9 +29,9 @@ class Exam {
     examDate = json['exam_date'];
 
     if (json['categories'] != null) {
-      categories = <Analysis>[];
+      categories = <AnalysisDataModel>[];
       json['categories'].forEach((v) {
-        categories!.add(Analysis.fromJson(v));
+        categories!.add(AnalysisDataModel.fromJson(v));
       });
     }
   }
@@ -43,5 +43,5 @@ class Exam {
   int? examId;
   num? score;
   String? examDate;
-  List<Analysis>? categories;
+  List<AnalysisDataModel>? categories;
 }

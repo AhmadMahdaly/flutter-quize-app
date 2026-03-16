@@ -1,51 +1,50 @@
-class AnalysisModel {
-  AnalysisModel({this.status, this.message, this.totalScore, this.data});
+import 'package:smle/features/analysis/domain/entities/analysis.dart';
 
-  AnalysisModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    totalScore = (json['total_score']as num).toDouble();
-    if (json['data'] != null) {
-      data = <Analysis>[];
-      json['data'].forEach((v) {
-        data!.add(Analysis.fromJson(v));
-      });
-    }
-  }
-  int? status;
-  String? message;
-  double? totalScore;
-  List<Analysis>? data;
+class AnalysisModel extends Analysis {
+  AnalysisModel({
+    required this.message,
+    required this.totalScore,
+    required this.data,
+  }) : super(message: message, totalScore: totalScore, data: data);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['message'] = message;
-    data['total_score'] = totalScore;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  factory AnalysisModel.fromJson(Map<String, dynamic> json) => AnalysisModel(
+    message: json['message'],
+    totalScore: (json['total_score'] as num).toDouble(),
+    data: (json['data'] as List)
+        .map((e) => AnalysisDataModel.fromJson(e))
+        .toList(),
+  );
+
+  @override
+  final String message;
+  @override
+  final double totalScore;
+  @override
+  final List<AnalysisDataModel> data;
 }
 
-class Analysis {
-  Analysis({this.category, this.averagePercentage, this.examPercentage});
+class AnalysisDataModel extends AnalysisData {
+  AnalysisDataModel({
+    required this.category,
+    required this.averagePercentage,
+    required this.examPercentage,
+  }) : super(
+         category: category,
+         averagePercentage: averagePercentage,
+         examPercentage: examPercentage,
+       );
 
-  Analysis.fromJson(Map<String, dynamic> json) {
-    category = json['category'];
-    averagePercentage = (json['average_percentage'] as num).toDouble();
-    examPercentage = (json['exam_percentage'] as num).toDouble();
+  factory AnalysisDataModel.fromJson(Map<String, dynamic> json) {
+    return AnalysisDataModel(
+      category: json['category'],
+      averagePercentage: (json['average_percentage'] as num).toDouble(),
+      examPercentage: (json['exam_percentage'] as num).toDouble(),
+    );
   }
-  String? category;
-  double? averagePercentage;
-  double? examPercentage;
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['category'] = category;
-    data['average_percentage'] = averagePercentage;
-    data['exam_percentage'] = examPercentage;
-    return data;
-  }
+  @override
+  final String category;
+  @override
+  final double averagePercentage;
+  @override
+  final double examPercentage;
 }

@@ -8,8 +8,8 @@ import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/no_data_widget.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
-import 'package:smle/features/analysis/widgets/analysis_chart_widget.dart';
+import 'package:smle/features/analysis/presentation/cubit/analysis_cubit.dart';
+import 'package:smle/features/analysis/presentation/views/widgets/analysis_chart_widget.dart';
 
 class AnalysisScreen extends StatelessWidget {
   const AnalysisScreen({super.key, required this.isExam});
@@ -175,12 +175,12 @@ class AnalysisScreen extends StatelessWidget {
                           data: context
                               .read<AnalysisCubit>()
                               .analysisModel!
-                              .data!,
+                              .data,
                         ),
                       if (isExam)
                         buildDetailedTable(
                           context,
-                          context.read<AnalysisCubit>().analysisModel!.data!,
+                          context.read<AnalysisCubit>().analysisModel!.data,
                         ),
                       if (isExam) 20.verticalSpace,
                       if (isExam)

@@ -5,7 +5,10 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/analysis/data/model/analysis_model.dart';
 
-Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
+Widget buildDetailedTable(
+  BuildContext context,
+  final List<AnalysisDataModel> data,
+) {
   return Card(
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -63,7 +66,7 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
             cells: [
               DataCell(
                 Text(
-                  item.category!,
+                  item.category,
                   style: AppTextStyle.style14W500.copyWith(
                     color: AppColors.forthColor,
                     fontSize: SizeConfig.responsiveValue(
@@ -75,7 +78,7 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
               ),
               DataCell(
                 Text(
-                  '${item.examPercentage!.toStringAsFixed(1)}%',
+                  '${item.examPercentage.toStringAsFixed(1)}%',
                   style: AppTextStyle.style14W500.copyWith(
                     color: AppColors.forthColor,
                     fontSize: SizeConfig.responsiveValue(
@@ -87,7 +90,7 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
               ),
               DataCell(
                 Text(
-                  '${item.averagePercentage!.toStringAsFixed(1)}%',
+                  '${item.averagePercentage.toStringAsFixed(1)}%',
                   style: AppTextStyle.style14W500.copyWith(
                     color: AppColors.forthColor,
                     fontSize: SizeConfig.responsiveValue(
@@ -107,7 +110,7 @@ Widget buildDetailedTable(BuildContext context, final List<Analysis> data) {
 
 class PerformanceChart extends StatelessWidget {
   const PerformanceChart({super.key, required this.data});
-  final List<Analysis> data;
+  final List<AnalysisDataModel> data;
 
   double _safeScore(double? value) {
     if (value == null || value.isNaN || value.isInfinite) return 0.0;
@@ -182,7 +185,7 @@ class PerformanceChart extends StatelessWidget {
                         meta: meta,
                         space: 8.0,
                         child: Text(
-                          label!.length > 14
+                          label.length > 14
                               ? '${label.substring(0, 14)}...'
                               : label,
                           style: AppTextStyle.style16Bold.copyWith(
