@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "826459094613",
-    "project_id": "smle-sit",
-    "storage_bucket": "smle-sit.firebasestorage.app"
+    "project_number": "406216784060",
+    "project_id": "smle-gate-18afd",
+    "storage_bucket": "smle-gate-18afd.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:826459094613:android:e0eed717a179e06d379edc",
+        "mobilesdk_app_id": "1:406216784060:android:eff933884c00da1533f8b9",
         "android_client_info": {
           "package_name": "com.sit.smle"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCuPYEExA98r1DOePNKOsDZCCbhkeeXFuo"
+          "current_key": "AIzaSyAFCeCpIK7ZffMy2r6z41e7IkpheZDn8a8"
         }
       ],
       "services": {

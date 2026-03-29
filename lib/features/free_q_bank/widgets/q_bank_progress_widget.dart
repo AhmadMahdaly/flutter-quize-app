@@ -20,7 +20,7 @@ class QBankProgressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final double progressValue = (endValue == 0)
         ? 0.0
-        : currentValue / endValue;
+        : currentValue / (endValue - 1);
 
     final int displayCurrent = currentValue + 1;
 
@@ -44,7 +44,7 @@ class QBankProgressWidget extends StatelessWidget {
                         child: LinearProgressIndicator(
                           value: progressValue,
                           backgroundColor: AppColors.greyColor,
-                          color: AppColors.secondaryColor,
+                          color: AppColors.primaryColor,
                         ),
                       ),
                     ),

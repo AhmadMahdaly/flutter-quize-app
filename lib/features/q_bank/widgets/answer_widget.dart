@@ -23,7 +23,7 @@ class AnswerWidget extends StatelessWidget {
         border: Border.all(color: AppColors.primaryColor),
         borderRadius: BorderRadius.circular(40.r),
       ),
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
       alignment: Alignment.center,
       child: Text(
         answerText,

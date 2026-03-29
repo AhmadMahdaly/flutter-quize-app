@@ -6,6 +6,8 @@ import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/shared_widgets/no_data_widget.dart';
+import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
 import 'package:smle/features/free_q_bank/widgets/answer_widget.dart';
@@ -34,6 +36,116 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
         widget.startQuizModel.qBankModel!,
       );
     }
+  }
+
+  // أضف هذه الدالة داخل _FreeQBankScreenState
+  void _showResultDialog(BuildContext context, FreeQBankCubit cubit) {
+    final results = cubit.calculateResults();
+    final double percentage = results['percentage'];
+    final Color progressColor = results['color'];
+    showDialog(
+      context: context,
+      barrierDismissible: false, // لمنع إغلاق النافذة عند الضغط خارجها
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          title: Text(
+            'Quiz Results',
+            textAlign: TextAlign.center,
+            style: AppTextStyle.style20Bold.copyWith(
+              color: AppColors.primaryColor,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              20.verticalSpace,
+
+              // تصميم الدائرة التحليلية للنسبة المئوية
+              SizedBox(
+                height: 120.h,
+                width: 120.w,
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 0.0, end: percentage / 100),
+                  duration: const Duration(seconds: 1),
+                  builder: (context, value, _) => Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      CircularProgressIndicator(
+                        value: value,
+                        color: progressColor,
+                        backgroundColor: AppColors.greyColor.withAlpha(50),
+                        strokeWidth: 10.w,
+                      ),
+                      Center(
+                        child: Text(
+                          '${(value * 100).toInt()}%',
+                          style: AppTextStyle.style16Bold.copyWith(
+                            color: progressColor.withAlpha(200),
+                            fontSize: 24.sp,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // رسالة التقييم
+              20.verticalSpace,
+              const Divider(color: AppColors.iconColorGray),
+              10.verticalSpace,
+              Text(
+                'Total Questions: ${results['total']}',
+                style: AppTextStyle.style14W500,
+              ),
+              15.verticalSpace,
+              Text(
+                'Correct Answers: ${results['correct']}',
+                style: AppTextStyle.style14Bold.copyWith(
+                  color: AppColors.successColor,
+                ),
+              ),
+              10.verticalSpace,
+              Text(
+                'Wrong Answers: ${results['wrong']}',
+                style: AppTextStyle.style14Bold.copyWith(color: Colors.red),
+              ),
+              10.verticalSpace,
+              Text(
+                'Skipped: ${results['skipped']}',
+                style: AppTextStyle.style14Bold.copyWith(color: Colors.orange),
+              ),
+            ],
+          ),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                ),
+                onPressed: () {
+                  // الخروج للرئيسية بعد رؤية النتيجة
+                  context.pushNamedAndRemoveUntil(
+                    AppRoutes.mainLayoutScreen,
+                    (route) => false,
+                  );
+                },
+                child: Text(
+                  'Go to Home',
+                  style: AppTextStyle.style16Bold.copyWith(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -237,13 +349,14 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                                       text: 'Back',
                                     ),
                                   ),
+                                // استبدل الكود القديم لزر Quit بهذا الكود
                                 if (cubit.index == 0)
                                   GestureDetector(
                                     onTap: () {
-                                      context.pushNamedAndRemoveUntil(
-                                        AppRoutes.mainLayoutScreen,
-                                        (route) => false,
-                                      );
+                                      _showResultDialog(
+                                        context,
+                                        cubit,
+                                      ); // عرض النتيجة
                                     },
                                     child: const QuestionButtonWidget(
                                       text: 'Quit',
@@ -255,10 +368,7 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                                         cubit.qBankModel!.data!.length - 1) {
                                       cubit.setIndexQBank(true);
                                     } else {
-                                      context.pushNamedAndRemoveUntil(
-                                        AppRoutes.mainLayoutScreen,
-                                        (route) => false,
-                                      );
+                                      _showResultDialog(context, cubit);
                                     }
                                   },
                                   child: QuestionButtonWidget(
@@ -273,14 +383,15 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
                             ),
                             if (cubit.index > 0) ...[
                               20.verticalSpace,
+                              // استبدل الكود القديم بهذا الكود
                               cubit.index < cubit.qBankModel!.data!.length - 1
                                   ? Center(
                                       child: GestureDetector(
                                         onTap: () {
-                                          context.pushNamedAndRemoveUntil(
-                                            AppRoutes.mainLayoutScreen,
-                                            (route) => false,
-                                          );
+                                          _showResultDialog(
+                                            context,
+                                            cubit,
+                                          ); // عرض النتيجة
                                         },
                                         child: const QuestionButtonWidget(
                                           text: 'Quit',

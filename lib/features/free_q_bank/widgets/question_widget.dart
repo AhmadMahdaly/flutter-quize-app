@@ -166,6 +166,7 @@ class QuestionWidget extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   10.horizontalSpace,
 
                   /// Explanation
