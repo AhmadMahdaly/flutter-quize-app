@@ -1,15 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smle/core/fcm.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/routing/app_router.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
+import 'package:smle/features/notification/notification_permission_dialog.dart';
 
-class MainLayoutScreen extends StatelessWidget {
+class MainLayoutScreen extends StatefulWidget {
   const MainLayoutScreen({super.key});
+
+  @override
+  State<MainLayoutScreen> createState() => _MainLayoutScreenState();
+}
+
+class _MainLayoutScreenState extends State<MainLayoutScreen> {
+  @override
+  void initState() {
+    FCMService.instance.initialize();
+    if (mounted) {
+      NotificationPermissionDialog.showIfNeeded(context);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

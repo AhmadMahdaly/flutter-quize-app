@@ -7,6 +7,7 @@ class EndPoints {
   static const String deleteAccount = 'user/delete';
   static const String profile = 'profile';
   static const String gifts = 'gifts';
+  static const String fcmToken = 'fcm-token';
 
   // ? subscription
   static const String getPackages = 'offers';

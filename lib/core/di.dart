@@ -16,6 +16,7 @@ import 'package:smle/features/free_q_bank/data/repo/free_q_bank_repo.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';
+import 'package:smle/features/notification/data/repo/notification_repo.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 import 'package:smle/features/play_list/data/repo/play_list_repo.dart';
 import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
@@ -36,7 +37,12 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<DioFactory>(() => DioFactory());
   getIt.registerLazySingleton<LoginCubit>(() => LoginCubit(getIt()));
   getIt.registerLazySingleton<MainLayoutCubit>(() => MainLayoutCubit(getIt()));
-  getIt.registerFactory<NotificationCubit>(() => NotificationCubit());
+  getIt.registerLazySingleton<NotificationRepo>(
+    () => NotificationRepoImpl(getIt()),
+  );
+  getIt.registerLazySingleton<NotificationCubit>(
+    () => NotificationCubit(getIt()),
+  );
   getIt.registerFactory<PrivacyPolicySupportCubit>(
     () => PrivacyPolicySupportCubit(getIt()),
   );
