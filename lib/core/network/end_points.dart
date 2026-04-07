@@ -7,6 +7,7 @@ class EndPoints {
   static const String deleteAccount = 'user/delete';
   static const String profile = 'profile';
   static const String gifts = 'gifts';
+  static const String fcmToken = 'fcm-token';
 
   // ? subscription
   static const String getPackages = 'offers';
@@ -33,7 +34,7 @@ class EndPoints {
   // ? Question Bank
   static const String startQBank = 'start/q_bank';
   static const String getQBankCount = 'qbank/filter';
-  static const String createQBank = 'create/q_bank';
+  // static const String createQBank = 'create/q_bank';
 
   static const String getPlayList = 'all/playlist';
   static const String getPlayListDetails = 'playlist/questions';
@@ -65,9 +66,10 @@ class EndPoints {
   static const String checkSubscribe = 'check/subscribed';
   static const String addQBankNote = 'add/q/bank/note';
   static const String paymentProcess = 'payment/process';
-  static const String paymentCallback = 'payment/callback';
-  static const String paymentCallbackGift = 'gift/payment/callback';
-  static const String paymentProcessGift = 'gift/payment/process';
-  static const String giftCheckout = 'gift/checkout';
+  // static const String paymentCallback = 'payment/callback';
+  // static const String paymentCallbackGift = 'gift/payment/callback';
+
+  static const String paymentProcessGift = 'gifts/payment/process';
+  static const String giftCheckout = 'gifts/checkout';
   static const String years = 'exam-dates/qbank';
 }

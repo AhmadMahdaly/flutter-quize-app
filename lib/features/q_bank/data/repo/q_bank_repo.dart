@@ -13,16 +13,16 @@ import 'package:smle/features/revision/data/model/subcategories_model.dart';
 class QBankRepository {
   QBankRepository(this._dioFactory);
   final DioFactory _dioFactory;
-  Future<ApiResult<void>> init() async {
-    try {
-      await _dioFactory.get(endPoint: EndPoints.createQBank);
-      return const ApiResult.success(null);
-    } on DioException catch (e) {
-      return ApiResult.failure(ServerFailure.fromDioError(e));
-    } catch (e) {
-      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
-    }
-  }
+  // Future<ApiResult<void>> init() async {
+  //   try {
+  //     // await _dioFactory.get(endPoint: EndPoints.createQBank);
+  //     return const ApiResult.success(null);
+  //   } on DioException catch (e) {
+  //     return ApiResult.failure(ServerFailure.fromDioError(e));
+  //   } catch (e) {
+  //     return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+  //   }
+  // }
 
   Future<ApiResult<QBankModel>> startQuiz({
     required dynamic year,
@@ -111,7 +111,11 @@ class QBankRepository {
     try {
       final response = await _dioFactory.get(
         endPoint: EndPoints.getPlaylistQuestions,
-        data: {'playlist_id': playlistId, 'limit': limit, 'offset': offset},
+        queryParameters: {
+          'playlist_id': playlistId,
+          'limit': limit,
+          'offset': offset,
+        },
       );
       if (response!.statusCode == 200) {
         final QBankModel model = QBankModel.fromJson(response.data);

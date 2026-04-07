@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
@@ -37,7 +36,7 @@ class _QBankScreenState extends State<QBankScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'q_bank'.tr(context), canBack: false),
+      appBar: const CustomAppBar(title: 'Q Bank', canBack: false),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
 
@@ -63,7 +62,7 @@ class _QBankScreenState extends State<QBankScreen> {
                       ),
                       20.verticalSpace,
                       QuestionWidget(
-                        addCircledFun: () {
+                        addToPlaylistFun: () {
                           context.pushNamed(
                             AppRoutes.playListScreen,
 
@@ -75,16 +74,17 @@ class _QBankScreenState extends State<QBankScreen> {
                           );
                         },
                         currentQuestion: '${cubit.index + 1}',
-                        isFav:
+                        isRepeated:
                             cubit.qBankModel!.data![cubit.index].isFavorite ??
                             false,
                         question:
                             '${cubit.qBankModel!.data![cubit.index].question}',
-                        newsExplain:
-                            '${cubit.qBankModel!.data![cubit.index].hint}',
-                        questionCircleExplain:
+                        explainPhoto:
+                            '${cubit.qBankModel!.data![cubit.index].explanationPhoto}',
+                        qPhoto: '${cubit.qBankModel!.data![cubit.index].photo}',
+                        explainText:
                             '${cubit.qBankModel!.data![cubit.index].explanation}',
-                        lightBulbExplain:
+                        hintText:
                             '${cubit.qBankModel!.data![cubit.index].hint}',
                         onNoteTap: () {
                           showDialog(
@@ -146,9 +146,7 @@ class _QBankScreenState extends State<QBankScreen> {
                               onTap: () {
                                 cubit.setIndexQBank(false);
                               },
-                              child: QuestionButtonWidget(
-                                text: 'back'.tr(context),
-                              ),
+                              child: const QuestionButtonWidget(text: 'Back'),
                             ),
                           if (cubit.index == 0)
                             GestureDetector(
@@ -158,9 +156,7 @@ class _QBankScreenState extends State<QBankScreen> {
                                   (route) => false,
                                 );
                               },
-                              child: QuestionButtonWidget(
-                                text: 'quit'.tr(context),
-                              ),
+                              child: const QuestionButtonWidget(text: 'Quit'),
                             ),
                           GestureDetector(
                             onTap: () {
@@ -178,7 +174,7 @@ class _QBankScreenState extends State<QBankScreen> {
                               text:
                                   cubit.index <
                                       cubit.qBankModel!.data!.length - 1
-                                  ? 'next'.tr(context)
+                                  ? 'Next'
                                   : 'Finish',
                             ),
                           ),
@@ -195,8 +191,8 @@ class _QBankScreenState extends State<QBankScreen> {
                                       (route) => false,
                                     );
                                   },
-                                  child: QuestionButtonWidget(
-                                    text: 'quit'.tr(context),
+                                  child: const QuestionButtonWidget(
+                                    text: 'Quit',
                                   ),
                                 ),
                               )
@@ -204,9 +200,9 @@ class _QBankScreenState extends State<QBankScreen> {
                       ],
                     ],
                   )
-                : NoDataWidget(
+                : const NoDataWidget(
                     noDataImage: '',
-                    noDataText: 'no_data_found'.tr(context),
+                    noDataText: 'No data found',
                   );
           },
         ),

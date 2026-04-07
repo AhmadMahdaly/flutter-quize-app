@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/debug_print_extension.dart';
-import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/loading.dart';
+import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/check_subscription/data/models/check_subscription_model.dart';
@@ -59,7 +60,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
   }
 
   CheckoutModel? checkoutData;
-
+  CheckoutModel? giftCheckoutData;
   Future<void> getCheckoutDetails({required int offerId, String? code}) async {
     showLoading();
     emit(CheckoutLoadingState());
@@ -80,17 +81,50 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     );
   }
 
+  Future<void> getGiftCheckoutDetails({
+    required int offerId,
+    String? code,
+  }) async {
+    showLoading();
+    emit(CheckoutLoadingState());
+    final result = await _subscriptionRepository.checkout(
+      offerId: offerId,
+      code: code,
+    );
+    result.when(
+      success: (data) {
+        hideLoading();
+        giftCheckoutData = data;
+        emit(CheckoutSuccessState(data));
+      },
+      failure: (error) {
+        hideLoading();
+        emit(CheckoutFailedState(error.errMessage));
+      },
+    );
+  }
+
+  double get finalPayment {
+    final data = checkoutData?.data;
+    if (data == null) return 0;
+
+    final total = data.totalAfterCodeDiscount ?? 0;
+    final points = (data.deductedPoints ?? 0) / 100;
+
+    return total - points;
+  }
+
   late webview_flutter.WebViewController webViewController;
   Future<void> startPayMobPayment(
     BuildContext context,
     int offerId,
-    int amount,
+    double amount,
     String? code,
   ) async {
     emit(PurchaseLoadingState());
     showLoading();
 
-    final amountCents = amount * 100; // المبلغ القادم هنا هو الإجمالي بعد الخصم
+    final amountCents = amount * 100;
     await getProfile();
 
     final billingData = {
@@ -104,7 +138,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       offerId: offerId,
       amountCents: amountCents,
       billingData: billingData,
-      code: code, // إرسال الكود
+      code: code,
     );
 
     hideLoading();
@@ -124,80 +158,156 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
   }
 
   void _openPayMobWebView(BuildContext context, String iframeUrl) {
+    final ValueNotifier<bool> isLoading = ValueNotifier(true);
+
     final controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onNavigationRequest: (NavigationRequest request) async {
-            final uri = Uri.parse(request.url);
-
-            if (uri.queryParameters.containsKey('success')) {
-              await _subscriptionRepository.processPaymentCallback(
-                billingData: uri.queryParameters,
-              );
-              log(uri.queryParameters.toString());
-              getIt<CheckSubscriptionCubit>().loadSubscription();
-              context.pop();
-              if (uri.queryParameters['success'] == 'true') {
-                if (!isClosed) emit(PurchaseSuccessState());
-              } else {
-                uri.queryParameters.dPrint();
-                final message =
-                    uri.queryParameters['message'] ??
-                    uri.queryParameters['error'] ??
-                    'Payment failed';
-                message.dPrint();
-                if (!isClosed) emit(PurchaseFailedState(message));
-              }
-              return NavigationDecision.prevent;
-            }
-            if (request.url.contains('your-callback-url')) {
-              context.pop();
-
-              if (request.url.contains('success')) {
-                if (!isClosed) emit(PurchaseSuccessState());
-              } else {
-                '${uri.queryParameters}  fail'.dPrint();
-                if (!isClosed) emit(PurchaseFailedState('Payment failed'));
-              }
-              return NavigationDecision.prevent;
-            }
-
+          onNavigationRequest: (NavigationRequest request) {
             return NavigationDecision.navigate;
           },
           onPageStarted: (String url) {
-            '🔄 Page started: $url'.dPrint();
+            '✅ Page Started: $url'.dPrint();
+            isLoading.value = true;
           },
           onPageFinished: (String url) {
+            isLoading.value = false;
+
+            if (url.startsWith(
+              'https://ksa.paymob.com/unifiedcheckout/payment-status',
+            )) {}
+
+            if (url.startsWith('https://smlegate.com/payment/success')) {
+              getIt<CheckSubscriptionCubit>().loadSubscription();
+
+              if (!isClosed) {
+                emit(PurchaseSuccessState());
+              }
+
+              Navigator.of(context).pop();
+            }
+
+            if (url.startsWith('https://smlegate.com/payment/failed')) {
+              if (!isClosed) {
+                emit(PurchaseFailedState('Payment failed'));
+              }
+
+              Navigator.of(context).pop();
+            }
             '✅ Page loaded: $url'.dPrint();
           },
           onWebResourceError: (WebResourceError error) {
             '❌ Error: ${error.description}'.dPrint();
+            isLoading.value = false;
           },
         ),
       )
       ..loadRequest(Uri.parse(iframeUrl));
 
-    showDialog(
+    showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (_) => WillPopScope(
         onWillPop: () async {
-          if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
-          return true;
+          if (context.mounted) {
+            final shouldExit = await showDialog<bool>(
+              context: context,
+              builder: (dialogContext) {
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.all(20.r),
+                    margin: EdgeInsets.all(50.r),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.r),
+                      color: AppColors.thirdColor,
+                    ),
+
+                    child: CustomPrimaryDialog(
+                      icon: Icons.error_outline_sharp,
+                      title: 'Cancel',
+                      description: 'Are you sure you want to cancel?',
+
+                      confirmText: 'Yes',
+                      onConfirm: () {
+                        if (!isClosed) {
+                          emit(PurchaseCancelledState());
+                        }
+                        Navigator.of(dialogContext).pop(true);
+                      },
+
+                      cancelText: 'No',
+                      onCancel: () {
+                        Navigator.of(dialogContext).pop(false);
+                      },
+                    ),
+                  ),
+                );
+              },
+            );
+            return shouldExit ?? false;
+          }
+          return false;
         },
         child: Dialog.fullscreen(
           child: Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                icon: const Icon(Icons.close, color: AppColors.secondaryColor),
-                onPressed: () {
-                  if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
-                  Navigator.pop(context);
-                },
+                onPressed: () async => await showDialog<bool>(
+                  context: context,
+                  builder: (dialogContext) {
+                    return Center(
+                      child: Container(
+                        padding: EdgeInsets.all(20.r),
+                        margin: EdgeInsets.all(50.r),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          color: AppColors.thirdColor,
+                        ),
+
+                        child: CustomPrimaryDialog(
+                          icon: Icons.error_outline_sharp,
+                          title: 'Cancel',
+                          description: 'Are you sure you want to cancel?',
+
+                          confirmText: 'Yes',
+                          onConfirm: () {
+                            if (!isClosed) {
+                              emit(PurchaseCancelledState());
+                            }
+                            Navigator.of(dialogContext).pop(true);
+                          },
+
+                          cancelText: 'No',
+                          onCancel: () {
+                            Navigator.of(dialogContext).pop(false);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                icon: const Icon(Icons.close),
               ),
             ),
-            body: WebViewWidget(controller: controller),
+            body: Stack(
+              children: [
+                WebViewWidget(controller: controller),
+
+                ValueListenableBuilder<bool>(
+                  valueListenable: isLoading,
+                  builder: (context, loading, child) {
+                    if (loading) {
+                      return Container(
+                        color: Colors.white,
+                        child: const Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -209,56 +319,48 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     String iframeUrl,
     int currentReceiverId,
   ) {
+    final ValueNotifier<bool> isLoading = ValueNotifier(true);
+
     final controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onNavigationRequest: (NavigationRequest request) async {
-            final uri = Uri.parse(request.url);
-
-            if (uri.queryParameters.containsKey('success')) {
-              await _subscriptionRepository.processPaymentCallbackGift(
-                billingData: uri.queryParameters,
-                currentReceiverId: currentReceiverId,
-              );
-              log(uri.queryParameters.toString());
-
-              context.pop();
-              if (uri.queryParameters['success'] == 'true') {
-                if (!isClosed) emit(PurchaseSuccessState());
-              } else {
-                uri.queryParameters.dPrint();
-                final message =
-                    uri.queryParameters['message'] ??
-                    uri.queryParameters['error'] ??
-                    'Payment failed';
-                message.dPrint();
-                if (!isClosed) emit(PurchaseFailedState(message));
-              }
-              return NavigationDecision.prevent;
-            }
-            if (request.url.contains('your-callback-url')) {
-              context.pop();
-
-              if (request.url.contains('success')) {
-                if (!isClosed) emit(PurchaseSuccessState());
-              } else {
-                '${uri.queryParameters}  fail'.dPrint();
-                if (!isClosed) emit(PurchaseFailedState('Payment failed'));
-              }
-              return NavigationDecision.prevent;
-            }
-
+          onNavigationRequest: (NavigationRequest request) {
             return NavigationDecision.navigate;
           },
           onPageStarted: (String url) {
-            '🔄 Page started: $url'.dPrint();
+            '✅ Page Started: $url'.dPrint();
+            isLoading.value = true;
           },
           onPageFinished: (String url) {
+            isLoading.value = false;
+
+            if (url.startsWith(
+              'https://ksa.paymob.com/unifiedcheckout/payment-status',
+            )) {}
+
+            if (url.startsWith('https://smlegate.com/payment/success')) {
+              getIt<CheckSubscriptionCubit>().loadSubscription();
+
+              if (!isClosed) {
+                emit(PurchaseSuccessState());
+              }
+
+              Navigator.of(context).pop();
+            }
+
+            if (url.startsWith('https://smlegate.com/payment/failed')) {
+              if (!isClosed) {
+                emit(PurchaseFailedState('Payment failed'));
+              }
+
+              Navigator.of(context).pop();
+            }
             '✅ Page loaded: $url'.dPrint();
           },
           onWebResourceError: (WebResourceError error) {
             '❌ Error: ${error.description}'.dPrint();
+            isLoading.value = false;
           },
         ),
       )
@@ -269,28 +371,111 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       barrierDismissible: false,
       builder: (_) => WillPopScope(
         onWillPop: () async {
-          if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
-          return true;
+          if (context.mounted) {
+            final shouldExit = await showDialog<bool>(
+              context: context,
+              builder: (dialogContext) {
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.all(20.r),
+                    margin: EdgeInsets.all(50.r),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.r),
+                      color: AppColors.thirdColor,
+                    ),
+
+                    child: CustomPrimaryDialog(
+                      icon: Icons.error_outline_sharp,
+                      title: 'Cancel',
+                      description: 'Are you sure you want to cancel?',
+
+                      confirmText: 'Yes',
+                      onConfirm: () {
+                        if (!isClosed) {
+                          emit(PurchaseCancelledState());
+                        }
+                        Navigator.of(dialogContext).pop(true);
+                      },
+
+                      cancelText: 'No',
+                      onCancel: () {
+                        Navigator.of(dialogContext).pop(false);
+                      },
+                    ),
+                  ),
+                );
+              },
+            );
+
+            return shouldExit ?? false;
+          }
+          return false;
         },
         child: Dialog.fullscreen(
           child: Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                icon: const Icon(Icons.close, color: AppColors.secondaryColor),
-                onPressed: () {
-                  if (!isClosed) emit(PurchaseFailedState('Payment cancelled'));
-                  Navigator.pop(context);
-                },
+                onPressed: () async => await showDialog<bool>(
+                  context: context,
+                  builder: (dialogContext) {
+                    return Center(
+                      child: Container(
+                        padding: EdgeInsets.all(20.r),
+                        margin: EdgeInsets.all(50.r),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          color: AppColors.thirdColor,
+                        ),
+
+                        child: CustomPrimaryDialog(
+                          icon: Icons.error_outline_sharp,
+                          title: 'Cancel',
+                          description: 'Are you sure you want to cancel?',
+
+                          confirmText: 'Yes',
+                          onConfirm: () {
+                            if (!isClosed) {
+                              emit(PurchaseCancelledState());
+                            }
+                            Navigator.of(dialogContext).pop(true);
+                          },
+
+                          cancelText: 'No',
+                          onCancel: () {
+                            Navigator.of(dialogContext).pop(false);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                icon: const Icon(Icons.close),
               ),
             ),
-            body: WebViewWidget(controller: controller),
+            body: Stack(
+              children: [
+                WebViewWidget(controller: controller),
+
+                ValueListenableBuilder<bool>(
+                  valueListenable: isLoading,
+                  builder: (context, loading, child) {
+                    if (loading) {
+                      return Container(
+                        color: Colors.white,
+                        child: const Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  /// Get Profile
   ProfileModel? profileModel;
   Future getProfile() async {
     emit(GetProfileLoadingState());
@@ -306,10 +491,8 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       },
     );
   }
-  // داخل SubscriptionCubit
 
-  int? currentReceiverId; // لحفظ الـ ID المستلم بعد الـ checkout
-
+  int? currentReceiverId;
   Future<void> checkGiftEmail(int offerId, String email) async {
     emit(CheckEmailLoadingState());
     final result = await _subscriptionRepository.checkGiftCheckout(
@@ -328,7 +511,8 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
   Future<void> startGiftPaymentFlow(
     BuildContext context,
     int offerId,
-    int amount,
+    double amount,
+    String? code,
   ) async {
     if (currentReceiverId == null) {
       emit(PurchaseFailedState('Please verify email first'));
@@ -338,7 +522,6 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     emit(PurchaseLoadingState());
     showLoading();
 
-    // جلب بيانات الدافع (Payer) من البروفايل
     await getProfile();
 
     final result = await _subscriptionRepository.processGiftPayment(
@@ -347,7 +530,8 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       amountCents: amount * 100,
       payerName: profileModel?.data?.name ?? 'Guest',
       payerEmail: profileModel?.data?.email ?? '',
-      payerPhone: '01000000000', // أو من البروفايل إذا متاح
+      payerPhone: '01000000000',
+      code: code,
     );
 
     hideLoading();

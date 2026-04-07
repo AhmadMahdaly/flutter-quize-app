@@ -6,6 +6,7 @@ import 'package:smle/core/network/failures.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
 import 'package:smle/features/q_bank/data/model/question_count_model.dart';
+import 'package:smle/features/q_bank/data/model/year_model.dart';
 import 'package:smle/features/revision/data/model/categories_model.dart'
     hide Data;
 import 'package:smle/features/revision/data/model/subcategories_model.dart'
@@ -48,18 +49,14 @@ class FreeQBankRepository {
         data: data,
       );
 
-      // داخل ملف Repository
       if (response!.statusCode == 200) {
         if (response.data is List) {
-          // 1. استلام القائمة الخام
           final List<dynamic> rawList = response.data;
 
-          // 2. تحويل كل عنصر في القائمة إلى كائن Data (Question)
           final List<Data> questions = rawList
               .map((item) => Data.fromJson(item))
               .toList();
 
-          // 3. تغليف القائمة داخل QBankModel لكي لا ينهار Cubit
           return ApiResult.success(
             QBankModel(
               status: 200,
@@ -69,7 +66,6 @@ class FreeQBankRepository {
             ),
           );
         } else if (response.data is Map<String, dynamic>) {
-          // في حال عاد الـ API مستقبلاً بشكل Object
           return ApiResult.success(QBankModel.fromJson(response.data));
         }
 
@@ -108,7 +104,7 @@ class FreeQBankRepository {
     try {
       final response = await _dioFactory.get(
         endPoint: EndPoints.freeTrialMonths,
-        data: {'year': year},
+        queryParameters: {'year': year},
       );
       if (response!.statusCode == 200) {
         return ApiResult.success(response.data['data']);
@@ -160,7 +156,11 @@ class FreeQBankRepository {
     try {
       final response = await _dioFactory.get(
         endPoint: EndPoints.getPlaylistQuestions,
-        data: {'playlist_id': playlistId, 'limit': limit, 'offset': offset},
+        queryParameters: {
+          'playlist_id': playlistId,
+          'limit': limit,
+          'offset': offset,
+        },
       );
       if (response!.statusCode == 200) {
         final QBankModel model = QBankModel.fromJson(response.data);
@@ -199,6 +199,28 @@ class FreeQBankRepository {
           ServerFailure.fromResponse(
             response.statusCode,
             response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+    }
+  }
+
+  Future<ApiResult<YearsModel>> getYears() async {
+    try {
+      final response = await _dioFactory.get(endPoint: EndPoints.years);
+      if (response!.statusCode == 200) {
+        final YearsModel model = YearsModel.fromJson(response.data);
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['error']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['error'],
           ),
         );
       }

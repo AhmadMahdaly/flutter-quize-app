@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -49,7 +48,7 @@ class PlayListWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '$questionCount ${'question'.tr(context)}',
+                      '$questionCount ${'Question'}',
                       style: AppTextStyle.style14W500.copyWith(
                         color: AppColors.darkGreyColor,
                       ),
@@ -72,7 +71,7 @@ class PlayListWidget extends StatelessWidget {
                           value: cubit,
                           child: PlaylistAlertWidget(
                             playListNameController: playListNameController,
-                            title: 'edit_playlist'.tr(context),
+                            title: 'Edit',
                             isEdit: true,
                             playListName: playListName,
                             playListId: playListId,
@@ -113,10 +112,7 @@ class PlayListWidget extends StatelessWidget {
                           ),
                         ),
                         6.horizontalSpace,
-                        Text(
-                          'edit'.tr(context),
-                          style: AppTextStyle.style14W500,
-                        ),
+                        Text('Edit', style: AppTextStyle.style14W500),
                       ],
                     ),
                   ),

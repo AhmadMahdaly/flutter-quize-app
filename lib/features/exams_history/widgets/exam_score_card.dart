@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
@@ -68,56 +67,61 @@ class ExamScoreCard extends StatelessWidget {
           exam.examId.toString(),
         );
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.all(16.r),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '${'exam'.tr(context)} ${exam.examNo}',
-                style: AppTextStyle.style16Bold,
-              ),
-              Text(
-                '$score ${'marks'.tr(context)}',
-                style: AppTextStyle.style16W700.copyWith(
-                  color: AppColors.forthColor,
-                ),
-              ),
-            ],
-          ),
-
-          10.verticalSpace,
-          ClipRRect(
-            borderRadius: BorderRadius.circular(30.r),
-            child: SizedBox(
-              height: 40.h,
-              child: Stack(
-                alignment: Alignment.center,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  LinearProgressIndicator(
-                    value: score / 100.0,
-                    backgroundColor: AppColors.greyColor,
-                    color: progressColor,
-                    minHeight: 40.h,
+                  Text(
+                    '${'Exam'} ${exam.examNo}',
+                    style: AppTextStyle.style16Bold,
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 8.w),
-                      child: Text(
-                        '$score/100',
-                        style: AppTextStyle.style14W900.copyWith(
-                          color: AppColors.forthColor,
-                        ),
-                      ),
+                  Text(
+                    '$score ${'Marks'}',
+                    style: AppTextStyle.style16W700.copyWith(
+                      color: AppColors.forthColor,
                     ),
                   ),
                 ],
               ),
-            ),
+
+              10.verticalSpace,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(30.r),
+                child: SizedBox(
+                  height: 40.h,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      LinearProgressIndicator(
+                        value: score / 100.0,
+                        backgroundColor: AppColors.greyColor,
+                        color: progressColor,
+                        minHeight: 40.h,
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 8.w),
+                          child: Text(
+                            '$score/100',
+                            style: AppTextStyle.style14W900.copyWith(
+                              color: AppColors.forthColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

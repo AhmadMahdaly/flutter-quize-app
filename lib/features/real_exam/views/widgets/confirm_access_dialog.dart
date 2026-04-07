@@ -19,7 +19,7 @@ class ConfirmAccessToRealExamDialogWidget extends StatelessWidget {
         12.verticalSpace,
         Text(
           textAlign: TextAlign.center,
-          'Are You Ready To Start The Real Exam?',
+          'Are You Ready To Start The Realistic Exam Simulation?',
           style: AppTextStyle.style20Bold,
         ),
         12.verticalSpace,
@@ -34,7 +34,7 @@ class ConfirmAccessToRealExamDialogWidget extends StatelessWidget {
                     context.pop();
                   }
                   if (context.mounted) {
-                    context.pushNamed(AppRoutes.realExamScreen);
+                    context.pushReplacementNamed(AppRoutes.realExamScreen);
                   }
                 },
                 child: Container(

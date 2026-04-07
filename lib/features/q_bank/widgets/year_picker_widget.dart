@@ -19,7 +19,6 @@ class _YearPickerWidgetState extends State<YearPickerWidget> {
   void initState() {
     super.initState();
     final cubit = context.read<QBankCubit>();
-    // جلب السنوات فقط إذا لم يتم جلبها مسبقاً
     if (cubit.yearsModel == null) {
       cubit.getYears();
     }
@@ -47,14 +46,7 @@ class _YearPickerWidgetState extends State<YearPickerWidget> {
         }
 
         // 2. تحديد السنة المحددة برمجياً لتجنب الأخطاء
-        int dropdownValue = cubit.selectedYearDate.year;
-        if (!allowedYears.contains(dropdownValue)) {
-          dropdownValue = allowedYears.first;
-          // تحديث الكيوبت بصمت بالسنة الصحيحة
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            cubit.selectYear(DateTime(dropdownValue));
-          });
-        }
+        final int dropdownValue = cubit.selectedYearDate.year;
 
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
@@ -129,9 +121,9 @@ class MultiMonthSelector extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           final monthNumber = index + 1;
-          final monthName = DateFormat.MMM(
-            'en',
-          ).format(DateTime(2000, monthNumber));
+          final monthName = DateFormat.MMM().format(
+            DateTime(2000, monthNumber),
+          );
 
           final isSelected = cubit.selectedMonths.contains(monthNumber);
           final isAvailable = availableMonths.contains(monthNumber);

@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/helpers/safe_cubit.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/core/theme/colors.dart';
 import 'package:smle/features/free_q_bank/data/repo/free_q_bank_repo.dart';
 import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
+import 'package:smle/features/q_bank/data/model/year_model.dart';
 import 'package:smle/features/revision/data/model/categories_model.dart';
 import 'package:smle/features/revision/data/model/subcategories_model.dart';
 
@@ -28,10 +30,73 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
   List<int> availableMonths = [];
 
   Future<void> init() async {
-    showLoading();
     _qBankRepository.init();
     await getAvailableYears();
-    hideLoading();
+  }
+
+  Map<String, dynamic> calculateResults() {
+    int correct = 0;
+    int wrong = 0;
+    int skipped = 0;
+
+    if (qBankModel?.data != null) {
+      for (var question in qBankModel!.data!) {
+        if (question.selectedAnswer == null) {
+          skipped++;
+        } else if (question.selectedAnswer == question.answer) {
+          correct++;
+        } else {
+          wrong++;
+        }
+      }
+    }
+
+    final int total = qBankModel?.data?.length ?? 0;
+    // حساب النسبة المئوية
+    final double percentage = total == 0 ? 0.0 : (correct / total) * 100;
+
+    Color analysisColor;
+
+    if (percentage >= 80) {
+      analysisColor = AppColors.successColor;
+    } else if (percentage >= 50) {
+      analysisColor = Colors.orange;
+    } else {
+      analysisColor = Colors.red;
+    }
+
+    return {
+      'total': total,
+      'correct': correct,
+      'wrong': wrong,
+      'skipped': skipped,
+      'percentage': percentage,
+      'color': analysisColor,
+    };
+  }
+
+  YearsModel? yearsModel;
+  Future getYears() async {
+    showLoading();
+    emit(GetYearsLoadingState());
+    final result = await _qBankRepository.getYears();
+    result.when(
+      success: (success) {
+        yearsModel = success;
+
+        if (availableYears.isNotEmpty &&
+            !availableYears.contains(selectedYearDate.year)) {
+          selectedYearDate = DateTime(availableYears.first);
+        }
+
+        hideLoading();
+        emit(GetYearsSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetYearsFailedState());
+      },
+    );
   }
 
   Future<void> getAvailableYears() async {
@@ -63,7 +128,6 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
           selectedMonth = availableMonths.first;
         }
 
-        // updateAvailableQuestionsCount();
         emit(GetSubCategoriesSuccessState());
       },
       failure: (error) => emit(GetSubCategoriesFailedState()),
@@ -79,7 +143,7 @@ class FreeQBankCubit extends SafeCubit<FreeQBankStates> {
   void toggleMonthSelection(int month) {
     if (availableMonths.contains(month)) {
       selectedMonth = month;
-      // updateAvailableQuestionsCount();
+
       emit(SelectDateState());
     }
   }

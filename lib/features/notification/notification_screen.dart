@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -12,7 +11,7 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'notification'.tr(context)),
+      appBar: const CustomAppBar(title: 'Notification'),
       body:
           // NoDataWidget(noDataImage:Assets.noNotification ,noDataText:'no_notification_yet'.tr(context) ,),
           Padding(

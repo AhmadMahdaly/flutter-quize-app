@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -23,14 +22,14 @@ class ExamsList extends StatelessWidget {
           children: [
             Icon(
               Icons.edit_document,
-              color: AppColors.darkGreyColor,
+              color: AppColors.darkGreyColor.withAlpha(100),
               size: 160.r,
             ),
             12.verticalSpace,
             Text(
-              'no_exams_found'.tr(context),
+              'No Exams found',
               style: AppTextStyle.style16Bold.copyWith(
-                color: AppColors.darkGreyColor,
+                color: AppColors.darkGreyColor.withAlpha(100),
               ),
             ),
           ],

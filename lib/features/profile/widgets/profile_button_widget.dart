@@ -19,6 +19,7 @@ class ProfileButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: InkWell(
+        borderRadius: BorderRadius.circular(12.r),
         onTap: onPressed,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w),

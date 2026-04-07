@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
@@ -30,6 +29,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   @override
+  void dispose() {
+    codeController.dispose();
+    widget.cubit.checkoutData = null;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(title: 'Checkout'),
@@ -39,17 +45,41 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           if (state is PurchaseSuccessState) {
             showDialog(
               context: context,
-              builder: (context) => const PayDoneDialog(),
+              barrierDismissible: false,
+              builder: (context) => const PayDoneDialog(title: 'Done'),
+            );
+            // Navigator.pop(context);
+          } else if (state is PurchaseFailedState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+              ),
+            );
+          } else if (state is PurchaseCancelledState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Payment cancelled'),
+                backgroundColor: Colors.red,
+              ),
             );
           }
         },
         builder: (context, state) {
           final cubit = widget.cubit;
           final data = cubit.checkoutData?.data;
+          final offerPrice = cubit.checkoutData?.data?.offerPrice;
+          final offerPriceBefore =
+              cubit.checkoutData?.data?.priceBeforeDiscount;
+          // final totalAfterCode = data?.totalAfterCodeDiscount ?? 0;
 
+          // final pointsDiscount = (data?.deductedPoints ?? 0) / 100;
+
+          // final finalPrice = totalAfterCode - pointsDiscount;
           return Padding(
             padding: EdgeInsets.all(20.w),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomPrimaryTextfield(
                   controller: codeController,
@@ -64,11 +94,25 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     },
                   ),
                 ),
+                Text(
+                  'Press ✓ to promo code apply.',
+                  textAlign: TextAlign.start,
+                  style: AppTextStyle.style12W600.copyWith(
+                    color: AppColors.primaryColor,
+                  ),
+                ),
                 30.verticalSpace,
 
                 if (data != null) ...[
-                  _priceRow('Original price', "${data.offerPrice} ${'sar'}"),
-
+                  if (offerPriceBefore != null && offerPriceBefore != '0') ...[
+                    _priceRow(
+                      'Original price',
+                      "$offerPriceBefore ${'sar'}",
+                      isNotActive: true,
+                    ),
+                    _priceRow('Price after discount', "$offerPrice ${'sar'}"),
+                  ] else
+                    _priceRow('Original price', "$offerPrice ${'sar'}"),
                   if (data.codeDiscountPrice != null &&
                       data.codeDiscountPrice! > 0)
                     _priceRow(
@@ -80,14 +124,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   if (data.deductedPoints != null &&
                       data.deductedPoints! > 0) ...[
                     const Divider(height: 20),
+
                     _priceRow(
-                      'Points used'.tr(context),
-                      "${data.deductedPoints} ${'point'.tr(context)}",
+                      'Points used',
+                      '${data.deductedPoints} point',
                       valueColor: AppColors.secondaryColor,
                     ),
+
                     _priceRow(
-                      'Points discount'.tr(context),
-                      "- ${data.deductedPoints} ${'sar'}",
+                      'Points discount',
+                      '- ${(data.deductedPoints! / 100).toStringAsFixed(2)} sar',
                       valueColor: Colors.red,
                     ),
                   ],
@@ -103,13 +149,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                 const Spacer(),
                 CustomPrimaryButton(
-                  text: 'Pay Now (${data?.totalAfterCodeDiscount ?? 0} SAR)',
+                  text:
+                      'Pay Now (${cubit.finalPayment.toStringAsFixed(2)} SAR)',
                   onPressed: () {
                     if (data != null) {
                       cubit.startPayMobPayment(
                         context,
                         data.offerId!,
-                        data.totalAfterCodeDiscount!,
+                        cubit.finalPayment,
                         codeController.text,
                       );
                     }
@@ -127,6 +174,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     String label,
     String value, {
     bool isTotal = false,
+    bool isNotActive = false,
     Color? valueColor,
   }) {
     return Padding(
@@ -148,6 +196,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   )
                 : AppTextStyle.style14W500.copyWith(
                     color: valueColor ?? Colors.black,
+                    decoration: isNotActive ? TextDecoration.lineThrough : null,
                     fontWeight: valueColor != null
                         ? FontWeight.bold
                         : FontWeight.normal,

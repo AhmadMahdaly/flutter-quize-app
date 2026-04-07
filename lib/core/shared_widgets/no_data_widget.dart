@@ -24,7 +24,7 @@ class NoDataWidget extends StatelessWidget {
           child: Text(
             noDataText,
             style: AppTextStyle.style20Bold.copyWith(
-              color: AppColors.forthColor,
+              color: AppColors.forthColor.withAlpha(100),
             ),
           ),
         ),

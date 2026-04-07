@@ -1,6 +1,18 @@
 part of 'notification_cubit.dart';
+
 @immutable
+abstract class NotificationState {}
 
-abstract class NotificationStates {}
+class NotificationInitial extends NotificationState {}
 
-class NotificationInitialState extends NotificationStates {}
+class NotificationLoading extends NotificationState {}
+
+class NotificationSuccess extends NotificationState {
+  NotificationSuccess(this.notifications);
+  final List<NotificationModel> notifications;
+}
+
+class NotificationError extends NotificationState {
+  NotificationError(this.errorMessage);
+  final String errorMessage;
+}

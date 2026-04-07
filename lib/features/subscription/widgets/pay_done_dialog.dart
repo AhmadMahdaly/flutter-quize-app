@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class PayDoneDialog extends StatelessWidget {
-  const PayDoneDialog({super.key});
-
+  const PayDoneDialog({super.key, required this.title});
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -46,7 +45,7 @@ class PayDoneDialog extends StatelessWidget {
                 ),
                 60.verticalSpace,
                 Text(
-                  'done'.tr(context),
+                  title,
                   style: AppTextStyle.style16Bold.copyWith(
                     fontSize: 24.sp,
                     color: AppColors.secondaryColor, // Text color

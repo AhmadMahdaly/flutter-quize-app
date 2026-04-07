@@ -7,58 +7,106 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
 
-class YearPickerWidget extends StatelessWidget {
+class YearPickerWidget extends StatefulWidget {
   const YearPickerWidget({super.key});
 
   @override
+  State<YearPickerWidget> createState() => _YearPickerWidgetState();
+}
+
+class _YearPickerWidgetState extends State<YearPickerWidget> {
+  @override
+  void initState() {
+    super.initState();
+    final cubit = context.read<FreeQBankCubit>();
+    if (cubit.yearsModel == null) {
+      cubit.getYears();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<FreeQBankCubit>();
+    return BlocBuilder<FreeQBankCubit, FreeQBankStates>(
+      builder: (context, state) {
+        final cubit = context.read<FreeQBankCubit>();
 
-    final List<int> yearsToShow = [2024, 2025];
+        final List<int> allPossibleYears =
+            cubit.yearsModel?.data
+                ?.map((e) => e.year ?? 0)
+                .where((year) => year != 0)
+                .toSet()
+                .toList() ??
+            [];
 
-    final int dropdownValue = cubit.selectedYearDate.year;
+        allPossibleYears.sort((a, b) => b.compareTo(a));
+        final List<int> enabledYears = cubit.availableYears;
+        if (allPossibleYears.isEmpty) {
+          return Container(
+            height: 48.h,
+            padding: EdgeInsets.symmetric(horizontal: 15.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(12.r)),
+              border: Border.all(color: AppColors.greyColor, width: 2.w),
+              color: AppColors.thirdColor,
+            ),
+            child: const Center(child: CupertinoActivityIndicator()),
+          );
+        }
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(12.r)),
-        border: Border.all(color: AppColors.greyColor, width: 2.w),
-        color: AppColors.thirdColor,
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<int>(
-          value: dropdownValue,
-          isExpanded: true,
-          icon: Icon(
-            CupertinoIcons.chevron_down,
-            size: SizeConfig.responsiveValue(phone: 20.r, tablet: 24.r),
-            color: AppColors.darkGreyColor,
+        final int dropdownValue = cubit.selectedYearDate.year;
+
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(12.r)),
+            border: Border.all(color: AppColors.greyColor, width: 2.w),
+            color: AppColors.thirdColor,
           ),
-          dropdownColor: AppColors.thirdColor,
-          borderRadius: BorderRadius.circular(12.r),
-          items: yearsToShow.map((int year) {
-            final bool isAvailable = cubit.availableYears.contains(year);
-
-            return DropdownMenuItem<int>(
-              value: year,
-
-              child: Text(
-                year.toString(),
-                style: AppTextStyle.style14W500.copyWith(
-                  color: isAvailable
-                      ? AppColors.forthColor
-                      : Colors.grey.shade400,
-                ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<int>(
+              value: allPossibleYears.contains(dropdownValue)
+                  ? dropdownValue
+                  : null,
+              isExpanded: true,
+              icon: Icon(
+                CupertinoIcons.chevron_down,
+                size: SizeConfig.responsiveValue(phone: 20.r, tablet: 24.r),
+                color: AppColors.darkGreyColor,
               ),
-            );
-          }).toList(),
-          onChanged: (int? newYear) {
-            if (newYear != null && cubit.availableYears.contains(newYear)) {
-              cubit.selectYear(newYear);
-            }
-          },
-        ),
-      ),
+              dropdownColor: AppColors.thirdColor,
+              borderRadius: BorderRadius.circular(12.r),
+
+              items: allPossibleYears.map((int year) {
+                final bool isAvailable = enabledYears.contains(year);
+
+                return DropdownMenuItem<int>(
+                  value: year,
+
+                  child: Text(
+                    year.toString(),
+                    style: AppTextStyle.style14W500.copyWith(
+                      color: isAvailable
+                          ? AppColors.forthColor
+                          : Colors.grey.shade400,
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: (int? newYear) {
+                if (newYear != null && enabledYears.contains(newYear)) {
+                  cubit.selectYear(newYear);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('This year is not available right now'),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -88,9 +136,9 @@ class SingleMonthSelector extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           final monthNumber = index + 1;
-          final monthName = DateFormat.MMM(
-            'en',
-          ).format(DateTime(2000, monthNumber));
+          final monthName = DateFormat.MMM().format(
+            DateTime(2000, monthNumber),
+          );
 
           final isSelected = cubit.selectedMonth == monthNumber;
 

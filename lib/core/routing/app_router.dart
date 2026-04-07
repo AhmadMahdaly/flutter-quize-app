@@ -4,9 +4,9 @@ import 'package:page_transition/page_transition.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/features/SCFHS_score_calculator/scfhs_score_calculator_screen.dart';
-import 'package:smle/features/analysis/analysis_dashboard_screen.dart';
-import 'package:smle/features/analysis/analysis_screen.dart';
-import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
+import 'package:smle/features/analysis/presentation/cubit/analysis_cubit.dart';
+import 'package:smle/features/analysis/presentation/views/analysis_dashboard_screen.dart';
+import 'package:smle/features/analysis/presentation/views/analysis_screen.dart';
 import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/auth/login_screen.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
@@ -47,8 +47,8 @@ import 'package:smle/features/subscription/subscription_screen.dart';
 import 'package:smle/features/support_privacy_policy/cubit/privacy_policy_cubit.dart';
 import 'package:smle/features/support_privacy_policy/privacy_policy_screen.dart';
 import 'package:smle/features/support_privacy_policy/support_screen.dart';
-import 'package:smle/features/view_media_in_app/pdf_viewer_from_url_screen.dart';
-import 'package:smle/features/view_media_in_app/video_player_screen.dart';
+// import 'package:smle/features/view_media_in_app/pdf_viewer_from_url_screen.dart';
+// import 'package:smle/features/view_media_in_app/video_player_screen.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -241,11 +241,6 @@ class AppRouter {
           cubit: getIt<CheckSubscriptionCubit>()..loadSubscription(),
         );
 
-      // case Routes.examResultsPage:
-      //   final results = settings.arguments as FinishAnalysisExamModel;
-      //   return MaterialPageRoute(
-      //     builder: (_) => ExamResultsPage(results: results),
-      //   );
       // case AppRoutes.guestScreen:
       //   return MaterialPageRoute(
       //     builder: (_) => BlocProvider(
@@ -253,18 +248,16 @@ class AppRouter {
       //       child: const GuestMainLayoutScreen(),
       //     ),
       //   );
-      case AppRoutes.pdfViewerFromUrlScreen:
-        final url = settings.arguments as String;
-        return MaterialPageRoute(
-          builder: (_) => PdfViewerFromUrlScreen(pdfUrl: url),
-        );
-      case AppRoutes.videoPlayerScreen:
-        final url = settings.arguments as String;
-        return MaterialPageRoute(
-          builder: (_) => VideoPlayerScreen(videoUrl: url),
-        );
-      // case AppRoutes.trialExamScreen:
-      //   return MaterialPageRoute(builder: (_) => const TrialExamScreen());
+      // case AppRoutes.pdfViewerFromUrlScreen:
+      //   final url = settings.arguments as String;
+      //   return MaterialPageRoute(
+      //     builder: (_) => PdfViewerFromUrlScreen(pdfUrl: url),
+      //   );
+      // case AppRoutes.videoPlayerScreen:
+      //   final url = settings.arguments as String;
+      //   return MaterialPageRoute(
+      //     builder: (_) => VideoPlayerScreen(videoUrl: url),
+      //   );
 
       case AppRoutes.checkoutScreen:
         final data = settings.arguments as Map;

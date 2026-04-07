@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
@@ -9,8 +8,8 @@ import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/no_data_widget.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
-import 'package:smle/features/analysis/cubit/analysis_cubit.dart';
-import 'package:smle/features/analysis/widgets/analysis_chart_widget.dart';
+import 'package:smle/features/analysis/presentation/cubit/analysis_cubit.dart';
+import 'package:smle/features/analysis/presentation/views/widgets/analysis_chart_widget.dart';
 
 class AnalysisScreen extends StatelessWidget {
   const AnalysisScreen({super.key, required this.isExam});
@@ -25,7 +24,7 @@ class AnalysisScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: CustomAppBar(
-          title: 'analysis'.tr(context),
+          title: 'Analysis',
           canBack: !isExam,
           leading: IconButton(
             icon: Icon(
@@ -85,7 +84,7 @@ class AnalysisScreen extends StatelessWidget {
                       if (isExam) 10.verticalSpace,
                       if (!isExam)
                         Text(
-                          'analysis_title'.tr(context),
+                          'This report outlines your strengths and weaknesses across assessed domains to help you understand and improve your performance.',
                           style: AppTextStyle.style14W500.copyWith(
                             color: AppColors.forthColor,
                             fontSize: SizeConfig.responsiveValue(
@@ -97,7 +96,7 @@ class AnalysisScreen extends StatelessWidget {
                       const Divider(),
                       if (!isExam)
                         Text(
-                          'figure1'.tr(context),
+                          'Figure1: Displays your performance in the test domains.',
                           style: AppTextStyle.style14W500.copyWith(
                             color: AppColors.errorColor,
                             fontSize: SizeConfig.responsiveValue(
@@ -124,7 +123,7 @@ class AnalysisScreen extends StatelessWidget {
                                 6.horizontalSpace,
                                 Flexible(
                                   child: Text(
-                                    'your_score'.tr(context),
+                                    'Your score',
                                     overflow: TextOverflow.ellipsis,
                                     style: AppTextStyle.style14W500.copyWith(
                                       color: AppColors.forthColor,
@@ -152,7 +151,7 @@ class AnalysisScreen extends StatelessWidget {
                                 6.horizontalSpace,
                                 Flexible(
                                   child: Text(
-                                    'score_who_passed'.tr(context),
+                                    'Major score of who passed',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     style: AppTextStyle.style14W500.copyWith(
@@ -176,12 +175,12 @@ class AnalysisScreen extends StatelessWidget {
                           data: context
                               .read<AnalysisCubit>()
                               .analysisModel!
-                              .data!,
+                              .data,
                         ),
                       if (isExam)
                         buildDetailedTable(
                           context,
-                          context.read<AnalysisCubit>().analysisModel!.data!,
+                          context.read<AnalysisCubit>().analysisModel!.data,
                         ),
                       if (isExam) 20.verticalSpace,
                       if (isExam)
@@ -236,9 +235,9 @@ class AnalysisScreen extends StatelessWidget {
               }
               // 4. الحالات الأخرى (No Data عامة)
               else {
-                return NoDataWidget(
+                return const NoDataWidget(
                   noDataImage: '',
-                  noDataText: 'no_data_found'.tr(context),
+                  noDataText: 'No Data Found',
                 );
               }
             },

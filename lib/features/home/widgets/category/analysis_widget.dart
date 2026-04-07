@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
@@ -44,7 +43,7 @@ class AnalysisHomeWidget extends StatelessWidget {
           context.pushNamed(AppRoutes.analysisDashboardScreen);
         }
       },
-      categoryName: 'analysis'.tr(context),
+      categoryName: 'Analysis',
       imagePath: Assets.analysisCategory,
     );
   }

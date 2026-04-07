@@ -5,7 +5,7 @@ import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
 import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/helpers/safe_cubit.dart';
-import 'package:smle/features/main%20layout/data/model/gifts_model.dart';
+import 'package:smle/features/gifts/models/gift_model.dart';
 import 'package:smle/features/main%20layout/data/model/profile_model.dart';
 import 'package:smle/features/main%20layout/data/repo/main_layout_repo.dart';
 
@@ -49,7 +49,7 @@ class MainLayoutCubit extends SafeCubit<MainLayoutState> {
 
   clearDataOnLogOut() async {
     profileModel = null;
-    giftsModel = null;
+    giftsResponse = null;
 
     mainLayoutInitialScreenIndex = 1;
     await CacheHelper.sharedPreferences.remove(CacheKeys.userToken);
@@ -58,19 +58,48 @@ class MainLayoutCubit extends SafeCubit<MainLayoutState> {
   }
 
   /// Get Gifts
-  GiftsModel? giftsModel;
-  Future getGifts() async {
-    showLoading();
-    emit(GetGiftsLoadingState());
-    final result = await _mainLayoutRepository.getGifts();
+  InvoicesResponseModel? giftsResponse;
+
+  List<InvoiceModel> gifts = [];
+
+  int currentPage = 1;
+  int lastPage = 1;
+
+  bool isLoadingMore = false;
+  Future<void> getGifts({bool isLoadMore = false}) async {
+    if (isLoadingMore) return;
+
+    if (isLoadMore && currentPage > lastPage) return;
+    if (isLoadMore) {
+      if (isLoadingMore) return; // الحل هنا
+      if (currentPage > lastPage) return;
+
+      isLoadingMore = true;
+      emit(GetGiftsLoadMoreState());
+    } else {
+      currentPage = 1;
+      gifts.clear();
+      emit(GetGiftsLoadingState());
+    }
+
+    final result = await _mainLayoutRepository.getGifts(currentPage);
+
     result.when(
-      success: (success) {
-        giftsModel = success;
-        hideLoading();
+      success: (response) {
+        giftsResponse = response;
+
+        lastPage = response.meta?.lastPage ?? 1;
+
+        gifts.addAll(response.data);
+
+        currentPage++;
+
+        isLoadingMore = false;
+
         emit(GetGiftsSuccessState());
       },
       failure: (error) {
-        hideLoading();
+        isLoadingMore = false;
         emit(GetGiftsFailedState());
       },
     );

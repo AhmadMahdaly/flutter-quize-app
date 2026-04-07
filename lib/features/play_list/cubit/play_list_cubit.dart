@@ -4,7 +4,6 @@ import 'package:smle/core/helpers/loading.dart';
 import 'package:smle/core/helpers/safe_cubit.dart';
 import 'package:smle/features/play_list/data/model/play_list_model.dart';
 import 'package:smle/features/play_list/data/repo/play_list_repo.dart';
-import 'package:smle/features/q_bank/data/model/q_bank_model.dart';
 
 part 'play_list_state.dart';
 
@@ -71,7 +70,6 @@ class PlayListCubit extends SafeCubit<PlayListStates> {
     );
   }
 
-
   /// Edit PlayList
   Future<void> editPlayList(String playListId, String playListName) async {
     showLoading();
@@ -92,10 +90,14 @@ class PlayListCubit extends SafeCubit<PlayListStates> {
       },
     );
   }
+
   Future<void> addToPlayList(String playListId, String questionId) async {
     showLoading();
     emit(AddToPlayListLoadingState());
-    final result = await _playListRepository.addToPlayList(playListId, questionId);
+    final result = await _playListRepository.addToPlayList(
+      playListId,
+      questionId,
+    );
     result.when(
       success: (success) {
         hideLoading();
@@ -108,21 +110,25 @@ class PlayListCubit extends SafeCubit<PlayListStates> {
       },
     );
   }
-  Future<void> removeFromPlayList(String playListId, String questionId, {int? offset}) async {
+
+  Future<void> removeFromPlayList(
+    String playListId,
+    String questionId, {
+    int? offset,
+  }) async {
     showLoading();
     emit(RemoveFromPlayListLoadingState());
-    final result = await _playListRepository.removeFromPlayList(playListId, questionId);
+    final result = await _playListRepository.removeFromPlayList(
+      playListId,
+      questionId,
+    );
     result.when(
       success: (success) {
         hideLoading();
         emit(RemoveFromPlayListSuccessState());
         getPlayList();
         if (offset != null) {
-          getPlayListDetails(
-            playlistId: playListId,
-            limit: 1,
-            offset: offset,
-          );
+          getPlayListDetails(playlistId: playListId);
         }
       },
       failure: (error) {
@@ -132,19 +138,19 @@ class PlayListCubit extends SafeCubit<PlayListStates> {
     );
   }
 
-  QBankModel? playListQuestionsModel; // غير إلى QBankModel للأسئلة
+  // QBankModel? playListQuestionsModel; // غير إلى QBankModel للأسئلة
+  // تغيير نوع الموديل من QBankModel إلى الموديل الجديد
+  PlaylistQuestionsResponse? playListQuestionsModel;
 
   Future<void> getPlayListDetails({
     required String playlistId,
-    int limit = 1,
-    int offset = 0,
+    int page = 1, // تغيير إلى page
   }) async {
     showLoading();
     emit(GetPlayListDetailsLoadingState());
     final result = await _playListRepository.getPlayListDetails(
       playlistId: playlistId,
-      limit: limit,
-      offset: offset,
+      page: page,
     );
     result.when(
       success: (success) {
@@ -155,6 +161,24 @@ class PlayListCubit extends SafeCubit<PlayListStates> {
       failure: (error) {
         hideLoading();
         emit(GetPlayListDetailsFailedState());
+      },
+    );
+  }
+
+  Future<void> addQuestionNote(String note, int questionId) async {
+    emit(AddNoteLoadingState());
+
+    final result = await _playListRepository.addQBankNote(
+      questionId: questionId,
+      note: note,
+    );
+
+    result.when(
+      success: (success) {
+        emit(AddNoteSuccessState('Note added successfully'));
+      },
+      failure: (error) {
+        emit(AddNoteFailureState(error.errMessage));
       },
     );
   }

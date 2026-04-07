@@ -13,6 +13,52 @@ part 'q_bank_state.dart';
 class QBankCubit extends SafeCubit<QBankStates> {
   QBankCubit(this._qBankRepository) : super(QBankInitialState());
   final QBankRepository _qBankRepository;
+  bool get areAllCategoriesSelected =>
+      (categoriesModel?.data?.isNotEmpty ?? false) &&
+      selectedCategoryIds.length == categoriesModel!.data!.length;
+
+  bool get areAllSubCategoriesSelected =>
+      aggregatedSubcategories.isNotEmpty &&
+      selectedSubCategoryIds.length == aggregatedSubcategories.length;
+
+  bool get isMonthValid =>
+      isAllYearsSelected || isAllMonthsSelected || selectedMonths.isNotEmpty;
+
+  bool get isQuestionCountValid {
+    final count = int.tryParse(numberOfQuestionsController.text) ?? 0;
+    return numberOfQuestionsController.text.isNotEmpty &&
+        count > 0 &&
+        count <= questionsCount;
+  }
+
+  bool get canStartQuiz =>
+      selectedSubCategoryIds.isNotEmpty && isQuestionCountValid && isMonthValid;
+
+  // 2. تعديل دالة getYears لضبط السنة الافتراضية تلقائياً
+  Future getYears() async {
+    showLoading();
+    emit(GetYearsLoadingState());
+    final result = await _qBankRepository.getYears();
+    result.when(
+      success: (success) {
+        yearsModel = success;
+
+        // -- التعديل هنا: ضبط السنة الافتراضية إذا لم تكن السنة الحالية متاحة --
+        if (availableYears.isNotEmpty &&
+            !availableYears.contains(selectedYearDate.year)) {
+          selectedYearDate = DateTime(availableYears.first);
+        }
+
+        hideLoading();
+        emit(GetYearsSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetYearsFailedState());
+      },
+    );
+  }
+
   DateTime selectedYearDate = DateTime.now();
 
   bool isAllMonthsSelected = false;
@@ -40,9 +86,9 @@ class QBankCubit extends SafeCubit<QBankStates> {
 
   QBankModel? qBankModel;
 
-  Future<void> init() async {
-    _qBankRepository.init();
-  }
+  // Future<void> init() async {
+  //   _qBankRepository.init();
+  // }
 
   void setQuizModel(QBankModel model) {
     qBankModel = model;
@@ -157,22 +203,22 @@ class QBankCubit extends SafeCubit<QBankStates> {
   }
 
   YearsModel? yearsModel;
-  Future getYears() async {
-    showLoading();
-    emit(GetYearsLoadingState());
-    final result = await _qBankRepository.getYears();
-    result.when(
-      success: (success) {
-        yearsModel = success;
-        hideLoading();
-        emit(GetYearsSuccessState());
-      },
-      failure: (error) {
-        hideLoading();
-        emit(GetYearsFailedState());
-      },
-    );
-  }
+  // Future getYears() async {
+  //   showLoading();
+  //   emit(GetYearsLoadingState());
+  //   final result = await _qBankRepository.getYears();
+  //   result.when(
+  //     success: (success) {
+  //       yearsModel = success;
+  //       hideLoading();
+  //       emit(GetYearsSuccessState());
+  //     },
+  //     failure: (error) {
+  //       hideLoading();
+  //       emit(GetYearsFailedState());
+  //     },
+  //   );
+  // }
   // --- أضف هذه الدوال (Getters) داخل الكيوبت ---
 
   // استخراج السنوات المتاحة بدون تكرار وترتيبها تنازلياً (الأحدث أولاً)

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
@@ -25,12 +24,6 @@ class CreateQuizScreen extends StatefulWidget {
 
 class _CreateQuizScreenState extends State<CreateQuizScreen> {
   @override
-  void initState() {
-    context.read<QBankCubit>().init();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final cubit = context.read<QBankCubit>();
 
@@ -38,36 +31,12 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
       resizeToAvoidBottomInset: true,
       appBar: widget.istrial ?? false
           ? const CustomAppBar(title: 'Free Trial quiz', canBack: false)
-          : CustomAppBar(title: 'create_quiz'.tr(context)),
+          : const CustomAppBar(title: 'Create quiz'),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
           child: BlocBuilder<QBankCubit, QBankStates>(
             builder: (context, state) {
-              final bool areAllCategoriesSelected =
-                  (cubit.categoriesModel?.data?.isNotEmpty ?? false) &&
-                  cubit.selectedCategoryIds.length ==
-                      cubit.categoriesModel!.data!.length;
-
-              final bool areAllSubCategoriesSelected =
-                  cubit.aggregatedSubcategories.isNotEmpty &&
-                  cubit.selectedSubCategoryIds.length ==
-                      cubit.aggregatedSubcategories.length;
-
-              final bool isQuestionCountValid =
-                  cubit.numberOfQuestionsController.text.isNotEmpty &&
-                  (int.tryParse(cubit.numberOfQuestionsController.text) ?? 0) >
-                      0 &&
-                  (int.tryParse(cubit.numberOfQuestionsController.text) ?? 0) <=
-                      cubit.questionsCount;
-              final bool isMonthValid =
-                  cubit.isAllYearsSelected ||
-                  cubit.isAllMonthsSelected ||
-                  cubit.selectedMonths.isNotEmpty;
-              final bool canStartQuiz =
-                  cubit.selectedSubCategoryIds.isNotEmpty &&
-                  isQuestionCountValid &&
-                  isMonthValid;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -121,8 +90,9 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   12.verticalSpace,
                   _buildSectionHeader(
                     context,
-                    title: 'specialty'.tr(context),
-                    isAllSelected: areAllCategoriesSelected,
+                    title: 'Specialty',
+                    isAllSelected:
+                        cubit.areAllCategoriesSelected, // استخدام الـ Getter
                     isEnabled: cubit.categoriesModel?.data?.isNotEmpty ?? false,
                     onSelectAllChanged: (value) {
                       cubit.selectAllCategories(value ?? false);
@@ -132,7 +102,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   if (cubit.categoriesModel != null)
                     SpecialtyList(cubit: cubit)
                   else
-                    const Center(child: CircularProgressIndicator()),
+                    const Center(child: LinearProgressIndicator()),
                   20.verticalSpace,
                   // _buildSectionHeader(
                   //   context,
@@ -145,12 +115,12 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   // ),
                   // 10.verticalSpace,
                   if (state is GetSubCategoriesLoadingState)
-                    const Center(child: CircularProgressIndicator())
+                    const Center(child: LinearProgressIndicator())
                   else if (cubit.selectedCategoryIds.isNotEmpty &&
                       cubit.aggregatedSubcategories.isEmpty)
                     Center(
                       child: Text(
-                        'not_found_sub_specialty'.tr(context),
+                        'Not found Sub Specialty',
                         style: AppTextStyle.style14W500.copyWith(
                           color: AppColors.darkGreyColor,
                         ),
@@ -165,18 +135,19 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'sub_specialty'.tr(context),
+                            'Sub Specialty',
                             style: AppTextStyle.style16W700.copyWith(),
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'select_all'.tr(context),
+                                'Select all',
                                 style: AppTextStyle.style14W500.copyWith(),
                               ),
                               Checkbox(
-                                value: areAllSubCategoriesSelected,
+                                value: cubit
+                                    .areAllSubCategoriesSelected, // استخدام الـ Getter
                                 onChanged:
                                     cubit.aggregatedSubcategories.isNotEmpty
                                     ? (value) => cubit.selectAllSubCategories(
@@ -200,7 +171,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                     collapsedIconColor: AppColors.forthColor,
                     iconColor: AppColors.forthColor,
                     title: Text(
-                      'selected_items'.tr(context),
+                      'Selected items',
                       style: AppTextStyle.style14W700.copyWith(
                         fontSize: SizeConfig.responsiveValue(
                           phone: 16.sp,
@@ -213,7 +184,9 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   16.verticalSpace,
                   Center(
                     child: GestureDetector(
-                      onTap: canStartQuiz
+                      onTap:
+                          cubit
+                              .canStartQuiz // استخدام الـ Getter
                           ? () {
                               cubit.getQuestions().then((_) {
                                 if (cubit.qBankModel != null &&
@@ -236,9 +209,11 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                             }
                           : null,
                       child: Opacity(
-                        opacity: canStartQuiz ? 1.0 : 0.2,
-                        child: QuestionButtonWidget(
-                          text: 'start_quiz'.tr(context),
+                        opacity: cubit.canStartQuiz
+                            ? 1.0
+                            : 0.2, // استخدام الـ Getter
+                        child: const CustomQuestionButtonWidget(
+                          text: 'Start quiz',
                         ),
                       ),
                     ),
@@ -272,10 +247,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              'select_all'.tr(context),
-              style: AppTextStyle.style14W500.copyWith(),
-            ),
+            Text('Select all', style: AppTextStyle.style14W500.copyWith()),
             Checkbox(
               value: isAllSelected,
               onChanged: isEnabled ? onSelectAllChanged : null,
@@ -372,7 +344,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                         (int.tryParse(cubit.numberOfQuestionsController.text) ??
                                 0) >
                             cubit.questionsCount)
-                    ? 'error_max_questions'.tr(context)
+                    ? 'Error: Max questions'
                     : null,
               ),
               onChanged: (value) {

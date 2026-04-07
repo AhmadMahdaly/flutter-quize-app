@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 
 int mainLayoutInitialScreenIndex = 1;
 
-final navigatorKey = GlobalKey<NavigatorState>();
+// final navigatorKey = GlobalKey<NavigatorState>();
 
-const String firstTimeRun = 'first_time_run';
+// const String firstTimeRun = 'first_time_run';
 
 const kPrimaryEnFont = 'roboto';
 const kPrimaryArFont = 'Inter';

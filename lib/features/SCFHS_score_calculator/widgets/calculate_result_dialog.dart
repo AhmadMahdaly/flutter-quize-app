@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/helpers/app_localization.dart';
+import 'package:smle/core/helpers/launch_url.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -50,7 +51,7 @@ class CalculateResultDialog extends StatelessWidget {
                 ),
                 60.verticalSpace,
                 Text(
-                  'your_score'.tr(context),
+                  'Your score',
                   style: AppTextStyle.style14W700.copyWith(
                     fontSize: SizeConfig.responsiveValue(
                       phone: 16.sp,
@@ -77,7 +78,8 @@ class CalculateResultDialog extends StatelessWidget {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: 'more_info_calculate'.tr(context),
+                          text:
+                              'For more information, please visit the Saudi Commission for Health Specialties official website ',
                           style: AppTextStyle.style14W500.copyWith(
                             fontSize: SizeConfig.responsiveValue(
                               phone: 14.sp,
@@ -86,7 +88,11 @@ class CalculateResultDialog extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: 'here'.tr(context),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              await launchURL('https://scfhs.org.sa/en');
+                            },
+                          text: 'here',
                           style: AppTextStyle.style14W500.copyWith(
                             color: AppColors.blueColor,
                             fontSize: SizeConfig.responsiveValue(

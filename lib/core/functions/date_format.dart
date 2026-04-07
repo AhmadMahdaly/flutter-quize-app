@@ -24,7 +24,9 @@ String formatDate2(String dateTimeString) {
 
 String formatDateTime(String inputDateTime) {
   // Parse the input string into DateTime
-  final DateTime parsedDateTime = DateFormat('yyyy-MM-dd hh:mm:ss a').parse(inputDateTime);
+  final DateTime parsedDateTime = DateFormat(
+    'yyyy-MM-dd hh:mm:ss a',
+  ).parse(inputDateTime);
 
   final String formattedTime = DateFormat('hh:mm a').format(parsedDateTime);
   return formattedTime;
@@ -45,4 +47,19 @@ String getCurrentTime() {
   final String formattedTime = DateFormat('HH:mm:ss').format(now);
 
   return formattedTime;
+}
+
+int calculateRemainingDaysFromString(String dateString) {
+  final parts = dateString.split(' ');
+
+  final day = int.parse(parts[0]);
+  final month = int.parse(parts[1]);
+  final year = int.parse(parts[2]);
+
+  final nowUtc = DateTime.now().toUtc();
+  final expireDateUtc = DateTime.utc(year, month, day);
+
+  final todayUtc = DateTime.utc(nowUtc.year, nowUtc.month, nowUtc.day);
+
+  return expireDateUtc.difference(todayUtc).inDays;
 }

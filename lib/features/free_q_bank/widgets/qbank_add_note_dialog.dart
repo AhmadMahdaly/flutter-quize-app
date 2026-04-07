@@ -53,7 +53,10 @@ class _QBankAddNoteDialogState extends State<QBankAddNoteDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Add Note to Question', style: AppTextStyle.style16Bold),
+                Text(
+                  'Send Notes To Admin for this Question',
+                  style: AppTextStyle.style16Bold,
+                ),
                 12.verticalSpace,
                 CustomPrimaryTextfield(
                   maxLines: 7,

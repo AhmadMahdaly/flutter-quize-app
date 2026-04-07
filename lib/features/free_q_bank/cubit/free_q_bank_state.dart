@@ -69,3 +69,9 @@ class AddNoteFailureState extends FreeQBankStates {
   AddNoteFailureState(this.error);
   final String error;
 }
+
+class GetYearsLoadingState extends FreeQBankStates {}
+
+class GetYearsSuccessState extends FreeQBankStates {}
+
+class GetYearsFailedState extends FreeQBankStates {}
