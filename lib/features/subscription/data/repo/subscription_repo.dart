@@ -42,7 +42,8 @@ class SubscriptionRepository {
   }) async {
     try {
       final response = await _dioFactory.post(
-        endPoint: EndPoints.getYourCheckout, // تأكد من المسار الصحيح في EndPoints
+        endPoint:
+            EndPoints.getYourCheckout, // تأكد من المسار الصحيح في EndPoints
         data: {'offer_id': offerId, 'code': code},
       );
       if (response!.statusCode == 200) {

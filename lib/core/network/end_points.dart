@@ -48,8 +48,8 @@ class EndPoints {
   static const String startFreeQBank = 'free-trial/start';
   static const String getFreeQBankCount = 'free-trial/filter';
   static const String createFreeQBank = 'free-trial/create';
-   static const String freeTrialYears = 'free-trial/years';
-   static const String freeTrialMonths = 'free-trial/months';
+  static const String freeTrialYears = 'free-trial/years';
+  static const String freeTrialMonths = 'free-trial/months';
 
   /// ? Real Exam
   static const String startRealExam = 'start/real/exam';
