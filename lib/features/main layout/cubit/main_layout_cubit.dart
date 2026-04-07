@@ -1,5 +1,7 @@
 // ignore_for_file: strict_top_level_inference
 
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
@@ -34,6 +36,26 @@ class MainLayoutCubit extends SafeCubit<MainLayoutState> {
     showLoading();
     emit(GetProfileLoadingState());
     final result = await _mainLayoutRepository.getProfile();
+    result.when(
+      success: (success) {
+        profileModel = success;
+        hideLoading();
+        emit(GetProfileSuccessState());
+      },
+      failure: (error) {
+        hideLoading();
+        emit(GetProfileFailedState());
+      },
+    );
+  }
+
+  Future updateProfile({required String name, File? photo}) async {
+    showLoading();
+    emit(GetProfileLoadingState());
+
+    // تمرير الاسم والصورة
+    final result = await _mainLayoutRepository.updateProfile(name, photo);
+
     result.when(
       success: (success) {
         profileModel = success;

@@ -92,7 +92,7 @@ class CustomPrimaryTextfield extends StatelessWidget {
   OutlineInputBorder customOutlineInputBorder() {
     return OutlineInputBorder(
       gapPadding: 0,
-      borderRadius: BorderRadius.circular(8.r),
+      borderRadius: BorderRadius.circular(12.r),
       borderSide: const BorderSide(
         width: 0.50,
         strokeAlign: BorderSide.strokeAlignOutside,

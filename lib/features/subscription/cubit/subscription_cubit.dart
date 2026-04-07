@@ -115,11 +115,12 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
   }
 
   late webview_flutter.WebViewController webViewController;
-  Future<void> startPayMobPayment(
+  Future<void> startPayment(
     BuildContext context,
     int offerId,
     double amount,
     String? code,
+    String paymentMethod, // إضافة المتغير هنا
   ) async {
     emit(PurchaseLoadingState());
     showLoading();
@@ -138,6 +139,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       offerId: offerId,
       amountCents: amountCents,
       billingData: billingData,
+      paymentMethod: paymentMethod, // تمرير المتغير للـ Repo
       code: code,
     );
 
@@ -513,6 +515,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
     int offerId,
     double amount,
     String? code,
+    String paymentMethod, // إضافة المتغير هنا
   ) async {
     if (currentReceiverId == null) {
       emit(PurchaseFailedState('Please verify email first'));
@@ -532,6 +535,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
       payerEmail: profileModel?.data?.email ?? '',
       payerPhone: '01000000000',
       code: code,
+      paymentMethod: paymentMethod, // إرسال المتغير للـ Repo
     );
 
     hideLoading();

@@ -60,6 +60,7 @@ class SubscriptionRepository {
     required int offerId,
     required double amountCents,
     required Map<String, dynamic> billingData,
+    required String paymentMethod, // إضافة المتغير هنا
     String? code,
   }) async {
     try {
@@ -69,6 +70,7 @@ class SubscriptionRepository {
           'offer_id': offerId,
           'amount_cents': amountCents,
           'billing_data': billingData,
+          'payment_method': paymentMethod, // إرساله للباك إند هنا
           'code': code,
         },
       );
@@ -203,6 +205,8 @@ class SubscriptionRepository {
     required String payerName,
     required String payerEmail,
     required String payerPhone,
+    required String paymentMethod, // إضافة المتغير هنا
+
     String? code,
   }) async {
     try {
@@ -215,7 +219,7 @@ class SubscriptionRepository {
           'payer_name': payerName,
           'payer_email': payerEmail,
           'payer_phone': payerPhone,
-          'code': code,
+          'code': code, 'payment_method': paymentMethod, // إرساله للباك إند هنا
         },
       );
 

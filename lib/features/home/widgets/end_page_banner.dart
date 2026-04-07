@@ -19,7 +19,7 @@ class EndPageBanner extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: AppColors.primaryColor,
-            borderRadius: BorderRadius.all(Radius.circular(100.r)),
+            borderRadius: BorderRadius.all(Radius.circular(12.r)),
           ),
           child: GestureDetector(
             onTap: () {

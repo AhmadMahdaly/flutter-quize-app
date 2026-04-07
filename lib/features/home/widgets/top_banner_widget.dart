@@ -12,7 +12,7 @@ class TopBannerWidget extends StatelessWidget {
       width: SizeConfig.screenWidth,
       decoration: BoxDecoration(
         color: AppColors.darkGreyColor,
-        borderRadius: BorderRadius.all(Radius.circular(100.r)),
+        borderRadius: BorderRadius.all(Radius.circular(12.r)),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/shared_widgets/custom_cache_image.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
@@ -12,28 +12,22 @@ class UserImageNameWidget extends StatelessWidget {
     required this.imagePath,
     required this.points,
   });
-  final String name, email, imagePath, points;
+  final String name, email, points;
+  final String? imagePath;
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: AppColors.darkGreyColor, width: 1.r),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: CircleAvatar(
-            radius: SizeConfig.responsiveValue(phone: 24.r, tablet: 20.r),
-            backgroundColor: AppColors.greyColor,
-            child: Image(
-              image: imagePath.contains('png')
-                  ? AssetImage(imagePath)
-                  : imagePath.isEmpty
-                  ? const AssetImage(Assets.user)
-                  : NetworkImage(imagePath) as ImageProvider,
-            ),
-          ),
+        CircleAvatar(
+          radius: 25.r,
+          backgroundColor: Colors.grey[200],
+
+          child: (imagePath == null || imagePath!.isEmpty)
+              ? Icon(Icons.person, size: 25.r, color: Colors.grey)
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(320.r),
+                  child: CustomCacheImageWidget(imageUrl: imagePath!),
+                ),
         ),
 
         15.horizontalSpace,

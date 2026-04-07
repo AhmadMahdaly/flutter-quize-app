@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
-import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/home/widgets/category/base_category_widget.dart';
 import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
 import 'package:smle/features/subscription/data/model/packages_model.dart';
 import 'package:smle/features/subscription/widgets/pay_done_dialog.dart';
@@ -48,7 +48,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               barrierDismissible: false,
               builder: (context) => const PayDoneDialog(title: 'Done'),
             );
-            // Navigator.pop(context);
           } else if (state is PurchaseFailedState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -71,11 +70,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           final offerPrice = cubit.checkoutData?.data?.offerPrice;
           final offerPriceBefore =
               cubit.checkoutData?.data?.priceBeforeDiscount;
-          // final totalAfterCode = data?.totalAfterCodeDiscount ?? 0;
 
-          // final pointsDiscount = (data?.deductedPoints ?? 0) / 100;
-
-          // final finalPrice = totalAfterCode - pointsDiscount;
           return Padding(
             padding: EdgeInsets.all(20.w),
             child: Column(
@@ -148,19 +143,85 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ],
 
                 const Spacer(),
-                CustomPrimaryButton(
-                  text:
-                      'Pay Now (${cubit.finalPayment.toStringAsFixed(2)} SAR)',
-                  onPressed: () {
-                    if (data != null) {
-                      cubit.startPayMobPayment(
-                        context,
-                        data.offerId!,
-                        cubit.finalPayment,
-                        codeController.text,
-                      );
-                    }
-                  },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Pay via:',
+                      style: AppTextStyle.style16Bold.copyWith(
+                        color: AppColors.iconColorGray,
+                      ),
+                    ),
+                    8.verticalSpace,
+                    CategoryPaymentWidget(
+                      imagePath: null,
+                      onTap: () {
+                        if (data != null) {
+                          cubit.startPayment(
+                            context,
+                            data.offerId!,
+                            cubit.finalPayment,
+                            codeController.text,
+                            'paymob',
+                          );
+                        }
+                      },
+                    ),
+                    Center(
+                      child: Row(
+                        children: [
+                          const Expanded(child: Divider()),
+                          Padding(
+                            padding: EdgeInsets.all(6.r),
+                            child: Text(
+                              ' Or ',
+                              style: AppTextStyle.style14W500.copyWith(),
+                            ),
+                          ),
+                          const Expanded(child: Divider()),
+                        ],
+                      ),
+                    ),
+
+                    Row(
+                      children: [
+                        // Expanded(
+                        //   child: CategoryPaymentWidget(
+                        //     imagePath: 'assets/images/png/Tabby-logo.png',
+                        //     onTap: () {
+                        //       if (data != null) {
+                        //         cubit.startPayment(
+                        //           context,
+                        //           data.offerId!,
+                        //           cubit.finalPayment,
+                        //           codeController.text,
+                        //           'tabby',
+                        //         );
+                        //       }
+                        //     },
+                        //   ),
+                        // ),
+                        // 8.horizontalSpace,
+                        Expanded(
+                          child: CategoryPaymentWidget(
+                            imagePath: 'assets/images/png/tamara-1.png',
+                            onTap: () {
+                              if (data != null) {
+                                cubit.startPayment(
+                                  context,
+                                  data.offerId!,
+                                  cubit.finalPayment,
+                                  codeController.text,
+                                  'tamara',
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    12.verticalSpace,
+                  ],
                 ),
               ],
             ),

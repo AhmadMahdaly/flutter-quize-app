@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/custom_cache_image.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/core/shared_widgets/powered_by_widget.dart';
@@ -118,17 +120,66 @@ class ProfileScreen extends StatelessWidget {
                                   children: [
                                     Row(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          CrossAxisAlignment.center,
                                       children: [
+                                        CircleAvatar(
+                                          radius: 25.r,
+                                          backgroundColor: Colors.grey[200],
+                                          // backgroundImage:
+                                          //     (data.photo != null &&
+                                          //         data.photo!.isNotEmpty)
+                                          //     ?
+                                          //     : null,
+                                          child:
+                                              (data.photo == null ||
+                                                  data.photo!.isEmpty)
+                                              ? Icon(
+                                                  Icons.person,
+                                                  size: 25.r,
+                                                  color: Colors.grey,
+                                                )
+                                              : ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        320.r,
+                                                      ),
+                                                  child: CustomCacheImageWidget(
+                                                    imageUrl: data.photo!,
+                                                  ),
+                                                ),
+                                        ),
+
+                                        12.horizontalSpace,
                                         Expanded(
                                           child: Text(
                                             '${data.name}',
-                                            style: AppTextStyle.style18Bold
-                                                .copyWith(),
+                                            style: AppTextStyle.style18Bold,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
+
+                                        12.horizontalSpace,
+                                        InkWell(
+                                          borderRadius: BorderRadius.circular(
+                                            50.r,
+                                          ),
+                                          onTap: () async {
+                                            await context.pushNamed(
+                                              AppRoutes.updateProfileScreen,
+                                            );
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsets.all(8.r),
+                                            child: Icon(
+                                              CupertinoIcons.settings_solid,
+                                              size: 20.r,
+                                              color: AppColors.primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                        12.horizontalSpace,
+
                                         Center(
                                           child: InkWell(
                                             borderRadius: BorderRadius.circular(
@@ -325,6 +376,7 @@ class ProfileScreen extends StatelessWidget {
                                       );
                                     },
                                   ),
+
                                   ProfileButtonWidget(
                                     text: 'Privacy Policy',
                                     imagePath: Icons.lock_outlined,
@@ -334,6 +386,15 @@ class ProfileScreen extends StatelessWidget {
                                       );
                                     },
                                   ),
+                                  // ProfileButtonWidget(
+                                  //   text: 'Edit Account',
+                                  //   imagePath: Icons.verified_user_outlined,
+                                  //   onPressed: () async {
+                                  //     await context.pushNamed(
+                                  //       AppRoutes.updateProfileScreen,
+                                  //     );
+                                  //   },
+                                  // ),
                                   ProfileButtonWidget(
                                     text: 'Delete account',
                                     imagePath: Icons.delete_outline_rounded,

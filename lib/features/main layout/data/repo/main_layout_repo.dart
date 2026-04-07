@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:smle/core/cache_helper/cache_helper.dart';
 import 'package:smle/core/cache_helper/cache_values.dart';
@@ -16,6 +18,56 @@ class MainLayoutRepository {
   Future<ApiResult<ProfileModel>> getProfile() async {
     try {
       final response = await _dioFactory.get(endPoint: EndPoints.profile);
+      if (response!.statusCode == 200) {
+        final ProfileModel model = ProfileModel.fromJson(response.data);
+        await CacheHelper.saveData(
+          key: CacheKeys.userId,
+          value: model.data!.id!,
+        );
+
+        return ApiResult.success(model);
+      } else {
+        debugPrintWidget(response.data['message']);
+        return ApiResult.failure(
+          ServerFailure.fromResponse(
+            response.statusCode,
+            response.data['message'],
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+    }
+  }
+
+  Future<ApiResult<ProfileModel>> updateProfile(
+    String name,
+    File? photo,
+  ) async {
+    try {
+      // 1. استخدام FormData لإرسال الملفات مع النصوص
+      final FormData formData = FormData.fromMap({'name': name});
+
+      // 2. إضافة الصورة إذا قام المستخدم باختيارها
+      if (photo != null) {
+        formData.files.add(
+          MapEntry(
+            'photo', // تأكد أن هذا المفتاح يطابق ما يتوقعه الباك إند
+            await MultipartFile.fromFile(
+              photo.path,
+              filename: photo.path.split('/').last,
+            ),
+          ),
+        );
+      }
+
+      final response = await _dioFactory.post(
+        endPoint: EndPoints.updateProfile,
+        data: formData, // إرسال formData بدلاً من الـ Map العادي
+      );
+
       if (response!.statusCode == 200) {
         final ProfileModel model = ProfileModel.fromJson(response.data);
         await CacheHelper.saveData(

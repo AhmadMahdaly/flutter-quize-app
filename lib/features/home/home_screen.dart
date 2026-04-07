@@ -62,11 +62,11 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const UserAndPointsHeaderWidget(),
-                    32.verticalSpace,
-                    const TopBannerWidget(),
                     20.verticalSpace,
+                    const TopBannerWidget(),
+                    12.verticalSpace,
                     Text('Top Category', style: AppTextStyle.style18Bold),
-                    16.verticalSpace,
+                    8.verticalSpace,
 
                     Row(
                       spacing: 8.w,
@@ -81,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
 
-                    10.verticalSpace,
+                    8.verticalSpace,
 
                     Row(
                       spacing: 8.w,

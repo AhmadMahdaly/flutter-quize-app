@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
-import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/features/home/widgets/category/base_category_widget.dart';
 import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
 import 'package:smle/features/subscription/widgets/pay_done_dialog.dart';
 
@@ -21,8 +21,12 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
   int? selectedPackageId;
   bool isEmailVerified = false;
   bool _isAutoPaying = false;
+
+  String? _pendingPaymentMethod;
+
   final TextEditingController codeController = TextEditingController();
   late SubscriptionCubit cubit;
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +42,33 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
     super.dispose();
   }
 
+  void _handleGiftPayment(String paymentMethod) {
+    final packages = (cubit.packagesModel?.data ?? [])
+      ..sort((a, b) => (a.price ?? 0).compareTo(b.price ?? 0));
+    final selectedPkg = packages.firstWhere((p) => p.id == selectedPackageId);
+
+    final double finalAmount =
+        (cubit.giftCheckoutData?.data?.totalAfterCodeDiscount != null)
+        ? cubit.giftCheckoutData!.data!.totalAfterCodeDiscount!.toDouble()
+        : (selectedPkg.price?.toDouble() ?? 0.0);
+
+    if (isEmailVerified) {
+      cubit.startGiftPaymentFlow(
+        context,
+        selectedPkg.id!,
+        finalAmount,
+        codeController.text,
+        paymentMethod,
+      );
+    } else {
+      setState(() {
+        _isAutoPaying = true;
+        _pendingPaymentMethod = paymentMethod;
+      });
+      cubit.checkGiftEmail(selectedPackageId!, emailController.text);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +76,9 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
       body: BlocConsumer<SubscriptionCubit, SubscriptionStates>(
         listener: (context, state) {
           if (state is CheckEmailSuccessState) {
-            if (_isAutoPaying && selectedPackageId != null) {
+            if (_isAutoPaying &&
+                selectedPackageId != null &&
+                _pendingPaymentMethod != null) {
               final selectedPkg = cubit.packagesModel?.data?.firstWhere(
                 (p) => p.id == selectedPackageId,
               );
@@ -63,14 +96,22 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                   selectedPkg.id!,
                   finalAmount,
                   codeController.text,
+                  _pendingPaymentMethod!,
                 );
               }
-              setState(() => _isAutoPaying = false);
+              setState(() {
+                _isAutoPaying = false;
+                isEmailVerified = true;
+                _pendingPaymentMethod = null;
+              });
+            } else {
+              setState(() => isEmailVerified = true);
             }
           } else if (state is CheckEmailFailedState) {
             setState(() {
               isEmailVerified = false;
               _isAutoPaying = false;
+              _pendingPaymentMethod = null;
             });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -91,17 +132,6 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
           final packages = (cubit.packagesModel?.data ?? [])
             ..sort((a, b) => (a.price ?? 0).compareTo(b.price ?? 0));
           final data = cubit.giftCheckoutData?.data;
-
-          double displayPrice = 0.0;
-          if (selectedPackageId != null) {
-            final selectedPkg = packages
-                .where((p) => p.id == selectedPackageId)
-                .firstOrNull;
-
-            displayPrice = (data?.totalAfterCodeDiscount != null)
-                ? data!.totalAfterCodeDiscount!.toDouble()
-                : (selectedPkg?.price?.toDouble() ?? 0.0);
-          }
 
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
@@ -168,7 +198,6 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                               priceBeforeDiscount > priceInSAR) ...[
                             Text(
                               textAlign: TextAlign.end,
-
                               '$priceBeforeDiscount SAR',
                               style: AppTextStyle.style12Bold.copyWith(
                                 color: AppColors.darkGreyColor,
@@ -180,7 +209,6 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                             SizedBox(width: 8.w),
                             Text(
                               textAlign: TextAlign.end,
-
                               '$priceInSAR SAR',
                               style: AppTextStyle.style12Bold.copyWith(
                                 color: AppColors.greenColor,
@@ -201,7 +229,6 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                   }).toList(),
                   onChanged: (val) {
                     selectedPackageId = val;
-
                     setState(() {});
                   },
                 ),
@@ -272,47 +299,67 @@ class _SendGiftScreenState extends State<SendGiftScreen> {
                 25.verticalSpace,
 
                 state is CheckEmailLoadingState
-                    ? const LinearProgressIndicator()
-                    : CustomPrimaryButton(
-                        width: double.infinity,
-                        text: 'Pay & Send Gift ($displayPrice sar)',
-                        onPressed:
-                            (selectedPackageId != null &&
-                                emailController.text.isNotEmpty)
-                            ? () {
-                                final selectedPkg = packages.firstWhere(
-                                  (p) => p.id == selectedPackageId,
-                                );
+                    ? const Center(child: CircularProgressIndicator())
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '3. Pay via',
+                            style: AppTextStyle.style16Bold.copyWith(
+                              color: AppColors.iconColorBlack,
+                            ),
+                          ),
+                          8.verticalSpace,
+                          CategoryPaymentWidget(
+                            imagePath: null,
+                            onTap:
+                                (selectedPackageId != null &&
+                                    emailController.text.isNotEmpty)
+                                ? () => _handleGiftPayment('paymob')
+                                : null,
+                          ),
+                          Center(
+                            child: Row(
+                              children: [
+                                const Expanded(child: Divider()),
+                                Padding(
+                                  padding: EdgeInsets.all(6.r),
+                                  child: Text(
+                                    ' Or ',
+                                    style: AppTextStyle.style14W500.copyWith(),
+                                  ),
+                                ),
+                                const Expanded(child: Divider()),
+                              ],
+                            ),
+                          ),
 
-                                final double finalAmount =
-                                    (cubit
-                                            .giftCheckoutData
-                                            ?.data
-                                            ?.totalAfterCodeDiscount !=
-                                        null)
-                                    ? cubit
-                                          .giftCheckoutData!
-                                          .data!
-                                          .totalAfterCodeDiscount!
-                                          .toDouble()
-                                    : (selectedPkg.price?.toDouble() ?? 0.0);
-
-                                if (isEmailVerified) {
-                                  cubit.startGiftPaymentFlow(
-                                    context,
-                                    selectedPkg.id!,
-                                    finalAmount,
-                                    codeController.text,
-                                  );
-                                } else {
-                                  setState(() => _isAutoPaying = true);
-                                  cubit.checkGiftEmail(
-                                    selectedPackageId!,
-                                    emailController.text,
-                                  );
-                                }
-                              }
-                            : null,
+                          Row(
+                            children: [
+                              // Expanded(
+                              //   child: CategoryPaymentWidget(
+                              //     imagePath: 'assets/images/png/Tabby-logo.png',
+                              //     onTap:
+                              //         (selectedPackageId != null &&
+                              //             emailController.text.isNotEmpty)
+                              //         ? () => _handleGiftPayment('tabby')
+                              //         : null,
+                              //   ),
+                              // ),
+                              // 8.horizontalSpace,
+                              Expanded(
+                                child: CategoryPaymentWidget(
+                                  imagePath: 'assets/images/png/tamara-1.png',
+                                  onTap:
+                                      (selectedPackageId != null &&
+                                          emailController.text.isNotEmpty)
+                                      ? () => _handleGiftPayment('tamara')
+                                      : null,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                 20.verticalSpace,
               ],

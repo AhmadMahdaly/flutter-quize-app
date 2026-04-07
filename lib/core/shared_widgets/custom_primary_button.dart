@@ -23,7 +23,7 @@ class CustomPrimaryButton extends StatelessWidget {
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           minimumSize: WidgetStateProperty.all(Size(width ?? 300.w, 52.h)),
           shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
           ),
         ),
         child: Text(

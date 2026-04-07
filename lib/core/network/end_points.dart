@@ -6,6 +6,7 @@ class EndPoints {
   static const String appleLogin = 'apple/login';
   static const String deleteAccount = 'user/delete';
   static const String profile = 'profile';
+  static const String updateProfile = 'user/update';
   static const String gifts = 'gifts';
   static const String fcmToken = 'fcm-token';
 

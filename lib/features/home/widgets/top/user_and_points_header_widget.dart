@@ -11,7 +11,7 @@ class UserAndPointsHeaderWidget extends StatelessWidget {
     return UserImageNameWidget(
       name: context.watch<MainLayoutCubit>().profileModel?.data?.name ?? 'User',
       email: context.read<MainLayoutCubit>().profileModel?.data?.email ?? '',
-      imagePath: 'assets/images/png/logo final.png',
+      imagePath: context.read<MainLayoutCubit>().profileModel?.data?.photo,
       points:
           '${context.read<MainLayoutCubit>().profileModel?.data?.points ?? ''}',
     );

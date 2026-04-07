@@ -19,7 +19,7 @@ void showCustomPrimaryDialog(
           child: Dialog(
             backgroundColor: AppColors.offwhiteColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             child: Padding(padding: EdgeInsets.all(16.r), child: widget),
           ),

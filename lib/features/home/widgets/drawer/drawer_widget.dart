@@ -246,6 +246,13 @@ class DrawerWidget extends StatelessWidget {
                     }
                   },
                 ),
+                DrawerItemWidget(
+                  text: 'Edit Account',
+                  imagePath: Icons.verified_user_outlined,
+                  onPressed: () async {
+                    await context.pushNamed(AppRoutes.updateProfileScreen);
+                  },
+                ),
                 BlocProvider.value(
                   value: getIt<LoginCubit>(),
                   child: BlocBuilder<LoginCubit, LoginStates>(

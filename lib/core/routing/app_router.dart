@@ -27,6 +27,7 @@ import 'package:smle/features/notification/notification_screen.dart';
 import 'package:smle/features/play_list/play_list_screen.dart';
 import 'package:smle/features/play_list/playlist_questions_screen.dart';
 import 'package:smle/features/profile/profile_screen.dart';
+import 'package:smle/features/profile/update_profile_screen.dart';
 import 'package:smle/features/q_bank/create_quiz_screen.dart';
 import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
 import 'package:smle/features/q_bank/data/model/start_quiz_model.dart';
@@ -135,12 +136,11 @@ class AppRouter {
       //     cubit: SubscriptionCubit(getIt()),
       //   );
 
-      // case AppRoutes.applePayScreen:
-      //   final totalPayment = settings.arguments as String;
-      //   return transition(
-      //     screen: ApplePayScreen(total: totalPayment),
-      //     cubit: SubscriptionCubit(getIt(), getIt()),
-      //   );
+      case AppRoutes.updateProfileScreen:
+        return transition(
+          screen: const UpdateProfileScreen(),
+          // cubit: SubscriptionCubit(getIt(), getIt()),
+        );
       case AppRoutes.analysisScreen:
         final isExam = settings.arguments as bool;
         return transition(
