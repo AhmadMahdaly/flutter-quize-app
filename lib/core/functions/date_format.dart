@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 String formatDate(String dateTimeString) {
@@ -62,4 +63,16 @@ int calculateRemainingDaysFromString(String dateString) {
   final todayUtc = DateTime.utc(nowUtc.year, nowUtc.month, nowUtc.day);
 
   return expireDateUtc.difference(todayUtc).inDays;
+}
+
+String getGreetingWithEmoji(BuildContext context) {
+  final hour = DateTime.now().hour;
+
+  if (hour >= 5 && hour < 12) {
+    return '${'Good Morning'} 🌞'; // صباح الخير
+  } else if (hour >= 12 && hour < 17) {
+    return '${'Good Afternoon'} 🌤️'; // مساء الخير (ظهر)
+  } else {
+    return '${'Good Evening'} 🌙'; // مساء الخير (ليل)
+  }
 }

@@ -57,7 +57,9 @@ class CustomPrimaryTextfield extends StatelessWidget {
       onChanged: onChanged,
       onTap: onTap,
       readOnly: readOnly ?? false,
-      style: style ?? AppTextStyle.style14W500,
+      style:
+          style ??
+          AppTextStyle.style14W500.copyWith(color: AppColors.iconColorBlack),
       textAlign: textAlign ?? TextAlign.start,
       validator: validator,
       focusNode: focusNode,
@@ -88,16 +90,16 @@ class CustomPrimaryTextfield extends StatelessWidget {
       autofillHints: autofillHints,
     );
   }
+}
 
-  OutlineInputBorder customOutlineInputBorder() {
-    return OutlineInputBorder(
-      gapPadding: 0,
-      borderRadius: BorderRadius.circular(12.r),
-      borderSide: const BorderSide(
-        width: 0.50,
-        strokeAlign: BorderSide.strokeAlignOutside,
-        color: AppColors.iconColorGray,
-      ),
-    );
-  }
+OutlineInputBorder customOutlineInputBorder() {
+  return OutlineInputBorder(
+    gapPadding: 0,
+    borderRadius: BorderRadius.circular(12.r),
+    borderSide: const BorderSide(
+      width: 0.50,
+      strokeAlign: BorderSide.strokeAlignOutside,
+      color: AppColors.iconColorGray,
+    ),
+  );
 }

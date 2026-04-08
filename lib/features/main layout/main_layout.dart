@@ -7,6 +7,7 @@ import 'package:smle/core/routing/app_router.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
+import 'package:smle/features/home/widgets/drawer/drawer_widget.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/notification/notification_permission_dialog.dart';
 
@@ -94,43 +95,126 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
               }
             },
             child: Scaffold(
-              backgroundColor: Colors.transparent,
+              drawer: const DrawerWidget(),
+              // backgroundColor: Colors.transparent,
               body: AppRouter().screen[mainLayoutInitialScreenIndex],
-              bottomNavigationBar: Container(
-                height: 70.h,
-                margin: EdgeInsets.only(right: 16.w, left: 16.w),
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(80.r),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _BottomNavItem(
-                      index: 0,
-                      currentIndex: mainLayoutInitialScreenIndex,
-                      activeIcon: 'assets/images/icons/play (2).png',
-                      inactiveIcon: 'assets/images/icons/play (1).png',
-                      onTap: () => cubit.changeBottomNavBar(0),
+              bottomNavigationBar: BottomNavigationBar(
+                backgroundColor: AppColors.forthColor.withAlpha(70),
+                useLegacyColorScheme: false,
+                unselectedFontSize: 0,
+                selectedFontSize: 0,
+                unselectedItemColor: AppColors.primaryColor,
+                selectedItemColor: AppColors.offwhiteColor,
+                type: BottomNavigationBarType.fixed,
+                landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
+                onTap: cubit.changeBottomNavBar,
+                items: [
+                  BottomNavigationBarItem(
+                    label: '',
+                    icon: AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      padding: EdgeInsets.all(12.r),
+                      decoration: BoxDecoration(
+                        color: mainLayoutInitialScreenIndex == 0
+                            ? AppColors.primaryColor.withAlpha(40)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(320.r),
+                      ),
+                      child: Image.asset(
+                        mainLayoutInitialScreenIndex == 0
+                            ? 'assets/images/icons/play (2).png'
+                            : 'assets/images/icons/play (1).png',
+                        height: 24.h,
+                        color: mainLayoutInitialScreenIndex == 0
+                            ? AppColors.offwhiteColor.withAlpha(180)
+                            : AppColors.primaryColor,
+                        filterQuality: FilterQuality.high,
+                      ),
                     ),
-                    _BottomNavItem(
-                      index: 1,
-                      currentIndex: mainLayoutInitialScreenIndex,
-                      activeIcon: 'assets/images/icons/home (1).png',
-                      inactiveIcon: 'assets/images/icons/home.png',
-                      onTap: () => cubit.changeBottomNavBar(1),
+                  ),
+                  BottomNavigationBarItem(
+                    label: '',
+                    icon: AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      padding: EdgeInsets.all(12.r),
+                      decoration: BoxDecoration(
+                        color: mainLayoutInitialScreenIndex == 1
+                            ? AppColors.primaryColor.withAlpha(40)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(320.r),
+                      ),
+                      child: Image.asset(
+                        mainLayoutInitialScreenIndex == 1
+                            ? 'assets/images/icons/home (1).png'
+                            : 'assets/images/icons/home.png',
+                        height: 24.h,
+                        color: mainLayoutInitialScreenIndex == 1
+                            ? AppColors.offwhiteColor.withAlpha(180)
+                            : AppColors.primaryColor,
+                        filterQuality: FilterQuality.high,
+                      ),
                     ),
-                    _BottomNavItem(
-                      index: 2,
-                      currentIndex: mainLayoutInitialScreenIndex,
-                      activeIcon: 'assets/images/icons/user (1).png',
-                      inactiveIcon: 'assets/images/icons/user.png',
-                      onTap: () => cubit.changeBottomNavBar(2),
+                  ),
+                  BottomNavigationBarItem(
+                    label: '',
+                    icon: AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      padding: EdgeInsets.all(12.r),
+                      decoration: BoxDecoration(
+                        color: mainLayoutInitialScreenIndex == 2
+                            ? AppColors.primaryColor.withAlpha(40)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(320.r),
+                      ),
+                      child: Image.asset(
+                        mainLayoutInitialScreenIndex == 2
+                            ? 'assets/images/icons/user (1).png'
+                            : 'assets/images/icons/user.png',
+                        height: 24.h,
+                        color: mainLayoutInitialScreenIndex == 2
+                            ? AppColors.offwhiteColor.withAlpha(180)
+                            : AppColors.primaryColor,
+                        filterQuality: FilterQuality.high,
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+              //  Container(
+              //   height: 80.h,
+              //   // margin: EdgeInsets.only(right: 16.w, left: 16.w, bottom: 10.h),
+              //   padding: EdgeInsets.symmetric(horizontal: 24.w),
+              //   decoration: BoxDecoration(
+              //     color: AppColors.secondaryColor.withAlpha(150),
+              //     borderRadius: BorderRadius.circular(12.r),
+              //   ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              // _BottomNavItem(
+              //   index: 0,
+              //   currentIndex: mainLayoutInitialScreenIndex,
+              //   activeIcon: 'assets/images/icons/play (2).png',
+              //   inactiveIcon: 'assets/images/icons/play (1).png',
+              //   onTap: () => cubit.changeBottomNavBar(0),
+              // ),
+              // _BottomNavItem(
+              //   index: 1,
+              //   currentIndex: mainLayoutInitialScreenIndex,
+              //   activeIcon: 'assets/images/icons/home (1).png',
+              //   inactiveIcon: 'assets/images/icons/home.png',
+              //   onTap: () => cubit.changeBottomNavBar(1),
+              // ),
+              // _BottomNavItem(
+              //   index: 2,
+              //   currentIndex: mainLayoutInitialScreenIndex,
+              //   activeIcon: 'assets/images/icons/user (1).png',
+              //   inactiveIcon: 'assets/images/icons/user.png',
+              //   onTap: () => cubit.changeBottomNavBar(2),
+              // ),
+              // ],
+              // ),
+              // ),
             ),
           );
         },
@@ -139,43 +223,44 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
   }
 }
 
-class _BottomNavItem extends StatelessWidget {
-  const _BottomNavItem({
-    required this.index,
-    required this.currentIndex,
-    required this.activeIcon,
-    required this.inactiveIcon,
-    required this.onTap,
-  });
+// class _BottomNavItem extends StatelessWidget {
+//   const _BottomNavItem({
+//     required this.index,
+//     required this.currentIndex,
+//     required this.activeIcon,
+//     required this.inactiveIcon,
+//     required this.onTap,
+//   });
 
-  final int index;
-  final int currentIndex;
-  final String activeIcon;
-  final String inactiveIcon;
-  final VoidCallback onTap;
+//   final int index;
+//   final int currentIndex;
+//   final String activeIcon;
+//   final String inactiveIcon;
+//   final VoidCallback onTap;
 
-  @override
-  Widget build(BuildContext context) {
-    final bool isActive = index == currentIndex;
+//   @override
+//   Widget build(BuildContext context) {
+//     final bool isActive = index == currentIndex;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        padding: EdgeInsets.all(12.r),
-        decoration: BoxDecoration(
-          color: isActive
-              ? AppColors.secondaryColor.withAlpha(40)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(320.r),
-        ),
-        child: Image.asset(
-          isActive ? activeIcon : inactiveIcon,
-          height: 24.h,
-          filterQuality: FilterQuality.high,
-        ),
-      ),
-    );
-  }
-}
+//     return GestureDetector(
+//       behavior: HitTestBehavior.opaque,
+//       onTap: onTap,
+//       child: AnimatedContainer(
+//         duration: const Duration(milliseconds: 250),
+//         padding: EdgeInsets.all(12.r),
+//         decoration: BoxDecoration(
+//           color: isActive
+//               ? AppColors.primaryColor.withAlpha(40)
+//               : Colors.transparent,
+//           borderRadius: BorderRadius.circular(320.r),
+//         ),
+//         child: Image.asset(
+//           isActive ? activeIcon : inactiveIcon,
+//           height: 24.h,
+//           color: AppColors.primaryColor,
+//           filterQuality: FilterQuality.high,
+//         ),
+//       ),
+//     );
+//   }
+// }

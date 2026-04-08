@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
+import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/theme/assets.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
@@ -18,61 +19,52 @@ class EndPageBanner extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: AppColors.primaryColor,
+            color: AppColors.primaryColor.withAlpha(50),
             borderRadius: BorderRadius.all(Radius.circular(12.r)),
           ),
-          child: GestureDetector(
-            onTap: () {
-              context.pushNamed(
-                AppRoutes.subscriptionScreen,
-                arguments:
-                    context
-                        .read<MainLayoutCubit>()
-                        .profileModel!
-                        .data!
-                        .offerId ??
-                    -1,
-              );
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.responsiveValue(
-                  phone: 60.w,
-                  tablet: 40.w,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.responsiveValue(phone: 20.w, tablet: 40.w),
+              vertical: 32.h,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  textAlign: TextAlign.center,
+                  'Now, Get a Flashback discount code after subscribing when your referred friends use it.',
+                  style: AppTextStyle.style14W500.copyWith(
+                    color: AppColors.greyColor,
+                  ),
+
+                  // TextSpan(
+                  //   text: 'Discover now!',
+                  //   style: AppTextStyle.style16Bold.copyWith(
+                  //     color: AppColors.primaryColor,
+                  //     decoration: TextDecoration.underline,
+                  //     decorationColor: AppColors.primaryColor,
+                  //   ),
+                  // ),
                 ),
-                vertical: 24.h,
-              ),
-              child: Text.rich(
-                textAlign: TextAlign.center,
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '${'Now'}\n',
-                      style: AppTextStyle.style18Bold,
-                    ),
-                    TextSpan(
-                      text:
-                          "${'Get a Flashback discount code after subscribing when your referred friends use it.'}\n",
-                      style: AppTextStyle.style16W700.copyWith(
-                        color: AppColors.secondaryColor,
-                      ),
-                    ),
-                    TextSpan(
-                      text: 'Discover now!',
-                      style: AppTextStyle.style16Bold.copyWith(
-                        color: AppColors.thirdColor,
-                        decoration: TextDecoration.underline,
-                        decorationColor: AppColors.offwhiteColor,
-                      ),
-                    ),
-                  ],
+                8.verticalSpace,
+                CustomPrimaryVButton(
+                  text: 'Discover now!',
+                  onPressed: () => context.pushNamed(
+                    AppRoutes.subscriptionScreen,
+                    arguments:
+                        context
+                            .read<MainLayoutCubit>()
+                            .profileModel!
+                            .data!
+                            .offerId ??
+                        -1,
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
         Positioned(
-          top: -36.w,
+          top: -46.w,
           right: 0,
           child: Image(
             image: const AssetImage(Assets.crownHome),

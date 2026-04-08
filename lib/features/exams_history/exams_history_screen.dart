@@ -11,12 +11,9 @@ class ExamsHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.watch<ExamsHistoryCubit>();
 
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: const CustomAppBar(title: 'Exams history'),
-        body: ExamHistoryBody(cubit: cubit),
-      ),
+    return Scaffold(
+      appBar: const CustomAppBar(title: 'Exams history'),
+      body: ExamHistoryBody(cubit: cubit),
     );
   }
 }

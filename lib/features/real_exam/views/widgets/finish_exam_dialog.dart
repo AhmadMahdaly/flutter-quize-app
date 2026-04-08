@@ -41,16 +41,14 @@ class ConfirmFinishExamDialog extends StatelessWidget {
         Text(
           textAlign: TextAlign.center,
           isSection1 ? 'Finish Section 1?' : 'Finish The Exam?',
-          style: AppTextStyle.style18Bold.copyWith(
-            color: AppColors.iconColorGray,
-          ),
+          style: AppTextStyle.style18Bold.copyWith(color: AppColors.thirdColor),
         ),
         if (isSection1)
           Text(
             textAlign: TextAlign.center,
             'You will start a 30-minute break',
             style: AppTextStyle.style16W700.copyWith(
-              color: AppColors.iconColorGray,
+              color: AppColors.thirdColor,
             ),
           ),
         Row(

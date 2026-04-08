@@ -53,7 +53,7 @@ class QuestionWidget extends StatelessWidget {
                         isAdd
                             ? CupertinoIcons.delete
                             : CupertinoIcons.add_circled,
-                        color: AppColors.forthColor.withAlpha(170),
+                        color: AppColors.primaryColor.withAlpha(170),
                         size: SizeConfig.responsiveValue(
                           phone: 20.sp,
                           tablet: 40.sp,
@@ -96,7 +96,7 @@ class QuestionWidget extends StatelessWidget {
                           : CupertinoIcons.star,
                       color: isRepeated
                           ? Colors.amber
-                          : AppColors.forthColor.withAlpha(170),
+                          : AppColors.primaryColor.withAlpha(170),
                       size: SizeConfig.responsiveValue(
                         phone: 20.sp,
                         tablet: 40.sp,
@@ -111,7 +111,7 @@ class QuestionWidget extends StatelessWidget {
                     child: Icon(
                       semanticLabel: 'Send note',
                       CupertinoIcons.news,
-                      color: AppColors.forthColor,
+                      color: AppColors.primaryColor.withAlpha(170),
                       size: SizeConfig.responsiveValue(
                         phone: 20.sp,
                         tablet: 40.sp,
@@ -141,6 +141,7 @@ class QuestionWidget extends StatelessWidget {
                           style: AppTextStyle.style16Bold.copyWith(
                             color: AppColors.forthColor,
                             decoration: TextDecoration.underline,
+                            decorationColor: AppColors.forthColor,
                           ),
                         ),
                         TextSpan(
@@ -158,7 +159,7 @@ class QuestionWidget extends StatelessWidget {
                           ? CupertinoIcons.lightbulb_slash
                           : CupertinoIcons.lightbulb_fill,
                       color: hintText == 'null' || hintText == 'NULL'
-                          ? null
+                          ? AppColors.primaryColor.withAlpha(170)
                           : Colors.amber,
                       size: SizeConfig.responsiveValue(
                         phone: 20.sp,
@@ -207,6 +208,7 @@ class QuestionWidget extends StatelessWidget {
                                       style: AppTextStyle.style16Bold.copyWith(
                                         color: AppColors.forthColor,
                                         decoration: TextDecoration.underline,
+                                        decorationColor: AppColors.forthColor,
                                       ),
                                     ),
                                     GestureDetector(
@@ -251,6 +253,7 @@ class QuestionWidget extends StatelessWidget {
                     ),
                     child: Icon(
                       CupertinoIcons.question_circle,
+                      color: AppColors.primaryColor.withAlpha(170),
                       size: SizeConfig.responsiveValue(
                         phone: 20.sp,
                         tablet: 40.sp,

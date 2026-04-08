@@ -16,11 +16,13 @@ class DrawerItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(imagePath, color: AppColors.iconColorGray),
+      leading: Icon(imagePath, color: AppColors.greyColor.withAlpha(150)),
 
       title: Text(
         text,
-        style: AppTextStyle.style14Bold.copyWith(color: AppColors.forthColor),
+        style: AppTextStyle.style14Bold.copyWith(
+          color: AppColors.greyColor.withAlpha(150),
+        ),
       ),
       onTap: onPressed,
     );

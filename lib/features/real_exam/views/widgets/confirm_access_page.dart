@@ -5,6 +5,7 @@ import 'package:smle/core/shared_widgets/custom_app_bar.dart';
 import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/custom_primary_dialog.dart';
 import 'package:smle/core/theme/colors.dart';
+import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/real_exam/views/widgets/confirm_access_dialog.dart';
 
@@ -24,13 +25,17 @@ class ConfirmAccessToRealExam extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16.r),
               decoration: BoxDecoration(
-                color: AppColors.successColor.withAlpha(20),
+                color: AppColors.greenColor.withAlpha(20),
                 borderRadius: BorderRadius.circular(12.r),
                 border: Border.all(color: AppColors.secondaryColor),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.timer, color: AppColors.greenColor, size: 24.r),
+                  Icon(
+                    Icons.timer,
+                    color: AppColors.greenLightColor,
+                    size: 24.r,
+                  ),
                   12.horizontalSpace,
                   Expanded(
                     child:
@@ -57,7 +62,9 @@ class ConfirmAccessToRealExam extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.greenColor.withAlpha(200),
+                                  color: AppColors.greenLightColor.withAlpha(
+                                    200,
+                                  ),
                                 ),
                               );
                             }
@@ -77,14 +84,14 @@ class ConfirmAccessToRealExam extends StatelessWidget {
               children: [
                 Icon(
                   Icons.warning_amber_rounded,
-                  color: AppColors.errorColor,
+                  color: AppColors.errorLightColor,
                   size: 28.r,
                 ),
                 10.horizontalSpace,
                 Expanded(
                   child: Text(
                     'Each attempt will be deducted from your balance once you start the exam.',
-                    style: TextStyle(fontSize: 16.sp, color: Colors.black87),
+                    style: AppTextStyle.style16W500,
                   ),
                 ),
               ],
@@ -97,14 +104,14 @@ class ConfirmAccessToRealExam extends StatelessWidget {
               children: [
                 Icon(
                   Icons.error_outline,
-                  color: AppColors.errorColor,
+                  color: AppColors.errorLightColor,
                   size: 28.r,
                 ),
                 10.horizontalSpace,
                 Expanded(
                   child: Text(
                     'Do NOT close the page, exit the app, or interrupt the exam. Doing so will cost you an attempt.',
-                    style: TextStyle(fontSize: 16.sp, color: Colors.black87),
+                    style: AppTextStyle.style16W500,
                   ),
                 ),
               ],

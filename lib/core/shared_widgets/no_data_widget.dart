@@ -24,7 +24,7 @@ class NoDataWidget extends StatelessWidget {
           child: Text(
             noDataText,
             style: AppTextStyle.style20Bold.copyWith(
-              color: AppColors.forthColor.withAlpha(100),
+              color: AppColors.thirdColor.withAlpha(100),
             ),
           ),
         ),
@@ -38,18 +38,27 @@ class LoadingDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.forthColor,
+    return const Scaffold(
+      // backgroundColor: AppColors.primaryColor.withAlpha(200),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
-            ),
+            child: CircularProgressIndicator(color: AppColors.primaryColor),
           ),
         ],
       ),
+    );
+  }
+}
+
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: CircularProgressIndicator(color: AppColors.primaryColor),
     );
   }
 }

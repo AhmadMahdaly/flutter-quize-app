@@ -83,7 +83,7 @@ class ExamScoreCard extends StatelessWidget {
                   Text(
                     '$score ${'Marks'}',
                     style: AppTextStyle.style16W700.copyWith(
-                      color: AppColors.forthColor,
+                      color: AppColors.primaryColor,
                     ),
                   ),
                 ],

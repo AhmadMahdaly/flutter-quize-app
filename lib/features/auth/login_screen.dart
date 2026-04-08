@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
-import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/auth/cubit/login_cubit.dart';
@@ -29,18 +28,12 @@ class LoginScreen extends StatelessWidget {
                   backgroundColor: Colors.red,
                 ),
               );
-              debugPrintWidget('Sign in failed: ${state.message}');
+              // debugPrintWidget('Sign in failed: ${state.message}');
             }
           },
           child: Container(
             width: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [AppColors.primaryColor, AppColors.darkGreyColor],
-                begin: Alignment.center,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+            decoration: BoxDecoration(gradient: appGradientHelper),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
               child: Column(
@@ -55,7 +48,7 @@ class LoginScreen extends StatelessWidget {
                         child: Image.asset(
                           'assets/images/png/logo final.png',
                           height: SizeConfig.responsiveValue(
-                            phone: 100.h,
+                            phone: 150.h,
                             tablet: 75.h,
                           ),
                           fit: BoxFit.cover,
@@ -66,6 +59,7 @@ class LoginScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         'Welcome to',
                         style: AppTextStyle.style20Bold.copyWith(
+                          color: AppColors.greyColor,
                           fontSize: SizeConfig.responsiveValue(
                             phone: 24.sp,
                             tablet: 28.sp,
@@ -76,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         'SMLE Gate',
                         style: AppTextStyle.style20Bold.copyWith(
-                          color: AppColors.secondaryColor,
+                          color: AppColors.primaryColor,
                           fontSize: SizeConfig.responsiveValue(
                             phone: 34.sp,
                             tablet: 28.sp,
@@ -86,7 +80,9 @@ class LoginScreen extends StatelessWidget {
 
                       Text(
                         'Your trusted partner for all your medical test',
-                        style: AppTextStyle.style18W500,
+                        style: AppTextStyle.style18W500.copyWith(
+                          color: AppColors.greyColor,
+                        ),
                         textAlign: TextAlign.center,
                       ),
 
@@ -95,7 +91,7 @@ class LoginScreen extends StatelessWidget {
                         builder: (context, state) {
                           if (state is LogInLoadingState) {
                             return const CircularProgressIndicator(
-                              color: Colors.white,
+                              color: AppColors.greyColor,
                             );
                           }
                           return LoginButton(
@@ -118,16 +114,25 @@ class LoginScreen extends StatelessWidget {
                       FittedBox(
                         child: Row(
                           children: [
-                            Text('By the', style: AppTextStyle.style14W500),
+                            Text(
+                              'By the',
+                              style: AppTextStyle.style14W500.copyWith(
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
                             Text(
                               ' ${'Register'} ',
-                              style: AppTextStyle.style14W500,
+                              style: AppTextStyle.style14W500.copyWith(
+                                color: AppColors.primaryColor,
+                              ),
                             ),
 
                             Text(
                               'you confirm your agreement to the ',
 
-                              style: AppTextStyle.style12W500,
+                              style: AppTextStyle.style12W500.copyWith(
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                             InkWell(
                               onTap: () => context.pushNamed(
@@ -137,7 +142,8 @@ class LoginScreen extends StatelessWidget {
                                 'Privacy Policy',
 
                                 style: AppTextStyle.style12W500.copyWith(
-                                  color: AppColors.forthColor,
+                                  color: AppColors.primaryColor,
+                                  decorationColor: AppColors.primaryColor,
                                   decoration: TextDecoration.underline,
                                 ),
                               ),

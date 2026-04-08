@@ -7,3 +7,7 @@ Future<void> launchURL(String url) async {
     debugPrint('Could not launch $url');
   }
 }
+
+bool isValidEmail(String email) {
+  return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+}

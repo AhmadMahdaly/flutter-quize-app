@@ -21,7 +21,7 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: AppColors.thirdColor,
+      backgroundColor: AppColors.secondaryColor,
       width: MediaQuery.of(context).size.width / 1.2,
       child: BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
         builder: (context, state) {
@@ -51,7 +51,7 @@ class DrawerWidget extends StatelessWidget {
                         child: Text(
                           'Get a seamless experience for your tests.',
                           style: AppTextStyle.style18Bold.copyWith(
-                            color: AppColors.secondaryColor.withAlpha(100),
+                            color: AppColors.primaryColor,
                           ),
                         ),
                       ),
@@ -59,7 +59,7 @@ class DrawerWidget extends StatelessWidget {
                   ),
                 ),
                 16.verticalSpace,
-                Divider(color: AppColors.secondaryColor.withAlpha(100)),
+                Divider(color: AppColors.primaryColor.withAlpha(100)),
                 DrawerItemWidget(
                   text: 'Question Bank',
                   imagePath: Icons.ballot,

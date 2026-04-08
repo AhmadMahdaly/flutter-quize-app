@@ -25,8 +25,8 @@ class QBankProgressWidget extends StatelessWidget {
     final int displayCurrent = currentValue + 1;
 
     return Container(
-      color: AppColors.thirdColor,
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+      // color: AppColors.thirdColor,
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
       child: Row(
         children: [
           Expanded(
@@ -68,7 +68,9 @@ class QBankProgressWidget extends StatelessWidget {
           50.horizontalSpace,
           Icon(
             CupertinoIcons.book,
-            color: AppColors.secondaryColor,
+            color: switchValue
+                ? AppColors.primaryColor
+                : AppColors.offwhiteColor,
             size: SizeConfig.responsiveValue(phone: 20.sp, tablet: 40.sp),
           ),
           20.horizontalSpace,

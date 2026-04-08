@@ -19,9 +19,63 @@ class CategoryWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 150.w,
-        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
+        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 16.h),
         decoration: BoxDecoration(
-          color: AppColors.secondaryColor,
+          color: AppColors.primaryColor,
+          // border: Border.all(color: AppColors.greyColor),
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              SizeConfig.responsiveValue(phone: 24.r, tablet: 25.r),
+            ),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ImageIcon(
+              AssetImage(imagePath),
+              color: AppColors.secondaryColor,
+              size: SizeConfig.responsiveValue(phone: 35.sp, tablet: 60.sp),
+            ),
+            FittedBox(
+              child: Text(
+                categoryName,
+                style: AppTextStyle.style16W500.copyWith(
+                  fontSize: SizeConfig.responsiveValue(
+                    phone: 15.sp,
+                    tablet: 22.sp,
+                  ),
+                  color: AppColors.secondaryColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CategoryWidgetWithBorder extends StatelessWidget {
+  const CategoryWidgetWithBorder({
+    super.key,
+    required this.categoryName,
+    required this.imagePath,
+    this.onTap,
+  });
+  final String categoryName, imagePath;
+  final GestureTapCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 150.w,
+        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 16.h),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.primaryColor),
+
           borderRadius: BorderRadius.all(
             Radius.circular(
               SizeConfig.responsiveValue(phone: 24.r, tablet: 25.r),
@@ -34,8 +88,9 @@ class CategoryWidget extends StatelessWidget {
             ImageIcon(
               AssetImage(imagePath),
               color: AppColors.greyColor,
-              size: SizeConfig.responsiveValue(phone: 35.sp, tablet: 60.sp),
+              size: SizeConfig.responsiveValue(phone: 50.sp, tablet: 60.sp),
             ),
+            8.verticalSpace,
             FittedBox(
               child: Text(
                 categoryName,
@@ -68,7 +123,7 @@ class CategoryPaymentWidget extends StatelessWidget {
         height: 60.h,
         // padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
         decoration: BoxDecoration(
-          color: AppColors.secondaryColor,
+          color: AppColors.primaryColor,
           borderRadius: BorderRadius.all(
             Radius.circular(
               SizeConfig.responsiveValue(phone: 24.r, tablet: 25.r),

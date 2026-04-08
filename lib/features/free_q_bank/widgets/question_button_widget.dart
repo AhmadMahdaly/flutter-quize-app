@@ -1,32 +1,32 @@
-import 'package:flutter/material.dart';
-import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/theme/colors.dart';
-import 'package:smle/core/theme/text_styles.dart';
+// import 'package:flutter/material.dart';
+// import 'package:smle/core/functions/responsive_config.dart';
+// import 'package:smle/core/theme/colors.dart';
+// import 'package:smle/core/theme/text_styles.dart';
 
-class QuestionButtonWidget extends StatelessWidget {
-  const QuestionButtonWidget({super.key, required this.text});
-  final String text;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 120.w,
-      height: 56.h,
-      decoration: BoxDecoration(
-        color: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(40.r),
-      ),
-      alignment: Alignment.center,
-      child: FittedBox(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            text,
-            style: AppTextStyle.style14Bold.copyWith(
-              color: AppColors.thirdColor,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+// class QuestionButtonWidget extends StatelessWidget {
+//   const QuestionButtonWidget({super.key, required this.text});
+//   final String text;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: 120.w,
+//       height: 56.h,
+//       decoration: BoxDecoration(
+//         color: AppColors.primaryColor,
+//         borderRadius: BorderRadius.circular(40.r),
+//       ),
+//       alignment: Alignment.center,
+//       child: FittedBox(
+//         child: Padding(
+//           padding: const EdgeInsets.all(8.0),
+//           child: Text(
+//             text,
+//             style: AppTextStyle.style14Bold.copyWith(
+//               color: AppColors.thirdColor,
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

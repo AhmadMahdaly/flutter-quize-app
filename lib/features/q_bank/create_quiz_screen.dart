@@ -5,6 +5,7 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/q_bank/cubit/q_bank_cubit.dart';
@@ -47,6 +48,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                       const Spacer(),
                       Text('All Years', style: AppTextStyle.style14W500),
                       Checkbox(
+                        side: const BorderSide(color: AppColors.primaryColor),
                         value: cubit.isAllYearsSelected,
                         onChanged: (value) {
                           cubit.toggleAllYears(value ?? false);
@@ -65,6 +67,8 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                         const Spacer(),
                         Text('All Months', style: AppTextStyle.style14W500),
                         Checkbox(
+                          side: const BorderSide(color: AppColors.primaryColor),
+
                           value: cubit.isAllMonthsSelected,
                           onChanged: (value) {
                             cubit.toggleAllMonths(value ?? false);
@@ -129,8 +133,8 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   else
                     ExpansionTile(
                       tilePadding: EdgeInsets.zero,
-                      collapsedIconColor: AppColors.forthColor,
-                      iconColor: AppColors.forthColor,
+                      collapsedIconColor: AppColors.primaryColor,
+                      iconColor: AppColors.primaryColor,
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -146,6 +150,12 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                                 style: AppTextStyle.style14W500.copyWith(),
                               ),
                               Checkbox(
+                                side: cubit.areAllSubCategoriesSelected
+                                    ? const BorderSide(
+                                        color: AppColors.primaryColor,
+                                      )
+                                    : null,
+
                                 value: cubit
                                     .areAllSubCategoriesSelected, // استخدام الـ Getter
                                 onChanged:
@@ -168,8 +178,8 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                   _buildAdvancedFilters(context, cubit, state),
                   20.verticalSpace,
                   ExpansionTile(
-                    collapsedIconColor: AppColors.forthColor,
-                    iconColor: AppColors.forthColor,
+                    collapsedIconColor: AppColors.primaryColor,
+                    iconColor: AppColors.primaryColor,
                     title: Text(
                       'Selected items',
                       style: AppTextStyle.style14W700.copyWith(
@@ -249,6 +259,8 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
           children: [
             Text('Select all', style: AppTextStyle.style14W500.copyWith()),
             Checkbox(
+              side: const BorderSide(color: AppColors.primaryColor),
+
               value: isAllSelected,
               onChanged: isEnabled ? onSelectAllChanged : null,
               activeColor: AppColors.primaryColor,
@@ -266,7 +278,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
     QBankStates state,
   ) {
     return Container(
-      padding: EdgeInsets.all(12.r),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.greyColor),
         borderRadius: BorderRadius.circular(12.r),
@@ -312,9 +324,22 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
                 )
               else
                 Expanded(
-                  child: Text(
-                    '${'Available'}: ${cubit.questionsCount}',
-                    style: AppTextStyle.style14W700.copyWith(fontSize: 15.sp),
+                  child: Row(
+                    children: [
+                      Text(
+                        '${'Available'}:',
+                        style: AppTextStyle.style14W700.copyWith(
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                      Text(
+                        ' ${cubit.questionsCount}',
+                        style: AppTextStyle.style14W700.copyWith(
+                          fontSize: 15.sp,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
             ],
@@ -323,22 +348,29 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
           GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: TextField(
+              style: AppTextStyle.style14W500.copyWith(
+                color: AppColors.iconColorBlack,
+              ),
               controller: cubit.numberOfQuestionsController,
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
               onEditingComplete: () => FocusScope.of(context).unfocus(),
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(
-                labelText: 'Enter Number of questions',
-                labelStyle: const TextStyle(color: AppColors.primaryColor),
+                filled: true,
+                fillColor: AppColors.offwhiteColor,
+                // labelText: 'Enter Number of questions',
+                // labelStyle: AppTextStyle.style12Bold.copyWith(
+                //   color: AppColors.forthColor,
+                // ),
                 hintText: '${'Max'}: ${cubit.questionsCount}',
-                hintStyle: TextStyle(
-                  color: AppColors.secondaryColor,
-                  fontSize: 12.sp,
+                hintStyle: AppTextStyle.style12W600.copyWith(
+                  color: AppColors.darkGreyColor.withAlpha(100),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12.r)),
-                ),
+                border: customOutlineInputBorder(),
+                focusedBorder: customOutlineInputBorder(),
+                enabledBorder: customOutlineInputBorder(),
+                disabledBorder: customOutlineInputBorder(),
                 errorText:
                     (cubit.numberOfQuestionsController.text.isNotEmpty &&
                         (int.tryParse(cubit.numberOfQuestionsController.text) ??
@@ -352,6 +384,7 @@ class _CreateQuizScreenState extends State<CreateQuizScreen> {
               },
             ),
           ),
+          15.verticalSpace,
         ],
       ),
     );

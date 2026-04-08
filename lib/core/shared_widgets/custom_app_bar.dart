@@ -15,19 +15,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final String title;
   final bool canBack;
-  final IconData? iconAction;
+  final Widget? iconAction;
   final Widget? leading;
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      elevation: 0,
-      backgroundColor: AppColors.primaryColor,
+      automaticallyImplyLeading: false,
+      // primary: false,
+      // toolbarOpacity: 0,
+      // bottomOpacity: 0,
+      // foregroundColor: Colors.transparent,
+      // elevation: 0,
+      backgroundColor: AppColors.forthColor.withAlpha(70),
       leading: canBack
           ? IconButton(
               icon: Icon(
                 size: SizeConfig.responsiveValue(phone: 16.r, tablet: 30.r),
                 Icons.arrow_back_ios_new,
-                color: AppColors.iconColorBlack,
+                color: AppColors.primaryColor,
               ),
               onPressed: () => context.pop(),
             )
@@ -36,23 +41,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         title,
         textAlign: TextAlign.center,
         style: AppTextStyle.style20Bold.copyWith(
-          color: AppColors.secondaryColor,
+          color: AppColors.primaryColor,
           fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 24.sp),
         ),
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(16.r),
-          bottomLeft: Radius.circular(16.r),
-        ),
-      ),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.only(
+      //     bottomRight: Radius.circular(16.r),
+      //     bottomLeft: Radius.circular(16.r),
+      //   ),
+      // ),
       centerTitle: true,
       actions: [
-        Icon(
-          iconAction,
-          color: AppColors.secondaryColor,
-          size: SizeConfig.responsiveValue(phone: 16.sp, tablet: 40.sp),
-        ),
+        if (iconAction != null) ...[iconAction!, 12.horizontalSpace],
       ],
     );
   }

@@ -38,7 +38,7 @@ class _QBankScreenState extends State<QBankScreen> {
     return Scaffold(
       appBar: const CustomAppBar(title: 'Q Bank', canBack: false),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
 
         child: BlocBuilder<QBankCubit, QBankStates>(
           builder: (context, state) {

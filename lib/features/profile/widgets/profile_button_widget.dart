@@ -9,7 +9,7 @@ class ProfileButtonWidget extends StatelessWidget {
     required this.imagePath,
     required this.text,
     this.onPressed,
-    this.color = AppColors.secondaryColor,
+    this.color = AppColors.primaryColor,
   });
   final dynamic imagePath;
   final String text;
@@ -27,7 +27,8 @@ class ProfileButtonWidget extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.r),
-            color: color,
+            gradient: appGradientHelper,
+            border: Border.all(color: AppColors.primaryColor),
           ),
           child: Row(
             children: [

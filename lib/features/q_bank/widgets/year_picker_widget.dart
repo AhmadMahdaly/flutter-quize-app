@@ -39,7 +39,7 @@ class _YearPickerWidgetState extends State<YearPickerWidget> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(12.r)),
               border: Border.all(color: AppColors.greyColor, width: 2.w),
-              color: AppColors.thirdColor,
+              color: AppColors.thirdColor.withAlpha(50),
             ),
             child: const Center(child: CupertinoActivityIndicator()),
           );
@@ -52,8 +52,8 @@ class _YearPickerWidgetState extends State<YearPickerWidget> {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(12.r)),
-            border: Border.all(color: AppColors.greyColor, width: 2.w),
-            color: AppColors.thirdColor,
+            // border: Border.all(color: AppColors.greyColor, width: 2.w),
+            color: AppColors.offwhiteColor,
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<int>(
@@ -62,7 +62,7 @@ class _YearPickerWidgetState extends State<YearPickerWidget> {
               icon: Icon(
                 CupertinoIcons.chevron_down,
                 size: SizeConfig.responsiveValue(phone: 20.r, tablet: 24.r),
-                color: AppColors.darkGreyColor,
+                color: AppColors.primaryColor,
               ),
               dropdownColor: AppColors.thirdColor,
               borderRadius: BorderRadius.circular(12.r),
@@ -140,13 +140,15 @@ class MultiMonthSelector extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isSelected
                     ? AppColors.primaryColor
-                    : (isAvailable ? Colors.transparent : Colors.grey.shade200),
+                    : (isAvailable
+                          ? Colors.transparent
+                          : AppColors.offwhiteColor.withAlpha(50)),
                 borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(
                   color: isSelected
                       ? AppColors.primaryColor
                       : (isAvailable
-                            ? Colors.grey.shade400
+                            ? AppColors.primaryColor.withAlpha(200)
                             : Colors.grey.shade200),
                 ),
               ),
@@ -154,9 +156,9 @@ class MultiMonthSelector extends StatelessWidget {
                 monthName,
                 style: AppTextStyle.style14W500.copyWith(
                   color: isSelected
-                      ? Colors.white
+                      ? AppColors.thirdColor
                       : (isAvailable
-                            ? AppColors.forthColor
+                            ? AppColors.primaryColor
                             : Colors.grey.shade400),
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),

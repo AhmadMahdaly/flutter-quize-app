@@ -21,7 +21,7 @@ class RealExamHomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CategoryWidget(
+    return CategoryWidgetWithBorder(
       onTap: () {
         if (!isSubscribed) {
           showCustomPrimaryDialog(

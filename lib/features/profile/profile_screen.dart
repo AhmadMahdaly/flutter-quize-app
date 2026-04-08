@@ -84,7 +84,7 @@ class ProfileScreen extends StatelessWidget {
                                   Scaffold.of(context).openDrawer(),
                               icon: Icon(
                                 Icons.menu,
-                                color: AppColors.offwhiteColor,
+                                color: AppColors.primaryColor,
                                 size: SizeConfig.responsiveValue(
                                   phone: 24.r,
                                   tablet: 16.r,
@@ -93,420 +93,512 @@ class ProfileScreen extends StatelessWidget {
                             );
                           },
                         ),
-                      ),
-                      body: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 15.w,
-                          // vertical: 15.h,
+                        iconAction: InkWell(
+                          borderRadius: BorderRadius.circular(50.r),
+                          onTap: () async {
+                            await context.pushNamed(
+                              AppRoutes.updateProfileScreen,
+                            );
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(8.r),
+                            child: Icon(
+                              CupertinoIcons.settings_solid,
+                              size: 24.r,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
                         ),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.symmetric(vertical: 16.h),
-                                padding: EdgeInsets.all(16.r),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.r),
-                                  border: Border.all(
-                                    color: AppColors.greyColor,
+                      ),
+                      body: Container(
+                        decoration: BoxDecoration(gradient: appGradientHelper),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 15.w,
+                            // vertical: 15.h,
+                          ),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  margin: EdgeInsets.symmetric(vertical: 12.h),
+                                  padding: EdgeInsets.all(16.r),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.r),
+                                    color: AppColors.primaryColor.withAlpha(50),
                                   ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 25.r,
-                                          backgroundColor: Colors.grey[200],
-                                          // backgroundImage:
-                                          //     (data.photo != null &&
-                                          //         data.photo!.isNotEmpty)
-                                          //     ?
-                                          //     : null,
-                                          child:
-                                              (data.photo == null ||
-                                                  data.photo!.isEmpty)
-                                              ? Icon(
-                                                  Icons.person,
-                                                  size: 25.r,
-                                                  color: Colors.grey,
-                                                )
-                                              : ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        320.r,
-                                                      ),
-                                                  child: CustomCacheImageWidget(
-                                                    imageUrl: data.photo!,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 25.r,
+                                            backgroundColor: Colors.grey[200],
+                                            // backgroundImage:
+                                            //     (data.photo != null &&
+                                            //         data.photo!.isNotEmpty)
+                                            //     ?
+                                            //     : null,
+                                            child:
+                                                (data.photo == null ||
+                                                    data.photo!.isEmpty)
+                                                ? Icon(
+                                                    Icons.person,
+                                                    size: 25.r,
+                                                    color: Colors.grey,
+                                                  )
+                                                : ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          320.r,
+                                                        ),
+                                                    child:
+                                                        CustomCacheImageWidget(
+                                                          imageUrl: data.photo!,
+                                                        ),
                                                   ),
+                                          ),
+
+                                          12.horizontalSpace,
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${data.name}',
+                                                  style: AppTextStyle
+                                                      .style18Bold
+                                                      .copyWith(
+                                                        color: AppColors
+                                                            .greyColor
+                                                            .withAlpha(200),
+                                                      ),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
-                                        ),
-
-                                        12.horizontalSpace,
-                                        Expanded(
-                                          child: Text(
-                                            '${data.name}',
-                                            style: AppTextStyle.style18Bold,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-
-                                        12.horizontalSpace,
-                                        InkWell(
-                                          borderRadius: BorderRadius.circular(
-                                            50.r,
-                                          ),
-                                          onTap: () async {
-                                            await context.pushNamed(
-                                              AppRoutes.updateProfileScreen,
-                                            );
-                                          },
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.r),
-                                            child: Icon(
-                                              CupertinoIcons.settings_solid,
-                                              size: 20.r,
-                                              color: AppColors.primaryColor,
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      '${data.points} ',
+                                                      style: AppTextStyle
+                                                          .style14Bold
+                                                          .copyWith(
+                                                            color: AppColors
+                                                                .primaryColor,
+                                                          ),
+                                                    ),
+                                                    Text(
+                                                      'Points',
+                                                      style: AppTextStyle
+                                                          .style12Bold
+                                                          .copyWith(
+                                                            color: AppColors
+                                                                .greyColor
+                                                                .withAlpha(150),
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ),
-                                        12.horizontalSpace,
 
-                                        Center(
-                                          child: InkWell(
+                                          12.horizontalSpace,
+
+                                          Center(
+                                            child: InkWell(
+                                              borderRadius:
+                                                  BorderRadius.circular(12.r),
+                                              onTap: _launchUpdateUrl,
+                                              child: Image.asset(
+                                                'assets/images/icons/telegram_logo.png',
+                                                height: 40.h,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      12.verticalSpace,
+                                      InkWell(
+                                        onTap: () {
+                                          Clipboard.setData(
+                                            ClipboardData(
+                                              text: data.email ?? '',
+                                            ),
+                                          );
+
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Email copied'),
+                                              duration: Duration(seconds: 1),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 12.w,
+                                            vertical: 6.h,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: AppColors.primaryColor
+                                                  .withAlpha(100),
+                                            ),
                                             borderRadius: BorderRadius.circular(
                                               12.r,
                                             ),
-                                            onTap: _launchUpdateUrl,
-                                            child: Image.asset(
-                                              'assets/images/icons/telegram_logo.png',
-                                              height: 40.h,
-                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    6.verticalSpace,
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            '${data.email}',
-                                            style: AppTextStyle.style14W500
-                                                .copyWith(
-                                                  color:
-                                                      AppColors.darkGreyColor,
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  '${data.email}',
+                                                  style: AppTextStyle
+                                                      .style14W700
+                                                      .copyWith(
+                                                        color: AppColors
+                                                            .primaryColor
+                                                            .withAlpha(200),
+                                                      ),
                                                 ),
+                                              ),
+                                              Icon(
+                                                Icons.copy,
+                                                size: 20.r,
+                                                color: AppColors.primaryColor
+                                                    .withAlpha(200),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        IconButton(
-                                          icon: Icon(Icons.copy, size: 18.r),
-                                          onPressed: () {
-                                            Clipboard.setData(
-                                              ClipboardData(
-                                                text: data.email ?? '',
-                                              ),
-                                            );
-
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              const SnackBar(
-                                                content: Text('Email copied'),
-                                                duration: Duration(seconds: 1),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    // 6.verticalSpace,
-                                    if (!isSubscribed)
-                                      Text(
-                                        'You don’t have an active subscription.',
-                                        // textAlign: TextAlign.center,
-                                        style: AppTextStyle.style14W900
-                                            .copyWith(
-                                              color: AppColors.primaryColor,
-                                            ),
                                       ),
-                                    if (offerName != null)
-                                      Text(
-                                        'Subscription Package: $offerName',
-                                        style: AppTextStyle.style12W700
-                                            .copyWith(
-                                              color: AppColors.primaryColor,
-                                            ),
-                                      ),
-                                    if (createdAt != null)
-                                      Text(
-                                        '${"Created Date:"} $createdAt',
-                                        style: AppTextStyle.style12W700
-                                            .copyWith(
-                                              color: AppColors.primaryColor,
-                                            ),
-                                      ),
-                                    if (expireDate != null)
-                                      Text(
-                                        '${"Expire Date:"} $expireDate',
-                                        style: AppTextStyle.style12W700
-                                            .copyWith(
-                                              color: AppColors.primaryColor,
-                                            ),
-                                      ),
-                                    if (expireDate != null)
-                                      Text(
-                                        '${"Remaining subscription days:"} ${calculateRemainingDaysFromString(expireDate)} ${"days"}',
-                                        style: AppTextStyle.style12W700
-                                            .copyWith(
-                                              color: AppColors.primaryColor,
-                                            ),
-                                      ),
-                                    if (availableExam != '0')
-                                      Text(
-                                        '${"Remaining Realistic Exams Simulation:"} $availableExam ${"exams"}',
-                                        style: AppTextStyle.style12W700
-                                            .copyWith(
-                                              color: AppColors.primaryColor,
-                                            ),
-                                      ),
-                                  ],
+                                      // 6.verticalSpace,
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Column(
-                                spacing: 8.h,
-                                children: [
-                                  ProfileButtonWidget(
-                                    text: 'Playlist',
-                                    imagePath: Icons
-                                        .playlist_add_check_circle_outlined,
-                                    onPressed: !isSubscribed || !hasQBank
-                                        ? () async =>
-                                              subscripeDialogQuestionBank(
-                                                context,
-                                              )
-                                        : () async {
-                                            await context.pushNamed(
-                                              AppRoutes.playListScreen,
-                                              arguments: {
-                                                'questionId': 0,
-                                                'isAdd': true,
-                                              },
-                                            );
-                                          },
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 12.h,
+                                    horizontal: 16.w,
                                   ),
-                                  // ProfileButtonWidget(
-                                  //   text: 'SCFHS Score Calculator',
-                                  //   imagePath: Icons.calculate_outlined,
-                                  //   onPressed: () async {
-                                  //     await context.pushNamed(
-                                  //       AppRoutes.sCFHSScoreCalculatorScreen,
-                                  //     );
-                                  //   },
-                                  // ),
-                                  ProfileButtonWidget(
-                                    text: 'Exams history',
-                                    imagePath: Icons.history,
-                                    onPressed: !isSubscribed
-                                        //   ||   (availableExam != 'Unlimited' ||
-                                        //         (int.tryParse(
-                                        //                   availableExam,
-                                        //                 ) ??
-                                        //                 0) <
-                                        //             0)
-                                        ? () async => subscripeDialog(context)
-                                        : () async {
-                                            await context.pushNamed(
-                                              AppRoutes.examsHistoryScreen,
-                                            );
-                                          },
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    color: AppColors.primaryColor.withAlpha(50),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withAlpha(55),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 5),
+                                      ),
+                                    ],
                                   ),
-                                  // ProfileButtonWidget(
-                                  //   text: 'exams_analysis'.tr(context),
-                                  //   imagePath: Icons.line_axis_outlined,
-                                  //   onPressed: !isSubscribed
-                                  //       ? () async => subscripeDialog(context)
-                                  //       : () async {
-                                  //           await context.pushNamed(
-                                  //             AppRoutes.analysisScreen,
-                                  //             arguments: false,
-                                  //           );
-                                  //         },
-                                  // ),
-                                  ProfileButtonWidget(
-                                    text: 'Subscription',
-                                    imagePath: Icons.payment,
-                                    onPressed: () async {
-                                      await context.pushNamed(
-                                        AppRoutes.subscriptionScreen,
-                                        arguments:
-                                            context
-                                                .read<MainLayoutCubit>()
-                                                .profileModel!
-                                                .data!
-                                                .offerId ??
-                                            -1,
-                                      );
-                                    },
-                                  ),
-                                  ProfileButtonWidget(
-                                    text: 'Gifts',
-                                    imagePath: Icons.card_giftcard_rounded,
-                                    onPressed: () async {
-                                      await context.pushNamed(
-                                        AppRoutes.giftsScreen,
-                                      );
-                                    },
-                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      if (!isSubscribed)
+                                        Text(
+                                          'You don’t have an active subscription.',
+                                          // textAlign: TextAlign.center,
+                                          style: AppTextStyle.style14W900
+                                              .copyWith(
+                                                color: AppColors.primaryColor,
+                                              ),
+                                        )
+                                      else
+                                        Text(
+                                          'Subscription Info:',
+                                          style: AppTextStyle.style18Bold
+                                              .copyWith(
+                                                color: AppColors.thirdColor,
+                                              ),
+                                        ),
 
-                                  ProfileButtonWidget(
-                                    text: 'Support',
-                                    imagePath: Icons.quiz_outlined,
-                                    onPressed: () async {
-                                      await context.pushNamed(
-                                        AppRoutes.supportScreen,
-                                      );
-                                    },
-                                  ),
+                                      12.verticalSpace,
 
-                                  ProfileButtonWidget(
-                                    text: 'Privacy Policy',
-                                    imagePath: Icons.lock_outlined,
-                                    onPressed: () async {
-                                      await context.pushNamed(
-                                        AppRoutes.privacyPolicyScreen,
-                                      );
-                                    },
-                                  ),
-                                  // ProfileButtonWidget(
-                                  //   text: 'Edit Account',
-                                  //   imagePath: Icons.verified_user_outlined,
-                                  //   onPressed: () async {
-                                  //     await context.pushNamed(
-                                  //       AppRoutes.updateProfileScreen,
-                                  //     );
-                                  //   },
-                                  // ),
-                                  ProfileButtonWidget(
-                                    text: 'Delete account',
-                                    imagePath: Icons.delete_outline_rounded,
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (dialogContext) =>
-                                            ActionConfirmationDialog(
-                                              title:
-                                                  'Are you sure you want to delete your account?',
-                                              onConfirm: () async {
-                                                try {
-                                                  await context
-                                                      .read<MainLayoutCubit>()
-                                                      .deleteAccount();
-                                                } catch (_) {}
-                                                if (context.mounted) {
-                                                  context
-                                                      .read<MainLayoutCubit>()
-                                                      .clearDataOnLogOut();
-                                                }
-                                                await context
-                                                    .pushReplacementNamed(
-                                                      AppRoutes.loginScreen,
-                                                    );
-                                              },
-                                            ),
-                                      );
-                                    },
-                                  ),
+                                      /// Data Items
+                                      if (offerName != null)
+                                        _buildItem(
+                                          Icons.calendar_today,
+                                          'Package',
+                                          offerName,
+                                        ),
+                                      if (createdAt != null)
+                                        _buildItem(
+                                          Icons.date_range,
+                                          'Created',
+                                          createdAt,
+                                        ),
+                                      if (expireDate != null)
+                                        _buildItem(
+                                          Icons.event_busy,
+                                          'Expires',
+                                          expireDate,
+                                        ),
 
-                                  ProfileButtonWidget(
-                                    text: 'Log out',
-                                    imagePath: Icons.logout,
-                                    onPressed: () {
-                                      if (context.mounted) {
+                                      Divider(
+                                        color: AppColors.darkGreyColor,
+                                        height: 12.h,
+                                      ),
+
+                                      /// Highlighted Section
+                                      if (expireDate != null)
+                                        _buildHighlightItem(
+                                          Icons.timer,
+                                          'Remaining Days',
+                                          '${calculateRemainingDaysFromString(expireDate)} days',
+                                        ),
+                                      if (availableExam != '0')
+                                        _buildHighlightItem(
+                                          Icons.school,
+                                          'Exams Left',
+                                          '$availableExam exams',
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                                12.verticalSpace,
+                                Column(
+                                  spacing: 8.h,
+                                  children: [
+                                    ProfileButtonWidget(
+                                      text: 'Playlist',
+                                      imagePath: Icons
+                                          .playlist_add_check_circle_outlined,
+                                      onPressed: !isSubscribed || !hasQBank
+                                          ? () async =>
+                                                subscripeDialogQuestionBank(
+                                                  context,
+                                                )
+                                          : () async {
+                                              await context.pushNamed(
+                                                AppRoutes.playListScreen,
+                                                arguments: {
+                                                  'questionId': 0,
+                                                  'isAdd': true,
+                                                },
+                                              );
+                                            },
+                                    ),
+                                    // ProfileButtonWidget(
+                                    //   text: 'SCFHS Score Calculator',
+                                    //   imagePath: Icons.calculate_outlined,
+                                    //   onPressed: () async {
+                                    //     await context.pushNamed(
+                                    //       AppRoutes.sCFHSScoreCalculatorScreen,
+                                    //     );
+                                    //   },
+                                    // ),
+                                    ProfileButtonWidget(
+                                      text: 'Exams history',
+                                      imagePath: Icons.history,
+                                      onPressed: !isSubscribed
+                                          //   ||   (availableExam != 'Unlimited' ||
+                                          //         (int.tryParse(
+                                          //                   availableExam,
+                                          //                 ) ??
+                                          //                 0) <
+                                          //             0)
+                                          ? () async => subscripeDialog(context)
+                                          : () async {
+                                              await context.pushNamed(
+                                                AppRoutes.examsHistoryScreen,
+                                              );
+                                            },
+                                    ),
+                                    // ProfileButtonWidget(
+                                    //   text: 'exams_analysis'.tr(context),
+                                    //   imagePath: Icons.line_axis_outlined,
+                                    //   onPressed: !isSubscribed
+                                    //       ? () async => subscripeDialog(context)
+                                    //       : () async {
+                                    //           await context.pushNamed(
+                                    //             AppRoutes.analysisScreen,
+                                    //             arguments: false,
+                                    //           );
+                                    //         },
+                                    // ),
+                                    ProfileButtonWidget(
+                                      text: 'Subscription',
+                                      imagePath: Icons.payment,
+                                      onPressed: () async {
+                                        await context.pushNamed(
+                                          AppRoutes.subscriptionScreen,
+                                          arguments:
+                                              context
+                                                  .read<MainLayoutCubit>()
+                                                  .profileModel!
+                                                  .data!
+                                                  .offerId ??
+                                              -1,
+                                        );
+                                      },
+                                    ),
+                                    ProfileButtonWidget(
+                                      text: 'Gifts',
+                                      imagePath: Icons.card_giftcard_rounded,
+                                      onPressed: () async {
+                                        await context.pushNamed(
+                                          AppRoutes.giftsScreen,
+                                        );
+                                      },
+                                    ),
+
+                                    ProfileButtonWidget(
+                                      text: 'Support',
+                                      imagePath: Icons.quiz_outlined,
+                                      onPressed: () async {
+                                        await context.pushNamed(
+                                          AppRoutes.supportScreen,
+                                        );
+                                      },
+                                    ),
+
+                                    ProfileButtonWidget(
+                                      text: 'Privacy Policy',
+                                      imagePath: Icons.lock_outlined,
+                                      onPressed: () async {
+                                        await context.pushNamed(
+                                          AppRoutes.privacyPolicyScreen,
+                                        );
+                                      },
+                                    ),
+                                    // ProfileButtonWidget(
+                                    //   text: 'Edit Account',
+                                    //   imagePath: Icons.verified_user_outlined,
+                                    //   onPressed: () async {
+                                    //     await context.pushNamed(
+                                    //       AppRoutes.updateProfileScreen,
+                                    //     );
+                                    //   },
+                                    // ),
+                                    ProfileButtonWidget(
+                                      text: 'Delete account',
+                                      imagePath: Icons.delete_outline_rounded,
+                                      onPressed: () {
                                         showDialog(
                                           context: context,
                                           builder: (dialogContext) =>
                                               ActionConfirmationDialog(
                                                 title:
-                                                    'Are you sure you want to log out?',
+                                                    'Are you sure you want to delete your account?',
                                                 onConfirm: () async {
                                                   try {
-                                                    if (dialogContext.mounted) {
-                                                      await dialogContext
-                                                          .read<LoginCubit>()
-                                                          .logOut();
-                                                    }
+                                                    await context
+                                                        .read<MainLayoutCubit>()
+                                                        .deleteAccount();
                                                   } catch (_) {}
-                                                  if (dialogContext.mounted) {
-                                                    dialogContext
+                                                  if (context.mounted) {
+                                                    context
                                                         .read<MainLayoutCubit>()
                                                         .clearDataOnLogOut();
                                                   }
-                                                  await dialogContext
+                                                  await context
                                                       .pushReplacementNamed(
                                                         AppRoutes.loginScreen,
                                                       );
                                                 },
                                               ),
                                         );
-                                      }
-                                    },
-                                  ),
-                                  8.verticalSpace,
-                                ],
-                              ),
+                                      },
+                                    ),
 
-                              // 8.verticalSpace,
-                              // Center(
-                              //   child: InkWell(
-                              //     borderRadius: BorderRadius.circular(12.r),
-                              //     onTap: _launchUpdateUrl,
-                              //     child: Container(
-                              //       padding: EdgeInsets.symmetric(
-                              //         horizontal: 16.w,
-                              //       ),
-                              //       height: SizeConfig.responsiveValue(
-                              //         phone: 50.h,
-                              //         tablet: 48.h,
-                              //       ),
-                              //       width: double.infinity,
-                              //       decoration: BoxDecoration(
-                              //         borderRadius: BorderRadius.circular(12.r),
-                              //         border: Border.all(
-                              //           color: AppColors.darkGreyColor
-                              //               .withAlpha(100),
-                              //         ),
-                              //       ),
-                              //       child: Row(
-                              //         children: [
-                              //           Image.asset(
-                              //             'assets/images/icons/telegram_logo.png',
-                              //             height: 40.h,
-                              //           ),
-                              //           8.horizontalSpace,
-                              //           Text(
-                              //             'Join us on Telegram to stay updated',
-                              //             style: AppTextStyle.style14Bold
-                              //                 .copyWith(
-                              //                   color: AppColors.darkGreyColor,
-                              //                 ),
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-                              16.verticalSpace,
-                              const PoweredByWidget(),
-                            ],
+                                    ProfileButtonWidget(
+                                      text: 'Log out',
+                                      imagePath: Icons.logout,
+                                      onPressed: () {
+                                        if (context.mounted) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (dialogContext) =>
+                                                ActionConfirmationDialog(
+                                                  title:
+                                                      'Are you sure you want to log out?',
+                                                  onConfirm: () async {
+                                                    try {
+                                                      if (dialogContext
+                                                          .mounted) {
+                                                        await dialogContext
+                                                            .read<LoginCubit>()
+                                                            .logOut();
+                                                      }
+                                                    } catch (_) {}
+                                                    if (dialogContext.mounted) {
+                                                      dialogContext
+                                                          .read<
+                                                            MainLayoutCubit
+                                                          >()
+                                                          .clearDataOnLogOut();
+                                                    }
+                                                    await dialogContext
+                                                        .pushReplacementNamed(
+                                                          AppRoutes.loginScreen,
+                                                        );
+                                                  },
+                                                ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                    8.verticalSpace,
+                                  ],
+                                ),
+
+                                // 8.verticalSpace,
+                                // Center(
+                                //   child: InkWell(
+                                //     borderRadius: BorderRadius.circular(12.r),
+                                //     onTap: _launchUpdateUrl,
+                                //     child: Container(
+                                //       padding: EdgeInsets.symmetric(
+                                //         horizontal: 16.w,
+                                //       ),
+                                //       height: SizeConfig.responsiveValue(
+                                //         phone: 50.h,
+                                //         tablet: 48.h,
+                                //       ),
+                                //       width: double.infinity,
+                                //       decoration: BoxDecoration(
+                                //         borderRadius: BorderRadius.circular(12.r),
+                                //         border: Border.all(
+                                //           color: AppColors.darkGreyColor
+                                //               .withAlpha(100),
+                                //         ),
+                                //       ),
+                                //       child: Row(
+                                //         children: [
+                                //           Image.asset(
+                                //             'assets/images/icons/telegram_logo.png',
+                                //             height: 40.h,
+                                //           ),
+                                //           8.horizontalSpace,
+                                //           Text(
+                                //             'Join us on Telegram to stay updated',
+                                //             style: AppTextStyle.style14Bold
+                                //                 .copyWith(
+                                //                   color: AppColors.darkGreyColor,
+                                //                 ),
+                                //           ),
+                                //         ],
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                16.verticalSpace,
+                                const PoweredByWidget(),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -567,6 +659,59 @@ void subscripeDialog(BuildContext context) {
               context.read<MainLayoutCubit>().profileModel!.data!.offerId ?? -1,
         );
       },
+    ),
+  );
+}
+
+Widget _buildItem(IconData icon, String title, String value) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 4.h),
+    child: Row(
+      children: [
+        Icon(icon, color: AppColors.primaryColor.withAlpha(200), size: 20.r),
+        10.horizontalSpace,
+        Text(
+          '$title:',
+          style: AppTextStyle.style12W500.copyWith(
+            color: AppColors.primaryColor.withAlpha(200),
+          ),
+        ),
+        const Spacer(),
+        Text(
+          value,
+          style: AppTextStyle.style12Bold.copyWith(
+            color: AppColors.thirdColor.withAlpha(200),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildHighlightItem(IconData icon, String title, String value) {
+  return Container(
+    margin: EdgeInsets.symmetric(vertical: 4.h),
+    padding: EdgeInsets.all(8.r),
+    decoration: BoxDecoration(
+      color: AppColors.primaryColor.withAlpha(15),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Row(
+      children: [
+        Icon(icon, color: AppColors.primaryColor),
+        10.horizontalSpace,
+        Text(
+          title,
+          style: AppTextStyle.style12W500.copyWith(
+            color: AppColors.primaryColor,
+          ),
+        ),
+        const Spacer(),
+        Text(
+          value,
+          style: AppTextStyle.style12Bold.copyWith(color: AppColors.thirdColor),
+        ),
+      ],
     ),
   );
 }

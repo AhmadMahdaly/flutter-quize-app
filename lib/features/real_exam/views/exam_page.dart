@@ -18,6 +18,7 @@ class RealExamPage extends StatelessWidget {
     getIt<RealExamCubit>().startOrResumeExam();
 
     return Scaffold(
+      backgroundColor: AppColors.greyColor,
       resizeToAvoidBottomInset: false,
       body: BlocConsumer<RealExamCubit, RealExamState>(
         bloc: getIt<RealExamCubit>(),

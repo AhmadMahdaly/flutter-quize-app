@@ -6,6 +6,6 @@ int mainLayoutInitialScreenIndex = 1;
 
 // const String firstTimeRun = 'first_time_run';
 
-const kPrimaryEnFont = 'roboto';
+const kPrimaryEnFont = 'Inter';
 const kPrimaryArFont = 'Inter';
 final bool latinLang = (CacheHelper.getCurrentLanguage() == 'en');

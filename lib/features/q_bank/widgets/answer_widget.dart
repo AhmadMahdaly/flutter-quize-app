@@ -21,7 +21,7 @@ class AnswerWidget extends StatelessWidget {
             ? AppColors.primaryColor.withAlpha(170)
             : AppColors.secondaryColor,
         border: Border.all(color: AppColors.primaryColor),
-        borderRadius: BorderRadius.circular(40.r),
+        borderRadius: BorderRadius.circular(15.r),
       ),
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
       alignment: Alignment.center,
@@ -79,9 +79,9 @@ class AnsweredWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: getBackgroundColor(),
         border: Border.all(color: getBorderColor()),
-        borderRadius: BorderRadius.circular(40.r),
+        borderRadius: BorderRadius.circular(15.r),
       ),
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
       alignment: Alignment.center,
       child: Text(
         answerText,

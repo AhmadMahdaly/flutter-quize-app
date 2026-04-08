@@ -11,7 +11,7 @@ class TopBannerWidget extends StatelessWidget {
     return Container(
       width: SizeConfig.screenWidth,
       decoration: BoxDecoration(
-        color: AppColors.darkGreyColor,
+        color: AppColors.primaryColor.withAlpha(50),
         borderRadius: BorderRadius.all(Radius.circular(12.r)),
       ),
       child: Padding(
@@ -29,7 +29,7 @@ class TopBannerWidget extends StatelessWidget {
                       TextSpan(
                         text: '+18,000 ',
                         style: AppTextStyle.style16Bold.copyWith(
-                          color: AppColors.secondaryColor,
+                          color: AppColors.greyColor.withAlpha(150),
                         ),
                       ),
                       TextSpan(

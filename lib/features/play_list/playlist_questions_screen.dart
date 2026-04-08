@@ -4,8 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/di.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
+import 'package:smle/core/shared_widgets/no_data_widget.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
@@ -124,10 +127,10 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.playlist_remove_outlined,
-                        size: 80,
-                        color: AppColors.greyColor,
+                        size: 80.r,
+                        color: AppColors.primaryColor,
                       ),
                       16.verticalSpace,
                       Text(
@@ -141,21 +144,21 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                       Text(
                         'Add questions to get started and begin your review session.',
                         style: AppTextStyle.style16W500.copyWith(
-                          color: AppColors.darkGreyColor,
+                          color: AppColors.thirdColor.withAlpha(200),
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      24.verticalSpace,
-                      ElevatedButton(
+                      46.verticalSpace,
+                      CustomPrimaryHButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text('Go Back'),
+                        text: 'Go Back',
                       ),
                     ],
                   ),
                 ),
               );
             }
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: LoadingDataWidget());
           }
 
           // جلب السؤال الأول من مصفوفة البيانات في الهيكل الجديد
@@ -280,10 +283,20 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                 child: QuestionWidget(
                   isAdd: widget.isAdd,
                   addToPlaylistFun: () {
-                    cubit.removeFromPlayList(
-                      playlistId,
-                      question.id.toString(),
-                      offset: 0,
+                    showDialog(
+                      context: context,
+                      builder: (dialogContext) => ActionConfirmationDialog(
+                        title: 'Are you sure you want to delete this question?',
+                        onConfirm: () async {
+                          try {
+                            cubit.removeFromPlayList(
+                              playlistId,
+                              question.id.toString(),
+                              offset: 0,
+                            );
+                          } catch (_) {}
+                        },
+                      ),
                     );
                   },
                   onNoteTap: () => showDialog(
@@ -342,14 +355,14 @@ class _QBankAddNoteDialogState extends State<QBankAddNoteDialog> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message.toString()),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.greenLightColor,
             ),
           );
         } else if (state is AddNoteFailureState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message.toString()),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.errorLightColor,
             ),
           );
         }
@@ -373,65 +386,68 @@ class _QBankAddNoteDialogState extends State<QBankAddNoteDialog> {
                   maxLines: 7,
                   controller: controller,
                   text: 'Type your note here...',
-                  style: AppTextStyle.style14W500,
                 ),
                 12.verticalSpace,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: state is AddNoteLoadingState
-                          ? null // تعطيل الزر أثناء التحميل
-                          : () {
-                              if (controller.text.isNotEmpty) {
-                                widget.cubit.addQuestionNote(
-                                  controller.text,
-                                  widget.questionId,
-                                );
-                              }
-                            },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8.r,
-                          horizontal: 16.w,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.greenColor,
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: state is AddNoteLoadingState
-                            ? SizedBox(
-                                height: 20.h,
-                                width: 20.w,
-                                child: const CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
+                    Expanded(
+                      child: TextButton(
+                        onPressed: state is AddNoteLoadingState
+                            ? null // تعطيل الزر أثناء التحميل
+                            : () {
+                                if (controller.text.isNotEmpty) {
+                                  widget.cubit.addQuestionNote(
+                                    controller.text,
+                                    widget.questionId,
+                                  );
+                                }
+                              },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 8.r,
+                            horizontal: 16.w,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.greenColor,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: state is AddNoteLoadingState
+                              ? SizedBox(
+                                  height: 20.h,
+                                  width: 20.w,
+                                  child: const CircularProgressIndicator(
+                                    color: AppColors.primaryColor,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  'Send',
+                                  style: AppTextStyle.style14Bold.copyWith(
+                                    color: AppColors.offwhiteColor,
+                                  ),
                                 ),
-                              )
-                            : Text(
-                                'Send note',
-                                style: AppTextStyle.style14Bold.copyWith(
-                                  color: AppColors.offwhiteColor,
-                                ),
-                              ),
+                        ),
                       ),
                     ),
                     8.horizontalSpace,
-                    TextButton(
-                      onPressed: () => context.pop(),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8.r,
-                          horizontal: 16.w,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.darkGreyColor,
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: Text(
-                          'Cancel',
-                          style: AppTextStyle.style14Bold.copyWith(
-                            color: AppColors.offwhiteColor,
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => context.pop(),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 8.r,
+                            horizontal: 16.w,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.darkGreyColor,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Text(
+                            'Cancel',
+                            style: AppTextStyle.style14Bold.copyWith(
+                              color: AppColors.offwhiteColor,
+                            ),
                           ),
                         ),
                       ),

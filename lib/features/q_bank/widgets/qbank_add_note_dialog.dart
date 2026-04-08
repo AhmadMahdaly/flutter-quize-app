@@ -62,62 +62,66 @@ class _QBankAddNoteDialogState extends State<QBankAddNoteDialog> {
                   maxLines: 7,
                   controller: controller,
                   text: 'Type your note here...',
-                  style: AppTextStyle.style14W500,
+                  // style: AppTextStyle.style14W500,
                 ),
                 12.verticalSpace,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: state is AddNoteLoadingState
-                          ? null // تعطيل الزر أثناء التحميل
-                          : () {
-                              if (controller.text.isNotEmpty) {
-                                widget.cubit.addQuestionNote(controller.text);
-                              }
-                            },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8.r,
-                          horizontal: 16.w,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.greenColor,
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: state is AddNoteLoadingState
-                            ? SizedBox(
-                                height: 20.h,
-                                width: 20.w,
-                                child: const CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
+                    Expanded(
+                      child: TextButton(
+                        onPressed: state is AddNoteLoadingState
+                            ? null // تعطيل الزر أثناء التحميل
+                            : () {
+                                if (controller.text.isNotEmpty) {
+                                  widget.cubit.addQuestionNote(controller.text);
+                                }
+                              },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 8.r,
+                            horizontal: 16.w,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.greenColor,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: state is AddNoteLoadingState
+                              ? SizedBox(
+                                  height: 20.h,
+                                  width: 20.w,
+                                  child: const CircularProgressIndicator(
+                                    color: AppColors.primaryColor,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  'Send',
+                                  style: AppTextStyle.style14Bold.copyWith(
+                                    color: AppColors.offwhiteColor,
+                                  ),
                                 ),
-                              )
-                            : Text(
-                                'Send note',
-                                style: AppTextStyle.style14Bold.copyWith(
-                                  color: AppColors.offwhiteColor,
-                                ),
-                              ),
+                        ),
                       ),
                     ),
                     8.horizontalSpace,
-                    TextButton(
-                      onPressed: () => context.pop(),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8.r,
-                          horizontal: 16.w,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.darkGreyColor,
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        child: Text(
-                          'Cancel',
-                          style: AppTextStyle.style14Bold.copyWith(
-                            color: AppColors.offwhiteColor,
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => context.pop(),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 8.r,
+                            horizontal: 16.w,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.darkGreyColor,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Text(
+                            'Cancel',
+                            style: AppTextStyle.style14Bold.copyWith(
+                              color: AppColors.offwhiteColor,
+                            ),
                           ),
                         ),
                       ),

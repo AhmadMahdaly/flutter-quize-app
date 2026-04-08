@@ -48,8 +48,11 @@ class _GiftsScreenState extends State<GiftsScreen> {
           borderRadius: BorderRadius.circular(320.r),
         ),
         backgroundColor: AppColors.primaryColor,
-        label: Text('Send a gift', style: AppTextStyle.style12W800),
-        icon: const Icon(Icons.card_giftcard, color: Colors.white),
+        label: Text(
+          'Send a gift',
+          style: AppTextStyle.style12W800.copyWith(color: AppColors.thirdColor),
+        ),
+        icon: const Icon(Icons.card_giftcard, color: AppColors.thirdColor),
         onPressed: () {
           // الانتقال لصفحة إرسال الهدية
           context.pushNamed(AppRoutes.sendGiftScreen);
@@ -68,7 +71,7 @@ class _GiftsScreenState extends State<GiftsScreen> {
               );
             }
             if (gifts.isEmpty && state is GetGiftsLoadingState) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: LoadingDataWidget());
             }
 
             return ListView.builder(
@@ -78,7 +81,7 @@ class _GiftsScreenState extends State<GiftsScreen> {
                 if (index == gifts.length) {
                   return const Padding(
                     padding: EdgeInsets.all(16),
-                    child: Center(child: CircularProgressIndicator()),
+                    child: Center(child: LoadingDataWidget()),
                   );
                 }
 

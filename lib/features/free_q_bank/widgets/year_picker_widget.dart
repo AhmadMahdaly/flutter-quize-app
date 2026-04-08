@@ -71,7 +71,7 @@ class _YearPickerWidgetState extends State<YearPickerWidget> {
               icon: Icon(
                 CupertinoIcons.chevron_down,
                 size: SizeConfig.responsiveValue(phone: 20.r, tablet: 24.r),
-                color: AppColors.darkGreyColor,
+                color: AppColors.primaryColor,
               ),
               dropdownColor: AppColors.thirdColor,
               borderRadius: BorderRadius.circular(12.r),
@@ -158,20 +158,26 @@ class SingleMonthSelector extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? AppColors.primaryColor
-                      : Colors.transparent,
+                      : (isAvailable
+                            ? Colors.transparent
+                            : AppColors.offwhiteColor.withAlpha(50)),
                   borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(
                     color: isSelected
                         ? AppColors.primaryColor
                         : (isAvailable
-                              ? Colors.grey.shade400
+                              ? AppColors.primaryColor.withAlpha(200)
                               : Colors.grey.shade200),
                   ),
                 ),
                 child: Text(
                   monthName,
                   style: AppTextStyle.style14W500.copyWith(
-                    color: isSelected ? Colors.white : AppColors.forthColor,
+                    color: isSelected
+                        ? AppColors.thirdColor
+                        : (isAvailable
+                              ? AppColors.primaryColor
+                              : Colors.grey.shade400),
                     fontWeight: isSelected
                         ? FontWeight.bold
                         : FontWeight.normal,

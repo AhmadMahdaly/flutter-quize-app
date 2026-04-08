@@ -4,6 +4,7 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/no_data_widget.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/subscription/cubit/subscription_cubit.dart';
@@ -48,7 +49,7 @@ class SubscriptionScreen extends StatelessWidget {
           body: Stack(
             children: [
               SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -94,7 +95,7 @@ class SubscriptionScreen extends StatelessWidget {
                                     topLeft: Radius.circular(16.r),
                                     topRight: Radius.circular(16.r),
                                   ),
-                                  color: AppColors.secondaryColor,
+                                  color: AppColors.primaryColor.withAlpha(50),
                                 ),
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(
@@ -186,7 +187,7 @@ class SubscriptionScreen extends StatelessWidget {
                                                                 AppColors
                                                                     .errorColor,
                                                             decorationThickness:
-                                                                2,
+                                                                1,
                                                             decoration:
                                                                 priceBeforeDiscount !=
                                                                     0
@@ -202,7 +203,7 @@ class SubscriptionScreen extends StatelessWidget {
                                                           .style16Bold
                                                           .copyWith(
                                                             color: AppColors
-                                                                .thirdColor,
+                                                                .greenColor,
                                                             fontSize: 22.sp,
                                                           ),
                                                     ),
@@ -241,7 +242,7 @@ class SubscriptionScreen extends StatelessWidget {
               if (state is PurchaseLoadingState)
                 Container(
                   color: Colors.black.withAlpha(120),
-                  child: const Center(child: CircularProgressIndicator()),
+                  child: const Center(child: LoadingDataWidget()),
                 ),
             ],
           ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
+import 'package:smle/core/shared_widgets/custom_primary_button.dart';
+import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
@@ -40,7 +42,7 @@ class PlaylistAlertWidget extends StatelessWidget {
             SizeConfig.responsiveValue(phone: 12.r, tablet: 12.r),
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.secondaryColor,
         title: Text(
           title,
           style: AppTextStyle.style18Bold.copyWith(
@@ -49,57 +51,42 @@ class PlaylistAlertWidget extends StatelessWidget {
         ),
         content: SizedBox(
           width: SizeConfig.screenWidth,
-          child: TextFormField(
+          child: CustomPrimaryTextfield(
             controller: playListNameController,
-            style: AppTextStyle.style14W500.copyWith(
-              color: AppColors.iconColorBlack,
-            ),
-            decoration: InputDecoration(
-              fillColor: AppColors.greyColor,
-              filled: true,
-              hintText: 'Playlist title',
-              hintStyle: TextStyle(
-                color: AppColors.darkGreyColor.withAlpha(150),
-                fontSize: 12.sp,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(40.r)),
-                borderSide: const BorderSide(color: AppColors.greyColor),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(40.r)),
-                borderSide: const BorderSide(color: AppColors.greyColor),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(40.r)),
-                borderSide: const BorderSide(color: AppColors.greyColor),
-              ),
-            ),
+
+            text: 'Playlist title',
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel', style: AppTextStyle.style14W500.copyWith()),
-          ),
-          TextButton(
-            onPressed: () {
-              if (isEdit) {
-                context.read<PlayListCubit>().editPlayList(
-                  playListId!,
-                  playListNameController.text,
-                );
-              } else {
-                context.read<PlayListCubit>().createPlayList(
-                  playListNameController.text,
-                  questionId,
-                );
-              }
-            },
-            child: Text(
-              isEdit ? 'Edit' : 'Create',
-              style: AppTextStyle.style14Bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'Cancel',
+                  style: AppTextStyle.style14W500.copyWith(
+                    color: AppColors.thirdColor,
+                  ),
+                ),
+              ),
+              CustomPrimaryHButton(
+                onPressed: () {
+                  if (isEdit) {
+                    context.read<PlayListCubit>().editPlayList(
+                      playListId!,
+                      playListNameController.text,
+                    );
+                  } else {
+                    context.read<PlayListCubit>().createPlayList(
+                      playListNameController.text,
+                      questionId,
+                    );
+                  }
+                },
+                text: isEdit ? 'Edit' : 'Create',
+              ),
+            ],
           ),
         ],
       ),

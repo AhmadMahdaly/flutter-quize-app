@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/theme/assets.dart';
+import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
@@ -32,11 +32,19 @@ class PlayListWidget extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(
-                Assets.questionMark,
-                height: SizeConfig.responsiveValue(phone: 80.h, tablet: 80.h),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.r),
+                  color: AppColors.primaryColor,
+                ),
+                child: Icon(Icons.question_mark_rounded, size: 60.r),
+                //  Image.asset(
+                //   Assets.questionMark,
+                //   height: SizeConfig.responsiveValue(phone: 80.h, tablet: 80.h),
+                // ),
               ),
-              10.horizontalSpace,
+              12.horizontalSpace,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +58,7 @@ class PlayListWidget extends StatelessWidget {
                     Text(
                       '$questionCount ${'Question'}',
                       style: AppTextStyle.style14W500.copyWith(
-                        color: AppColors.darkGreyColor,
+                        color: AppColors.primaryColor.withAlpha(200),
                       ),
                     ),
                     10.verticalSpace,
@@ -58,9 +66,12 @@ class PlayListWidget extends StatelessWidget {
                 ),
               ),
               PopupMenuButton<String>(
-                icon: const Icon(Icons.more_vert),
+                icon: const Icon(
+                  Icons.more_vert,
+                  color: AppColors.primaryColor,
+                ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
                 onSelected: (value) {
                   if (value == 'edit') {
@@ -71,7 +82,7 @@ class PlayListWidget extends StatelessWidget {
                           value: cubit,
                           child: PlaylistAlertWidget(
                             playListNameController: playListNameController,
-                            title: 'Edit',
+                            title: 'Edit playlist',
                             isEdit: true,
                             playListName: playListName,
                             playListId: playListId,
@@ -80,10 +91,36 @@ class PlayListWidget extends StatelessWidget {
                       },
                     );
                   } else if (value == 'delete') {
-                    cubit.deletePlayList(playListId);
+                    showDialog(
+                      context: context,
+                      builder: (dialogContext) => ActionConfirmationDialog(
+                        title: 'Are you sure you want to delete this playlist?',
+                        onConfirm: () async {
+                          try {
+                            await cubit.deletePlayList(playListId);
+                          } catch (_) {}
+                        },
+                      ),
+                    );
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'edit',
+                    child: Row(
+                      children: [
+                        Icon(
+                          CupertinoIcons.square_pencil,
+                          size: SizeConfig.responsiveValue(
+                            phone: 20.r,
+                            tablet: 16.r,
+                          ),
+                        ),
+                        6.horizontalSpace,
+                        Text('Edit playlist', style: AppTextStyle.style14W500),
+                      ],
+                    ),
+                  ),
                   PopupMenuItem<String>(
                     value: 'delete',
                     child: Row(
@@ -96,23 +133,10 @@ class PlayListWidget extends StatelessWidget {
                           ),
                         ),
                         6.horizontalSpace,
-                        Text('Delete', style: AppTextStyle.style14W500),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'edit',
-                    child: Row(
-                      children: [
-                        Icon(
-                          CupertinoIcons.pencil,
-                          size: SizeConfig.responsiveValue(
-                            phone: 20.r,
-                            tablet: 16.r,
-                          ),
+                        Text(
+                          'Delete playlist',
+                          style: AppTextStyle.style14W500,
                         ),
-                        6.horizontalSpace,
-                        Text('Edit', style: AppTextStyle.style14W500),
                       ],
                     ),
                   ),

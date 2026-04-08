@@ -4,6 +4,7 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
@@ -30,6 +31,12 @@ class _PlayListScreenState extends State<PlayListScreen> {
   }
 
   @override
+  void dispose() {
+    playListNameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // final bool isAddMode = widget.questionId != null;
     return Scaffold(
@@ -37,7 +44,6 @@ class _PlayListScreenState extends State<PlayListScreen> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
         child: BlocConsumer<PlayListCubit, PlayListStates>(
-          // غير إلى BlocConsumer
           listener: (context, state) {
             if (state is AddToPlayListSuccessState) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -75,10 +81,10 @@ class _PlayListScreenState extends State<PlayListScreen> {
                             children: [
                               ((SizeConfig.screenHeight / 3) - 150)
                                   .verticalSpace,
-                              const Icon(
+                              Icon(
                                 Icons.playlist_add_outlined,
-                                size: 80,
-                                color: AppColors.greyColor,
+                                size: 80.r,
+                                color: AppColors.primaryColor,
                               ),
                               16.verticalSpace,
                               Text(
@@ -93,75 +99,53 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                 widget.isAdd == true
                                     ? 'Create a playlist to add this question.'
                                     : 'Create your first playlist to get started.',
-                                style: AppTextStyle.style16W500.copyWith(
-                                  color: AppColors.darkGreyColor,
+                                style: AppTextStyle.style14W500.copyWith(
+                                  color: AppColors.thirdColor.withAlpha(150),
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              24.verticalSpace,
+                              46.verticalSpace,
                               if (widget.isAdd == false)
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return BlocProvider.value(
-                                            value: cubit,
-                                            child: PlaylistAlertWidget(
-                                              playListNameController:
-                                                  playListNameController,
-                                              title: 'New playlist',
-                                              isEdit: false,
-                                              questionId: widget.questionId,
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.secondaryColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          30.r,
-                                        ),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 16.h,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'Create new playlist',
-                                      style: AppTextStyle.style14W500.copyWith(
-                                        color: AppColors.thirdColor,
-                                      ),
-                                    ),
-                                  ),
+                                CustomPrimaryButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BlocProvider.value(
+                                          value: cubit,
+                                          child: PlaylistAlertWidget(
+                                            playListNameController:
+                                                playListNameController,
+                                            title: 'New playlist',
+                                            isEdit: false,
+                                            questionId: widget.questionId,
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  text: 'Create new playlist',
                                 )
                               else
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return BlocProvider.value(
-                                            value: cubit,
-                                            child: PlaylistAlertWidget(
-                                              playListNameController:
-                                                  playListNameController,
-                                              title: 'New playlist',
-                                              isEdit: false,
-                                              questionId: widget.questionId,
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: const Text('Create New Playlist'),
-                                  ),
+                                CustomPrimaryButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BlocProvider.value(
+                                          value: cubit,
+                                          child: PlaylistAlertWidget(
+                                            playListNameController:
+                                                playListNameController,
+                                            title: 'New playlist',
+                                            isEdit: false,
+                                            questionId: widget.questionId,
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  text: 'Create New Playlist',
                                 ),
                             ],
                           ),
@@ -212,10 +196,11 @@ class _PlayListScreenState extends State<PlayListScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(320.r),
         ),
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: AppColors.offwhiteColor),
         onPressed: () async {
           await showDialog(
             context: context,

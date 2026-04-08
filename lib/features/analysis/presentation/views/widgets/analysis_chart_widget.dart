@@ -16,10 +16,10 @@ Widget buildDetailedTable(
     child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
-        headingRowColor: WidgetStateProperty.all(Colors.grey.shade200),
+        headingRowColor: WidgetStateProperty.all(AppColors.greyColor),
         headingTextStyle: const TextStyle(
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: AppColors.greyColor,
         ),
         columns: [
           DataColumn(
@@ -68,7 +68,7 @@ Widget buildDetailedTable(
                 Text(
                   item.category,
                   style: AppTextStyle.style14W500.copyWith(
-                    color: AppColors.forthColor,
+                    color: AppColors.thirdColor,
                     fontSize: SizeConfig.responsiveValue(
                       phone: 12.sp,
                       tablet: 16.sp,
@@ -80,7 +80,7 @@ Widget buildDetailedTable(
                 Text(
                   '${item.examPercentage.toStringAsFixed(1)}%',
                   style: AppTextStyle.style14W500.copyWith(
-                    color: AppColors.forthColor,
+                    color: AppColors.thirdColor,
                     fontSize: SizeConfig.responsiveValue(
                       phone: 12.sp,
                       tablet: 16.sp,
@@ -92,7 +92,7 @@ Widget buildDetailedTable(
                 Text(
                   '${item.averagePercentage.toStringAsFixed(1)}%',
                   style: AppTextStyle.style14W500.copyWith(
-                    color: AppColors.forthColor,
+                    color: AppColors.thirdColor,
                     fontSize: SizeConfig.responsiveValue(
                       phone: 12.sp,
                       tablet: 16.sp,
@@ -189,7 +189,7 @@ class PerformanceChart extends StatelessWidget {
                               ? '${label.substring(0, 14)}...'
                               : label,
                           style: AppTextStyle.style16Bold.copyWith(
-                            color: AppColors.forthColor,
+                            color: AppColors.thirdColor,
                             fontSize: SizeConfig.responsiveValue(
                               phone: 10.sp,
                               tablet: 14.sp,

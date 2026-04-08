@@ -93,7 +93,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   'Press ✓ to promo code apply.',
                   textAlign: TextAlign.start,
                   style: AppTextStyle.style12W600.copyWith(
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryColor.withAlpha(200),
                   ),
                 ),
                 30.verticalSpace,
@@ -246,8 +246,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           Text(
             label,
             style: isTotal
-                ? AppTextStyle.style16Bold
-                : AppTextStyle.style14W500.copyWith(color: Colors.grey[700]),
+                ? AppTextStyle.style16Bold.copyWith(
+                    color: AppColors.primaryColor,
+                  )
+                : AppTextStyle.style14W500.copyWith(
+                    color: AppColors.thirdColor,
+                  ),
           ),
           Text(
             value,
@@ -256,8 +260,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     color: AppColors.primaryColor,
                   )
                 : AppTextStyle.style14W500.copyWith(
-                    color: valueColor ?? Colors.black,
+                    color:
+                        valueColor ??
+                        (isNotActive
+                            ? AppColors.thirdColor
+                            : AppColors.greenColor),
                     decoration: isNotActive ? TextDecoration.lineThrough : null,
+                    decorationColor: isNotActive ? AppColors.errorColor : null,
                     fontWeight: valueColor != null
                         ? FontWeight.bold
                         : FontWeight.normal,

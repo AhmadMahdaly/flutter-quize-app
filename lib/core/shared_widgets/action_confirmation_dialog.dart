@@ -70,7 +70,7 @@ class ActionConfirmationDialog extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: AppColors
-                            .successColor, // يمكنك تغيير اللون للأحمر عند الحذف إذا أردت
+                            .greenColor, // يمكنك تغيير اللون للأحمر عند الحذف إذا أردت
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: FittedBox(

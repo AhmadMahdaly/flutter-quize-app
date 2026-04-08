@@ -7,6 +7,7 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
@@ -49,7 +50,7 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                     onPressed: () => Scaffold.of(context).openDrawer(),
                     icon: Icon(
                       Icons.menu,
-                      color: AppColors.offwhiteColor,
+                      color: AppColors.primaryColor,
                       size: SizeConfig.responsiveValue(
                         phone: 24.r,
                         tablet: 16.r,
@@ -144,8 +145,8 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                     else
                       ExpansionTile(
                         tilePadding: EdgeInsets.zero,
-                        collapsedIconColor: AppColors.forthColor,
-                        iconColor: AppColors.forthColor,
+                        collapsedIconColor: AppColors.primaryColor,
+                        iconColor: AppColors.primaryColor,
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -184,8 +185,8 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                     20.verticalSpace,
 
                     ExpansionTile(
-                      collapsedIconColor: AppColors.forthColor,
-                      iconColor: AppColors.forthColor,
+                      collapsedIconColor: AppColors.primaryColor,
+                      iconColor: AppColors.primaryColor,
                       title: Text(
                         'Selected items',
                         style: AppTextStyle.style14W700.copyWith(
@@ -263,6 +264,8 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
           children: [
             Text('Select all', style: AppTextStyle.style14W500.copyWith()),
             Checkbox(
+              side: const BorderSide(color: AppColors.primaryColor),
+
               value: isAllSelected,
               onChanged: isEnabled ? onSelectAllChanged : null,
               activeColor: AppColors.primaryColor,
@@ -292,7 +295,7 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
             'Selected: ${DateFormat.MMMM().format(DateTime(2024, cubit.selectedMonth))} / Year: ${cubit.selectedYearDate.year}',
             style: AppTextStyle.style14W700.copyWith(
               fontSize: 14.sp,
-              color: AppColors.secondaryColor,
+              color: AppColors.thirdColor,
             ),
             textAlign: TextAlign.start,
           ),
@@ -324,9 +327,22 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
                 )
               else
                 Expanded(
-                  child: Text(
-                    '${'Available'}: ${cubit.questionsCount}',
-                    style: AppTextStyle.style14W700.copyWith(fontSize: 15.sp),
+                  child: Row(
+                    children: [
+                      Text(
+                        '${'Available'}:',
+                        style: AppTextStyle.style14W700.copyWith(
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                      Text(
+                        ' ${cubit.questionsCount}',
+                        style: AppTextStyle.style14W700.copyWith(
+                          fontSize: 15.sp,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
             ],
@@ -335,47 +351,43 @@ class _FreeCreateQuizScreenState extends State<FreeCreateQuizScreen> {
           GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: TextField(
+              style: AppTextStyle.style14W500.copyWith(
+                color: AppColors.iconColorBlack,
+              ),
               controller: cubit.numberOfQuestionsController,
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
               onEditingComplete: () => FocusScope.of(context).unfocus(),
-              // إضافة الـ Formatter لمنع إدخال غير الأرقام
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(
-                labelText: 'Enter Number of questions',
-                labelStyle: const TextStyle(color: AppColors.primaryColor),
-                hintText: 'Max: 10', // تحديث النص التوضيحي ليظهر 10
-                hintStyle: TextStyle(
-                  color: AppColors.secondaryColor,
-                  fontSize: 12.sp,
+                filled: true,
+                fillColor: AppColors.offwhiteColor,
+                // labelText: 'Enter Number of questions',
+                // labelStyle: AppTextStyle.style12Bold.copyWith(
+                //   color: AppColors.forthColor,
+                // ),
+                hintText: 'Max: 10',
+                hintStyle: AppTextStyle.style12W600.copyWith(
+                  color: AppColors.darkGreyColor.withAlpha(100),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12.r)),
-                ),
-                // منطق التحقق من القيمة (لا تزيد عن 10)
+                border: customOutlineInputBorder(),
+                focusedBorder: customOutlineInputBorder(),
+                enabledBorder: customOutlineInputBorder(),
+                disabledBorder: customOutlineInputBorder(),
                 errorText:
                     (cubit.numberOfQuestionsController.text.isNotEmpty &&
                         (int.tryParse(cubit.numberOfQuestionsController.text) ??
                                 0) >
-                            10)
-                    ? 'Maximum allowed is 10' // رسالة الخطأ
+                            cubit.questionsCount)
+                    ? 'Error: Max questions'
                     : null,
               ),
               onChanged: (value) {
-                if (value.isNotEmpty && (int.tryParse(value) ?? 0) > 10) {
-                  cubit.numberOfQuestionsController.text = '10';
-                  cubit.numberOfQuestionsController.selection =
-                      TextSelection.fromPosition(
-                        TextPosition(
-                          offset: cubit.numberOfQuestionsController.text.length,
-                        ),
-                      );
-                }
-
                 setState(() {});
               },
             ),
           ),
+          15.verticalSpace,
         ],
       ),
     );

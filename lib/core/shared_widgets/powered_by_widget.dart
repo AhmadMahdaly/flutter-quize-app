@@ -40,7 +40,7 @@ class PoweredByWidget extends StatelessWidget {
                     'Powered by:',
                     style: AppTextStyle.style12W700.copyWith(
                       fontSize: 11.sp,
-                      color: AppColors.forthColor.withAlpha(150),
+                      color: AppColors.greyColor.withAlpha(150),
                     ),
                   ),
                   2.horizontalSpace,
@@ -60,7 +60,7 @@ class PoweredByWidget extends StatelessWidget {
                       '${'Version Number'}: ${snapshot.data}',
                       style: AppTextStyle.style9W600.copyWith(
                         fontSize: 10.sp,
-                        color: AppColors.forthColor.withAlpha(150),
+                        color: AppColors.greyColor.withAlpha(150),
                       ),
                     );
                   }

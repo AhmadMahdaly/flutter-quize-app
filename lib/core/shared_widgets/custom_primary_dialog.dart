@@ -17,7 +17,7 @@ void showCustomPrimaryDialog(
         return PopScope(
           canPop: canPop,
           child: Dialog(
-            backgroundColor: AppColors.offwhiteColor,
+            backgroundColor: AppColors.iconColorGray,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.r),
             ),

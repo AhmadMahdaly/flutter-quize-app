@@ -6,9 +6,9 @@ void configLoading(BuildContext context) {
   EasyLoading.instance
     ..loadingStyle = EasyLoadingStyle.custom
     ..backgroundColor = AppColors.secondaryColor
-    ..indicatorColor = Theme.of(context).primaryColor
-    ..textColor = Theme.of(context).primaryColor
-    ..maskColor = AppColors.forthColor
+    ..indicatorColor = Theme.of(context).secondaryHeaderColor
+    ..textColor = Theme.of(context).secondaryHeaderColor
+    ..maskColor = AppColors.secondaryColor
     ..dismissOnTap = false
     ..maskType = EasyLoadingMaskType.black
     ..userInteractions = false;

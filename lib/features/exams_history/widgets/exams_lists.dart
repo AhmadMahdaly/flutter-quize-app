@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
@@ -14,7 +12,6 @@ class ExamsList extends StatelessWidget {
   final ExamsHistoryCubit cubit;
   @override
   Widget build(BuildContext context) {
-    log(cubit.state.toString());
     if (cubit.allExams.isEmpty && cubit.state is! ExamsHistoryLoading) {
       return Center(
         child: Column(
@@ -22,14 +19,14 @@ class ExamsList extends StatelessWidget {
           children: [
             Icon(
               Icons.edit_document,
-              color: AppColors.darkGreyColor.withAlpha(100),
+              color: AppColors.primaryColor.withAlpha(150),
               size: 160.r,
             ),
             12.verticalSpace,
             Text(
               'No Exams found',
               style: AppTextStyle.style16Bold.copyWith(
-                color: AppColors.darkGreyColor.withAlpha(100),
+                color: AppColors.primaryColor.withAlpha(150),
               ),
             ),
           ],
@@ -37,7 +34,7 @@ class ExamsList extends StatelessWidget {
       );
     }
     return ListView.separated(
-      padding: EdgeInsets.symmetric(vertical: 20.h),
+      // padding: EdgeInsets.symmetric(vertical: 12.h),
       itemCount: cubit.allExams.length,
       itemBuilder: (context, index) {
         final exam = cubit.allExams[index];

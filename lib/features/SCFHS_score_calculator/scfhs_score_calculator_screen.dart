@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/custom_primary_button.dart';
+import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/SCFHS_score_calculator/widgets/calculate_result_dialog.dart';
@@ -91,6 +93,10 @@ class _ScfhsScoreCalculatorScreenState
                               setState(() {});
                             },
                             decoration: InputDecoration(
+                              border: customOutlineInputBorder(),
+                              focusedBorder: customOutlineInputBorder(),
+                              enabledBorder: customOutlineInputBorder(),
+                              disabledBorder: customOutlineInputBorder(),
                               errorText:
                                   (context
                                           .read<ScfhsScoreCalculatorCubit>()
@@ -121,32 +127,8 @@ class _ScfhsScoreCalculatorScreenState
                               hintStyle: AppTextStyle.style12W500.copyWith(
                                 color: AppColors.darkGreyColor,
                               ),
-                              fillColor: AppColors.greyColor.withAlpha(55),
+                              fillColor: AppColors.offwhiteColor,
                               filled: true,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(40.r),
-                                ),
-                                borderSide: const BorderSide(
-                                  color: AppColors.greyColor,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(40.r),
-                                ),
-                                borderSide: const BorderSide(
-                                  color: AppColors.greyColor,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(40.r),
-                                ),
-                                borderSide: const BorderSide(
-                                  color: AppColors.greyColor,
-                                ),
-                              ),
                             ),
                           ),
                         ),
@@ -199,6 +181,10 @@ class _ScfhsScoreCalculatorScreenState
                               setState(() {});
                             },
                             decoration: InputDecoration(
+                              border: customOutlineInputBorder(),
+                              focusedBorder: customOutlineInputBorder(),
+                              enabledBorder: customOutlineInputBorder(),
+                              disabledBorder: customOutlineInputBorder(),
                               hintText:
                                   '${'Maximum score'} ${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.gPA!.maxScore}',
                               hintStyle: AppTextStyle.style12W500.copyWith(
@@ -222,33 +208,9 @@ class _ScfhsScoreCalculatorScreenState
                                           5)
                                   ? 'Maximum allowed is 5' // رسالة الخطأ
                                   : null,
-                              fillColor: AppColors.greyColor.withAlpha(55),
+                              fillColor: AppColors.offwhiteColor,
 
                               filled: true, // Enables the background color
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(40.r),
-                                ),
-                                borderSide: const BorderSide(
-                                  color: AppColors.greyColor,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(40.r),
-                                ),
-                                borderSide: const BorderSide(
-                                  color: AppColors.greyColor,
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(40.r),
-                                ),
-                                borderSide: const BorderSide(
-                                  color: AppColors.greyColor,
-                                ),
-                              ),
                             ),
                           ),
                         ),
@@ -301,7 +263,7 @@ class _ScfhsScoreCalculatorScreenState
                                             )
                                         ? CupertinoIcons.checkmark_circle
                                         : CupertinoIcons.circle,
-                                    color: AppColors.secondaryColor,
+                                    color: AppColors.primaryColor,
                                   ),
                                 ),
                                 5.horizontalSpace,
@@ -320,6 +282,7 @@ class _ScfhsScoreCalculatorScreenState
                                 Text(
                                   '(${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.cVChecklist!.items![index].maxScore} ${"points"})',
                                   style: AppTextStyle.style14W500.copyWith(
+                                    color: AppColors.greyColor.withAlpha(200),
                                     fontSize: SizeConfig.responsiveValue(
                                       phone: 14.sp,
                                       tablet: 18.sp,
@@ -338,67 +301,46 @@ class _ScfhsScoreCalculatorScreenState
                                 .length,
                           ),
                         24.verticalSpace,
-                        Center(
-                          child: TextButton(
-                            onPressed: () {
-                              if (context
-                                      .read<ScfhsScoreCalculatorCubit>()
-                                      .gpaController
-                                      .text
-                                      .isNotEmpty &&
-                                  context
-                                      .read<ScfhsScoreCalculatorCubit>()
-                                      .realExamController
-                                      .text
-                                      .isNotEmpty) {
+                        CustomPrimaryButton(
+                          onPressed: () {
+                            if (context
+                                    .read<ScfhsScoreCalculatorCubit>()
+                                    .gpaController
+                                    .text
+                                    .isNotEmpty &&
                                 context
                                     .read<ScfhsScoreCalculatorCubit>()
-                                    .getCalculateResult()
-                                    .then((onValue) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          if (onValue != null) {
-                                            return CalculateResultDialog(
-                                              score: onValue.data!,
-                                            );
-                                          } else {
-                                            return const SizedBox();
-                                          }
-                                        },
-                                      );
-                                    });
-                              }
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(
-                                AppColors.secondaryColor,
-                              ),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              minimumSize: WidgetStateProperty.all(
-                                Size(300.w, 52.h),
-                              ),
-                              shape: WidgetStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.r),
-                                ),
-                              ),
-                            ),
-                            child: Text(
-                              'Calculate',
-                              style: AppTextStyle.style16Bold.copyWith(
-                                color: AppColors.thirdColor,
-                                fontSize: SizeConfig.responsiveValue(
-                                  phone: 14.sp,
-                                  tablet: 18.sp,
-                                ),
-                              ),
-                            ),
-                          ),
+                                    .realExamController
+                                    .text
+                                    .isNotEmpty) {
+                              context
+                                  .read<ScfhsScoreCalculatorCubit>()
+                                  .getCalculateResult()
+                                  .then((onValue) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        if (onValue != null) {
+                                          return CalculateResultDialog(
+                                            score: onValue.data!,
+                                          );
+                                        } else {
+                                          return const SizedBox();
+                                        }
+                                      },
+                                    );
+                                  });
+                            }
+                          },
+                          text: 'Calculate',
                         ),
                       ],
                     )
-                  : const Center(child: CircularProgressIndicator()),
+                  : const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
             );
           },
         ),

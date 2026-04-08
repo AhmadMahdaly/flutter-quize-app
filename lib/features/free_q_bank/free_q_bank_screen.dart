@@ -10,13 +10,14 @@ import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
-import 'package:smle/features/free_q_bank/widgets/answer_widget.dart';
-import 'package:smle/features/free_q_bank/widgets/q_bank_progress_widget.dart';
 import 'package:smle/features/free_q_bank/widgets/qbank_add_note_dialog.dart';
-import 'package:smle/features/free_q_bank/widgets/question_button_widget.dart';
-import 'package:smle/features/free_q_bank/widgets/question_widget.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/q_bank/data/model/start_quiz_model.dart';
+import 'package:smle/features/q_bank/widgets/answer_widget.dart';
+import 'package:smle/features/q_bank/widgets/q_bank_progress_widget.dart'
+    show QBankProgressWidget;
+import 'package:smle/features/q_bank/widgets/question_button_widget.dart';
+import 'package:smle/features/q_bank/widgets/question_widget.dart';
 
 class FreeQBankScreen extends StatefulWidget {
   const FreeQBankScreen({super.key, required this.startQuizModel});

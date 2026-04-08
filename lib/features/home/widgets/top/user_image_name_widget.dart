@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smle/core/functions/date_format.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/custom_cache_image.dart';
 import 'package:smle/core/theme/colors.dart';
@@ -31,59 +32,67 @@ class UserImageNameWidget extends StatelessWidget {
         ),
 
         15.horizontalSpace,
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              spacing: 4.w,
-              children: [
-                Text(
-                  'Welcome',
-                  style: AppTextStyle.style14Bold.copyWith(
-                    color: AppColors.secondaryColor,
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.sizeOf(context).width - 240.w,
-                  child: Text(
-                    name,
-                    style: AppTextStyle.style16Bold.copyWith(
-                      // color: AppColors.darkGreyColor,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                spacing: 4.w,
+                children: [
+                  Text(
+                    'Hello ',
+                    style: AppTextStyle.style12Bold.copyWith(
+                      color: AppColors.greyColor.withAlpha(150),
                     ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: MediaQuery.sizeOf(context).width - 140.w,
-              child: Text(
-                email,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyle.style12W500.copyWith(
-                  color: AppColors.secondaryColor,
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width - 250.w,
+                    child: Text(
+                      name,
+                      style: AppTextStyle.style12Bold.copyWith(
+                        color: AppColors.greyColor.withAlpha(250),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              ),
+              // SizedBox(
+              //   width: MediaQuery.sizeOf(context).width - 150.w,
+              //   child: Text(
+              //     email,
+              //     maxLines: 1,
+              //     overflow: TextOverflow.ellipsis,
+              //     style: AppTextStyle.style12W500.copyWith(
+              //       color: AppColors.secondaryColor,
+              //     ),
+              //   ),
+              // ),
+              Text(
+                getGreetingWithEmoji(context),
+                style: AppTextStyle.style16Bold.copyWith(
+                  color: AppColors.greyColor.withAlpha(200),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                Text(
-                  '$points ',
-                  style: AppTextStyle.style14Bold.copyWith(
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                Text(
-                  'Points',
-                  style: AppTextStyle.style12Bold.copyWith(
-                    color: AppColors.secondaryColor,
-                  ),
-                ),
-              ],
-            ),
-          ],
+              // Row(
+              //   children: [
+              //     Text(
+              //       '$points ',
+              //       style: AppTextStyle.style14Bold.copyWith(
+              //         color: AppColors.primaryColor,
+              //       ),
+              //     ),
+              //     Text(
+              //       'Points',
+              //       style: AppTextStyle.style12Bold.copyWith(
+              //         color: AppColors.secondaryColor,
+              //       ),
+              //     ),
+              //   ],
+              // ),
+            ],
+          ),
         ),
       ],
     );

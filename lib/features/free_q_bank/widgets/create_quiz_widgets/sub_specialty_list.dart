@@ -3,7 +3,7 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
-import 'package:smle/features/free_q_bank/widgets/create_quiz_widgets/compact_checkbox.dart';
+import 'package:smle/features/q_bank/widgets/create_quiz_widgets/compact_checkbox.dart';
 
 class SubSpecialtyList extends StatelessWidget {
   const SubSpecialtyList({super.key, required this.cubit});

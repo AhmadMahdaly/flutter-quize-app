@@ -13,12 +13,12 @@ class QuestionButtonWidget extends StatelessWidget {
       height: 56.h,
       decoration: BoxDecoration(
         color: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(40.r),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       alignment: Alignment.center,
       child: FittedBox(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           child: Text(
             text,
             style: AppTextStyle.style14Bold.copyWith(
@@ -41,12 +41,12 @@ class CustomQuestionButtonWidget extends StatelessWidget {
       height: 56.h,
       decoration: BoxDecoration(
         color: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(40.r),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       alignment: Alignment.center,
       child: FittedBox(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           child: Text(
             text,
             style: AppTextStyle.style14Bold.copyWith(
