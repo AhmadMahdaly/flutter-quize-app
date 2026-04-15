@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:smle/core/functions/date_format.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/custom_cache_image.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class UserImageNameWidget extends StatelessWidget {
@@ -17,14 +16,19 @@ class UserImageNameWidget extends StatelessWidget {
   final String? imagePath;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         CircleAvatar(
           radius: 25.r,
-          backgroundColor: Colors.grey[200],
+          backgroundColor: theme.colorScheme.surface.withAlpha(190),
 
           child: (imagePath == null || imagePath!.isEmpty)
-              ? Icon(Icons.person, size: 25.r, color: Colors.grey)
+              ? Icon(
+                  Icons.person,
+                  size: 25.r,
+                  color: theme.colorScheme.onSurface.withAlpha(160),
+                )
               : ClipRRect(
                   borderRadius: BorderRadius.circular(320.r),
                   child: CustomCacheImageWidget(imageUrl: imagePath!),
@@ -42,7 +46,7 @@ class UserImageNameWidget extends StatelessWidget {
                   Text(
                     'Hello ',
                     style: AppTextStyle.style12Bold.copyWith(
-                      color: AppColors.greyColor.withAlpha(150),
+                      color: theme.colorScheme.onSurface.withAlpha(150),
                     ),
                   ),
                   SizedBox(
@@ -50,7 +54,7 @@ class UserImageNameWidget extends StatelessWidget {
                     child: Text(
                       name,
                       style: AppTextStyle.style12Bold.copyWith(
-                        color: AppColors.greyColor.withAlpha(250),
+                        color: theme.colorScheme.onSurface,
                       ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -72,7 +76,7 @@ class UserImageNameWidget extends StatelessWidget {
               Text(
                 getGreetingWithEmoji(context),
                 style: AppTextStyle.style16Bold.copyWith(
-                  color: AppColors.greyColor.withAlpha(200),
+                  color: theme.colorScheme.onSurface.withAlpha(210),
                 ),
               ),
               // Row(

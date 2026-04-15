@@ -76,7 +76,10 @@ class LeaderboardScreen extends StatelessWidget {
             AppColors.primaryDColor,
           ],
         ),
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.r),
+          topRight: Radius.circular(16.r),
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.primaryDColor.withAlpha(77),

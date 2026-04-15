@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smle/core/theme/colors.dart';
 
 class HomeAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBarWidget({super.key});
@@ -22,8 +21,8 @@ class HomeAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       //     ),
       //   )
       // ],
-      iconTheme: const IconThemeData(
-        color: AppColors.iconColorBlack, // Change the drawer icon color here
+      iconTheme: IconThemeData(
+        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }

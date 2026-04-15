@@ -10,6 +10,8 @@ class ConfirmAccessToRealExamDialogWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       spacing: 8.h,
       mainAxisSize: MainAxisSize.min,
@@ -20,16 +22,18 @@ class ConfirmAccessToRealExamDialogWidget extends StatelessWidget {
         Text(
           textAlign: TextAlign.center,
           'Are You Ready To Start The Realistic Exam Simulation?',
-          style: AppTextStyle.style20Bold,
+          style: AppTextStyle.style20Bold.copyWith(
+            color: theme.colorScheme.secondary,
+          ),
         ),
         12.verticalSpace,
         Row(
           spacing: 12.w,
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-              child: TextButton(
-                onPressed: () async {
+              child: InkWell(
+                onTap: () async {
                   if (context.mounted) {
                     context.pop();
                   }
@@ -58,8 +62,8 @@ class ConfirmAccessToRealExamDialogWidget extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: TextButton(
-                onPressed: () {
+              child: InkWell(
+                onTap: () {
                   if (context.mounted) {
                     context.pop();
                   }

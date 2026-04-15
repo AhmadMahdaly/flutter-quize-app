@@ -16,6 +16,8 @@ class SubscriptionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocBuilder<SubscriptionCubit, SubscriptionStates>(
       builder: (context, state) {
         final cubit = context.read<SubscriptionCubit>();
@@ -116,7 +118,9 @@ class SubscriptionScreen extends StatelessWidget {
                                               backendPackage.name ?? 'Package',
                                               style: AppTextStyle.style16Bold
                                                   .copyWith(
-                                                    color: Colors.white,
+                                                    color: theme
+                                                        .colorScheme
+                                                        .secondary,
                                                     fontSize: 18.sp,
                                                   ),
                                             ),
@@ -133,8 +137,9 @@ class SubscriptionScreen extends StatelessWidget {
                                                       .style14W500
                                                       .copyWith(
                                                         fontSize: 14.sp,
-                                                        color: AppColors
-                                                            .thirdColor,
+                                                        color: theme
+                                                            .colorScheme
+                                                            .secondary,
                                                       ),
                                                 ),
                                               ),

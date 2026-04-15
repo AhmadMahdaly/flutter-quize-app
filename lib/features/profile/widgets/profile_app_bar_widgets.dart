@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/theme/colors.dart';
 
 class ProfileAppBarWidgets extends StatelessWidget
     implements PreferredSizeWidget {
@@ -14,17 +13,18 @@ class ProfileAppBarWidgets extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Stack(
       clipBehavior: Clip.none, // Allows overflow positioning
       children: [
         AppBar(
           elevation: 0,
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: theme.colorScheme.primary,
           leading: canBack
               ? IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.arrow_back_ios_new,
-                    color: AppColors.iconColorBlack,
+                    color: theme.colorScheme.onSurface,
                   ),
                   onPressed: () => Navigator.of(context).pop(),
                 )

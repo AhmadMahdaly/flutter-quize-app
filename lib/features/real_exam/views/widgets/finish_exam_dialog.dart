@@ -66,7 +66,8 @@ class ConfirmFinishExamDialog extends StatelessWidget {
                     } else {
                       await cubit.finishExam();
                       cubit.resetExam();
-                      await getIt<CheckSubscriptionCubit>().loadSubscription();
+                      await getIt<CheckSubscriptionCubit>()
+                          .loadAllSubscriptions();
                     }
                   }
                 },

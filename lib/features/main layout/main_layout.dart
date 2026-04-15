@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/fcm.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/routing/app_router.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/home/widgets/drawer/drawer_widget.dart';
@@ -30,15 +29,14 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return RefreshIndicator(
       onRefresh: () async {
         context.read<MainLayoutCubit>()
           ..resetBackPress()
           ..getProfile()
           ..getGifts();
-        await context.read<CheckSubscriptionCubit>()
-          ..loadSubscription()
-          ..loadAiSubscription();
+        await context.read<CheckSubscriptionCubit>().loadAllSubscriptions();
       },
       child: BlocBuilder<MainLayoutCubit, MainLayoutState>(
         builder: (BuildContext context, state) {
@@ -68,7 +66,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                         margin: EdgeInsets.all(4.r),
                         padding: EdgeInsets.symmetric(vertical: 4.r),
                         decoration: BoxDecoration(
-                          color: AppColors.primaryColor.withAlpha(220),
+                          color: theme.colorScheme.primary.withAlpha(220),
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Row(
@@ -76,7 +74,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                           children: [
                             Icon(
                               Icons.logout_rounded,
-                              color: AppColors.thirdColor,
+                              color: theme.colorScheme.onSurface,
                               size: 16.r,
                             ),
                             8.horizontalSpace,
@@ -84,7 +82,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                               'Press again to exit',
                               textAlign: TextAlign.center,
                               style: AppTextStyle.style14Bold.copyWith(
-                                color: AppColors.thirdColor,
+                                color: theme.colorScheme.onSurface,
                               ),
                             ),
                           ],
@@ -101,12 +99,13 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
               // backgroundColor: Colors.transparent,
               body: AppRouter().screen[mainLayoutInitialScreenIndex],
               bottomNavigationBar: BottomNavigationBar(
-                backgroundColor: AppColors.forthColor.withAlpha(70),
+                elevation: 0,
+                backgroundColor: theme.colorScheme.primary,
                 useLegacyColorScheme: false,
                 unselectedFontSize: 0,
                 selectedFontSize: 0,
-                unselectedItemColor: AppColors.primaryColor,
-                selectedItemColor: AppColors.offwhiteColor,
+                unselectedItemColor: theme.colorScheme.secondary,
+                selectedItemColor: theme.colorScheme.onSurface,
                 type: BottomNavigationBarType.fixed,
                 landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
                 onTap: cubit.changeBottomNavBar,
@@ -118,7 +117,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                       padding: EdgeInsets.all(12.r),
                       decoration: BoxDecoration(
                         color: mainLayoutInitialScreenIndex == 0
-                            ? AppColors.primaryColor.withAlpha(40)
+                            ? theme.colorScheme.secondary.withAlpha(40)
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(320.r),
                       ),
@@ -128,8 +127,8 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                             : 'assets/images/icons/play (1).png',
                         height: 24.h,
                         color: mainLayoutInitialScreenIndex == 0
-                            ? AppColors.offwhiteColor.withAlpha(180)
-                            : AppColors.primaryColor,
+                            ? theme.colorScheme.onPrimary.withAlpha(190)
+                            : theme.colorScheme.surface,
                         filterQuality: FilterQuality.high,
                       ),
                     ),
@@ -141,7 +140,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                       padding: EdgeInsets.all(12.r),
                       decoration: BoxDecoration(
                         color: mainLayoutInitialScreenIndex == 1
-                            ? AppColors.primaryColor.withAlpha(40)
+                            ? theme.colorScheme.secondary.withAlpha(40)
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(320.r),
                       ),
@@ -151,8 +150,8 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                             : 'assets/images/icons/home.png',
                         height: 24.h,
                         color: mainLayoutInitialScreenIndex == 1
-                            ? AppColors.offwhiteColor.withAlpha(180)
-                            : AppColors.primaryColor,
+                            ? theme.colorScheme.onPrimary.withAlpha(190)
+                            : theme.colorScheme.surface,
                         filterQuality: FilterQuality.high,
                       ),
                     ),
@@ -164,7 +163,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                       padding: EdgeInsets.all(12.r),
                       decoration: BoxDecoration(
                         color: mainLayoutInitialScreenIndex == 2
-                            ? AppColors.primaryColor.withAlpha(40)
+                            ? theme.colorScheme.secondary.withAlpha(40)
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(320.r),
                       ),
@@ -174,8 +173,8 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
                             : 'assets/images/icons/user.png',
                         height: 24.h,
                         color: mainLayoutInitialScreenIndex == 2
-                            ? AppColors.offwhiteColor.withAlpha(180)
-                            : AppColors.primaryColor,
+                            ? theme.colorScheme.onPrimary.withAlpha(190)
+                            : theme.colorScheme.surface,
                         filterQuality: FilterQuality.high,
                       ),
                     ),

@@ -26,6 +26,7 @@ class CustomPrimaryTextfield extends StatelessWidget {
     this.inputFormatters,
     this.enabled = true,
     this.maxLines = 1,
+    this.onFieldSubmitted,
   });
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -46,9 +47,11 @@ class CustomPrimaryTextfield extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool? enabled;
   final int? maxLines;
+  final void Function(String)? onFieldSubmitted;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onFieldSubmitted: onFieldSubmitted,
       maxLines: maxLines,
       enabled: enabled,
       keyboardType: keyboardType,

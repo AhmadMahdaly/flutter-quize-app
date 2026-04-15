@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class TopBannerWidget extends StatelessWidget {
@@ -8,10 +7,11 @@ class TopBannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: SizeConfig.screenWidth,
       decoration: BoxDecoration(
-        color: AppColors.primaryColor.withAlpha(50),
+        color: theme.colorScheme.primary.withAlpha(40),
         borderRadius: BorderRadius.all(Radius.circular(12.r)),
       ),
       child: Padding(
@@ -29,13 +29,13 @@ class TopBannerWidget extends StatelessWidget {
                       TextSpan(
                         text: '+18,000 ',
                         style: AppTextStyle.style16Bold.copyWith(
-                          color: AppColors.greyColor.withAlpha(150),
+                          color: theme.colorScheme.onSurface.withAlpha(170),
                         ),
                       ),
                       TextSpan(
                         text: 'Questions across\nall medical specialties',
                         style: AppTextStyle.style16Bold.copyWith(
-                          color: AppColors.thirdColor,
+                          color: theme.colorScheme.onSurface,
                           fontSize: SizeConfig.responsiveValue(
                             phone: 16.sp,
                             tablet: 10.sp,

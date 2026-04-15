@@ -9,6 +9,8 @@ class GiftSubscriptionBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
@@ -22,7 +24,7 @@ class GiftSubscriptionBanner extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryDColor.withAlpha(77),
+            color: theme.colorScheme.primary.withAlpha(15),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),

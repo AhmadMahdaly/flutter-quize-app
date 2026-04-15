@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class ProfileButtonWidget extends StatelessWidget {
@@ -9,14 +8,21 @@ class ProfileButtonWidget extends StatelessWidget {
     required this.imagePath,
     required this.text,
     this.onPressed,
-    this.color = AppColors.primaryColor,
+    this.color,
+    this.trailing,
   });
+
   final dynamic imagePath;
   final String text;
   final VoidCallback? onPressed;
   final Color? color;
+  final Widget? trailing;
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final buttonColor = color ?? theme.colorScheme.primary;
+
     return Center(
       child: InkWell(
         borderRadius: BorderRadius.circular(12.r),
@@ -27,15 +33,15 @@ class ProfileButtonWidget extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.r),
-            gradient: appGradientHelper,
-            border: Border.all(color: AppColors.primaryColor),
+            color: buttonColor.withAlpha(40),
+            border: Border.all(color: buttonColor),
           ),
           child: Row(
             children: [
               imagePath.runtimeType != IconData
                   ? ImageIcon(
                       AssetImage(imagePath),
-                      color: AppColors.greyColor,
+                      color: theme.colorScheme.onSurface,
                       size: SizeConfig.responsiveValue(
                         phone: 26.r,
                         tablet: 20.r,
@@ -43,7 +49,7 @@ class ProfileButtonWidget extends StatelessWidget {
                     )
                   : Icon(
                       imagePath,
-                      color: AppColors.greyColor,
+                      color: theme.colorScheme.onSurface,
                       size: SizeConfig.responsiveValue(
                         phone: 26.r,
                         tablet: 20.r,
@@ -53,9 +59,11 @@ class ProfileButtonWidget extends StatelessWidget {
               Text(
                 text,
                 style: AppTextStyle.style14W600.copyWith(
-                  color: AppColors.thirdColor,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
+
+              if (trailing != null) ...[const Spacer(), trailing!],
             ],
           ),
         ),

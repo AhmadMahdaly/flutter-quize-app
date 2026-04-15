@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/action_confirmation_dialog.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 import 'package:smle/features/play_list/widgets/playlist_alert_widget.dart';
@@ -23,6 +22,8 @@ class PlayListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     final cubit = context.read<PlayListCubit>();
     return GestureDetector(
       onTap: onTap ?? () {}, // استخدم الـ
@@ -33,12 +34,16 @@ class PlayListWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.r),
-                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(12.r),
+                  color: theme.colorScheme.primary,
                 ),
-                child: Icon(Icons.question_mark_rounded, size: 60.r),
+                child: Icon(
+                  Icons.question_mark_rounded,
+                  size: 60.r,
+                  color: theme.colorScheme.secondary,
+                ),
                 //  Image.asset(
                 //   Assets.questionMark,
                 //   height: SizeConfig.responsiveValue(phone: 80.h, tablet: 80.h),
@@ -53,12 +58,13 @@ class PlayListWidget extends StatelessWidget {
                       playListName,
                       style: AppTextStyle.style16W700.copyWith(
                         overflow: TextOverflow.ellipsis,
+                        color: theme.colorScheme.secondary,
                       ),
                     ),
                     Text(
                       '$questionCount ${'Question'}',
                       style: AppTextStyle.style14W500.copyWith(
-                        color: AppColors.primaryColor.withAlpha(200),
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                     10.verticalSpace,
@@ -66,10 +72,7 @@ class PlayListWidget extends StatelessWidget {
                 ),
               ),
               PopupMenuButton<String>(
-                icon: const Icon(
-                  Icons.more_vert,
-                  color: AppColors.primaryColor,
-                ),
+                icon: Icon(Icons.more_vert, color: theme.colorScheme.primary),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
                 ),

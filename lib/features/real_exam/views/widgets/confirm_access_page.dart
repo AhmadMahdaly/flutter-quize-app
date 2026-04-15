@@ -14,6 +14,8 @@ class ConfirmAccessToRealExam extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: const CustomAppBar(title: 'Before You Start'),
       body: Padding(
@@ -25,17 +27,13 @@ class ConfirmAccessToRealExam extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16.r),
               decoration: BoxDecoration(
-                color: AppColors.greenColor.withAlpha(20),
+                color: theme.colorScheme.secondary.withAlpha(20),
                 borderRadius: BorderRadius.circular(12.r),
                 border: Border.all(color: AppColors.secondaryColor),
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.timer,
-                    color: AppColors.greenLightColor,
-                    size: 24.r,
-                  ),
+                  Icon(Icons.timer, color: AppColors.greenColor, size: 24.r),
                   12.horizontalSpace,
                   Expanded(
                     child:
@@ -44,31 +42,25 @@ class ConfirmAccessToRealExam extends StatelessWidget {
                           CheckSubscriptionState
                         >(
                           builder: (context, state) {
-                            if (state is SubscriptionLoading) {
+                            if (state is CheckSubscriptionsLoading) {
                               return const Center(
                                 child: LinearProgressIndicator(),
                               );
                             }
 
-                            if (state is SubscriptionLoaded) {
-                              final sub = state.subscription;
+                            final sub = context.read<CheckSubscriptionCubit>();
 
-                              final availableExam =
-                                  sub.availableRealExam ?? '0';
-                              return Text(
-                                availableExam == '1000'
-                                    ? 'You have Unlimited attempts'
-                                    : 'Remaining Attempts: $availableExam',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.greenLightColor.withAlpha(
-                                    200,
-                                  ),
-                                ),
-                              );
-                            }
-                            return const SizedBox.shrink();
+                            final availableExam = sub.availableExam;
+                            return Text(
+                              availableExam == '1000'
+                                  ? 'You have Unlimited attempts'
+                                  : 'Remaining Attempts: $availableExam',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.greenColor,
+                              ),
+                            );
                           },
                         ),
                   ),
@@ -125,11 +117,16 @@ class ConfirmAccessToRealExam extends StatelessWidget {
                 return CustomPrimaryButton(
                   width: double.infinity,
                   onPressed: () =>
-                      state is SubscriptionLoaded &&
+                      state is CheckSubscriptionsLoaded &&
                           context.mounted &&
-                          state.subscription.availableRealExam != null &&
-                          state.subscription.availableRealExam != '0' &&
-                          state.subscription.availableRealExam!.isNotEmpty
+                          context
+                                  .read<CheckSubscriptionCubit>()
+                                  .availableExam !=
+                              '0' &&
+                          context
+                              .read<CheckSubscriptionCubit>()
+                              .availableExam
+                              .isNotEmpty
                       ? showCustomPrimaryDialog(
                           context,
                           widget: const ConfirmAccessToRealExamDialogWidget(),

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class CategoryWidget extends StatelessWidget {
@@ -15,14 +15,14 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 150.w,
         padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 16.h),
         decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          // border: Border.all(color: AppColors.greyColor),
+          color: theme.colorScheme.primary,
           borderRadius: BorderRadius.all(
             Radius.circular(
               SizeConfig.responsiveValue(phone: 24.r, tablet: 25.r),
@@ -34,7 +34,7 @@ class CategoryWidget extends StatelessWidget {
           children: [
             ImageIcon(
               AssetImage(imagePath),
-              color: AppColors.secondaryColor,
+              color: theme.colorScheme.onSurface,
               size: SizeConfig.responsiveValue(phone: 35.sp, tablet: 60.sp),
             ),
             FittedBox(
@@ -45,7 +45,7 @@ class CategoryWidget extends StatelessWidget {
                     phone: 15.sp,
                     tablet: 22.sp,
                   ),
-                  color: AppColors.secondaryColor,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
             ),
@@ -68,13 +68,14 @@ class CategoryWidgetWithBorder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 150.w,
         padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 16.h),
         decoration: BoxDecoration(
-          border: Border.all(color: AppColors.primaryColor),
+          border: Border.all(color: theme.colorScheme.primary),
 
           borderRadius: BorderRadius.all(
             Radius.circular(
@@ -87,7 +88,7 @@ class CategoryWidgetWithBorder extends StatelessWidget {
           children: [
             ImageIcon(
               AssetImage(imagePath),
-              color: AppColors.greyColor,
+              color: theme.colorScheme.onSurface.withAlpha(220),
               size: SizeConfig.responsiveValue(phone: 50.sp, tablet: 60.sp),
             ),
             8.verticalSpace,
@@ -99,7 +100,7 @@ class CategoryWidgetWithBorder extends StatelessWidget {
                     phone: 15.sp,
                     tablet: 22.sp,
                   ),
-                  color: AppColors.greyColor,
+                  color: theme.colorScheme.onSurface.withAlpha(220),
                 ),
               ),
             ),
@@ -117,13 +118,14 @@ class CategoryPaymentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(
         height: 60.h,
         // padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
         decoration: BoxDecoration(
-          color: AppColors.primaryColor,
+          color: theme.colorScheme.primary,
           borderRadius: BorderRadius.all(
             Radius.circular(
               SizeConfig.responsiveValue(phone: 24.r, tablet: 25.r),
@@ -146,7 +148,7 @@ class CategoryPaymentWidget extends StatelessWidget {
               Icon(
                 CupertinoIcons.creditcard_fill,
                 size: 30.r,
-                color: AppColors.secondaryColor,
+                color: theme.colorScheme.onSurface,
               ),
               8.horizontalSpace,
               FittedBox(
@@ -157,7 +159,7 @@ class CategoryPaymentWidget extends StatelessWidget {
                       phone: 20.sp,
                       tablet: 22.sp,
                     ),
-                    color: AppColors.secondaryColor,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ),

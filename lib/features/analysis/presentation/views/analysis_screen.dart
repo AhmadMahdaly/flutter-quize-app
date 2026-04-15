@@ -16,6 +16,8 @@ class AnalysisScreen extends StatelessWidget {
   final bool isExam;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return PopScope(
       canPop: !isExam,
       onPopInvokedWithResult: (didPop, result) {
@@ -30,7 +32,7 @@ class AnalysisScreen extends StatelessWidget {
             icon: Icon(
               size: SizeConfig.responsiveValue(phone: 20.sp, tablet: 30.sp),
               Icons.arrow_back_ios_new,
-              color: AppColors.primaryColor,
+              color: theme.colorScheme.primary,
             ),
             onPressed: () {
               // getIt<RealExamCubit>().resetExam();
@@ -39,7 +41,7 @@ class AnalysisScreen extends StatelessWidget {
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: BlocBuilder<AnalysisCubit, AnalysisStates>(
             builder: (context, state) {
               if (context.read<AnalysisCubit>().analysisModel != null) {
@@ -50,16 +52,16 @@ class AnalysisScreen extends StatelessWidget {
                         Card(
                           elevation: 4,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: EdgeInsets.all(20.r),
                             child: Column(
                               children: [
                                 Text(
                                   'Your Final Score',
                                   style: AppTextStyle.style16Bold.copyWith(
-                                    color: AppColors.thirdColor,
+                                    color: theme.colorScheme.secondary,
                                     fontSize: SizeConfig.responsiveValue(
                                       phone: 16.sp,
                                       tablet: 20.sp,
@@ -70,7 +72,7 @@ class AnalysisScreen extends StatelessWidget {
                                 Text(
                                   '${context.read<AnalysisCubit>().analysisModel!.totalScore}',
                                   style: AppTextStyle.style16Bold.copyWith(
-                                    color: AppColors.primaryColor,
+                                    color: theme.colorScheme.primary,
                                     fontSize: SizeConfig.responsiveValue(
                                       phone: 24.sp,
                                       tablet: 28.sp,
@@ -86,7 +88,7 @@ class AnalysisScreen extends StatelessWidget {
                         Text(
                           'This report outlines your strengths and weaknesses across assessed domains to help you understand and improve your performance.',
                           style: AppTextStyle.style14W500.copyWith(
-                            color: AppColors.thirdColor,
+                            color: theme.colorScheme.secondary,
                             fontSize: SizeConfig.responsiveValue(
                               phone: 14.sp,
                               tablet: 18.sp,
@@ -126,7 +128,7 @@ class AnalysisScreen extends StatelessWidget {
                                     'Your score',
                                     overflow: TextOverflow.ellipsis,
                                     style: AppTextStyle.style14W500.copyWith(
-                                      color: AppColors.thirdColor,
+                                      color: theme.colorScheme.secondary,
                                       fontSize: SizeConfig.responsiveValue(
                                         phone: 14.sp,
                                         tablet: 18.sp,
@@ -155,7 +157,7 @@ class AnalysisScreen extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     style: AppTextStyle.style14W500.copyWith(
-                                      color: AppColors.thirdColor,
+                                      color: theme.colorScheme.secondary,
                                       fontSize: SizeConfig.responsiveValue(
                                         phone: 14.sp,
                                         tablet: 18.sp,
@@ -193,6 +195,7 @@ class AnalysisScreen extends StatelessWidget {
                             );
                           },
                         ),
+                      if (isExam) 20.verticalSpace,
                     ],
                   ),
                 );
@@ -214,7 +217,7 @@ class AnalysisScreen extends StatelessWidget {
                         state.error,
                         textAlign: TextAlign.center,
                         style: AppTextStyle.style20Bold.copyWith(
-                          color: AppColors.thirdColor.withAlpha(150),
+                          color: theme.colorScheme.secondary.withAlpha(150),
                         ),
                       ),
                       50.verticalSpace,

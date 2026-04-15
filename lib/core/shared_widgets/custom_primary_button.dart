@@ -15,13 +15,13 @@ class CustomPrimaryButton extends StatelessWidget {
   final double? width;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
       child: TextButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(
-            AppColors.forthColor.withAlpha(150),
-          ),
+          backgroundColor: WidgetStateProperty.all(theme.colorScheme.secondary),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           minimumSize: WidgetStateProperty.all(Size(width ?? 300.w, 52.h)),
           shape: WidgetStateProperty.all(
@@ -31,7 +31,7 @@ class CustomPrimaryButton extends StatelessWidget {
         child: Text(
           text,
           style: AppTextStyle.style16Bold.copyWith(
-            color: AppColors.thirdColor.withAlpha(200),
+            color: theme.colorScheme.surface.withAlpha(200),
             fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 20.sp),
           ),
         ),

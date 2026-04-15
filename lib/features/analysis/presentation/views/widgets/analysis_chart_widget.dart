@@ -9,6 +9,8 @@ Widget buildDetailedTable(
   BuildContext context,
   final List<AnalysisDataModel> data,
 ) {
+  final theme = Theme.of(context);
+
   return Card(
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -68,7 +70,7 @@ Widget buildDetailedTable(
                 Text(
                   item.category,
                   style: AppTextStyle.style14W500.copyWith(
-                    color: AppColors.thirdColor,
+                    color: theme.colorScheme.secondary,
                     fontSize: SizeConfig.responsiveValue(
                       phone: 12.sp,
                       tablet: 16.sp,
@@ -80,7 +82,7 @@ Widget buildDetailedTable(
                 Text(
                   '${item.examPercentage.toStringAsFixed(1)}%',
                   style: AppTextStyle.style14W500.copyWith(
-                    color: AppColors.thirdColor,
+                    color: theme.colorScheme.secondary,
                     fontSize: SizeConfig.responsiveValue(
                       phone: 12.sp,
                       tablet: 16.sp,
@@ -92,7 +94,7 @@ Widget buildDetailedTable(
                 Text(
                   '${item.averagePercentage.toStringAsFixed(1)}%',
                   style: AppTextStyle.style14W500.copyWith(
-                    color: AppColors.thirdColor,
+                    color: theme.colorScheme.secondary,
                     fontSize: SizeConfig.responsiveValue(
                       phone: 12.sp,
                       tablet: 16.sp,

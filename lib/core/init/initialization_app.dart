@@ -13,6 +13,7 @@ import 'package:smle/core/fcm.dart';
 import 'package:smle/core/functions/debug_print_extension.dart';
 import 'package:smle/core/network/dio_factory.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
+import 'package:smle/core/theme/theme_controller.dart';
 import 'package:smle/firebase_options.dart';
 
 @pragma('vm:entry-point')
@@ -31,6 +32,7 @@ Future<void> initApp() async {
   }
 
   await setupGetIt();
+  await ThemeController.init();
   await DioFactory.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Directory storageDirectory;

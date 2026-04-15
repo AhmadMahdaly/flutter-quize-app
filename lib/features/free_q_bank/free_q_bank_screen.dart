@@ -172,7 +172,7 @@ class _FreeQBankScreenState extends State<FreeQBankScreen> {
               final cubit = context
                   .read<CheckSubscriptionCubit>()
                   .checkSubscriptionModel;
-              if (state is SubscriptionLoading) {
+              if (state is CheckSubscriptionsLoading) {
                 return const Center(child: CircularProgressIndicator());
               }
 

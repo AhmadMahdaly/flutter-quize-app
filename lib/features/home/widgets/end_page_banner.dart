@@ -5,7 +5,6 @@ import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/routing/routes.dart';
 import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/theme/assets.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 
@@ -14,12 +13,13 @@ class EndPageBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Stack(
       clipBehavior: Clip.none,
       children: [
         Container(
           decoration: BoxDecoration(
-            color: AppColors.primaryColor.withAlpha(50),
+            color: theme.colorScheme.primary.withAlpha(55),
             borderRadius: BorderRadius.all(Radius.circular(12.r)),
           ),
           child: Padding(
@@ -33,7 +33,7 @@ class EndPageBanner extends StatelessWidget {
                   textAlign: TextAlign.center,
                   'Now, Get a Flashback discount code after subscribing when your referred friends use it.',
                   style: AppTextStyle.style14W500.copyWith(
-                    color: AppColors.greyColor,
+                    color: theme.colorScheme.onSurface,
                   ),
 
                   // TextSpan(

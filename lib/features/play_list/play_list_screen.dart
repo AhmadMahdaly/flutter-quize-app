@@ -42,7 +42,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
     return Scaffold(
       appBar: const CustomAppBar(title: 'Playlists'),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: BlocConsumer<PlayListCubit, PlayListStates>(
           listener: (context, state) {
             if (state is AddToPlayListSuccessState) {
@@ -153,6 +153,8 @@ class _PlayListScreenState extends State<PlayListScreen> {
                       )
                     else
                       ListView.separated(
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
@@ -184,7 +186,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                             },
                           );
                         },
-                        separatorBuilder: (context, index) => 12.verticalSpace,
+                        separatorBuilder: (context, index) => 6.verticalSpace,
                         itemCount: cubit.playListModel!.data!.length,
                       )
                   else if (state is GetPlayListFailedState)

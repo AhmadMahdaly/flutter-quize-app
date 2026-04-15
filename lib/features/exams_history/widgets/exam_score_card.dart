@@ -21,12 +21,12 @@ class ExamScoreCard extends StatelessWidget {
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: AlignmentDirectional.centerEnd,
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         decoration: BoxDecoration(
           color: AppColors.errorColor,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(16.r),
         ),
-        child: const Icon(Icons.delete_outline, color: Colors.white, size: 30),
+        child: Icon(Icons.delete_outline, color: Colors.white, size: 30.r),
       ),
       confirmDismiss: (DismissDirection direction) async {
         return await showDialog(
@@ -62,7 +62,6 @@ class ExamScoreCard extends StatelessWidget {
         );
       },
       onDismissed: (direction) {
-        // سيتم استدعاء هذا الكود فقط إذا اختار المستخدم "Delete" وأرجع الديالوج true
         context.read<ExamsHistoryCubit>().deleteExamHistory(
           exam.examId.toString(),
         );
@@ -92,31 +91,29 @@ class ExamScoreCard extends StatelessWidget {
               10.verticalSpace,
               ClipRRect(
                 borderRadius: BorderRadius.circular(30.r),
-                child: SizedBox(
-                  height: 40.h,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      LinearProgressIndicator(
-                        value: score / 100.0,
-                        backgroundColor: AppColors.greyColor,
-                        color: progressColor,
-                        minHeight: 40.h,
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 8.w),
-                          child: Text(
-                            '$score/100',
-                            style: AppTextStyle.style14W900.copyWith(
-                              color: AppColors.forthColor,
-                            ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    LinearProgressIndicator(
+                      value: score / 100.0,
+                      backgroundColor: AppColors.greyColor,
+                      color: progressColor,
+                      minHeight: 20.h,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 8.w),
+                        child: Text(
+                          '$score/100',
+                          style: AppTextStyle.style12W900.copyWith(
+                            color: AppColors.forthColor,
+                            fontSize: 10.sp,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],

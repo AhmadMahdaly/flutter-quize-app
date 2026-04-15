@@ -15,6 +15,16 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
+    final screenGradient = isDarkMode
+        ? appGradientHelper
+        : const LinearGradient(
+            colors: [Color(0xFFF7F8FB), Color(0xFFECEFF4)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          );
     return SafeArea(
       child: Scaffold(
         body: BlocListener<LoginCubit, LoginStates>(
@@ -33,9 +43,9 @@ class LoginScreen extends StatelessWidget {
           },
           child: Container(
             width: double.infinity,
-            decoration: BoxDecoration(gradient: appGradientHelper),
+            decoration: BoxDecoration(gradient: screenGradient),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -59,7 +69,7 @@ class LoginScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         'Welcome to',
                         style: AppTextStyle.style20Bold.copyWith(
-                          color: AppColors.greyColor,
+                          color: theme.colorScheme.secondary,
                           fontSize: SizeConfig.responsiveValue(
                             phone: 24.sp,
                             tablet: 28.sp,
@@ -70,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         'SMLE Gate',
                         style: AppTextStyle.style20Bold.copyWith(
-                          color: AppColors.primaryColor,
+                          color: theme.colorScheme.primary,
                           fontSize: SizeConfig.responsiveValue(
                             phone: 34.sp,
                             tablet: 28.sp,
@@ -81,7 +91,7 @@ class LoginScreen extends StatelessWidget {
                       Text(
                         'Your trusted partner for all your medical test',
                         style: AppTextStyle.style18W500.copyWith(
-                          color: AppColors.greyColor,
+                          color: theme.colorScheme.secondary,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -90,8 +100,8 @@ class LoginScreen extends StatelessWidget {
                       BlocBuilder<LoginCubit, LoginStates>(
                         builder: (context, state) {
                           if (state is LogInLoadingState) {
-                            return const CircularProgressIndicator(
-                              color: AppColors.greyColor,
+                            return CircularProgressIndicator(
+                              color: theme.colorScheme.primary,
                             );
                           }
                           return LoginButton(
@@ -117,13 +127,13 @@ class LoginScreen extends StatelessWidget {
                             Text(
                               'By the',
                               style: AppTextStyle.style14W500.copyWith(
-                                color: AppColors.primaryColor,
+                                color: theme.colorScheme.primary,
                               ),
                             ),
                             Text(
                               ' ${'Register'} ',
                               style: AppTextStyle.style14W500.copyWith(
-                                color: AppColors.primaryColor,
+                                color: theme.colorScheme.primary,
                               ),
                             ),
 
@@ -131,7 +141,7 @@ class LoginScreen extends StatelessWidget {
                               'you confirm your agreement to the ',
 
                               style: AppTextStyle.style12W500.copyWith(
-                                color: AppColors.primaryColor,
+                                color: theme.colorScheme.primary,
                               ),
                             ),
                             InkWell(
@@ -142,8 +152,8 @@ class LoginScreen extends StatelessWidget {
                                 'Privacy Policy',
 
                                 style: AppTextStyle.style12W500.copyWith(
-                                  color: AppColors.primaryColor,
-                                  decorationColor: AppColors.primaryColor,
+                                  color: theme.colorScheme.primary,
+                                  decorationColor: theme.colorScheme.primary,
                                   decoration: TextDecoration.underline,
                                 ),
                               ),

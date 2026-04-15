@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class DrawerItemWidget extends StatelessWidget {
@@ -15,13 +14,14 @@ class DrawerItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme.onSurface.withAlpha(185);
     return ListTile(
-      leading: Icon(imagePath, color: AppColors.greyColor.withAlpha(150)),
+      leading: Icon(imagePath, color: color),
 
       title: Text(
         text,
         style: AppTextStyle.style14Bold.copyWith(
-          color: AppColors.greyColor.withAlpha(150),
+          color: color,
         ),
       ),
       onTap: onPressed,

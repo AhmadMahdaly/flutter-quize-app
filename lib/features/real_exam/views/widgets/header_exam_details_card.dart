@@ -164,7 +164,7 @@ class HeaderExamDetailsCard extends StatelessWidget {
                                     await cubit.finishExam();
                                     cubit.resetExam();
                                     await getIt<CheckSubscriptionCubit>()
-                                        .loadSubscription();
+                                        .loadAllSubscriptions();
                                   }
                                 }
                               },

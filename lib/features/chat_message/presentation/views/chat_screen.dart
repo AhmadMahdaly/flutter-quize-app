@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/shared_widgets/custom_app_bar.dart';
+import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/chat_message/data/models/chat_message_model.dart';
@@ -52,10 +53,19 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+    final screenGradient = isDarkMode
+        ? appGradientHelper
+        : const LinearGradient(
+            colors: [Color(0xFFF7F8FB), Color(0xFFECEFF4)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          );
     return Scaffold(
       appBar: const CustomAppBar(title: 'SMLE Gate AI'),
       body: Container(
-        decoration: BoxDecoration(gradient: appGradientHelper),
+        decoration: BoxDecoration(gradient: screenGradient),
         child: Column(
           children: [
             Expanded(
@@ -116,49 +126,55 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildChatBubble(ChatMessage message) {
-    final isUser = message.isUser;
+    final theme = Theme.of(context);
 
+    final isUser = message.isUser;
     final isArabicText = _isArabic(message.text);
+
+    final baseTextStyle = AppTextStyle.style14W500.copyWith(
+      height: 1.4,
+      color: isUser ? AppColors.forthColor : AppColors.offwhiteColor,
+    );
 
     return Align(
       alignment: isUser
           ? AlignmentDirectional.centerStart
           : AlignmentDirectional.centerEnd,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        padding: const EdgeInsets.all(12),
-        constraints: const BoxConstraints(maxWidth: 280),
+        margin: EdgeInsets.symmetric(vertical: 4.h),
+        padding: EdgeInsets.all(12.r),
+        constraints: BoxConstraints(maxWidth: SizeConfig.screenWidth - 50.w),
         decoration: BoxDecoration(
-          color: isUser ? AppColors.primaryColor : AppColors.darkGreyColor,
+          color: isUser ? theme.colorScheme.primary : theme.colorScheme.surface,
           borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(12),
-            topRight: const Radius.circular(12),
+            topLeft: Radius.circular(16.r),
+            topRight: Radius.circular(16.r),
             bottomLeft: isUser
                 ? const Radius.circular(0)
-                : Radius.circular(12.r),
+                : Radius.circular(16.r),
             bottomRight: isUser
-                ? Radius.circular(12.r)
+                ? Radius.circular(16.r)
                 : const Radius.circular(0),
           ),
-          border: Border.all(color: Colors.grey.shade300, width: 0.5),
+          border: Border.all(color: Colors.grey.shade300, width: 0.4),
         ),
-
         child: Directionality(
           textDirection: isArabicText ? TextDirection.rtl : TextDirection.ltr,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                message.text,
-                style: AppTextStyle.style14W500.copyWith(height: 1.4),
-              ),
-              4.verticalSpace,
-              Text(
-                message.time,
-                style: AppTextStyle.style9W500.copyWith(
-                  color: AppColors.offwhiteColor,
+              Text.rich(
+                TextSpan(
+                  children: _parseMarkdownBold(message.text, baseTextStyle),
                 ),
               ),
+              // 4.verticalSpace,
+              // Text(
+              //   message.time,
+              //   style: AppTextStyle.style9W500.copyWith(
+              //     color: AppColors.offwhiteColor,
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -166,15 +182,45 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  List<TextSpan> _parseMarkdownBold(String text, TextStyle baseStyle) {
+    final List<TextSpan> spans = [];
+
+    final RegExp exp = RegExp(r'\*\*(.*?)\*\*');
+    int lastMatchEnd = 0;
+
+    for (final match in exp.allMatches(text)) {
+      if (match.start > lastMatchEnd) {
+        spans.add(
+          TextSpan(
+            text: text.substring(lastMatchEnd, match.start),
+            style: baseStyle,
+          ),
+        );
+      }
+
+      spans.add(
+        TextSpan(
+          text: match.group(1),
+          style: baseStyle.copyWith(fontWeight: FontWeight.bold),
+        ),
+      );
+      lastMatchEnd = match.end;
+    }
+
+    if (lastMatchEnd < text.length) {
+      spans.add(TextSpan(text: text.substring(lastMatchEnd), style: baseStyle));
+    }
+
+    return spans;
+  }
+
   Widget _buildMessageInput(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            AppColors.iconColorBlack,
-            AppColors.iconColorGray,
-            AppColors.primaryDColor,
-          ],
+          colors: [theme.colorScheme.onSecondary, theme.colorScheme.primary],
         ),
       ),
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
@@ -182,23 +228,12 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Row(
           children: [
             Expanded(
-              child: TextField(
+              child: CustomPrimaryTextfield(
                 controller: _controller,
                 focusNode: _focusNode,
-                decoration: InputDecoration(
-                  hintText: 'Type your message here...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey.shade200.withAlpha(100),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 10,
-                  ),
-                ),
-                onSubmitted: (value) {
+                text: 'Type your message here...',
+
+                onFieldSubmitted: (value) {
                   context.read<ChatCubit>().sendMessage(value);
                   _controller.clear();
                 },

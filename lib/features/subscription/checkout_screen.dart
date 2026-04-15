@@ -238,6 +238,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     bool isNotActive = false,
     Color? valueColor,
   }) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.h),
       child: Row(
@@ -247,10 +249,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             label,
             style: isTotal
                 ? AppTextStyle.style16Bold.copyWith(
-                    color: AppColors.primaryColor,
+                    color: theme.colorScheme.primary,
                   )
                 : AppTextStyle.style14W500.copyWith(
-                    color: AppColors.thirdColor,
+                    color: theme.colorScheme.secondary,
                   ),
           ),
           Text(
@@ -263,7 +265,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     color:
                         valueColor ??
                         (isNotActive
-                            ? AppColors.thirdColor
+                            ? theme.colorScheme.secondary
                             : AppColors.greenColor),
                     decoration: isNotActive ? TextDecoration.lineThrough : null,
                     decorationColor: isNotActive ? AppColors.errorColor : null,

@@ -24,15 +24,17 @@ class HomeChatBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Container(
       height: 55.h,
       margin: EdgeInsets.symmetric(vertical: 8.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(15),
+            color: Colors.black.withAlpha(isDarkMode ? 77 : 15),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -77,7 +79,7 @@ class HomeChatBar extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 22.r,
-                      backgroundColor: AppColors.primaryColor.withAlpha(40),
+                      backgroundColor: theme.colorScheme.primary.withAlpha(40),
 
                       child: Image.asset('assets/images/png/logo_circle.png'),
                     ),
@@ -92,7 +94,10 @@ class HomeChatBar extends StatelessWidget {
                               ? AppColors.greenColor
                               : AppColors.errorColor,
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2.5),
+                          border: Border.all(
+                            color: theme.colorScheme.surface,
+                            width: 2.5,
+                          ),
                         ),
                       ),
                     ),
@@ -107,7 +112,7 @@ class HomeChatBar extends StatelessWidget {
                       Text(
                         'Ask SMLE Gate AI...',
                         style: AppTextStyle.style14W500.copyWith(
-                          color: Colors.grey.shade600,
+                          color: theme.colorScheme.onSurface.withAlpha(180),
                         ),
                       ),
                       2.horizontalSpace,
@@ -118,7 +123,7 @@ class HomeChatBar extends StatelessWidget {
                 ),
                 Icon(
                   CupertinoIcons.wand_stars_inverse,
-                  color: Colors.grey.shade600,
+                  color: theme.colorScheme.onSurface.withAlpha(180),
                 ),
                 8.horizontalSpace,
                 // Row(

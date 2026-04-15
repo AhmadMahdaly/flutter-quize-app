@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/get_app_version.dart';
 import 'package:smle/core/shared_widgets/debug_print_widget.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,6 +22,7 @@ class PoweredByWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
@@ -40,7 +40,7 @@ class PoweredByWidget extends StatelessWidget {
                     'Powered by:',
                     style: AppTextStyle.style12W700.copyWith(
                       fontSize: 11.sp,
-                      color: AppColors.greyColor.withAlpha(150),
+                      color: onSurface.withAlpha(160),
                     ),
                   ),
                   2.horizontalSpace,
@@ -60,7 +60,7 @@ class PoweredByWidget extends StatelessWidget {
                       '${'Version Number'}: ${snapshot.data}',
                       style: AppTextStyle.style9W600.copyWith(
                         fontSize: 10.sp,
-                        color: AppColors.greyColor.withAlpha(150),
+                        color: onSurface.withAlpha(160),
                       ),
                     );
                   }

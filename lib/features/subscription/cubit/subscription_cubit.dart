@@ -181,9 +181,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
             )) {}
 
             if (url.startsWith('https://smlegate.com/payment/success')) {
-              getIt<CheckSubscriptionCubit>()
-                ..loadSubscription()
-                ..loadAiSubscription();
+              getIt<CheckSubscriptionCubit>().loadAllSubscriptions();
 
               if (!isClosed) {
                 emit(PurchaseSuccessState());
@@ -344,9 +342,7 @@ class SubscriptionCubit extends Cubit<SubscriptionStates> {
             )) {}
 
             if (url.startsWith('https://smlegate.com/payment/success')) {
-              getIt<CheckSubscriptionCubit>()
-                ..loadSubscription()
-                ..loadAiSubscription();
+              getIt<CheckSubscriptionCubit>().loadAllSubscriptions();
 
               if (!isClosed) {
                 emit(PurchaseSuccessState());

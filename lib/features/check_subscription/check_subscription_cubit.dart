@@ -11,35 +11,79 @@ class CheckSubscriptionCubit extends SafeCubit<CheckSubscriptionState> {
   final CheckSubscriptionRepository repository;
   CheckSubscriptionModel? checkSubscriptionModel;
   CheckAiAccessModel? checkAiAccessModel;
-  Future<void> loadSubscription() async {
-    if (!isClosed) emit(SubscriptionLoading());
+  // Future<void> loadSubscription() async {
+  //   if (!isClosed) emit(SubscriptionLoading());
 
-    final result = await repository.fetchSubscription();
+  //   final result = await repository.fetchSubscription();
 
-    result.when(
-      success: (data) {
-        checkSubscriptionModel = data;
-        if (!isClosed) emit(SubscriptionLoaded(data));
-      },
+  //   result.when(
+  //     success: (data) {
+  //       checkSubscriptionModel = data;
+  //       if (!isClosed) emit(SubscriptionLoaded(data));
+  //     },
+  //     failure: (error) {
+  //       if (!isClosed) emit(SubscriptionError(error.errMessage));
+  //     },
+  //   );
+  // }
+
+  // Future<void> loadAiSubscription() async {
+  //   if (!isClosed) emit(SubscriptionAiLoading());
+
+  //   final result = await repository.fetchAiSubscription();
+
+  //   result.when(
+  //     success: (data) {
+  //       checkAiAccessModel = data;
+  //       if (!isClosed) emit(SubscriptionAiLoaded(data));
+  //     },
+  //     failure: (error) {
+  //       if (!isClosed) emit(SubscriptionAiError(error.errMessage));
+  //     },
+  //   );
+  // }
+  bool get isSubscribed => checkSubscriptionModel?.isSubscribed ?? false;
+
+  bool get hasQBank => checkSubscriptionModel?.qBank ?? false;
+
+  String get availableExam => checkSubscriptionModel?.availableRealExam ?? '0';
+
+  bool get hasAiAccess => checkAiAccessModel?.status ?? false;
+  Future<void> loadAllSubscriptions() async {
+    if (!isClosed) emit(CheckSubscriptionsLoading());
+
+    final subFuture = repository.fetchSubscription();
+    final aiFuture = repository.fetchAiSubscription();
+
+    final subResult = await subFuture;
+    final aiResult = await aiFuture;
+
+    bool hasError = false;
+    String? errorMessage;
+
+    subResult.when(
+      success: (data) => checkSubscriptionModel = data,
       failure: (error) {
-        if (!isClosed) emit(SubscriptionError(error.errMessage));
+        hasError = true;
+        errorMessage = error.errMessage;
       },
     );
-  }
 
-  Future<void> loadAiSubscription() async {
-    if (!isClosed) emit(SubscriptionAiLoading());
-
-    final result = await repository.fetchAiSubscription();
-
-    result.when(
-      success: (data) {
-        checkAiAccessModel = data;
-        if (!isClosed) emit(SubscriptionAiLoaded(data));
-      },
+    aiResult.when(
+      success: (data) => checkAiAccessModel = data,
       failure: (error) {
-        if (!isClosed) emit(SubscriptionAiError(error.errMessage));
+        hasError = true;
+
+        errorMessage ??= error.errMessage;
       },
     );
+
+    if (!isClosed) {
+      if (hasError) {
+        emit(CheckSubscriptionsError(errorMessage ?? 'حدث خطأ غير متوقع'));
+      } else {
+        emit(CheckSubscriptionsLoaded());
+      }
+    }
   }
 }

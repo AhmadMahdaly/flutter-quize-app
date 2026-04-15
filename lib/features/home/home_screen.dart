@@ -19,23 +19,27 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-    //  Scaffold(
-    //   resizeToAvoidBottomInset: true,
-    //   drawer: const DrawerWidget(),
-    //   // appBar: AppBar(
-    //   //   leading:
-    //   // ),
-    //   body:
-    Container(
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+    final actionBackground = theme.colorScheme.primary.withAlpha(40);
+    final actionIconColor = theme.colorScheme.onSurface.withAlpha(250);
+    final screenGradient = isDarkMode
+        ? appGradientHelper
+        : const LinearGradient(
+            colors: [Color(0xFFF7F8FB), Color(0xFFECEFF4)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          );
+
+    return Container(
       height: SizeConfig.screenHeight,
-      decoration: BoxDecoration(gradient: appGradientHelper),
+      decoration: BoxDecoration(gradient: screenGradient),
       child: BlocBuilder<CheckSubscriptionCubit, CheckSubscriptionState>(
         builder: (context, state) {
           final cubit = context
               .read<CheckSubscriptionCubit>()
               .checkSubscriptionModel;
-          if (state is SubscriptionLoading) {
+          if (state is CheckSubscriptionsLoading) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -60,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                       const Expanded(child: UserAndPointsHeaderWidget()),
                       Container(
                         decoration: BoxDecoration(
-                          color: AppColors.primaryColor.withAlpha(50),
+                          color: actionBackground,
                           borderRadius: BorderRadius.circular(320.r),
                         ),
                         child: IconButton(
@@ -68,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                               await context.pushNamed(AppRoutes.giftsScreen),
                           icon: Icon(
                             Icons.wallet_giftcard_rounded,
-                            color: AppColors.greyColor.withAlpha(250),
+                            color: actionIconColor,
                             size: SizeConfig.responsiveValue(
                               phone: 20.r,
                               tablet: 16.r,
@@ -76,10 +80,11 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       6.horizontalSpace,
                       Container(
                         decoration: BoxDecoration(
-                          color: AppColors.primaryColor.withAlpha(50),
+                          color: actionBackground,
                           borderRadius: BorderRadius.circular(320.r),
                         ),
                         child: Builder(
@@ -89,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                                   Scaffold.of(context).openDrawer(),
                               icon: Icon(
                                 Icons.menu,
-                                color: AppColors.greyColor.withAlpha(250),
+                                color: actionIconColor,
                                 size: SizeConfig.responsiveValue(
                                   phone: 20.r,
                                   tablet: 16.r,
@@ -115,7 +120,7 @@ class HomeScreen extends StatelessWidget {
                   Text(
                     'Top Category',
                     style: AppTextStyle.style18Bold.copyWith(
-                      color: AppColors.offwhiteColor,
+                      color: actionIconColor,
                     ),
                   ),
                   12.verticalSpace,
@@ -153,6 +158,7 @@ class HomeScreen extends StatelessWidget {
 
                   32.verticalSpace,
                   const EndPageBanner(),
+                  20.verticalSpace,
                 ],
               ),
             ),

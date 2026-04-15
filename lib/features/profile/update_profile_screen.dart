@@ -51,6 +51,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: const CustomAppBar(title: 'Update Profile'),
       body: BlocConsumer<MainLayoutCubit, MainLayoutState>(
@@ -59,7 +60,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Profile updated successfully!'),
-                backgroundColor: Colors.green,
+                backgroundColor: Color(0xFF2E7D32),
               ),
             );
             Navigator.pop(context);
@@ -67,7 +68,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Failed to update profile'),
-                backgroundColor: Colors.red,
+                backgroundColor: Color(0xFFC62828),
               ),
             );
           }
@@ -89,7 +90,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     children: [
                       CircleAvatar(
                         radius: 60.r,
-                        backgroundColor: Colors.grey[200],
+                        backgroundColor: theme.colorScheme.primary.withAlpha(
+                          190,
+                        ),
 
                         backgroundImage: _selectedImage != null
                             ? FileImage(_selectedImage!)
@@ -102,16 +105,22 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             _selectedImage == null &&
                                 (previousImageUrl == null ||
                                     previousImageUrl.isEmpty)
-                            ? Icon(Icons.person, size: 60.r, color: Colors.grey)
+                            ? Icon(
+                                Icons.person,
+                                size: 60.r,
+                                color: theme.colorScheme.onSurface.withAlpha(
+                                  160,
+                                ),
+                              )
                             : null,
                       ),
                       CircleAvatar(
                         radius: 18.r,
-                        backgroundColor: Colors.blue,
+                        backgroundColor: theme.colorScheme.secondary,
                         child: Icon(
                           Icons.camera_alt,
                           size: 18.r,
-                          color: Colors.white,
+                          color: theme.colorScheme.surface,
                         ),
                       ),
                     ],

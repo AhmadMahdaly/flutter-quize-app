@@ -151,7 +151,7 @@ class _AnalysisDashboardScreenState extends State<AnalysisDashboardScreen> {
                                 arguments: exam,
                               ),
                               child: Padding(
-                                padding: EdgeInsets.only(bottom: 16.h),
+                                padding: EdgeInsets.only(bottom: 6.h),
                                 child: ExamScoreCard(exam: exam),
                               ),
                             ),

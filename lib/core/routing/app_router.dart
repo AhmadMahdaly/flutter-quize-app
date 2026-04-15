@@ -26,8 +26,6 @@ import 'package:smle/features/leader_board/presentation/controllers/cubit/leader
 import 'package:smle/features/leader_board/presentation/views/leaderboard_screen.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/main_layout.dart';
-import 'package:smle/features/notification/cubit/notification_cubit.dart';
-import 'package:smle/features/notification/notification_screen.dart';
 import 'package:smle/features/play_list/play_list_screen.dart';
 import 'package:smle/features/play_list/playlist_questions_screen.dart';
 import 'package:smle/features/profile/profile_screen.dart';
@@ -107,11 +105,11 @@ class AppRouter {
           cubit: getIt<MainLayoutCubit>()..getGifts(),
         );
 
-      case AppRoutes.notificationScreen:
-        return transition(
-          screen: const NotificationScreen(),
-          cubit: getIt<NotificationCubit>(),
-        );
+      // case AppRoutes.notificationScreen:
+      //   return transition(
+      //     screen: const NotificationScreen(),
+      //     cubit: getIt<NotificationCubit>(),
+      //   );
       case AppRoutes.privacyPolicyScreen:
         return transition(
           screen: const PrivacyPolicyScreen(),
@@ -242,9 +240,7 @@ class AppRouter {
       case AppRoutes.confirmAccessToRealExam:
         return transition(
           screen: const ConfirmAccessToRealExam(),
-          cubit: getIt<CheckSubscriptionCubit>()
-            ..loadSubscription()
-            ..loadAiSubscription(),
+          cubit: getIt<CheckSubscriptionCubit>()..loadAllSubscriptions(),
         );
 
       case AppRoutes.leaderboardScreen:

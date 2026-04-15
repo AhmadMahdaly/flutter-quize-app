@@ -52,6 +52,8 @@ class CustomPrimaryDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: EdgeInsets.all(20.w),
       child: Column(
@@ -66,7 +68,7 @@ class CustomPrimaryDialog extends StatelessWidget {
             textAlign: TextAlign.center,
             style: AppTextStyle.style16Bold.copyWith(
               fontSize: SizeConfig.responsiveValue(phone: 18.sp, tablet: 22.sp),
-              color: AppColors.offwhiteColor,
+              color: theme.colorScheme.primary,
             ),
           ),
           12.verticalSpace,

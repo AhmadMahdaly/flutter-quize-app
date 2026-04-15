@@ -6,7 +6,7 @@ class AppRoutes {
   static const String profileScreen = '/profileScreen';
   static const String giftsScreen = '/giftsScreen';
   static const String mainLayoutScreen = '/mainLayoutScreen';
-  static const String notificationScreen = '/notificationScreen';
+  // static const String notificationScreen = '/notificationScreen';
   static const String privacyPolicyScreen = '/privacyPolicyScreen';
   static const String supportScreen = '/supportScreen';
   static const String sCFHSScoreCalculatorScreen =

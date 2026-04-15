@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -19,6 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return AppBar(
       automaticallyImplyLeading: false,
       // primary: false,
@@ -26,13 +26,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       // bottomOpacity: 0,
       // foregroundColor: Colors.transparent,
       // elevation: 0,
-      backgroundColor: AppColors.forthColor.withAlpha(70),
+      backgroundColor: theme.colorScheme.primary.withAlpha(35),
       leading: canBack
           ? IconButton(
               icon: Icon(
                 size: SizeConfig.responsiveValue(phone: 16.r, tablet: 30.r),
                 Icons.arrow_back_ios_new,
-                color: AppColors.primaryColor,
+                color: theme.colorScheme.secondary,
               ),
               onPressed: () => context.pop(),
             )
@@ -41,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         title,
         textAlign: TextAlign.center,
         style: AppTextStyle.style20Bold.copyWith(
-          color: AppColors.primaryColor,
+          color: theme.colorScheme.secondary,
           fontSize: SizeConfig.responsiveValue(phone: 16.sp, tablet: 24.sp),
         ),
       ),

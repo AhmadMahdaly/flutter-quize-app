@@ -58,74 +58,72 @@ class _GiftsScreenState extends State<GiftsScreen> {
           context.pushNamed(AppRoutes.sendGiftScreen);
         },
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-        child: BlocBuilder<MainLayoutCubit, MainLayoutState>(
-          builder: (context, state) {
-            final cubit = context.read<MainLayoutCubit>();
-            final gifts = cubit.gifts;
-            if (gifts.isEmpty && state is GetGiftsSuccessState) {
-              return const NoDataWidget(
-                noDataImage: 'assets/images/png/present.png',
-                noDataText: 'No Gifts yet!',
-              );
-            }
-            if (gifts.isEmpty && state is GetGiftsLoadingState) {
-              return const Center(child: LoadingDataWidget());
-            }
-
-            return ListView.builder(
-              controller: _scrollController,
-              itemCount: gifts.length + (cubit.isLoadingMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == gifts.length) {
-                  return const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Center(child: LoadingDataWidget()),
-                  );
-                }
-
-                final invoice = gifts[index];
-
-                return Container(
-                  margin: EdgeInsets.only(bottom: 16.h),
-                  padding: EdgeInsets.all(20.r),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.darkGreyColor.withAlpha(150),
-                    ),
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Send by: ${invoice.createdByName}',
-                        style: AppTextStyle.style16Bold.copyWith(
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                      4.verticalSpace,
-                      Text(
-                        invoice.invoiceNumber,
-                        style: AppTextStyle.style16Bold,
-                      ),
-                      10.verticalSpace,
-                      Text('Status: ${invoice.status}'),
-                      Text('Payment: ${invoice.payments} SAR'),
-                      if (invoice.offer != null)
-                        Text('Offer: ${invoice.offer!.name}'),
-                      if (invoice.expiredAt != null)
-                        Text(
-                          'Expire: ${invoice.expiredAt?.day}-${invoice.expiredAt?.month}-${invoice.expiredAt?.year}',
-                        ),
-                    ],
-                  ),
-                );
-              },
+      body: BlocBuilder<MainLayoutCubit, MainLayoutState>(
+        builder: (context, state) {
+          final cubit = context.read<MainLayoutCubit>();
+          final gifts = cubit.gifts;
+          if (gifts.isEmpty && state is GetGiftsSuccessState) {
+            return const NoDataWidget(
+              noDataImage: 'assets/images/png/present.png',
+              noDataText: 'No Gifts yet!',
             );
-          },
-        ),
+          }
+          if (gifts.isEmpty && state is GetGiftsLoadingState) {
+            return const Center(child: LoadingDataWidget());
+          }
+
+          return ListView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            controller: _scrollController,
+            itemCount: gifts.length + (cubit.isLoadingMore ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index == gifts.length) {
+                return Padding(
+                  padding: EdgeInsets.all(16.r),
+                  child: const Center(child: LoadingDataWidget()),
+                );
+              }
+
+              final invoice = gifts[index];
+
+              return Container(
+                margin: EdgeInsets.only(bottom: 10.h),
+                padding: EdgeInsets.all(20.r),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColors.darkGreyColor.withAlpha(150),
+                  ),
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Send by: ${invoice.createdByName}',
+                      style: AppTextStyle.style16Bold.copyWith(
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                    4.verticalSpace,
+                    Text(
+                      invoice.invoiceNumber,
+                      style: AppTextStyle.style16Bold,
+                    ),
+                    10.verticalSpace,
+                    Text('Status: ${invoice.status}'),
+                    Text('Payment: ${invoice.payments} SAR'),
+                    if (invoice.offer != null)
+                      Text('Offer: ${invoice.offer!.name}'),
+                    if (invoice.expiredAt != null)
+                      Text(
+                        'Expire: ${invoice.expiredAt?.day}-${invoice.expiredAt?.month}-${invoice.expiredAt?.year}',
+                      ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

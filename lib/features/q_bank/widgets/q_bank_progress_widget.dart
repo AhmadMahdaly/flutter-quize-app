@@ -18,6 +18,8 @@ class QBankProgressWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     final double progressValue = (endValue == 0)
         ? 0.0
         : currentValue / (endValue - 1);
@@ -44,7 +46,7 @@ class QBankProgressWidget extends StatelessWidget {
                         child: LinearProgressIndicator(
                           value: progressValue,
                           backgroundColor: AppColors.greyColor,
-                          color: AppColors.primaryColor,
+                          color: theme.colorScheme.primary,
                         ),
                       ),
                     ),
@@ -55,7 +57,7 @@ class QBankProgressWidget extends StatelessWidget {
                         child: Text(
                           '$displayCurrent/$endValue',
                           style: AppTextStyle.style14Bold.copyWith(
-                            color: AppColors.secondaryColor,
+                            color: theme.colorScheme.onSecondary,
                           ),
                         ),
                       ),
@@ -68,9 +70,7 @@ class QBankProgressWidget extends StatelessWidget {
           50.horizontalSpace,
           Icon(
             CupertinoIcons.book,
-            color: switchValue
-                ? AppColors.primaryColor
-                : AppColors.offwhiteColor,
+            color: switchValue ? theme.colorScheme.primary : theme.hintColor,
             size: SizeConfig.responsiveValue(phone: 20.sp, tablet: 40.sp),
           ),
           20.horizontalSpace,
@@ -78,7 +78,7 @@ class QBankProgressWidget extends StatelessWidget {
             scale: 1.2,
             child: CupertinoSwitch(
               value: switchValue,
-              activeTrackColor: AppColors.primaryColor,
+              activeTrackColor: theme.colorScheme.primary,
               onChanged: switchFun,
             ),
           ),

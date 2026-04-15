@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:smle/core/theme/colors.dart';
 
 void configLoading(BuildContext context) {
+  final theme = Theme.of(context);
+
   EasyLoading.instance
     ..loadingStyle = EasyLoadingStyle.custom
-    ..backgroundColor = AppColors.secondaryColor
-    ..indicatorColor = Theme.of(context).secondaryHeaderColor
+    ..backgroundColor = theme.colorScheme.onPrimary
+    ..indicatorColor = theme.colorScheme.primary
     ..textColor = Theme.of(context).secondaryHeaderColor
-    ..maskColor = AppColors.secondaryColor
+    ..maskColor = theme.colorScheme.secondary
     ..dismissOnTap = false
     ..maskType = EasyLoadingMaskType.black
     ..userInteractions = false;

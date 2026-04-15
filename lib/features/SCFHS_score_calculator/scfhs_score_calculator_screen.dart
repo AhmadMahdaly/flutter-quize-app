@@ -25,6 +25,8 @@ class _ScfhsScoreCalculatorScreenState
   int? selectedHour;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: const CustomAppBar(title: 'SCFHS score calculator'),
       body: SingleChildScrollView(
@@ -282,7 +284,8 @@ class _ScfhsScoreCalculatorScreenState
                                 Text(
                                   '(${context.read<ScfhsScoreCalculatorCubit>().calculatorInfoModel!.cVChecklist!.items![index].maxScore} ${"points"})',
                                   style: AppTextStyle.style14W500.copyWith(
-                                    color: AppColors.greyColor.withAlpha(200),
+                                    color: theme.colorScheme.secondary
+                                        .withAlpha(200),
                                     fontSize: SizeConfig.responsiveValue(
                                       phone: 14.sp,
                                       tablet: 18.sp,

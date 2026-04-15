@@ -15,10 +15,12 @@ import 'package:smle/core/shared_widgets/debug_print_widget.dart';
 import 'package:smle/core/shared_widgets/powered_by_widget.dart';
 import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
+import 'package:smle/core/theme/theme_controller.dart';
 import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/home/widgets/drawer/drawer_widget.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
+import 'package:smle/features/main%20layout/data/model/profile_model.dart';
 import 'package:smle/features/profile/widgets/profile_button_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,6 +29,15 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+    final screenGradient = isDarkMode
+        ? appGradientHelper
+        : const LinearGradient(
+            colors: [Color(0xFFF7F8FB), Color(0xFFECEFF4)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          );
     return BlocProvider.value(
       value: getIt<LoginCubit>(),
       child: BlocBuilder<MainLayoutCubit, MainLayoutState>(
@@ -50,7 +61,7 @@ class ProfileScreen extends StatelessWidget {
                     final cubit = context
                         .read<CheckSubscriptionCubit>()
                         .checkSubscriptionModel;
-                    if (state is SubscriptionLoading) {
+                    if (state is CheckSubscriptionsLoading) {
                       return const Center(child: CircularProgressIndicator());
                     }
 
@@ -84,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
                                   Scaffold.of(context).openDrawer(),
                               icon: Icon(
                                 Icons.menu,
-                                color: AppColors.primaryColor,
+                                color: theme.colorScheme.secondary,
                                 size: SizeConfig.responsiveValue(
                                   phone: 24.r,
                                   tablet: 16.r,
@@ -105,188 +116,24 @@ class ProfileScreen extends StatelessWidget {
                             child: Icon(
                               CupertinoIcons.settings_solid,
                               size: 24.r,
-                              color: AppColors.primaryColor,
+                              color: theme.colorScheme.secondary,
                             ),
                           ),
                         ),
                       ),
                       body: Container(
-                        decoration: BoxDecoration(gradient: appGradientHelper),
+                        decoration: BoxDecoration(gradient: screenGradient),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 15.w,
-                            // vertical: 15.h,
+                            horizontal: 16.w,
+                            // vertical: 16.h,
                           ),
                           child: SingleChildScrollView(
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  width: double.infinity,
-                                  margin: EdgeInsets.symmetric(vertical: 12.h),
-                                  padding: EdgeInsets.all(16.r),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                    color: AppColors.primaryColor.withAlpha(50),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 25.r,
-                                            backgroundColor: Colors.grey[200],
-                                            // backgroundImage:
-                                            //     (data.photo != null &&
-                                            //         data.photo!.isNotEmpty)
-                                            //     ?
-                                            //     : null,
-                                            child:
-                                                (data.photo == null ||
-                                                    data.photo!.isEmpty)
-                                                ? Icon(
-                                                    Icons.person,
-                                                    size: 25.r,
-                                                    color: Colors.grey,
-                                                  )
-                                                : ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          320.r,
-                                                        ),
-                                                    child:
-                                                        CustomCacheImageWidget(
-                                                          imageUrl: data.photo!,
-                                                        ),
-                                                  ),
-                                          ),
-
-                                          12.horizontalSpace,
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '${data.name}',
-                                                  style: AppTextStyle
-                                                      .style18Bold
-                                                      .copyWith(
-                                                        color: AppColors
-                                                            .greyColor
-                                                            .withAlpha(200),
-                                                      ),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '${data.points} ',
-                                                      style: AppTextStyle
-                                                          .style14Bold
-                                                          .copyWith(
-                                                            color: AppColors
-                                                                .primaryColor,
-                                                          ),
-                                                    ),
-                                                    Text(
-                                                      'Points',
-                                                      style: AppTextStyle
-                                                          .style12Bold
-                                                          .copyWith(
-                                                            color: AppColors
-                                                                .greyColor
-                                                                .withAlpha(150),
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-
-                                          12.horizontalSpace,
-
-                                          Center(
-                                            child: InkWell(
-                                              borderRadius:
-                                                  BorderRadius.circular(12.r),
-                                              onTap: _launchUpdateUrl,
-                                              child: Image.asset(
-                                                'assets/images/icons/telegram_logo.png',
-                                                height: 40.h,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      12.verticalSpace,
-                                      InkWell(
-                                        onTap: () {
-                                          Clipboard.setData(
-                                            ClipboardData(
-                                              text: data.email ?? '',
-                                            ),
-                                          );
-
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            const SnackBar(
-                                              content: Text('Email copied'),
-                                              duration: Duration(seconds: 1),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 12.w,
-                                            vertical: 6.h,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: AppColors.primaryColor
-                                                  .withAlpha(100),
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              12.r,
-                                            ),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  '${data.email}',
-                                                  style: AppTextStyle
-                                                      .style14W700
-                                                      .copyWith(
-                                                        color: AppColors
-                                                            .primaryColor
-                                                            .withAlpha(200),
-                                                      ),
-                                                ),
-                                              ),
-                                              Icon(
-                                                Icons.copy,
-                                                size: 20.r,
-                                                color: AppColors.primaryColor
-                                                    .withAlpha(200),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      // 6.verticalSpace,
-                                    ],
-                                  ),
-                                ),
+                                UserDataWidget(theme: theme, data: data),
                                 Container(
                                   padding: EdgeInsets.symmetric(
                                     vertical: 12.h,
@@ -294,14 +141,18 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12.r),
-                                    color: AppColors.primaryColor.withAlpha(50),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withAlpha(55),
-                                        blurRadius: 10,
-                                        offset: const Offset(0, 5),
-                                      ),
-                                    ],
+                                    color: theme.colorScheme.primary.withAlpha(
+                                      40,
+                                    ),
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     color: Colors.black.withAlpha(
+                                    //       isDarkMode ? 55 : 20,
+                                    //     ),
+                                    //     blurRadius: 10,
+                                    //     offset: const Offset(0, 5),
+                                    //   ),
+                                    // ],
                                   ),
                                   child: Column(
                                     crossAxisAlignment:
@@ -313,7 +164,8 @@ class ProfileScreen extends StatelessWidget {
                                           // textAlign: TextAlign.center,
                                           style: AppTextStyle.style14W900
                                               .copyWith(
-                                                color: AppColors.primaryColor,
+                                                color:
+                                                    theme.colorScheme.secondary,
                                               ),
                                         )
                                       else
@@ -321,7 +173,8 @@ class ProfileScreen extends StatelessWidget {
                                           'Subscription Info:',
                                           style: AppTextStyle.style18Bold
                                               .copyWith(
-                                                color: AppColors.thirdColor,
+                                                color:
+                                                    theme.colorScheme.onSurface,
                                               ),
                                         ),
 
@@ -330,37 +183,43 @@ class ProfileScreen extends StatelessWidget {
                                       /// Data Items
                                       if (offerName != null)
                                         _buildItem(
+                                          context,
                                           Icons.calendar_today,
                                           'Package',
                                           offerName,
                                         ),
                                       if (createdAt != null)
                                         _buildItem(
+                                          context,
                                           Icons.date_range,
                                           'Created',
                                           createdAt,
                                         ),
                                       if (expireDate != null)
                                         _buildItem(
+                                          context,
                                           Icons.event_busy,
                                           'Expires',
                                           expireDate,
                                         ),
 
-                                      Divider(
-                                        color: AppColors.darkGreyColor,
-                                        height: 12.h,
-                                      ),
+                                      // Divider(
+                                      //   color: theme.colorScheme.onSurface
+                                      //       .withAlpha(120),
+                                      //   height: 12.h,
+                                      // ),
 
                                       /// Highlighted Section
                                       if (expireDate != null)
                                         _buildHighlightItem(
+                                          context,
                                           Icons.timer,
                                           'Remaining Days',
                                           '${calculateRemainingDaysFromString(expireDate)} days',
                                         ),
                                       if (availableExam != '0')
                                         _buildHighlightItem(
+                                          context,
                                           Icons.school,
                                           'Exams Left',
                                           '$availableExam exams',
@@ -372,6 +231,10 @@ class ProfileScreen extends StatelessWidget {
                                 Column(
                                   spacing: 8.h,
                                   children: [
+                                    DarkModeButton(
+                                      isDarkMode: isDarkMode,
+                                      theme: theme,
+                                    ),
                                     ProfileButtonWidget(
                                       text: 'Playlist',
                                       imagePath: Icons
@@ -613,6 +476,210 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
+class UserDataWidget extends StatelessWidget {
+  const UserDataWidget({super.key, required this.theme, required this.data});
+
+  final ThemeData theme;
+  final Data data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(vertical: 12.h),
+      padding: EdgeInsets.all(16.r),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.r),
+        color: theme.colorScheme.primary.withAlpha(77),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 25.r,
+                backgroundColor: theme.colorScheme.surface.withAlpha(190),
+                // backgroundImage:
+                //     (data.photo != null &&
+                //         data.photo!.isNotEmpty)
+                //     ?
+                //     : null,
+                child: (data.photo == null || data.photo!.isEmpty)
+                    ? Icon(
+                        Icons.person,
+                        size: 25.r,
+                        color: theme.colorScheme.onSurface.withAlpha(160),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(320.r),
+                        child: CustomCacheImageWidget(imageUrl: data.photo!),
+                      ),
+              ),
+
+              12.horizontalSpace,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${data.name}',
+                      style: AppTextStyle.style18Bold.copyWith(
+                        color: theme.colorScheme.onSurface.withAlpha(210),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '${data.points} ',
+                          style: AppTextStyle.style14Bold.copyWith(
+                            color: theme.colorScheme.secondary,
+                          ),
+                        ),
+                        Text(
+                          'Points',
+                          style: AppTextStyle.style12Bold.copyWith(
+                            color: theme.colorScheme.onSurface.withAlpha(170),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              12.horizontalSpace,
+
+              Center(
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12.r),
+                  onTap: _launchUpdateUrl,
+                  child: Image.asset(
+                    'assets/images/icons/telegram_logo.png',
+                    height: 40.h,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          12.verticalSpace,
+          InkWell(
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: data.email ?? ''));
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Email copied'),
+                  duration: Duration(seconds: 1),
+                ),
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: theme.colorScheme.secondary.withAlpha(120),
+                ),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '${data.email}',
+                      style: AppTextStyle.style14W700.copyWith(
+                        color: theme.colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.copy,
+                    size: 20.r,
+                    color: theme.colorScheme.secondary,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // 6.verticalSpace,
+        ],
+      ),
+    );
+  }
+}
+
+class DarkModeButton extends StatelessWidget {
+  const DarkModeButton({
+    super.key,
+    required this.isDarkMode,
+    required this.theme,
+  });
+
+  final bool isDarkMode;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return ProfileButtonWidget(
+      text: 'Dark Mode',
+      imagePath: Icons.palette_outlined,
+      onPressed: ThemeController.toggle,
+      trailing: SizedBox(
+        width: 70.w,
+        height: 30.h,
+        child: GestureDetector(
+          onTap: ThemeController.toggle,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            padding: EdgeInsets.all(4.r),
+            decoration: BoxDecoration(
+              color: isDarkMode
+                  ? theme.colorScheme.secondary.withAlpha(50)
+                  : theme.colorScheme.surface.withAlpha(220),
+              borderRadius: BorderRadius.circular(50.r),
+            ),
+            child: AnimatedAlign(
+              duration: const Duration(milliseconds: 300),
+              alignment: isDarkMode
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              child: Container(
+                width: 30.r,
+                height: 30.r,
+                decoration: BoxDecoration(
+                  color: isDarkMode
+                      ? theme.colorScheme.secondary
+                      : theme.colorScheme.onSurface,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(25),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  isDarkMode
+                      ? Icons.light_mode_rounded
+                      : Icons.dark_mode_rounded,
+                  size: 16.r,
+                  color: isDarkMode
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.surface,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 Future<void> _launchUpdateUrl() async {
   final Uri url = Uri.parse(
     'https://t.me/SmleGateChannel',
@@ -663,24 +730,30 @@ void subscripeDialog(BuildContext context) {
   );
 }
 
-Widget _buildItem(IconData icon, String title, String value) {
+Widget _buildItem(
+  BuildContext context,
+  IconData icon,
+  String title,
+  String value,
+) {
+  final theme = Theme.of(context);
   return Padding(
     padding: EdgeInsets.symmetric(vertical: 4.h),
     child: Row(
       children: [
-        Icon(icon, color: AppColors.primaryColor.withAlpha(200), size: 20.r),
+        Icon(icon, color: theme.colorScheme.secondary, size: 20.r),
         10.horizontalSpace,
         Text(
           '$title:',
           style: AppTextStyle.style12W500.copyWith(
-            color: AppColors.primaryColor.withAlpha(200),
+            color: theme.colorScheme.secondary,
           ),
         ),
         const Spacer(),
         Text(
           value,
           style: AppTextStyle.style12Bold.copyWith(
-            color: AppColors.thirdColor.withAlpha(200),
+            color: theme.colorScheme.onSurface.withAlpha(210),
           ),
         ),
       ],
@@ -688,28 +761,37 @@ Widget _buildItem(IconData icon, String title, String value) {
   );
 }
 
-Widget _buildHighlightItem(IconData icon, String title, String value) {
+Widget _buildHighlightItem(
+  BuildContext context,
+  IconData icon,
+  String title,
+  String value,
+) {
+  final theme = Theme.of(context);
   return Container(
     margin: EdgeInsets.symmetric(vertical: 4.h),
     padding: EdgeInsets.all(8.r),
     decoration: BoxDecoration(
-      color: AppColors.primaryColor.withAlpha(15),
-      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: theme.colorScheme.primary.withAlpha(77)),
+
+      borderRadius: BorderRadius.circular(12.r),
     ),
     child: Row(
       children: [
-        Icon(icon, color: AppColors.primaryColor),
+        Icon(icon, color: theme.colorScheme.secondary),
         10.horizontalSpace,
         Text(
           title,
           style: AppTextStyle.style12W500.copyWith(
-            color: AppColors.primaryColor,
+            color: theme.colorScheme.secondary,
           ),
         ),
         const Spacer(),
         Text(
           value,
-          style: AppTextStyle.style12Bold.copyWith(color: AppColors.thirdColor),
+          style: AppTextStyle.style12Bold.copyWith(
+            color: theme.colorScheme.onSurface,
+          ),
         ),
       ],
     ),
