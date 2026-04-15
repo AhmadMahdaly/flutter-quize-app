@@ -146,7 +146,7 @@ class CategoryPaymentWidget extends StatelessWidget {
               Icon(
                 CupertinoIcons.creditcard_fill,
                 size: 30.r,
-                color: AppColors.greyColor,
+                color: AppColors.secondaryColor,
               ),
               8.horizontalSpace,
               FittedBox(
@@ -157,7 +157,7 @@ class CategoryPaymentWidget extends StatelessWidget {
                       phone: 20.sp,
                       tablet: 22.sp,
                     ),
-                    color: AppColors.greyColor,
+                    color: AppColors.secondaryColor,
                   ),
                 ),
               ),

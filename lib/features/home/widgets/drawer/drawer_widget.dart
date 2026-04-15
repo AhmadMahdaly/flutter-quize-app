@@ -62,7 +62,7 @@ class DrawerWidget extends StatelessWidget {
                 Divider(color: AppColors.primaryColor.withAlpha(100)),
                 DrawerItemWidget(
                   text: 'Question Bank',
-                  imagePath: Icons.ballot,
+                  imagePath: Icons.ballot_outlined,
                   onPressed: () {
                     if (!isSubscribed || !hasQBank) {
                       showCustomPrimaryDialog(
@@ -92,10 +92,9 @@ class DrawerWidget extends StatelessWidget {
                     context.pushNamed(AppRoutes.createQuizScreen);
                   },
                 ),
-
                 DrawerItemWidget(
                   text: 'Realistic Exam Simulation',
-                  imagePath: Icons.edit_document,
+                  imagePath: Icons.edit_note_rounded,
                   onPressed: () {
                     if (!isSubscribed) {
                       showCustomPrimaryDialog(
@@ -173,6 +172,38 @@ class DrawerWidget extends StatelessWidget {
                   },
                 ),
                 DrawerItemWidget(
+                  text: 'Leaderboard',
+                  imagePath: Icons.leaderboard_outlined,
+                  onPressed: () {
+                    if (!isSubscribed) {
+                      showCustomPrimaryDialog(
+                        context,
+                        widget: CustomPrimaryDialog(
+                          title: 'Subscription Required',
+                          description:
+                              'You cannot access the Leaderboard. Renew your subscription to enjoy the benefits.',
+                          confirmText: 'Subscribe Now',
+                          onConfirm: () {
+                            context.pushNamed(
+                              AppRoutes.subscriptionScreen,
+                              arguments:
+                                  context
+                                      .read<MainLayoutCubit>()
+                                      .profileModel!
+                                      .data!
+                                      .offerId ??
+                                  -1,
+                            );
+                          },
+                        ),
+                      );
+                      return;
+                    }
+
+                    context.pushNamed(AppRoutes.leaderboardScreen);
+                  },
+                ),
+                DrawerItemWidget(
                   text: 'Playlist',
                   imagePath: Icons.playlist_add_check_circle_outlined,
                   onPressed: !isSubscribed
@@ -187,7 +218,6 @@ class DrawerWidget extends StatelessWidget {
                           }
                         },
                 ),
-
                 DrawerItemWidget(
                   text: 'Exams History',
                   imagePath: Icons.history,
@@ -202,7 +232,6 @@ class DrawerWidget extends StatelessWidget {
                           }
                         },
                 ),
-
                 DrawerItemWidget(
                   text: 'Exams Analysis',
                   imagePath: Icons.line_axis_outlined,

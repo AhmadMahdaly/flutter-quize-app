@@ -10,6 +10,7 @@ import 'package:smle/features/home/widgets/category/analysis_widget.dart';
 import 'package:smle/features/home/widgets/category/q_bank_widget.dart';
 import 'package:smle/features/home/widgets/category/real_exam_widget.dart';
 import 'package:smle/features/home/widgets/end_page_banner.dart';
+import 'package:smle/features/home/widgets/top/home_chat_bar.dart';
 import 'package:smle/features/home/widgets/top/user_and_points_header_widget.dart';
 import 'package:smle/features/home/widgets/top_banner_widget.dart';
 
@@ -102,7 +103,15 @@ class HomeScreen extends StatelessWidget {
                   ),
                   48.verticalSpace,
                   const TopBannerWidget(),
-                  20.verticalSpace,
+                  HomeChatBar(
+                    isActive:
+                        context
+                            .read<CheckSubscriptionCubit>()
+                            .checkAiAccessModel
+                            ?.status ??
+                        false,
+                  ),
+                  8.verticalSpace,
                   Text(
                     'Top Category',
                     style: AppTextStyle.style18Bold.copyWith(

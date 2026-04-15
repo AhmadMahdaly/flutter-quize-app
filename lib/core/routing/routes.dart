@@ -31,11 +31,12 @@ class AppRoutes {
   static const String videoPlayerScreen = '/videoPlayerScreen';
   static const String analysisDashboardScreen = '/analysisDashboardScreen';
   static const String examAnalysisScreen = '/examAnalysisScreen';
-
+  static const String leaderboardScreen = '/leaderboardScreen';
   static const String trialExamScreen = '/trialExamScreen';
   static const String playlistQuestionsScreen = '/playlistQuestionsScreen';
   static const String confirmAccessToRealExam = '/confirmAccessToRealExam';
   static const String checkoutScreen = '/checkoutScreen';
   static const String freeqBankScreen = '/freeqBankScreen';
   static const String sendGiftScreen = '/sendGiftScreen';
+  static const String chatScreen = '/chatScreen';
 }

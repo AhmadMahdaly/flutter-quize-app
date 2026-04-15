@@ -66,7 +66,7 @@ class CustomPrimaryDialog extends StatelessWidget {
             textAlign: TextAlign.center,
             style: AppTextStyle.style16Bold.copyWith(
               fontSize: SizeConfig.responsiveValue(phone: 18.sp, tablet: 22.sp),
-              color: AppColors.forthColor,
+              color: AppColors.offwhiteColor,
             ),
           ),
           12.verticalSpace,

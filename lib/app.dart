@@ -26,8 +26,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<PlayListCubit>()),
         BlocProvider(
-          create: (context) =>
-              getIt<CheckSubscriptionCubit>()..loadSubscription(),
+          create: (context) => getIt<CheckSubscriptionCubit>()
+            ..loadSubscription()
+            ..loadAiSubscription(),
         ),
         BlocProvider(create: (context) => getIt<NotificationCubit>()),
         BlocProvider(create: (context) => getIt<MainLayoutCubit>()),

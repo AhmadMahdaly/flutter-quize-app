@@ -10,6 +10,7 @@ class CheckSubscriptionCubit extends SafeCubit<CheckSubscriptionState> {
   CheckSubscriptionCubit(this.repository) : super(CheckSubscriptionInitial());
   final CheckSubscriptionRepository repository;
   CheckSubscriptionModel? checkSubscriptionModel;
+  CheckAiAccessModel? checkAiAccessModel;
   Future<void> loadSubscription() async {
     if (!isClosed) emit(SubscriptionLoading());
 
@@ -22,6 +23,22 @@ class CheckSubscriptionCubit extends SafeCubit<CheckSubscriptionState> {
       },
       failure: (error) {
         if (!isClosed) emit(SubscriptionError(error.errMessage));
+      },
+    );
+  }
+
+  Future<void> loadAiSubscription() async {
+    if (!isClosed) emit(SubscriptionAiLoading());
+
+    final result = await repository.fetchAiSubscription();
+
+    result.when(
+      success: (data) {
+        checkAiAccessModel = data;
+        if (!isClosed) emit(SubscriptionAiLoaded(data));
+      },
+      failure: (error) {
+        if (!isClosed) emit(SubscriptionAiError(error.errMessage));
       },
     );
   }

@@ -25,3 +25,21 @@ class SubscriptionError extends CheckSubscriptionState {
   @override
   List<Object?> get props => [message];
 }
+
+class SubscriptionAiLoading extends CheckSubscriptionState {}
+
+class SubscriptionAiLoaded extends CheckSubscriptionState {
+  SubscriptionAiLoaded(this.subscription);
+  final CheckAiAccessModel subscription;
+
+  @override
+  List<Object?> get props => [subscription];
+}
+
+class SubscriptionAiError extends CheckSubscriptionState {
+  SubscriptionAiError(this.message);
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}

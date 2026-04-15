@@ -46,3 +46,30 @@ class CheckSubscriptionModel {
     return null;
   }
 }
+
+class CheckAiAccessModel {
+  CheckAiAccessModel({this.status, this.message});
+
+  factory CheckAiAccessModel.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return CheckAiAccessModel();
+
+    return CheckAiAccessModel(
+      status: _toBool(json['status']),
+      message: json['message']?.toString(),
+    );
+  }
+
+  final bool? status;
+  final String? message;
+
+  static bool? _toBool(dynamic value) {
+    if (value == null) return null;
+    if (value is bool) return value;
+
+    final v = value.toString().toLowerCase();
+    if (v == 'true' || v == '1') return true;
+    if (v == 'false' || v == '0') return false;
+
+    return null;
+  }
+}

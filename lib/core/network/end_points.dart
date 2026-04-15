@@ -65,6 +65,7 @@ class EndPoints {
   static const String getExamsHistory = 'exams/history';
   static const String verifyPurchase = 'verifyPurchase';
   static const String checkSubscribe = 'check/subscribed';
+  static const String checkAiAccess = 'ai/access-status';
   static const String addQBankNote = 'add/q/bank/note';
   static const String paymentProcess = 'payment/process';
   // static const String paymentCallback = 'payment/callback';
@@ -73,4 +74,6 @@ class EndPoints {
   static const String paymentProcessGift = 'gifts/payment/process';
   static const String giftCheckout = 'gifts/checkout';
   static const String years = 'exam-dates/qbank';
+  static const String leaderBoard = 'leaderboard';
+  static const String chat = 'chat';
 }

@@ -11,24 +11,40 @@ class CheckSubscriptionRepository {
   CheckSubscriptionRepository(this._dioFactory);
   final DioFactory _dioFactory;
 
-  Future<ApiResult<CheckSubscriptionModel>> fetchSubscription() async {try{
-    final response = await _dioFactory.get(endPoint: EndPoints.checkSubscribe);
-    final data = response?.data;
+  Future<ApiResult<CheckSubscriptionModel>> fetchSubscription() async {
+    try {
+      final response = await _dioFactory.get(
+        endPoint: EndPoints.checkSubscribe,
+      );
+      final data = response?.data;
 
-    if (data['status'] == 200) {
-      if (data['data'] == null) {
-        return ApiResult.success(CheckSubscriptionModel());
+      if (data['status'] == 200) {
+        if (data['data'] == null) {
+          return ApiResult.success(CheckSubscriptionModel());
+        }
+        log(data['data'].toString());
+        return ApiResult.success(CheckSubscriptionModel.fromJson(data['data']));
+      } else {
+        throw Exception('Error fetching subscription');
       }
-      log(data['data'].toString());
-      return ApiResult.success(CheckSubscriptionModel.fromJson(data['data']));
-    } else {
-      throw Exception('Error fetching subscription');
-    }} on DioException catch (e) {
-    return ApiResult.failure(ServerFailure.fromDioError(e));
-  } catch (e) {
-    return ApiResult.failure(
-      ServerFailure('Unexpected error occurred'),
-    );
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+    }
   }
-  }  
+
+  Future<ApiResult<CheckAiAccessModel>> fetchAiSubscription() async {
+    try {
+      final response = await _dioFactory.get(endPoint: EndPoints.checkAiAccess);
+
+      final data = response?.data;
+
+      return ApiResult.success(CheckAiAccessModel.fromJson(data));
+    } on DioException catch (e) {
+      return ApiResult.failure(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return ApiResult.failure(ServerFailure('Unexpected error occurred'));
+    }
+  }
 }

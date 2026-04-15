@@ -9,6 +9,8 @@ import 'package:smle/features/analysis/presentation/views/analysis_dashboard_scr
 import 'package:smle/features/analysis/presentation/views/analysis_screen.dart';
 import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/auth/login_screen.dart';
+import 'package:smle/features/chat_message/presentation/controllers/cubit/chat_cubit.dart';
+import 'package:smle/features/chat_message/presentation/views/chat_screen.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/data/models/exams_history_model.dart';
@@ -20,6 +22,8 @@ import 'package:smle/features/free_q_bank/free_q_bank_screen.dart';
 import 'package:smle/features/gifts/gifts_screen.dart';
 import 'package:smle/features/gifts/send_gift_screen.dart';
 import 'package:smle/features/home/home_screen.dart';
+import 'package:smle/features/leader_board/presentation/controllers/cubit/leaderboard_cubit.dart';
+import 'package:smle/features/leader_board/presentation/views/leaderboard_screen.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
 import 'package:smle/features/main%20layout/main_layout.dart';
 import 'package:smle/features/notification/cubit/notification_cubit.dart';
@@ -238,16 +242,25 @@ class AppRouter {
       case AppRoutes.confirmAccessToRealExam:
         return transition(
           screen: const ConfirmAccessToRealExam(),
-          cubit: getIt<CheckSubscriptionCubit>()..loadSubscription(),
+          cubit: getIt<CheckSubscriptionCubit>()
+            ..loadSubscription()
+            ..loadAiSubscription(),
         );
 
-      // case AppRoutes.guestScreen:
-      //   return MaterialPageRoute(
-      //     builder: (_) => BlocProvider(
-      //       create: (context) => getIt<MainLayoutCubit>(),
-      //       child: const GuestMainLayoutScreen(),
-      //     ),
-      //   );
+      case AppRoutes.leaderboardScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<LeaderboardCubit>()..fetchLeaderboard(),
+            child: const LeaderboardScreen(),
+          ),
+        );
+      case AppRoutes.chatScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<ChatCubit>(),
+            child: const ChatScreen(),
+          ),
+        );
       // case AppRoutes.pdfViewerFromUrlScreen:
       //   final url = settings.arguments as String;
       //   return MaterialPageRoute(

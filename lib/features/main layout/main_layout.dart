@@ -36,7 +36,9 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
           ..resetBackPress()
           ..getProfile()
           ..getGifts();
-        await context.read<CheckSubscriptionCubit>().loadSubscription();
+        await context.read<CheckSubscriptionCubit>()
+          ..loadSubscription()
+          ..loadAiSubscription();
       },
       child: BlocBuilder<MainLayoutCubit, MainLayoutState>(
         builder: (BuildContext context, state) {

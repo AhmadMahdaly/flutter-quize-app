@@ -5,12 +5,16 @@ import 'package:smle/features/analysis/data/repo/analysis_repo.dart';
 import 'package:smle/features/analysis/presentation/cubit/analysis_cubit.dart';
 import 'package:smle/features/auth/cubit/login_cubit.dart';
 import 'package:smle/features/auth/data/repo/login_repo.dart';
+import 'package:smle/features/chat_message/data/repo/chat_repo.dart';
+import 'package:smle/features/chat_message/presentation/controllers/cubit/chat_cubit.dart';
 import 'package:smle/features/check_subscription/check_subscription_cubit.dart';
 import 'package:smle/features/check_subscription/data/repo/check_subscription_repo.dart';
 import 'package:smle/features/exams_history/cubit/exams_history_cubit.dart';
 import 'package:smle/features/exams_history/data/repo/exams_history_repository.dart';
 import 'package:smle/features/free_q_bank/cubit/free_q_bank_cubit.dart';
 import 'package:smle/features/free_q_bank/data/repo/free_q_bank_repo.dart';
+import 'package:smle/features/leader_board/data/repo/leaderboard_repo.dart';
+import 'package:smle/features/leader_board/presentation/controllers/cubit/leaderboard_cubit.dart';
 // import 'package:smle/features/free_trial/cubit/free_trial_cubit.dart';
 // import 'package:smle/features/free_trial/data/repo/free_trial_repo.dart';
 import 'package:smle/features/main%20layout/cubit/main_layout_cubit.dart';
@@ -105,4 +109,9 @@ Future<void> setupGetIt() async {
   getIt.registerLazySingleton<CheckSubscriptionCubit>(
     () => CheckSubscriptionCubit(getIt()),
   );
+
+  getIt.registerLazySingleton<LeaderboardRepo>(() => LeaderboardRepo(getIt()));
+  getIt.registerFactory<LeaderboardCubit>(() => LeaderboardCubit(getIt()));
+  getIt.registerLazySingleton<ChatRepo>(() => ChatRepo(getIt()));
+  getIt.registerFactory<ChatCubit>(() => ChatCubit(getIt()));
 }
