@@ -4,7 +4,6 @@ import 'package:smle/core/functions/responsive_config.dart';
 import 'package:smle/core/helpers/extensions.dart';
 import 'package:smle/core/shared_widgets/custom_primary_button.dart';
 import 'package:smle/core/shared_widgets/custom_primary_textfield.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 import 'package:smle/features/play_list/cubit/play_list_cubit.dart';
 
@@ -25,6 +24,8 @@ class PlaylistAlertWidget extends StatelessWidget {
   final bool isEdit;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     if (playListName != null) {
       playListNameController.text = playListName!;
     }
@@ -42,7 +43,7 @@ class PlaylistAlertWidget extends StatelessWidget {
             SizeConfig.responsiveValue(phone: 12.r, tablet: 12.r),
           ),
         ),
-        backgroundColor: AppColors.secondaryColor,
+        backgroundColor: theme.colorScheme.surface,
         title: Text(
           title,
           style: AppTextStyle.style18Bold.copyWith(
@@ -66,7 +67,7 @@ class PlaylistAlertWidget extends StatelessWidget {
                 child: Text(
                   'Cancel',
                   style: AppTextStyle.style14W500.copyWith(
-                    color: AppColors.thirdColor,
+                    color: theme.colorScheme.secondary,
                   ),
                 ),
               ),

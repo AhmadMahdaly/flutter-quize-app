@@ -38,6 +38,8 @@ class _PlayListScreenState extends State<PlayListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     // final bool isAddMode = widget.questionId != null;
     return Scaffold(
       appBar: const CustomAppBar(title: 'Playlists'),
@@ -100,7 +102,9 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                     ? 'Create a playlist to add this question.'
                                     : 'Create your first playlist to get started.',
                                 style: AppTextStyle.style14W500.copyWith(
-                                  color: AppColors.thirdColor.withAlpha(150),
+                                  color: theme.colorScheme.secondary.withAlpha(
+                                    150,
+                                  ),
                                 ),
                                 textAlign: TextAlign.center,
                               ),

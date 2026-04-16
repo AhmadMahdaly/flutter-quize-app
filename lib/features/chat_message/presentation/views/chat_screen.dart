@@ -133,7 +133,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
     final baseTextStyle = AppTextStyle.style14W500.copyWith(
       height: 1.4,
-      color: isUser ? AppColors.forthColor : AppColors.offwhiteColor,
+      fontFamily: 'Cairo',
+      color: isUser ? AppColors.iconColorBlack : theme.colorScheme.secondary,
     );
 
     return Align(

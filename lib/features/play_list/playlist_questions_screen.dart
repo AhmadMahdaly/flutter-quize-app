@@ -32,7 +32,7 @@ class PlaylistQuestionsScreen extends StatefulWidget {
 }
 
 class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
-  int currentPage = 1; // تم التعديل إلى currentPage بدلاً من offset
+  int currentPage = 1;
   String? localSelectedAnswer;
   bool localIsAnswered = false;
   int currentTotalQuestions = 0;
@@ -44,13 +44,15 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       context.read<PlayListCubit>().getPlayListDetails(
         playlistId: widget.playlistId.toString(),
-        page: currentPage, // تمرير الصفحة
+        page: currentPage,
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: const CustomAppBar(title: 'Playlist Questions'),
       body: BlocConsumer<PlayListCubit, PlayListStates>(
@@ -72,17 +74,13 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
             SchedulerBinding.instance.addPostFrameCallback((_) {
               if (mounted) {
                 setState(() {
-                  // 1. تقليل عدد الأسئلة الإجمالي
                   if (currentTotalQuestions > 0) {
                     currentTotalQuestions--;
                   }
 
-                  // 2. تصفير الإجابات لتجهيز السؤال القادم
                   localSelectedAnswer = null;
                   localIsAnswered = false;
 
-                  // 3. معالجة الصفحة الحالية (Page) لتجنب طلب صفحة غير موجودة
-                  // إذا حذفت السؤال الأخير، ستصبح الصفحة الحالية أكبر من إجمالي الأسئلة المتبقية
                   if (currentPage > currentTotalQuestions &&
                       currentTotalQuestions > 0) {
                     currentPage = currentTotalQuestions;
@@ -95,7 +93,6 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                   ),
                 );
 
-                // 4. جلب البيانات الجديدة فقط إذا كان هناك أسئلة متبقية
                 if (currentTotalQuestions > 0) {
                   context.read<PlayListCubit>().getPlayListDetails(
                     playlistId: widget.playlistId.toString(),
@@ -114,12 +111,8 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          // التحقق من الهيكل الجديد: model.data.data
           if (cubit.playListQuestionsModel?.data?.data == null ||
               cubit.playListQuestionsModel!.data!.data!.isEmpty) {
-            // يمكننا أيضاً أخذ التوتال من السيرفر مباشرة لو فضلنا:
-            // currentTotalQuestions = cubit.playListQuestionsModel?.data?.total ?? 0;
-
             if (currentTotalQuestions <= 0) {
               return Center(
                 child: Padding(
@@ -130,13 +123,13 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                       Icon(
                         Icons.playlist_remove_outlined,
                         size: 80.r,
-                        color: AppColors.primaryColor,
+                        color: theme.colorScheme.primary,
                       ),
                       16.verticalSpace,
                       Text(
                         'This playlist is empty',
                         style: AppTextStyle.style20Bold.copyWith(
-                          color: AppColors.primaryColor,
+                          color: theme.colorScheme.primary,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -144,7 +137,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                       Text(
                         'Add questions to get started and begin your review session.',
                         style: AppTextStyle.style16W500.copyWith(
-                          color: AppColors.thirdColor.withAlpha(200),
+                          color: theme.colorScheme.secondary.withAlpha(200),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -161,10 +154,9 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
             return const Center(child: LoadingDataWidget());
           }
 
-          // جلب السؤال الأول من مصفوفة البيانات في الهيكل الجديد
           final currentQuestion = cubit.playListQuestionsModel!.data!.data![0];
           final bool isAnswered = localIsAnswered;
-          // تحديث رقم السؤال استناداً للصفحة (لأننا نجلب سؤالاً واحداً لكل صفحة)
+
           final currentQuestionNumber = '$currentPage / $currentTotalQuestions';
           final playlistId = widget.playlistId.toString();
 
@@ -186,7 +178,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                   child: ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    // استخدام دالة الـ get options التي أنشأناها في الموديل
+
                     itemBuilder: (context, optionIndex) {
                       final currentOption =
                           currentQuestion.options[optionIndex];
@@ -230,7 +222,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                     onTap: isAnswered
                         ? () {
                             if (currentPage < currentTotalQuestions) {
-                              currentPage++; // الانتقال للصفحة التالية
+                              currentPage++;
                               cubit.getPlayListDetails(
                                 playlistId: widget.playlistId.toString(),
                                 page: currentPage,
@@ -307,7 +299,7 @@ class _PlaylistQuestionsScreenState extends State<PlaylistQuestionsScreen> {
                     ),
                   ),
                   currentQuestion: currentQuestionNumber,
-                  isRepeated: question.isFavourite ?? false, // تمت إضافة حرف u
+                  isRepeated: question.isFavourite ?? false,
                   question: '${question.question ?? ''}',
                   explainPhoto: '${question.explanationPhoto}',
                   qPhoto: '${question.photo}',
@@ -394,7 +386,7 @@ class _QBankAddNoteDialogState extends State<QBankAddNoteDialog> {
                     Expanded(
                       child: TextButton(
                         onPressed: state is AddNoteLoadingState
-                            ? null // تعطيل الزر أثناء التحميل
+                            ? null
                             : () {
                                 if (controller.text.isNotEmpty) {
                                   widget.cubit.addQuestionNote(

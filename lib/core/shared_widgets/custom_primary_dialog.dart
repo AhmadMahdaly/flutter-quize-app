@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 void showCustomPrimaryDialog(
@@ -9,6 +8,8 @@ void showCustomPrimaryDialog(
   bool canPop = true,
 }) {
   if (context.mounted) {
+    final theme = Theme.of(context);
+
     showDialog<void>(
       context: context,
       useRootNavigator: false,
@@ -17,7 +18,7 @@ void showCustomPrimaryDialog(
         return PopScope(
           canPop: canPop,
           child: Dialog(
-            backgroundColor: AppColors.iconColorGray,
+            backgroundColor: theme.colorScheme.surface,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.r),
             ),
@@ -60,7 +61,11 @@ class CustomPrimaryDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(icon, size: 48.sp, color: iconColor ?? AppColors.primaryColor),
+            Icon(
+              icon,
+              size: 48.sp,
+              color: iconColor ?? theme.colorScheme.primary,
+            ),
             12.verticalSpace,
           ],
           Text(
@@ -77,7 +82,7 @@ class CustomPrimaryDialog extends StatelessWidget {
             textAlign: TextAlign.center,
             style: AppTextStyle.style14W500.copyWith(
               fontSize: SizeConfig.responsiveValue(phone: 14.sp, tablet: 16.sp),
-              color: AppColors.darkGreyColor,
+              color: theme.colorScheme.onSurface,
             ),
           ),
           24.verticalSpace,
@@ -89,7 +94,7 @@ class CustomPrimaryDialog extends StatelessWidget {
                   child: TextButton(
                     onPressed: onCancel ?? () => Navigator.pop(context),
                     style: TextButton.styleFrom(
-                      foregroundColor: AppColors.darkGreyColor,
+                      foregroundColor: theme.colorScheme.onSurface,
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                     ),
                     child: Text(cancelText!, style: AppTextStyle.style14W600),
@@ -103,7 +108,7 @@ class CustomPrimaryDialog extends StatelessWidget {
                     onConfirm();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
+                    backgroundColor: theme.colorScheme.primary,
                     padding: EdgeInsets.symmetric(vertical: 12.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),
@@ -112,7 +117,7 @@ class CustomPrimaryDialog extends StatelessWidget {
                   child: Text(
                     confirmText,
                     style: AppTextStyle.style14Bold.copyWith(
-                      color: Colors.white,
+                      color: theme.colorScheme.onPrimary,
                     ),
                   ),
                 ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smle/core/functions/responsive_config.dart';
-import 'package:smle/core/theme/colors.dart';
 import 'package:smle/core/theme/text_styles.dart';
 
 class NoDataWidget extends StatelessWidget {
@@ -14,6 +13,8 @@ class NoDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -24,7 +25,7 @@ class NoDataWidget extends StatelessWidget {
           child: Text(
             noDataText,
             style: AppTextStyle.style20Bold.copyWith(
-              color: AppColors.thirdColor.withAlpha(100),
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
@@ -38,13 +39,15 @@ class LoadingDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final theme = Theme.of(context);
+
+    return Scaffold(
       // backgroundColor: AppColors.primaryColor.withAlpha(200),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: CircularProgressIndicator(color: AppColors.primaryColor),
+            child: CircularProgressIndicator(color: theme.colorScheme.primary),
           ),
         ],
       ),
@@ -57,8 +60,10 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(color: AppColors.primaryColor),
+    final theme = Theme.of(context);
+
+    return Center(
+      child: CircularProgressIndicator(color: theme.colorScheme.primary),
     );
   }
 }

@@ -50,6 +50,8 @@ class CustomPrimaryTextfield extends StatelessWidget {
   final void Function(String)? onFieldSubmitted;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextFormField(
       onFieldSubmitted: onFieldSubmitted,
       maxLines: maxLines,
@@ -62,12 +64,12 @@ class CustomPrimaryTextfield extends StatelessWidget {
       readOnly: readOnly ?? false,
       style:
           style ??
-          AppTextStyle.style14W500.copyWith(color: AppColors.iconColorBlack),
+          AppTextStyle.style14W500.copyWith(color: theme.colorScheme.onSurface),
       textAlign: textAlign ?? TextAlign.start,
       validator: validator,
       focusNode: focusNode,
       controller: controller,
-      cursorColor: AppColors.forthColor,
+      cursorColor: theme.colorScheme.primary,
       obscureText: isPassword ?? false,
       decoration: InputDecoration(
         hint: Text(
@@ -75,7 +77,7 @@ class CustomPrimaryTextfield extends StatelessWidget {
           style:
               style ??
               AppTextStyle.style14W600.copyWith(
-                color: AppColors.darkGreyColor.withAlpha(100),
+                color: theme.colorScheme.onSurfaceVariant,
               ),
         ),
         border: customOutlineInputBorder(),
@@ -86,7 +88,7 @@ class CustomPrimaryTextfield extends StatelessWidget {
         prefixIcon: prefix,
         contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
         filled: true,
-        fillColor: AppColors.offwhiteColor,
+        fillColor: theme.colorScheme.surface,
       ),
 
       textInputAction: textInputAction,
