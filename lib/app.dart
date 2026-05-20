@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: themeMode,
-          title: 'SMLE Gate',
+          title: 'S',
           debugShowCheckedModeBanner: false,
           builder: (context, myWidget) {
             myWidget = EasyLoading.init()(context, myWidget);
